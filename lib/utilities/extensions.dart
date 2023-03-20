@@ -30,6 +30,8 @@ extension StringExtension on String {
 
   get toLottie => Image.asset('assets/lottie/$this.json');
 
+  get toPermissionImage => Image.asset('assets/images/permissions/$this.png');
+
   void showSnackbar(BuildContext context, {Color? color}) =>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(this), backgroundColor: color),

@@ -1,3 +1,9 @@
 {
-    "royake": "رؤياك"
+    "notifications_title": "هل تريد أن تستقبل إشعارات؟",
+    "notifications_subtitle": "لتبقى متابعاً لجميع مهامك و أخر التطورات الخاصة بالمهام و التحديثات الجديدة",
+    "activate_notifications": "تفعيل الاشعارات",
+    "skip_step": "تخطي هذه الخطوة",
+    "location_title": "بحاجة الى موقعك",
+    "location_subtitle": "يرجى منحنا الوصول الخاص بك GPS إلى موقع",
+    "permit": "سماح"
 }

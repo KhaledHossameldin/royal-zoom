@@ -1,3 +1,9 @@
 {
-    "royake": "Royake"
+    "notifications_title": "Do you want to receive notifications?",
+    "notifications_subtitle": "To keep track of all your tasks and the latest developments regarding new tasks and updates",
+    "activate_notifications": "Activate notifications",
+    "skip_step": "Skip this step",
+    "location_title": "Need your location",
+    "location_subtitle": "Please give us your GPS access to the location",
+    "permit": "Permit"
 }
