@@ -3,9 +3,13 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:royake_mobile/constants/preferences_keys.dart';
+import '../../constants/preferences_keys.dart';
+import '../models/authentication/user.dart';
 
 class SharedPreferencesHandler {
+  static SharedPreferencesHandler instance = SharedPreferencesHandler._();
+  SharedPreferencesHandler._();
+
   Future<void> setLocale(String languageCode) async {
     final preferences = await SharedPreferences.getInstance();
     preferences.setString(PreferencesKeys.locale, languageCode);
@@ -38,5 +42,35 @@ class SharedPreferencesHandler {
   Future<void> setLocation() async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.setBool(PreferencesKeys.location, true);
+  }
+
+  Future<void> setToken(String token) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString(PreferencesKeys.token, token);
+  }
+
+  Future<String> getToken() async {
+    final preferences = await SharedPreferences.getInstance();
+    final token = preferences.getString(PreferencesKeys.token) ?? '';
+    return 'bearer $token';
+  }
+
+  Future<void> setUser(User user) async {
+    final preferences = await SharedPreferences.getInstance();
+    preferences.setString(PreferencesKeys.user, user.toJson());
+  }
+
+  Future<User?> getUser() async {
+    final preferences = await SharedPreferences.getInstance();
+    final userJson = preferences.getString(PreferencesKeys.user);
+    if (userJson == null) {
+      return null;
+    }
+    return User.fromJson(userJson);
+  }
+
+  Future<void> removeUser() async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.remove(PreferencesKeys.user);
   }
 }

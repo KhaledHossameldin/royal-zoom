@@ -1,39 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
+
+import '../constants/brand_colors.dart';
+
+extension BooleanExtension on bool {
+  int get toInt => this ? 1 : 0;
+}
+
+extension DurationExtension on Duration {
+  String get timezoneOffset {
+    return 'UTC ${inHours < 0 ? '-' : '+'}${inHours.abs().twoDigits}:${inMinutes.remainder(60).twoDigits}';
+  }
+}
+
+extension IntegerExtension on int {
+  String get threeDigit {
+    if (this > 99) {
+      return toString();
+    } else if (this > 9) {
+      return '0$this';
+    } else {
+      return '00$this';
+    }
+  }
+
+  String get twoDigits {
+    if (this > 9) {
+      return '$this';
+    } else {
+      return '0$this';
+    }
+  }
+}
 
 extension NumbersExtension on num {
-  Size _getScreenSize(BuildContext context) {
-    return MediaQuery.of(context).size;
-  }
+  Size get _screenSize =>
+      MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
 
-  double toWidth(BuildContext context) {
-    final screenSize = _getScreenSize(context);
-    return screenSize.width * toDouble() / 428;
-  }
+  double get width => _screenSize.width * toDouble() / 428;
 
-  double toHeight(BuildContext context) {
-    final screenSize = _getScreenSize(context);
-    return screenSize.height * toDouble() / 926;
-  }
+  double get height => _screenSize.height * toDouble() / 926;
 
-  SizedBox toEmptyWidth(BuildContext context) =>
-      SizedBox(width: toWidth(context));
+  SizedBox get emptyWidth => SizedBox(width: width);
 
-  SizedBox toEmptyHeight(BuildContext context) =>
-      SizedBox(height: toHeight(context));
+  SizedBox get emptyHeight => SizedBox(height: height);
 }
 
 extension StringExtension on String {
-  get toSVG => SvgPicture.asset('assets/svgs/$this.svg');
+  SvgPicture get svg => SvgPicture.asset('assets/svgs/$this.svg');
 
-  get toPNG => Image.asset('assets/images/$this.png');
+  Image get png => Image.asset('assets/images/$this.png');
 
-  get toLottie => Image.asset('assets/lottie/$this.json');
+  Image get permissionImage =>
+      Image.asset('assets/images/permissions/$this.png');
 
-  get toPermissionImage => Image.asset('assets/images/permissions/$this.png');
+  Color get color => Color(int.parse('0xFF${substring(1)}'));
 
-  void showSnackbar(BuildContext context, {Color? color}) =>
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(this), backgroundColor: color),
+  Duration get timezoneOffset {
+    final timezone = substring(length - 6);
+    final time = timezone.split(':');
+    return Duration(hours: int.parse(time[0]), minutes: int.parse(time[1]));
+  }
+
+  LottieBuilder toLottie(Function(LottieComposition) onLoaded) => Lottie.asset(
+        'assets/lottie/$this.json',
+        repeat: false,
+        onLoaded: onLoaded,
       );
+
+  void showSnackbar(BuildContext context, {Color color = BrandColors.orange}) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: color,
+            content: Text(
+              this,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Droid Arabic Kufi',
+              ),
+            )),
+      );
+}
+
+extension ColorExtension on Color {
+  String get hex =>
+      '#${(value & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
 }

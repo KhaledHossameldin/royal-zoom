@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Khaled Hossameldin on 02/04/2023.
+  
+*/
+
+"CFBundleDisplayName" = "رؤياك";
+"CFBundleName" = "رؤياك";

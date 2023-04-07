@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../constants/brand_colors.dart';
 import '../../../constants/routes.dart';
 import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
@@ -13,59 +12,59 @@ class LocationPermissionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final appLocalizations = AppLocalizations.of(context)!;
-    final padding = EdgeInsets.symmetric(horizontal: 34.toWidth(context));
+    final appLocalizations = AppLocalizations.of(context);
+    final padding = EdgeInsets.symmetric(horizontal: 34.width);
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           const Material(),
-          'location'.toPermissionImage,
+          'location'.permissionImage,
           Padding(
             padding: padding,
             child: Column(
               children: [
                 Text(
-                  appLocalizations.translate('location_title'),
+                  appLocalizations.locationTitle,
                   textAlign: TextAlign.center,
-                  style: textTheme.headlineSmall,
+                  style: textTheme.headlineLarge,
                 ),
-                30.toEmptyHeight(context),
+                30.emptyHeight,
                 Text(
-                  appLocalizations.translate('location_subtitle'),
+                  appLocalizations.locationSubtitle,
                   textAlign: TextAlign.center,
                   style: textTheme.titleLarge,
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: padding,
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    await Permission.location.request();
-                    if (context.mounted) {
-                      _goToLogin(context);
-                    }
-                  },
-                  child: Text(
-                    appLocalizations.translate('permit'),
-                  ),
-                ),
-                6.toEmptyHeight(context),
-                TextButton(
-                  onPressed: () => _goToLogin(context),
-                  style: TextButton.styleFrom(
-                    foregroundColor: BrandColors.darkGray,
-                  ),
-                  child: Text(
-                    appLocalizations.translate('skip_step'),
-                  ),
-                ),
-              ],
-            ),
+          _buildSkipButton(context, padding),
+        ],
+      ),
+    );
+  }
+
+  Padding _buildSkipButton(BuildContext context, EdgeInsets padding) {
+    final appLocalizations = AppLocalizations.of(context);
+
+    return Padding(
+      padding: padding,
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () async {
+              await Permission.location.request();
+              if (context.mounted) {
+                _goToLogin(context);
+              }
+            },
+            child: Text(appLocalizations.permit),
+          ),
+          6.emptyHeight,
+          TextButton(
+            onPressed: () => _goToLogin(context),
+            child: Text(appLocalizations.skipStep),
           ),
         ],
       ),
@@ -73,7 +72,7 @@ class LocationPermissionScreen extends StatelessWidget {
   }
 
   void _goToLogin(BuildContext context) {
-    Repositroy.instance.setLocationPreferences();
+    Repository.instance.setLocationPreferences();
     Navigator.pushReplacementNamed(
       context,
       Routes.login,

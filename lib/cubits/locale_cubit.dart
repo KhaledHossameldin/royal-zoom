@@ -12,12 +12,12 @@ class LocaleCubit extends Cubit<Locale> {
   void toEnglish() {
     var en = AppLocalizationsSetup.supportedLocales.first;
     emit(en);
-    Repositroy.instance.setLocalePreferences(en.languageCode);
+    Repository.instance.setLocalePreferences(en.languageCode);
   }
 
   void toArabic() {
     var ar = AppLocalizationsSetup.supportedLocales.last;
     emit(ar);
-    Repositroy.instance.setLocalePreferences(ar.languageCode);
+    Repository.instance.setLocalePreferences(ar.languageCode);
   }
 }

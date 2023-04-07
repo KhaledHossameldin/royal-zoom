@@ -1,34 +1,112 @@
+import 'package:flutter/material.dart';
+
+import '../models/authentication/user.dart';
 import 'network_services.dart';
 import 'shared_preferences_handler.dart';
 
-class Repositroy {
-  static Repositroy instance = Repositroy._();
-  Repositroy._();
+class Repository {
+  static Repository instance = Repository._();
+  Repository._();
 
-  final _network = NetworkServices();
-  final _sharedPreferences = SharedPreferencesHandler();
+  final _network = NetworkServices.instance;
+  final _sharedPreferences = SharedPreferencesHandler.instance;
 
-  Future<void> setLocalePreferences(String languageCode) async {
-    await _sharedPreferences.setLocale(languageCode);
+  Future<User> activate(
+    BuildContext context, {
+    required String username,
+    required String code,
+  }) async =>
+      await _network.activate(context, username: username, code: code);
+
+  Future<void> register(
+    BuildContext context, {
+    required String username,
+    required String password,
+    required String confirm,
+  }) async =>
+      _network.register(
+        context,
+        username: username,
+        password: password,
+        confirm: confirm,
+      );
+
+  Future<void> resendOTP(
+    BuildContext context, {
+    required String username,
+  }) async =>
+      await _network.resendOTP(context, username: username);
+
+  Future<void> reset(
+    BuildContext context, {
+    required String username,
+    required String code,
+    required String newPassword,
+    required String confirmPassword,
+  }) async =>
+      await _network.reset(
+        context,
+        username: username,
+        code: code,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword,
+      );
+
+  Future<void> checkOTP(
+    BuildContext context, {
+    required String username,
+    required String code,
+  }) async =>
+      await _network.checkOTP(context, username: username, code: code);
+
+  Future<void> forgetPassword(
+    BuildContext context, {
+    required String username,
+  }) async =>
+      await _network.forgetPassword(context, username: username);
+
+  Future<User> login(
+    BuildContext context, {
+    required String username,
+    required String password,
+    required bool isRemember,
+  }) async {
+    final user = await _network.login(
+      context,
+      username: username,
+      password: password,
+    );
+    if (isRemember) {
+      await _sharedPreferences.setUser(user);
+    }
+    return user;
   }
 
-  Future<String> getLocalePreferences() async {
-    return await _sharedPreferences.getLocale();
-  }
+  Future<void> removeUser() async => await _sharedPreferences.removeUser();
 
-  Future<bool> getNotificationsPreferences() async {
-    return await _sharedPreferences.getNotifications();
-  }
+  Future<User?> getUser() async => await _sharedPreferences.getUser();
 
-  Future<void> setNotificationsPreferences() async {
-    await _sharedPreferences.setNotifications();
-  }
+  Future<void> setLocalePreferences(String languageCode) async =>
+      await _sharedPreferences.setLocale(languageCode);
 
-  Future<bool> getLocationPreferences() async {
-    return await _sharedPreferences.getLocation();
-  }
+  Future<String> getLocalePreferences() async =>
+      await _sharedPreferences.getLocale();
 
-  Future<void> setLocationPreferences() async {
-    await _sharedPreferences.setLocation();
-  }
+  Future<bool> getNotificationsPreferences() async =>
+      await _sharedPreferences.getNotifications();
+
+  Future<void> setNotificationsPreferences() async =>
+      await _sharedPreferences.setNotifications();
+
+  Future<bool> getLocationPreferences() async =>
+      await _sharedPreferences.getLocation();
+
+  Future<void> setLocationPreferences() async =>
+      await _sharedPreferences.setLocation();
+
+  Future<void> setTokenPreferences(String token) async =>
+      await _sharedPreferences.setToken(token);
+
+  Future<String> getTokenPreferences() async =>
+      await _sharedPreferences.getToken();
 }

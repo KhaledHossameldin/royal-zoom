@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:royake_mobile/presentation/screens/authentication/register/privacy_policy_screen.dart';
+import 'package:royake_mobile/presentation/screens/authentication/register/terms_and_conditions_screen.dart';
+import 'package:royake_mobile/presentation/screens/guest_home_screen.dart';
 
 import '../constants/routes.dart';
 import '../presentation/screens/authentication/login_screen.dart';
+import '../presentation/screens/authentication/register/register_screen.dart';
+import '../presentation/screens/authentication/register/success_screen.dart'
+    as register;
+import '../presentation/screens/authentication/reset_password/details_screen.dart';
+import '../presentation/screens/authentication/otp_screen.dart';
+import '../presentation/screens/authentication/reset_password/reset_screen.dart';
+import '../presentation/screens/authentication/reset_password/success_screen.dart'
+    as reset;
+import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 
@@ -23,9 +35,61 @@ class AppRouter {
         );
 
       case Routes.login:
+        return MaterialPageRoute(builder: (context) => const LoginScreen());
+
+      case Routes.register:
+        return MaterialPageRoute(builder: (context) => const RegisterScreen());
+
+      case Routes.resetPasswordDetails:
         return MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
+          builder: (context) => const DetailsScreen(),
         );
+
+      case Routes.otp:
+        final arguments = settings.arguments as Map<String, Object>;
+        return MaterialPageRoute(
+          builder: (context) => OTPScreen(
+            username: arguments['username'] as String,
+            isRegister: arguments['isRegister'] as bool,
+          ),
+          settings: settings,
+        );
+
+      case Routes.resetPassword:
+        final arguments = settings.arguments as List<String>;
+        return MaterialPageRoute(
+          builder: (context) => ResetScreen(
+            username: arguments[0],
+            code: arguments[1],
+          ),
+          settings: settings,
+        );
+
+      case Routes.resetPasswordSuccess:
+        return MaterialPageRoute(
+          builder: (context) => const reset.SuccessScreen(),
+        );
+
+      case Routes.registerSuccess:
+        return MaterialPageRoute(
+          builder: (context) => const register.SuccessScreen(),
+        );
+
+      case Routes.home:
+        return MaterialPageRoute(builder: (context) => const HomeScreen());
+
+      case Routes.termsAndConditions:
+        return MaterialPageRoute(
+          builder: (context) => const TermsAndConditions(),
+        );
+
+      case Routes.privacyPolicy:
+        return MaterialPageRoute(
+          builder: (context) => const PrivacyPolicyScreen(),
+        );
+
+      case Routes.guestHome:
+        return MaterialPageRoute(builder: (context) => const GuestHomeScreen());
 
       default:
         return null;
