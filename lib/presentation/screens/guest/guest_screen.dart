@@ -38,7 +38,7 @@ class _GuestScreenState extends State<GuestScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: 'chat'.imageIcon,
+            icon: 'chat'.svg,
             tooltip: appLocalizations.chat,
           ),
           IconButton(

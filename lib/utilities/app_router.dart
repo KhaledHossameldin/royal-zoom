@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:royake_mobile/presentation/screens/guest/consultants/filter_screen.dart';
 
 import '../constants/routes.dart';
 import '../cubits/consultants/consultants_cubit.dart';
+import '../cubits/filter/filter_cubit.dart';
 import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
 import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
@@ -13,6 +13,7 @@ import '../presentation/screens/authentication/register/terms_and_conditions_scr
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
+import '../presentation/screens/guest/consultants/filter_screen.dart';
 import '../presentation/screens/guest/guest_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
@@ -100,7 +101,10 @@ class AppRouter {
       case Routes.filter:
         return MaterialPageRoute(
           fullscreenDialog: true,
-          builder: (context) => const FilterScreen(),
+          builder: (context) => BlocProvider(
+            create: (context) => FilterCubit(),
+            child: const FilterScreen(),
+          ),
         );
 
       default:

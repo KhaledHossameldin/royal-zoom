@@ -148,19 +148,28 @@ class AppLocalizations {
 
   String get consultantsEmpty => _translate('consultants_empty');
 
-  String get consultantsReload => _translate('consultants_reload');
-
   String get filter => _translate('filter');
 
   String get none => _translate('none');
 
-  String getOTPSubtitle(String username) {
-    return '${_translate('code_sent')}\n$username';
-  }
+  String get choose => _translate('choose');
 
-  String getTimerText(int seconds) {
-    return '${_translate('resend_otp_1')} ${seconds.threeDigit} ${_translate('resend_otp_2')}';
-  }
+  String get major => _translate('major');
+
+  String get country => _translate('country');
+
+  String get city => _translate('city');
+
+  String get reviews => _translate('reviews');
+
+  String getReload(String value) =>
+      '${_translate('reload')} ${value.toLowerCase()}';
+
+  String getOTPSubtitle(String username) =>
+      '${_translate('code_sent')}\n$username';
+
+  String getTimerText(int seconds) =>
+      '${_translate('resend_otp_1')} ${seconds.threeDigit} ${_translate('resend_otp_2')}';
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
       AppLocalizationsDelegate();

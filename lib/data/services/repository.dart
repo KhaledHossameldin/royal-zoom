@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../models/authentication/city.dart';
+import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
+import '../models/major.dart';
 import 'network_services.dart';
 import 'shared_preferences_handler.dart';
 
@@ -10,6 +13,18 @@ class Repository {
 
   final _network = NetworkServices.instance;
   final _sharedPreferences = SharedPreferencesHandler.instance;
+
+  Future<List<City>> cities(
+    BuildContext context, {
+    required int countryId,
+  }) async =>
+      _network.cities(context, countryId: countryId);
+
+  Future<List<Country>> countries(BuildContext context) async =>
+      await _network.countries(context);
+
+  Future<List<Major>> majors(BuildContext context) async =>
+      await _network.majors(context);
 
   Future<Map<String, Object>> consultants(
     BuildContext context, {

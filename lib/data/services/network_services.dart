@@ -7,8 +7,11 @@ import 'package:http/http.dart' as http;
 
 import '../../constants/network.dart';
 import '../../localization/app_localizations.dart';
+import '../models/authentication/city.dart';
+import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
 import '../models/consultant.dart';
+import '../models/major.dart';
 import 'app_exception.dart';
 import 'shared_preferences_handler.dart';
 
@@ -16,6 +19,32 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<List<City>> cities(
+    BuildContext context, {
+    required int countryId,
+  }) async {
+    final response = await _get(context, Network.cities, params: {
+      'country_id': countryId.toString(),
+    });
+    return (json.decode(response)['data'] as List)
+        .map((item) => City.fromMap(item))
+        .toList();
+  }
+
+  Future<List<Country>> countries(BuildContext context) async {
+    final response = await _get(context, Network.countries);
+    return (json.decode(response)['data'] as List)
+        .map((item) => Country.fromMap(item))
+        .toList();
+  }
+
+  Future<List<Major>> majors(BuildContext context) async {
+    final response = await _get(context, Network.majors);
+    return (json.decode(response)['data'] as List)
+        .map((item) => Major.fromMap(item))
+        .toList();
+  }
 
   Future<Map<String, Object>> consultants(
     BuildContext context, {

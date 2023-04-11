@@ -68,6 +68,11 @@
     "consultants": "المستشاريين",
     "search_consultants": "...ابحث عن مستشار",
     "consultants_empty": "لا يوجد مستشارين حاليا",
-    "consultants_reload": "إعادة تحميل المستشاريين",
-    "none": "لا يوجد"
+    "none": "لا يوجد",
+    "reload": "إعادة تحميل",
+    "choose": "اختر",
+    "major": "التخصص",
+    "country": "الدولة",
+    "city": "المدينة",
+    "reviews": "عدد التقييمات"
 }

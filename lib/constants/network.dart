@@ -11,4 +11,7 @@ class Network {
   static const register = '$_apiPath/register';
   static const activate = '$_apiPath/activate';
   static const consultants = '$_apiPath/consultants';
+  static const majors = '$_apiPath/majors';
+  static const countries = '$_apiPath/countries';
+  static const cities = '$_apiPath/cities';
 }

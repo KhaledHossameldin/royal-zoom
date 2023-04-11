@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
@@ -44,15 +47,17 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
           case ConsultantsEmpty:
             return ReloadWidget(
               title: appLocalizations.consultantsEmpty,
-              buttonText: appLocalizations.consultantsReload,
+              buttonText: appLocalizations.getReload(
+                appLocalizations.consultations,
+              ),
               onPressed: () => context.read<ConsultantsCubit>().fetch(context),
             );
 
           case ConsultantsLoaded:
             final consultants = (state as ConsultantsLoaded).consultants;
 
-            return NotificationListener<ScrollNotification>(
-              onNotification: (notification) {
+            return Scrollbar(
+              notificationPredicate: (notification) {
                 if (!state.canFetchMore || state.hasEndedScrolling) {
                   return false;
                 }
@@ -82,7 +87,9 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
           case ConsultantsError:
             return ReloadWidget(
               title: (state as ConsultantsError).message,
-              buttonText: appLocalizations.consultantsReload,
+              buttonText: appLocalizations.getReload(
+                appLocalizations.consultations,
+              ),
               onPressed: () => context.read<ConsultantsCubit>().fetch(context),
             );
 
@@ -208,8 +215,15 @@ class _ConsultantItem extends StatelessWidget {
                 bottom: Radius.circular(10.0),
               ),
               image: DecorationImage(
-                image: NetworkImage(consultant.image),
-                fit: BoxFit.cover,
+                alignment: consultant.image.isNotEmpty
+                    ? Alignment.topCenter
+                    : Alignment.center,
+                fit: consultant.image.isNotEmpty
+                    ? BoxFit.cover
+                    : BoxFit.fitWidth,
+                image: consultant.image.isNotEmpty
+                    ? NetworkImage(consultant.image)
+                    : 'royake'.png.image,
               ),
             ),
             child: InkWell(
@@ -238,6 +252,17 @@ class _ConsultantItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    RatingBar(
+                      itemSize: 12.0,
+                      initialRating: Random().nextInt(5).toDouble(),
+                      ignoreGestures: true,
+                      ratingWidget: RatingWidget(
+                        half: const Material(),
+                        full: const Icon(Icons.star, color: Colors.amber),
+                        empty: const Icon(Icons.star, color: Colors.white),
+                      ),
+                      onRatingUpdate: (value) {},
+                    ),
                     2.emptyHeight,
                     Text(
                       consultant.previewName ?? appLocalizations.none,

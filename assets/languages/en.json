@@ -68,6 +68,11 @@
     "consultants": "Consultants",
     "search_consultants": "Search for consultants...",
     "consultants_empty": "There are currently no consultants",
-    "consultants_reload": "Reload consultants",
-    "none": "None"
+    "none": "None",
+    "reload": "Reload",
+    "choose": "Choose",
+    "major": "Major",
+    "country": "Country",
+    "city": "City",
+    "reviews": "Reviews"
 }
