@@ -29,39 +29,42 @@ class Country {
     int? channel,
     String? name,
     DateTime? createdAt,
-  }) {
-    return Country(
-      id: id ?? this.id,
-      uuid: uuid ?? this.uuid,
-      symbol: symbol ?? this.symbol,
-      dialCode: dialCode ?? this.dialCode,
-      channel: channel ?? this.channel,
-      name: name ?? this.name,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  }) =>
+      Country(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        symbol: symbol ?? this.symbol,
+        dialCode: dialCode ?? this.dialCode,
+        channel: channel ?? this.channel,
+        name: name ?? this.name,
+        createdAt: createdAt ?? this.createdAt,
+      );
 
   Map<String, dynamic> toMap() {
+    final contract = _CountryContract();
+
     return {
-      _CountryContract.id: id,
-      _CountryContract.uuid: uuid,
-      _CountryContract.symbol: symbol,
-      _CountryContract.dialCode: dialCode,
-      _CountryContract.channel: channel,
-      _CountryContract.name: name,
-      _CountryContract.createdAt: createdAt.toIso8601String(),
+      contract.id: id,
+      contract.uuid: uuid,
+      contract.symbol: symbol,
+      contract.dialCode: dialCode,
+      contract.channel: channel,
+      contract.name: name,
+      contract.createdAt: createdAt.toIso8601String(),
     };
   }
 
   factory Country.fromMap(Map<String, dynamic> map) {
+    final contract = _CountryContract();
+
     return Country(
-      id: map[_CountryContract.id]?.toInt() ?? 0,
-      uuid: map[_CountryContract.uuid] ?? '',
+      id: map[contract.id]?.toInt() ?? 0,
+      uuid: map[contract.uuid] ?? '',
       symbol: map[Icons.euro_symbol] ?? '',
-      dialCode: map[_CountryContract.dialCode] ?? '',
-      channel: map[_CountryContract.channel]?.toInt() ?? 0,
-      name: map[_CountryContract.name] ?? '',
-      createdAt: DateTime.parse(map[_CountryContract.createdAt]),
+      dialCode: map[contract.dialCode] ?? '',
+      channel: map[contract.channel]?.toInt() ?? 0,
+      name: map[contract.name] ?? '',
+      createdAt: DateTime.parse(map[contract.createdAt]),
     );
   }
 
@@ -71,9 +74,8 @@ class Country {
       Country.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'Country(id: $id, uuid: $uuid, symbol: $symbol, dialCode: $dialCode, channel: $channel, name: $name, createdAt: $createdAt)';
-  }
+  String toString() =>
+      'Country(id: $id, uuid: $uuid, symbol: $symbol, dialCode: $dialCode, channel: $channel, name: $name, createdAt: $createdAt)';
 
   @override
   bool operator ==(Object other) {
@@ -90,23 +92,22 @@ class Country {
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        uuid.hashCode ^
-        symbol.hashCode ^
-        dialCode.hashCode ^
-        channel.hashCode ^
-        name.hashCode ^
-        createdAt.hashCode;
-  }
+  int get hashCode =>
+      id.hashCode ^
+      uuid.hashCode ^
+      symbol.hashCode ^
+      dialCode.hashCode ^
+      channel.hashCode ^
+      name.hashCode ^
+      createdAt.hashCode;
 }
 
 class _CountryContract {
-  static const id = 'id';
-  static const uuid = 'uuid';
-  static const symbol = 'symbol';
-  static const dialCode = 'dial_code';
-  static const channel = 'channel';
-  static const name = 'name';
-  static const createdAt = 'created_at';
+  final id = 'id';
+  final uuid = 'uuid';
+  final symbol = 'symbol';
+  final dialCode = 'dial_code';
+  final channel = 'channel';
+  final name = 'name';
+  final createdAt = 'created_at';
 }

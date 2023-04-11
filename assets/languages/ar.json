@@ -1,4 +1,5 @@
 {
+    "royake": "رؤياك",
     "email_empty_validation": "يجب إدخال البريد الإلكتروني",
     "email_format_validation": "يجب إدخال بريد إلكتروني صالح",
     "phone_empty_validation": "يجب إدخال رقم الجوال",
@@ -57,5 +58,16 @@
     "terms_of_use_content": "الشروط والأحكام",
     "privacy_policy_title": "سياسة الخصوصية",
     "privacy_policy_subtitle": "تاريخ السريان: ١٠ سبتمبر ٢٠٢٢",
-    "privacy_policy_content": "سياسة الخصوصية"
+    "privacy_policy_content": "سياسة الخصوصية",
+    "notifications": "الإشعارات",
+    "send_consultation": "ارسال استشارة",
+    "consultations": "الاستشارات",
+    "chat": "المحادثة",
+    "profile": "حسابي",
+    "filter": "التصفية",
+    "consultants": "المستشاريين",
+    "search_consultants": "...ابحث عن مستشار",
+    "consultants_empty": "لا يوجد مستشارين حاليا",
+    "consultants_reload": "إعادة تحميل المستشاريين",
+    "none": "لا يوجد"
 }

@@ -26,36 +26,39 @@ class Timezone {
     String? timezone,
     Duration? offset,
     DateTime? createdAt,
-  }) {
-    return Timezone(
-      id: id ?? this.id,
-      uuid: uuid ?? this.uuid,
-      countryId: countryId ?? this.countryId,
-      timezone: timezone ?? this.timezone,
-      offset: offset ?? this.offset,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  }) =>
+      Timezone(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        countryId: countryId ?? this.countryId,
+        timezone: timezone ?? this.timezone,
+        offset: offset ?? this.offset,
+        createdAt: createdAt ?? this.createdAt,
+      );
 
   Map<String, dynamic> toMap() {
+    final contract = _TimezoneContract();
+
     return {
-      _TimezoneContract.id: id,
-      _TimezoneContract.uuid: uuid,
-      _TimezoneContract.countryId: countryId,
-      _TimezoneContract.timezone: timezone,
-      _TimezoneContract.offset: offset.timezoneOffset,
-      _TimezoneContract.createdAt: createdAt.toIso8601String(),
+      contract.id: id,
+      contract.uuid: uuid,
+      contract.countryId: countryId,
+      contract.timezone: timezone,
+      contract.offset: offset.timezoneOffset,
+      contract.createdAt: createdAt.toIso8601String(),
     };
   }
 
   factory Timezone.fromMap(Map<String, dynamic> map) {
+    final contract = _TimezoneContract();
+
     return Timezone(
-      id: map[_TimezoneContract.id]?.toInt() ?? 0,
-      uuid: map[_TimezoneContract.uuid] ?? '',
-      countryId: map[_TimezoneContract.countryId]?.toInt() ?? 0,
-      timezone: map[_TimezoneContract.timezone] ?? '',
-      offset: (map[_TimezoneContract.offset] as String).timezoneOffset,
-      createdAt: DateTime.parse(map[_TimezoneContract.createdAt]),
+      id: map[contract.id]?.toInt() ?? 0,
+      uuid: map[contract.uuid] ?? '',
+      countryId: map[contract.countryId]?.toInt() ?? 0,
+      timezone: map[contract.timezone] ?? '',
+      offset: (map[contract.offset] as String).timezoneOffset,
+      createdAt: DateTime.parse(map[contract.createdAt]),
     );
   }
 
@@ -65,9 +68,8 @@ class Timezone {
       Timezone.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'Timezone(id: $id, uuid: $uuid, countryId: $countryId, timezone: $timezone, offset: $offset, createdAt: $createdAt)';
-  }
+  String toString() =>
+      'Timezone(id: $id, uuid: $uuid, countryId: $countryId, timezone: $timezone, offset: $offset, createdAt: $createdAt)';
 
   @override
   bool operator ==(Object other) {
@@ -83,21 +85,20 @@ class Timezone {
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        uuid.hashCode ^
-        countryId.hashCode ^
-        timezone.hashCode ^
-        offset.hashCode ^
-        createdAt.hashCode;
-  }
+  int get hashCode =>
+      id.hashCode ^
+      uuid.hashCode ^
+      countryId.hashCode ^
+      timezone.hashCode ^
+      offset.hashCode ^
+      createdAt.hashCode;
 }
 
 class _TimezoneContract {
-  static const id = 'id';
-  static const uuid = 'uuid';
-  static const countryId = 'country_id';
-  static const timezone = 'timezone';
-  static const offset = 'offset';
-  static const createdAt = 'created_at';
+  final id = 'id';
+  final uuid = 'uuid';
+  final countryId = 'country_id';
+  final timezone = 'timezone';
+  final offset = 'offset';
+  final createdAt = 'created_at';
 }

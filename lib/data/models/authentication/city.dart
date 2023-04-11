@@ -32,42 +32,45 @@ class City {
     double? longitude,
     bool? isActive,
     DateTime? createdAt,
-  }) {
-    return City(
-      id: id ?? this.id,
-      uuid: uuid ?? this.uuid,
-      name: name ?? this.name,
-      countryId: countryId ?? this.countryId,
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
-      isActive: isActive ?? this.isActive,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  }) =>
+      City(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        countryId: countryId ?? this.countryId,
+        latitude: latitude ?? this.latitude,
+        longitude: longitude ?? this.longitude,
+        isActive: isActive ?? this.isActive,
+        createdAt: createdAt ?? this.createdAt,
+      );
 
   Map<String, dynamic> toMap() {
+    final contract = _CityContract();
+
     return {
-      _CityContract.id: id,
-      _CityContract.uuid: uuid,
-      _CityContract.name: name,
-      _CityContract.countryId: countryId,
-      _CityContract.latitude: latitude.toString(),
-      _CityContract.longitude: longitude.toString(),
-      _CityContract.isActive: isActive.toInt,
-      _CityContract.createdAt: createdAt.toIso8601String(),
+      contract.id: id,
+      contract.uuid: uuid,
+      contract.name: name,
+      contract.countryId: countryId,
+      contract.latitude: latitude.toString(),
+      contract.longitude: longitude.toString(),
+      contract.isActive: isActive.toInt,
+      contract.createdAt: createdAt.toIso8601String(),
     };
   }
 
   factory City.fromMap(Map<String, dynamic> map) {
+    final contract = _CityContract();
+
     return City(
-      id: map[_CityContract.id]?.toInt() ?? 0,
-      uuid: map[_CityContract.uuid] ?? '',
-      name: map[_CityContract.name] ?? '',
-      countryId: map[_CityContract.countryId]?.toInt() ?? 0,
-      latitude: double.tryParse(map[_CityContract.latitude]) ?? 0.0,
-      longitude: double.tryParse(map[_CityContract.longitude]) ?? 0.0,
-      isActive: map[_CityContract.isActive] != 0,
-      createdAt: DateTime.parse(map[_CityContract.createdAt]),
+      id: map[contract.id]?.toInt() ?? 0,
+      uuid: map[contract.uuid] ?? '',
+      name: map[contract.name] ?? '',
+      countryId: map[contract.countryId]?.toInt() ?? 0,
+      latitude: double.tryParse(map[contract.latitude]) ?? 0.0,
+      longitude: double.tryParse(map[contract.longitude]) ?? 0.0,
+      isActive: map[contract.isActive] != 0,
+      createdAt: DateTime.parse(map[contract.createdAt]),
     );
   }
 
@@ -76,9 +79,8 @@ class City {
   factory City.fromJson(String source) => City.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'City(id: $id, uuid: $uuid, name: $name, countryId: $countryId, latitude: $latitude, longitude: $longitude, isActive: $isActive, createdAt: $createdAt)';
-  }
+  String toString() =>
+      'City(id: $id, uuid: $uuid, name: $name, countryId: $countryId, latitude: $latitude, longitude: $longitude, isActive: $isActive, createdAt: $createdAt)';
 
   @override
   bool operator ==(Object other) {
@@ -96,25 +98,24 @@ class City {
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        uuid.hashCode ^
-        name.hashCode ^
-        countryId.hashCode ^
-        latitude.hashCode ^
-        longitude.hashCode ^
-        isActive.hashCode ^
-        createdAt.hashCode;
-  }
+  int get hashCode =>
+      id.hashCode ^
+      uuid.hashCode ^
+      name.hashCode ^
+      countryId.hashCode ^
+      latitude.hashCode ^
+      longitude.hashCode ^
+      isActive.hashCode ^
+      createdAt.hashCode;
 }
 
 class _CityContract {
-  static const id = 'id';
-  static const uuid = 'uuid';
-  static const name = 'name';
-  static const countryId = 'country_id';
-  static const latitude = 'latitude';
-  static const longitude = 'longitude';
-  static const isActive = 'is_active';
-  static const createdAt = 'created_at';
+  final id = 'id';
+  final uuid = 'uuid';
+  final name = 'name';
+  final countryId = 'country_id';
+  final latitude = 'latitude';
+  final longitude = 'longitude';
+  final isActive = 'is_active';
+  final createdAt = 'created_at';
 }

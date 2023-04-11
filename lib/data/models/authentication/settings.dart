@@ -65,148 +65,141 @@ class Settings {
     bool? receiveNotificationOnAppointmentChangeRequest,
     bool? receiveNotificationOnExpiredConsultationAccept,
     bool? receiveNotificationBeforePublishingScheduledConsultation,
-  }) {
-    return Settings(
-      acceptNotificationsViaApp:
-          acceptNotificationsViaApp ?? this.acceptNotificationsViaApp,
-      acceptNotificationsViaSms:
-          acceptNotificationsViaSms ?? this.acceptNotificationsViaSms,
-      acceptNotificationsViaEmail:
-          acceptNotificationsViaEmail ?? this.acceptNotificationsViaEmail,
-      acceptNotificationsViaWhatsapp:
-          acceptNotificationsViaWhatsapp ?? this.acceptNotificationsViaWhatsapp,
-      automaticAcceptForLowestOffers:
-          automaticAcceptForLowestOffers ?? this.automaticAcceptForLowestOffers,
-      receiveNotificationOnPriceOffer: receiveNotificationOnPriceOffer ??
-          this.receiveNotificationOnPriceOffer,
-      activateMultiFactorAuthentication: activateMultiFactorAuthentication ??
-          this.activateMultiFactorAuthentication,
-      receiveNotificationOnRefundCredit: receiveNotificationOnRefundCredit ??
-          this.receiveNotificationOnRefundCredit,
-      receiveNotificationForPendingPayment:
-          receiveNotificationForPendingPayment ??
-              this.receiveNotificationForPendingPayment,
-      receiveNotificationOnAppointmentAccept:
-          receiveNotificationOnAppointmentAccept ??
-              this.receiveNotificationOnAppointmentAccept,
-      receiveNotificationOnAppointmentReject:
-          receiveNotificationOnAppointmentReject ??
-              this.receiveNotificationOnAppointmentReject,
-      receiveNotificationOnConsultantMessage:
-          receiveNotificationOnConsultantMessage ??
-              this.receiveNotificationOnConsultantMessage,
-      receiveNotificationOnConsultantReply:
-          receiveNotificationOnConsultantReply ??
-              this.receiveNotificationOnConsultantReply,
-      receiveNotificationOnSuccessfulPayment:
-          receiveNotificationOnSuccessfulPayment ??
-              this.receiveNotificationOnSuccessfulPayment,
-      receiveNotificationOnTwoFactorAuthEnabled:
-          receiveNotificationOnTwoFactorAuthEnabled ??
-              this.receiveNotificationOnTwoFactorAuthEnabled,
-      receiveNotificationOnCustomerSupportMessage:
-          receiveNotificationOnCustomerSupportMessage ??
-              this.receiveNotificationOnCustomerSupportMessage,
-      receiveNotificationOnAppointmentChangeRequest:
-          receiveNotificationOnAppointmentChangeRequest ??
-              this.receiveNotificationOnAppointmentChangeRequest,
-      receiveNotificationOnExpiredConsultationAccept:
-          receiveNotificationOnExpiredConsultationAccept ??
-              this.receiveNotificationOnExpiredConsultationAccept,
-      receiveNotificationBeforePublishingScheduledConsultation:
-          receiveNotificationBeforePublishingScheduledConsultation ??
-              this.receiveNotificationBeforePublishingScheduledConsultation,
-    );
-  }
+  }) =>
+      Settings(
+        acceptNotificationsViaApp:
+            acceptNotificationsViaApp ?? this.acceptNotificationsViaApp,
+        acceptNotificationsViaSms:
+            acceptNotificationsViaSms ?? this.acceptNotificationsViaSms,
+        acceptNotificationsViaEmail:
+            acceptNotificationsViaEmail ?? this.acceptNotificationsViaEmail,
+        acceptNotificationsViaWhatsapp: acceptNotificationsViaWhatsapp ??
+            this.acceptNotificationsViaWhatsapp,
+        automaticAcceptForLowestOffers: automaticAcceptForLowestOffers ??
+            this.automaticAcceptForLowestOffers,
+        receiveNotificationOnPriceOffer: receiveNotificationOnPriceOffer ??
+            this.receiveNotificationOnPriceOffer,
+        activateMultiFactorAuthentication: activateMultiFactorAuthentication ??
+            this.activateMultiFactorAuthentication,
+        receiveNotificationOnRefundCredit: receiveNotificationOnRefundCredit ??
+            this.receiveNotificationOnRefundCredit,
+        receiveNotificationForPendingPayment:
+            receiveNotificationForPendingPayment ??
+                this.receiveNotificationForPendingPayment,
+        receiveNotificationOnAppointmentAccept:
+            receiveNotificationOnAppointmentAccept ??
+                this.receiveNotificationOnAppointmentAccept,
+        receiveNotificationOnAppointmentReject:
+            receiveNotificationOnAppointmentReject ??
+                this.receiveNotificationOnAppointmentReject,
+        receiveNotificationOnConsultantMessage:
+            receiveNotificationOnConsultantMessage ??
+                this.receiveNotificationOnConsultantMessage,
+        receiveNotificationOnConsultantReply:
+            receiveNotificationOnConsultantReply ??
+                this.receiveNotificationOnConsultantReply,
+        receiveNotificationOnSuccessfulPayment:
+            receiveNotificationOnSuccessfulPayment ??
+                this.receiveNotificationOnSuccessfulPayment,
+        receiveNotificationOnTwoFactorAuthEnabled:
+            receiveNotificationOnTwoFactorAuthEnabled ??
+                this.receiveNotificationOnTwoFactorAuthEnabled,
+        receiveNotificationOnCustomerSupportMessage:
+            receiveNotificationOnCustomerSupportMessage ??
+                this.receiveNotificationOnCustomerSupportMessage,
+        receiveNotificationOnAppointmentChangeRequest:
+            receiveNotificationOnAppointmentChangeRequest ??
+                this.receiveNotificationOnAppointmentChangeRequest,
+        receiveNotificationOnExpiredConsultationAccept:
+            receiveNotificationOnExpiredConsultationAccept ??
+                this.receiveNotificationOnExpiredConsultationAccept,
+        receiveNotificationBeforePublishingScheduledConsultation:
+            receiveNotificationBeforePublishingScheduledConsultation ??
+                this.receiveNotificationBeforePublishingScheduledConsultation,
+      );
 
   Map<String, dynamic> toMap() {
+    final contract = _SettingsContract();
+
     return {
-      _SettingsContract.acceptNotificationsViaApp:
-          acceptNotificationsViaApp?.toInt,
-      _SettingsContract.acceptNotificationsViaSms:
-          acceptNotificationsViaSms?.toInt,
-      _SettingsContract.acceptNotificationsViaEmail:
-          acceptNotificationsViaEmail?.toInt,
-      _SettingsContract.acceptNotificationsViaWhatsapp:
+      contract.acceptNotificationsViaApp: acceptNotificationsViaApp?.toInt,
+      contract.acceptNotificationsViaSms: acceptNotificationsViaSms?.toInt,
+      contract.acceptNotificationsViaEmail: acceptNotificationsViaEmail?.toInt,
+      contract.acceptNotificationsViaWhatsapp:
           acceptNotificationsViaWhatsapp?.toInt,
-      _SettingsContract.automaticAcceptForLowestOffers:
+      contract.automaticAcceptForLowestOffers:
           automaticAcceptForLowestOffers?.toInt,
-      _SettingsContract.receiveNotificationOnPriceOffer:
+      contract.receiveNotificationOnPriceOffer:
           receiveNotificationOnPriceOffer?.toInt,
-      _SettingsContract.activateMultiFactorAuthentication:
+      contract.activateMultiFactorAuthentication:
           activateMultiFactorAuthentication?.toInt,
-      _SettingsContract.receiveNotificationOnRefundCredit:
+      contract.receiveNotificationOnRefundCredit:
           receiveNotificationOnRefundCredit?.toInt,
-      _SettingsContract.receiveNotificationForPendingPayment:
+      contract.receiveNotificationForPendingPayment:
           receiveNotificationForPendingPayment?.toInt,
-      _SettingsContract.receiveNotificationOnAppointmentAccept:
+      contract.receiveNotificationOnAppointmentAccept:
           receiveNotificationOnAppointmentAccept?.toInt,
-      _SettingsContract.receiveNotificationOnAppointmentReject:
+      contract.receiveNotificationOnAppointmentReject:
           receiveNotificationOnAppointmentReject?.toInt,
-      _SettingsContract.receiveNotificationOnConsultantMessage:
+      contract.receiveNotificationOnConsultantMessage:
           receiveNotificationOnConsultantMessage?.toInt,
-      _SettingsContract.receiveNotificationOnConsultantReply:
+      contract.receiveNotificationOnConsultantReply:
           receiveNotificationOnConsultantReply?.toInt,
-      _SettingsContract.receiveNotificationOnSuccessfulPayment:
+      contract.receiveNotificationOnSuccessfulPayment:
           receiveNotificationOnSuccessfulPayment?.toInt,
-      _SettingsContract.receiveNotificationOnTwoFactorAuthEnabled:
+      contract.receiveNotificationOnTwoFactorAuthEnabled:
           receiveNotificationOnTwoFactorAuthEnabled?.toInt,
-      _SettingsContract.receiveNotificationOnCustomerSupportMessage:
+      contract.receiveNotificationOnCustomerSupportMessage:
           receiveNotificationOnCustomerSupportMessage?.toInt,
-      _SettingsContract.receiveNotificationOnAppointmentChangeRequest:
+      contract.receiveNotificationOnAppointmentChangeRequest:
           receiveNotificationOnAppointmentChangeRequest?.toInt,
-      _SettingsContract.receiveNotificationOnExpiredConsultationAccept:
+      contract.receiveNotificationOnExpiredConsultationAccept:
           receiveNotificationOnExpiredConsultationAccept?.toInt,
-      _SettingsContract
-              .receiveNotificationBeforePublishingScheduledConsultation:
+      contract.receiveNotificationBeforePublishingScheduledConsultation:
           receiveNotificationBeforePublishingScheduledConsultation?.toInt,
     };
   }
 
   factory Settings.fromMap(Map<String, dynamic> map) {
+    final contract = _SettingsContract();
+
     return Settings(
-      acceptNotificationsViaApp:
-          map[_SettingsContract.acceptNotificationsViaApp] != 0,
-      acceptNotificationsViaSms:
-          map[_SettingsContract.acceptNotificationsViaSms] != 0,
+      acceptNotificationsViaApp: map[contract.acceptNotificationsViaApp] != 0,
+      acceptNotificationsViaSms: map[contract.acceptNotificationsViaSms] != 0,
       acceptNotificationsViaEmail:
-          map[_SettingsContract.acceptNotificationsViaEmail] != 0,
+          map[contract.acceptNotificationsViaEmail] != 0,
       acceptNotificationsViaWhatsapp:
-          map[_SettingsContract.acceptNotificationsViaWhatsapp] != 0,
+          map[contract.acceptNotificationsViaWhatsapp] != 0,
       automaticAcceptForLowestOffers:
-          map[_SettingsContract.automaticAcceptForLowestOffers] != 0,
+          map[contract.automaticAcceptForLowestOffers] != 0,
       receiveNotificationOnPriceOffer:
-          map[_SettingsContract.receiveNotificationOnPriceOffer] != 0,
+          map[contract.receiveNotificationOnPriceOffer] != 0,
       activateMultiFactorAuthentication:
-          map[_SettingsContract.activateMultiFactorAuthentication] != 0,
+          map[contract.activateMultiFactorAuthentication] != 0,
       receiveNotificationOnRefundCredit:
-          map[_SettingsContract.receiveNotificationOnRefundCredit] != 0,
+          map[contract.receiveNotificationOnRefundCredit] != 0,
       receiveNotificationForPendingPayment:
-          map[_SettingsContract.receiveNotificationForPendingPayment] != 0,
+          map[contract.receiveNotificationForPendingPayment] != 0,
       receiveNotificationOnAppointmentAccept:
-          map[_SettingsContract.receiveNotificationOnAppointmentAccept] != 0,
+          map[contract.receiveNotificationOnAppointmentAccept] != 0,
       receiveNotificationOnAppointmentReject:
-          map[_SettingsContract.receiveNotificationOnAppointmentReject] != 0,
+          map[contract.receiveNotificationOnAppointmentReject] != 0,
       receiveNotificationOnConsultantMessage:
-          map[_SettingsContract.receiveNotificationOnConsultantMessage] != 0,
+          map[contract.receiveNotificationOnConsultantMessage] != 0,
       receiveNotificationOnConsultantReply:
-          map[_SettingsContract.receiveNotificationOnConsultantReply] != 0,
+          map[contract.receiveNotificationOnConsultantReply] != 0,
       receiveNotificationOnSuccessfulPayment:
-          map[_SettingsContract.receiveNotificationOnSuccessfulPayment] != 0,
+          map[contract.receiveNotificationOnSuccessfulPayment] != 0,
       receiveNotificationOnTwoFactorAuthEnabled:
-          map[_SettingsContract.receiveNotificationOnTwoFactorAuthEnabled] != 0,
+          map[contract.receiveNotificationOnTwoFactorAuthEnabled] != 0,
       receiveNotificationOnCustomerSupportMessage:
-          map[_SettingsContract.receiveNotificationOnCustomerSupportMessage] !=
-              0,
-      receiveNotificationOnAppointmentChangeRequest: map[_SettingsContract
-              .receiveNotificationOnAppointmentChangeRequest] !=
-          0,
-      receiveNotificationOnExpiredConsultationAccept: map[_SettingsContract
-              .receiveNotificationOnExpiredConsultationAccept] !=
-          0,
-      receiveNotificationBeforePublishingScheduledConsultation: map[
-              _SettingsContract
-                  .receiveNotificationBeforePublishingScheduledConsultation] !=
+          map[contract.receiveNotificationOnCustomerSupportMessage] != 0,
+      receiveNotificationOnAppointmentChangeRequest:
+          map[contract.receiveNotificationOnAppointmentChangeRequest] != 0,
+      receiveNotificationOnExpiredConsultationAccept:
+          map[contract.receiveNotificationOnExpiredConsultationAccept] != 0,
+      receiveNotificationBeforePublishingScheduledConsultation: map[contract
+              .receiveNotificationBeforePublishingScheduledConsultation] !=
           0,
     );
   }
@@ -217,9 +210,8 @@ class Settings {
       Settings.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'Settings(acceptNotificationsViaApp: $acceptNotificationsViaApp, acceptNotificationsViaSms: $acceptNotificationsViaSms, acceptNotificationsViaEmail: $acceptNotificationsViaEmail, acceptNotificationsViaWhatsapp: $acceptNotificationsViaWhatsapp, automaticAcceptForLowestOffers: $automaticAcceptForLowestOffers, receiveNotificationOnPriceOffer: $receiveNotificationOnPriceOffer, activateMultiFactorAuthentication: $activateMultiFactorAuthentication, receiveNotificationOnRefundCredit: $receiveNotificationOnRefundCredit, receiveNotificationForPendingPayment: $receiveNotificationForPendingPayment, receiveNotificationOnAppointmentAccept: $receiveNotificationOnAppointmentAccept, receiveNotificationOnAppointmentReject: $receiveNotificationOnAppointmentReject, receiveNotificationOnConsultantMessage: $receiveNotificationOnConsultantMessage, receiveNotificationOnConsultantReply: $receiveNotificationOnConsultantReply, receiveNotificationOnSuccessfulPayment: $receiveNotificationOnSuccessfulPayment, receiveNotificationOnTwoFactorAuthEnabled: $receiveNotificationOnTwoFactorAuthEnabled, receiveNotificationOnCustomerSupportMessage: $receiveNotificationOnCustomerSupportMessage, receiveNotificationOnAppointmentChangeRequest: $receiveNotificationOnAppointmentChangeRequest, receiveNotificationOnExpiredConsultationAccept: $receiveNotificationOnExpiredConsultationAccept, receiveNotificationBeforePublishingScheduledConsultation: $receiveNotificationBeforePublishingScheduledConsultation)';
-  }
+  String toString() =>
+      'Settings(acceptNotificationsViaApp: $acceptNotificationsViaApp, acceptNotificationsViaSms: $acceptNotificationsViaSms, acceptNotificationsViaEmail: $acceptNotificationsViaEmail, acceptNotificationsViaWhatsapp: $acceptNotificationsViaWhatsapp, automaticAcceptForLowestOffers: $automaticAcceptForLowestOffers, receiveNotificationOnPriceOffer: $receiveNotificationOnPriceOffer, activateMultiFactorAuthentication: $activateMultiFactorAuthentication, receiveNotificationOnRefundCredit: $receiveNotificationOnRefundCredit, receiveNotificationForPendingPayment: $receiveNotificationForPendingPayment, receiveNotificationOnAppointmentAccept: $receiveNotificationOnAppointmentAccept, receiveNotificationOnAppointmentReject: $receiveNotificationOnAppointmentReject, receiveNotificationOnConsultantMessage: $receiveNotificationOnConsultantMessage, receiveNotificationOnConsultantReply: $receiveNotificationOnConsultantReply, receiveNotificationOnSuccessfulPayment: $receiveNotificationOnSuccessfulPayment, receiveNotificationOnTwoFactorAuthEnabled: $receiveNotificationOnTwoFactorAuthEnabled, receiveNotificationOnCustomerSupportMessage: $receiveNotificationOnCustomerSupportMessage, receiveNotificationOnAppointmentChangeRequest: $receiveNotificationOnAppointmentChangeRequest, receiveNotificationOnExpiredConsultationAccept: $receiveNotificationOnExpiredConsultationAccept, receiveNotificationBeforePublishingScheduledConsultation: $receiveNotificationBeforePublishingScheduledConsultation)';
 
   @override
   bool operator ==(Object other) {
@@ -264,63 +256,59 @@ class Settings {
   }
 
   @override
-  int get hashCode {
-    return acceptNotificationsViaApp.hashCode ^
-        acceptNotificationsViaSms.hashCode ^
-        acceptNotificationsViaEmail.hashCode ^
-        acceptNotificationsViaWhatsapp.hashCode ^
-        automaticAcceptForLowestOffers.hashCode ^
-        receiveNotificationOnPriceOffer.hashCode ^
-        activateMultiFactorAuthentication.hashCode ^
-        receiveNotificationOnRefundCredit.hashCode ^
-        receiveNotificationForPendingPayment.hashCode ^
-        receiveNotificationOnAppointmentAccept.hashCode ^
-        receiveNotificationOnAppointmentReject.hashCode ^
-        receiveNotificationOnConsultantMessage.hashCode ^
-        receiveNotificationOnConsultantReply.hashCode ^
-        receiveNotificationOnSuccessfulPayment.hashCode ^
-        receiveNotificationOnTwoFactorAuthEnabled.hashCode ^
-        receiveNotificationOnCustomerSupportMessage.hashCode ^
-        receiveNotificationOnAppointmentChangeRequest.hashCode ^
-        receiveNotificationOnExpiredConsultationAccept.hashCode ^
-        receiveNotificationBeforePublishingScheduledConsultation.hashCode;
-  }
+  int get hashCode =>
+      acceptNotificationsViaApp.hashCode ^
+      acceptNotificationsViaSms.hashCode ^
+      acceptNotificationsViaEmail.hashCode ^
+      acceptNotificationsViaWhatsapp.hashCode ^
+      automaticAcceptForLowestOffers.hashCode ^
+      receiveNotificationOnPriceOffer.hashCode ^
+      activateMultiFactorAuthentication.hashCode ^
+      receiveNotificationOnRefundCredit.hashCode ^
+      receiveNotificationForPendingPayment.hashCode ^
+      receiveNotificationOnAppointmentAccept.hashCode ^
+      receiveNotificationOnAppointmentReject.hashCode ^
+      receiveNotificationOnConsultantMessage.hashCode ^
+      receiveNotificationOnConsultantReply.hashCode ^
+      receiveNotificationOnSuccessfulPayment.hashCode ^
+      receiveNotificationOnTwoFactorAuthEnabled.hashCode ^
+      receiveNotificationOnCustomerSupportMessage.hashCode ^
+      receiveNotificationOnAppointmentChangeRequest.hashCode ^
+      receiveNotificationOnExpiredConsultationAccept.hashCode ^
+      receiveNotificationBeforePublishingScheduledConsultation.hashCode;
 }
 
 class _SettingsContract {
-  static const acceptNotificationsViaApp = 'accept_notifications_via_app';
-  static const acceptNotificationsViaSms = 'accept_notifications_via_sms';
-  static const acceptNotificationsViaEmail = 'accept_notifications_via_email';
-  static const acceptNotificationsViaWhatsapp =
-      'accept_notifications_via_whatsapp';
-  static const automaticAcceptForLowestOffers =
-      'automatic_accept_for_lowest_offers';
-  static const receiveNotificationOnPriceOffer =
-      'receive_notification_on_price_offer';
-  static const activateMultiFactorAuthentication =
+  final acceptNotificationsViaApp = 'accept_notifications_via_app';
+  final acceptNotificationsViaSms = 'accept_notifications_via_sms';
+  final acceptNotificationsViaEmail = 'accept_notifications_via_email';
+  final acceptNotificationsViaWhatsapp = 'accept_notifications_via_whatsapp';
+  final automaticAcceptForLowestOffers = 'automatic_accept_for_lowest_offers';
+  final receiveNotificationOnPriceOffer = 'receive_notification_on_price_offer';
+  final activateMultiFactorAuthentication =
       'activate_multi_factor_authentication';
-  static const receiveNotificationOnRefundCredit =
+  final receiveNotificationOnRefundCredit =
       'receive_notification_on_refund_credit';
-  static const receiveNotificationForPendingPayment =
+  final receiveNotificationForPendingPayment =
       'receive_notification_for_pending_payment';
-  static const receiveNotificationOnAppointmentAccept =
+  final receiveNotificationOnAppointmentAccept =
       'receive_notification_on_appointment_accept';
-  static const receiveNotificationOnAppointmentReject =
+  final receiveNotificationOnAppointmentReject =
       'receive_notification_on_appointment_reject';
-  static const receiveNotificationOnConsultantMessage =
+  final receiveNotificationOnConsultantMessage =
       'receive_notification_on_consultant_message';
-  static const receiveNotificationOnConsultantReply =
+  final receiveNotificationOnConsultantReply =
       'receive_notification_on_consultation_reply';
-  static const receiveNotificationOnSuccessfulPayment =
+  final receiveNotificationOnSuccessfulPayment =
       'receive_notification_on_successful_payment';
-  static const receiveNotificationOnTwoFactorAuthEnabled =
+  final receiveNotificationOnTwoFactorAuthEnabled =
       'receive_notification_on_two_factor_auth_enabled';
-  static const receiveNotificationOnCustomerSupportMessage =
+  final receiveNotificationOnCustomerSupportMessage =
       'receive_notification_on_customer_support_message';
-  static const receiveNotificationOnAppointmentChangeRequest =
+  final receiveNotificationOnAppointmentChangeRequest =
       'receive_notification_on_appointment_change_request';
-  static const receiveNotificationOnExpiredConsultationAccept =
+  final receiveNotificationOnExpiredConsultationAccept =
       'receive_notification_on_expired_consultation_accept';
-  static const receiveNotificationBeforePublishingScheduledConsultation =
+  final receiveNotificationBeforePublishingScheduledConsultation =
       'receive_notification_before_publishing_scheduled_consultation';
 }

@@ -68,140 +68,154 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         buildWhen: (previous, current) => previous != current,
-        builder: (context, locale) {
-          return MaterialApp(
-            title: 'Royake',
-            debugShowCheckedModeBanner: false,
-            initialRoute: initialRoute,
-            onGenerateRoute: AppRouter.instance.onGenerateRoute,
-            supportedLocales: AppLocalizationsSetup.supportedLocales,
-            localizationsDelegates:
-                AppLocalizationsSetup.localizationsDelegates,
-            locale: locale,
-            theme: ThemeData(
-              fontFamily: 'Droid Arabic Kufi',
-              shadowColor: BrandColors.shadow,
-              scaffoldBackgroundColor: Colors.white,
-              colorScheme: ColorScheme.fromSwatch().copyWith(
-                primary: BrandColors.orange,
-                secondary: BrandColors.orange,
+        builder: (context, locale) => MaterialApp(
+          title: 'Royake',
+          debugShowCheckedModeBanner: false,
+          initialRoute: initialRoute,
+          onGenerateRoute: AppRouter.instance.onGenerateRoute,
+          supportedLocales: AppLocalizationsSetup.supportedLocales,
+          localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
+          locale: locale,
+          theme: ThemeData(
+            fontFamily: 'Droid Arabic Kufi',
+            shadowColor: BrandColors.shadow,
+            scaffoldBackgroundColor: Colors.white,
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: BrandColors.orange,
+              secondary: BrandColors.orange,
+            ),
+            appBarTheme: const AppBarTheme(
+              centerTitle: false,
+              color: Colors.white,
+              foregroundColor: Colors.black,
+              titleTextStyle: TextStyle(
+                fontSize: 16.0,
+                color: BrandColors.darkBlue,
+                fontFamily: 'Droid Arabic Kufi',
               ),
-              appBarTheme: const AppBarTheme(
-                centerTitle: false,
-                color: Colors.white,
-                foregroundColor: Colors.black,
-                titleTextStyle: TextStyle(
-                  fontSize: 16.0,
-                  color: BrandColors.darkBlue,
+            ),
+            bottomAppBarTheme: const BottomAppBarTheme(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+            ),
+            pageTransitionsTheme: const PageTransitionsTheme(
+              builders: <TargetPlatform, PageTransitionsBuilder>{
+                TargetPlatform.iOS: SharedAxisPageTransitionsBuilder(
+                  transitionType: SharedAxisTransitionType.horizontal,
+                ),
+                TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+                  transitionType: SharedAxisTransitionType.horizontal,
+                ),
+              },
+            ),
+            listTileTheme: ListTileThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+            ),
+            checkboxTheme: CheckboxThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              side: const BorderSide(
+                width: 1.0,
+                color: BrandColors.mediumGray,
+              ),
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              filled: true,
+              fillColor: BrandColors.snowWhite,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(50.0),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
+            ),
+            tabBarTheme: TabBarTheme(
+              splashFactory: NoSplash.splashFactory,
+              unselectedLabelColor: Colors.grey.shade800,
+              overlayColor: MaterialStateProperty.resolveWith(
+                (states) => Colors.transparent,
+              ),
+              indicator: BoxDecoration(
+                color: BrandColors.orange,
+                borderRadius: BorderRadius.circular(26.0),
+              ),
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                shape: const StadiumBorder(),
+                minimumSize: const Size(double.infinity, 63.0),
+                textStyle: const TextStyle(
+                  fontSize: 20.0,
                   fontFamily: 'Droid Arabic Kufi',
                 ),
               ),
-              pageTransitionsTheme: const PageTransitionsTheme(
-                builders: <TargetPlatform, PageTransitionsBuilder>{
-                  TargetPlatform.iOS: SharedAxisPageTransitionsBuilder(
-                    transitionType: SharedAxisTransitionType.horizontal,
-                  ),
-                  TargetPlatform.android: SharedAxisPageTransitionsBuilder(
-                    transitionType: SharedAxisTransitionType.horizontal,
-                  ),
-                },
-              ),
-              listTileTheme: ListTileThemeData(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0),
+            ),
+            outlinedButtonTheme: OutlinedButtonThemeData(
+              style: OutlinedButton.styleFrom(
+                side: BorderSide.none,
+                shape: const StadiumBorder(),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 8.0,
                 ),
-              ),
-              checkboxTheme: CheckboxThemeData(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                side: const BorderSide(
-                  width: 1.0,
-                  color: BrandColors.mediumGray,
-                ),
-              ),
-              inputDecorationTheme: InputDecorationTheme(
-                filled: true,
-                fillColor: BrandColors.snowWhite,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(50.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                  borderSide: const BorderSide(color: Colors.red),
-                ),
-              ),
-              tabBarTheme: TabBarTheme(
-                splashFactory: NoSplash.splashFactory,
-                unselectedLabelColor: Colors.grey.shade800,
-                overlayColor: MaterialStateProperty.resolveWith(
-                  (states) => Colors.transparent,
-                ),
-                indicator: BoxDecoration(
-                  color: BrandColors.orange,
-                  borderRadius: BorderRadius.circular(26.0),
-                ),
-              ),
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  shape: const StadiumBorder(),
-                  minimumSize: const Size(double.infinity, 63.0),
-                  textStyle: const TextStyle(
-                    fontSize: 20.0,
-                    fontFamily: 'Droid Arabic Kufi',
-                  ),
-                ),
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  shape: const StadiumBorder(),
-                  foregroundColor: BrandColors.darkGray,
-                  textStyle: const TextStyle(
-                    fontSize: 15.0,
-                    fontFamily: 'Droid Arabic Kufi',
-                  ),
-                ),
-              ),
-              textTheme: const TextTheme(
-                headlineLarge: TextStyle(
-                  fontSize: 27.0,
-                  color: BrandColors.darkGreen,
-                ),
-                headlineMedium: TextStyle(
-                  fontSize: 25.0,
-                  color: BrandColors.darkGreen,
-                ),
-                headlineSmall: TextStyle(
-                  fontSize: 20.0,
-                  color: BrandColors.darkGreen,
-                ),
-                titleLarge: TextStyle(
-                  fontSize: 18.0,
-                  color: BrandColors.mediumGreen,
-                ),
-                bodyLarge: TextStyle(
-                  fontSize: 16.0,
-                  color: BrandColors.orange,
-                ),
-                bodyMedium: TextStyle(
-                  fontSize: 16.0,
-                  color: BrandColors.black,
-                ),
-                bodySmall: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.bold,
-                  color: BrandColors.darkGray,
-                ),
-                labelSmall: TextStyle(
-                  fontSize: 10.0,
-                  color: BrandColors.darkGray,
+                textStyle: const TextStyle(
+                  fontSize: 11.0,
+                  fontFamily: 'Droid Arabic Kufi',
                 ),
               ),
             ),
-          );
-        },
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                shape: const StadiumBorder(),
+                foregroundColor: BrandColors.darkGray,
+                textStyle: const TextStyle(
+                  fontSize: 15.0,
+                  fontFamily: 'Droid Arabic Kufi',
+                ),
+              ),
+            ),
+            textTheme: const TextTheme(
+              headlineLarge: TextStyle(
+                fontSize: 27.0,
+                color: BrandColors.darkGreen,
+              ),
+              headlineMedium: TextStyle(
+                fontSize: 25.0,
+                color: BrandColors.darkGreen,
+              ),
+              headlineSmall: TextStyle(
+                fontSize: 20.0,
+                color: BrandColors.darkGreen,
+              ),
+              titleLarge: TextStyle(
+                fontSize: 18.0,
+                color: BrandColors.mediumGreen,
+              ),
+              bodyLarge: TextStyle(
+                fontSize: 16.0,
+                color: BrandColors.orange,
+              ),
+              bodyMedium: TextStyle(
+                fontSize: 16.0,
+                color: BrandColors.black,
+              ),
+              bodySmall: TextStyle(
+                fontSize: 12.0,
+                fontWeight: FontWeight.bold,
+                color: BrandColors.darkGray,
+              ),
+              labelSmall: TextStyle(
+                fontSize: 10.0,
+                color: BrandColors.darkGray,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

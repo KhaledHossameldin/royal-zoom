@@ -21,33 +21,36 @@ class Language {
     String? name,
     String? symbol,
     String? createdAt,
-  }) {
-    return Language(
-      id: id ?? this.id,
-      uuid: uuid ?? this.uuid,
-      name: name ?? this.name,
-      symbol: symbol ?? this.symbol,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  }) =>
+      Language(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        symbol: symbol ?? this.symbol,
+        createdAt: createdAt ?? this.createdAt,
+      );
 
   Map<String, dynamic> toMap() {
+    final contract = _LanguageContract();
+
     return {
-      _LanguageContract.id: id,
-      _LanguageContract.uuid: uuid,
-      _LanguageContract.name: name,
-      _LanguageContract.symbol: symbol,
-      _LanguageContract.createdAt: createdAt,
+      contract.id: id,
+      contract.uuid: uuid,
+      contract.name: name,
+      contract.symbol: symbol,
+      contract.createdAt: createdAt,
     };
   }
 
   factory Language.fromMap(Map<String, dynamic> map) {
+    final contract = _LanguageContract();
+
     return Language(
-      id: map[_LanguageContract.id]?.toInt() ?? 0,
-      uuid: map[_LanguageContract.uuid] ?? '',
-      name: map[_LanguageContract.name] ?? '',
-      symbol: map[_LanguageContract.symbol] ?? '',
-      createdAt: map[_LanguageContract.createdAt] ?? '',
+      id: map[contract.id]?.toInt() ?? 0,
+      uuid: map[contract.uuid] ?? '',
+      name: map[contract.name] ?? '',
+      symbol: map[contract.symbol] ?? '',
+      createdAt: map[contract.createdAt] ?? '',
     );
   }
 
@@ -57,9 +60,8 @@ class Language {
       Language.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'Language(id: $id, uuid: $uuid, name: $name, symbol: $symbol, createdAt: $createdAt)';
-  }
+  String toString() =>
+      'Language(id: $id, uuid: $uuid, name: $name, symbol: $symbol, createdAt: $createdAt)';
 
   @override
   bool operator ==(Object other) {
@@ -74,19 +76,18 @@ class Language {
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        uuid.hashCode ^
-        name.hashCode ^
-        symbol.hashCode ^
-        createdAt.hashCode;
-  }
+  int get hashCode =>
+      id.hashCode ^
+      uuid.hashCode ^
+      name.hashCode ^
+      symbol.hashCode ^
+      createdAt.hashCode;
 }
 
 class _LanguageContract {
-  static const id = 'id';
-  static const uuid = 'uuid';
-  static const name = 'name';
-  static const symbol = 'symbol';
-  static const createdAt = 'created_at';
+  final id = 'id';
+  final uuid = 'uuid';
+  final name = 'name';
+  final symbol = 'symbol';
+  final createdAt = 'created_at';
 }

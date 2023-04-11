@@ -15,6 +15,8 @@ class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
+  String get royake => _translate('royake');
+
   String get emailEmptyValidation => _translate('email_empty_validation');
 
   String get emailFormatValidation => _translate('email_format_validation');
@@ -129,6 +131,28 @@ class AppLocalizations {
   String get privacyPolicySubtitle => _translate('privacy_policy_subtitle');
 
   String get privacyPolicyContent => _translate('privacy_policy_content');
+
+  String get notifications => _translate('notifications');
+
+  String get sendConsultation => _translate('send_consultation');
+
+  String get consultations => _translate('consultations');
+
+  String get chat => _translate('chat');
+
+  String get profile => _translate('profile');
+
+  String get consultants => _translate('consultants');
+
+  String get searchConsultants => _translate('search_consultants');
+
+  String get consultantsEmpty => _translate('consultants_empty');
+
+  String get consultantsReload => _translate('consultants_reload');
+
+  String get filter => _translate('filter');
+
+  String get none => _translate('none');
 
   String getOTPSubtitle(String username) {
     return '${_translate('code_sent')}\n$username';

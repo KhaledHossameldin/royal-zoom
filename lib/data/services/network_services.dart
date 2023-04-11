@@ -8,12 +8,31 @@ import 'package:http/http.dart' as http;
 import '../../constants/network.dart';
 import '../../localization/app_localizations.dart';
 import '../models/authentication/user.dart';
+import '../models/consultant.dart';
 import 'app_exception.dart';
 import 'shared_preferences_handler.dart';
 
 class NetworkServices {
   static NetworkServices instance = NetworkServices._();
+
   NetworkServices._();
+
+  Future<Map<String, Object>> consultants(
+    BuildContext context, {
+    required int page,
+  }) async {
+    final response = await _get(context, Network.consultants, params: {
+      'page': '$page',
+    });
+    final jsonMap = json.decode(response);
+    final consultants = (jsonMap['data'] as List)
+        .map((item) => Consultant.fromMap(item))
+        .toList();
+    return {
+      'consultants': consultants,
+      'per_page': jsonMap['meta']['per_page'],
+    };
+  }
 
   Future<User> activate(
     BuildContext context, {
@@ -92,6 +111,24 @@ class NetworkServices {
     return User.fromJson(response);
   }
 
+  Future<String> _get(
+    BuildContext context,
+    String url, {
+    Map<String, Object>? params,
+  }) async {
+    try {
+      final response = await http
+          .get(
+            Uri.https(Network.domain, url, params),
+            headers: await _getHeaders(context),
+          )
+          .timeout(const Duration(minutes: 1));
+      return _processResponse(response);
+    } catch (e) {
+      throw _getExceptionString(context, error: e as Exception);
+    }
+  }
+
   Future<String> _post(
     BuildContext context,
     String url, {
@@ -100,15 +137,8 @@ class NetworkServices {
     try {
       final response = await http
           .post(
-            Uri.parse('${Network.domain}$url'),
-            headers: {
-              HttpHeaders.acceptHeader: 'application/json',
-              HttpHeaders.contentTypeHeader: 'application/json',
-              HttpHeaders.authorizationHeader:
-                  await SharedPreferencesHandler.instance.getToken(),
-              HttpHeaders.acceptLanguageHeader:
-                  AppLocalizations.of(context).isEnLocale ? 'en' : 'ar',
-            },
+            Uri.https(Network.domain, url),
+            headers: await _getHeaders(context),
             body: json.encode(body),
           )
           .timeout(const Duration(minutes: 1));
@@ -118,8 +148,18 @@ class NetworkServices {
     }
   }
 
+  Future<Map<String, String>> _getHeaders(BuildContext context) async => {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader:
+            await SharedPreferencesHandler.instance.getToken(),
+        HttpHeaders.acceptLanguageHeader:
+            AppLocalizations.of(context).isEnLocale ? 'en' : 'ar',
+      };
+
   String _getExceptionString(BuildContext context, {required Exception error}) {
     final appLocalizations = AppLocalizations.of(context);
+
     if (error is SocketException) {
       return appLocalizations.noInternetConnection;
     }
@@ -133,7 +173,7 @@ class NetworkServices {
       return appLocalizations.requestTimeout;
     }
     if (error is AppException) {
-      if (error is UnauthorizedException && error.url.endsWith('/login')) {
+      if (error is UnauthorizedException && error.url.endsWith(Network.login)) {
         return '401${error.message}';
       }
       return error.message;

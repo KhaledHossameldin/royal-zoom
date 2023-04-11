@@ -1,4 +1,5 @@
 {
+    "royake": "Royake",
     "email_empty_validation": "Must enter email",
     "email_format_validation": "Must enter a valid email",
     "phone_empty_validation": "Must enter phone number",
@@ -57,5 +58,16 @@
     "terms_of_use_content": "Terms and Conditions",
     "privacy_policy_title": "Privacy Policy",
     "privacy_policy_subtitle": "Effective date: 10 September 2022",
-    "privacy_policy_content": "Privacy Policy"
+    "privacy_policy_content": "Privacy Policy",
+    "notifications": "Notifications",
+    "send_consultation": "Send consultation",
+    "consultations": "Consultations",
+    "chat": "Chat",
+    "profile": "Profile",
+    "filter": "Filter",
+    "consultants": "Consultants",
+    "search_consultants": "Search for consultants...",
+    "consultants_empty": "There are currently no consultants",
+    "consultants_reload": "Reload consultants",
+    "none": "None"
 }

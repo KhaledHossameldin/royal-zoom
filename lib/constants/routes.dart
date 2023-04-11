@@ -14,4 +14,5 @@ class Routes {
   static const termsAndConditions = 'terms-and-conditions-screen';
   static const privacyPolicy = 'privacy-policy-screen';
   static const guestHome = 'guest-home-screen';
+  static const filter = 'filter-screen';
 }

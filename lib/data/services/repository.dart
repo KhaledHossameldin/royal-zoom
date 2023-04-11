@@ -11,6 +11,12 @@ class Repository {
   final _network = NetworkServices.instance;
   final _sharedPreferences = SharedPreferencesHandler.instance;
 
+  Future<Map<String, Object>> consultants(
+    BuildContext context, {
+    required int page,
+  }) async =>
+      _network.consultants(context, page: page);
+
   Future<User> activate(
     BuildContext context, {
     required String username,

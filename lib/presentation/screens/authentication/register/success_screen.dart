@@ -5,14 +5,14 @@ import '../../../../constants/routes.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 
-class SuccessScreen extends StatefulWidget {
-  const SuccessScreen({super.key});
+class RegisterSuccessScreen extends StatefulWidget {
+  const RegisterSuccessScreen({super.key});
 
   @override
-  State<SuccessScreen> createState() => _SuccessScreenState();
+  State<RegisterSuccessScreen> createState() => _RegisterSuccessScreenState();
 }
 
-class _SuccessScreenState extends State<SuccessScreen>
+class _RegisterSuccessScreenState extends State<RegisterSuccessScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 

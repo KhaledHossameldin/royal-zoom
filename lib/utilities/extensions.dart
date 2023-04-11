@@ -55,6 +55,9 @@ extension StringExtension on String {
   Image get permissionImage =>
       Image.asset('assets/images/permissions/$this.png');
 
+  ImageIcon get imageIcon =>
+      ImageIcon(AssetImage('assets/images/$this.png'), size: 20.0);
+
   Color get color => Color(int.parse('0xFF${substring(1)}'));
 
   Duration get timezoneOffset {

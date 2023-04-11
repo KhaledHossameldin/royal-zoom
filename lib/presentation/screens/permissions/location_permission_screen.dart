@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../constants/hero_tags.dart';
 import '../../../constants/routes.dart';
 import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
@@ -39,27 +40,30 @@ class LocationPermissionScreen extends StatelessWidget {
               ],
             ),
           ),
-          _buildSkipButton(context, padding),
+          _buildButtons(context, padding),
         ],
       ),
     );
   }
 
-  Padding _buildSkipButton(BuildContext context, EdgeInsets padding) {
+  Padding _buildButtons(BuildContext context, EdgeInsets padding) {
     final appLocalizations = AppLocalizations.of(context);
 
     return Padding(
       padding: padding,
       child: Column(
         children: [
-          ElevatedButton(
-            onPressed: () async {
-              await Permission.location.request();
-              if (context.mounted) {
-                _goToLogin(context);
-              }
-            },
-            child: Text(appLocalizations.permit),
+          Hero(
+            tag: HeroTags.elevatedButton,
+            child: ElevatedButton(
+              onPressed: () async {
+                await Permission.location.request();
+                if (context.mounted) {
+                  _goToLogin(context);
+                }
+              },
+              child: Text(appLocalizations.permit),
+            ),
           ),
           6.emptyHeight,
           TextButton(

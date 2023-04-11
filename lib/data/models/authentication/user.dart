@@ -6,32 +6,26 @@ class User {
   final UserData data;
   final String token;
 
-  User({
-    required this.data,
-    required this.token,
-  });
+  User({required this.data, required this.token});
 
-  User copyWith({
-    UserData? data,
-    String? token,
-  }) {
-    return User(
-      data: data ?? this.data,
-      token: token ?? this.token,
-    );
-  }
+  User copyWith({UserData? data, String? token}) =>
+      User(data: data ?? this.data, token: token ?? this.token);
 
   Map<String, dynamic> toMap() {
+    final contract = _UserContract();
+
     return {
-      _UserContract.data: data.toMap(),
-      _UserContract.token: token,
+      contract.data: data.toMap(),
+      contract.token: token,
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
+    final contract = _UserContract();
+
     return User(
-      data: UserData.fromMap(map[_UserContract.data]),
-      token: map[_UserContract.token] ?? '',
+      data: UserData.fromMap(map[contract.data]),
+      token: map[contract.token] ?? '',
     );
   }
 
@@ -54,6 +48,6 @@ class User {
 }
 
 class _UserContract {
-  static const data = 'data';
-  static const token = 'token';
+  final data = 'data';
+  final token = 'token';
 }

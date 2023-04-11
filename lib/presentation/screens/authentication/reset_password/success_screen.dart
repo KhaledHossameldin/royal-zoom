@@ -4,14 +4,14 @@ import '../../../../constants/brand_colors.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 
-class SuccessScreen extends StatefulWidget {
-  const SuccessScreen({super.key});
+class ResetSuccessScreen extends StatefulWidget {
+  const ResetSuccessScreen({super.key});
 
   @override
-  State<SuccessScreen> createState() => _SuccessScreenState();
+  State<ResetSuccessScreen> createState() => _ResetSuccessScreenState();
 }
 
-class _SuccessScreenState extends State<SuccessScreen>
+class _ResetSuccessScreenState extends State<ResetSuccessScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../constants/hero_tags.dart';
 import '../../../constants/routes.dart';
 import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
@@ -39,28 +40,31 @@ class NotificationsPermissionScreen extends StatelessWidget {
               ],
             ),
           ),
-          _buildSkipButton(context, padding),
+          _buildButtons(context, padding),
         ],
       ),
     );
   }
 
-  Padding _buildSkipButton(BuildContext context, EdgeInsets padding) {
+  Padding _buildButtons(BuildContext context, EdgeInsets padding) {
     final appLocalizations = AppLocalizations.of(context);
 
     return Padding(
       padding: padding,
       child: Column(
         children: [
-          ElevatedButton(
-            onPressed: () async {
-              await Permission.notification.request();
-              if (context.mounted) {
-                _goToLocation(context);
-              }
-            },
-            child: Text(
-              appLocalizations.activateNotifications,
+          Hero(
+            tag: HeroTags.elevatedButton,
+            child: ElevatedButton(
+              onPressed: () async {
+                await Permission.notification.request();
+                if (context.mounted) {
+                  _goToLocation(context);
+                }
+              },
+              child: Text(
+                appLocalizations.activateNotifications,
+              ),
             ),
           ),
           6.emptyHeight,

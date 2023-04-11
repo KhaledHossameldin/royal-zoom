@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:royake_mobile/presentation/screens/authentication/register/privacy_policy_screen.dart';
-import 'package:royake_mobile/presentation/screens/authentication/register/terms_and_conditions_screen.dart';
-import 'package:royake_mobile/presentation/screens/guest_home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:royake_mobile/presentation/screens/guest/consultants/filter_screen.dart';
 
 import '../constants/routes.dart';
+import '../cubits/consultants/consultants_cubit.dart';
 import '../presentation/screens/authentication/login_screen.dart';
-import '../presentation/screens/authentication/register/register_screen.dart';
-import '../presentation/screens/authentication/register/success_screen.dart'
-    as register;
-import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
+import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
+import '../presentation/screens/authentication/register/register_screen.dart';
+import '../presentation/screens/authentication/register/success_screen.dart';
+import '../presentation/screens/authentication/register/terms_and_conditions_screen.dart';
+import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
-import '../presentation/screens/authentication/reset_password/success_screen.dart'
-    as reset;
+import '../presentation/screens/authentication/reset_password/success_screen.dart';
+import '../presentation/screens/guest/guest_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
@@ -67,12 +68,12 @@ class AppRouter {
 
       case Routes.resetPasswordSuccess:
         return MaterialPageRoute(
-          builder: (context) => const reset.SuccessScreen(),
+          builder: (context) => const ResetSuccessScreen(),
         );
 
       case Routes.registerSuccess:
         return MaterialPageRoute(
-          builder: (context) => const register.SuccessScreen(),
+          builder: (context) => const RegisterSuccessScreen(),
         );
 
       case Routes.home:
@@ -89,7 +90,18 @@ class AppRouter {
         );
 
       case Routes.guestHome:
-        return MaterialPageRoute(builder: (context) => const GuestHomeScreen());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => ConsultantsCubit(),
+            child: const GuestScreen(),
+          ),
+        );
+
+      case Routes.filter:
+        return MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const FilterScreen(),
+        );
 
       default:
         return null;

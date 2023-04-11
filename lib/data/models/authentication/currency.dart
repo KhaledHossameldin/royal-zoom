@@ -26,36 +26,39 @@ class Currency {
     String? symbol,
     bool? isActive,
     DateTime? createdAt,
-  }) {
-    return Currency(
-      id: id ?? this.id,
-      uuid: uuid ?? this.uuid,
-      name: name ?? this.name,
-      symbol: symbol ?? this.symbol,
-      isActive: isActive ?? this.isActive,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  }) =>
+      Currency(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        symbol: symbol ?? this.symbol,
+        isActive: isActive ?? this.isActive,
+        createdAt: createdAt ?? this.createdAt,
+      );
 
   Map<String, dynamic> toMap() {
+    final contract = _CurrencyContract();
+
     return {
-      _CurrencyContract.id: id,
-      _CurrencyContract.uuid: uuid,
-      _CurrencyContract.name: name,
-      _CurrencyContract.symbol: symbol,
-      _CurrencyContract.isActive: isActive.toInt,
-      _CurrencyContract.createdAt: createdAt.toIso8601String(),
+      contract.id: id,
+      contract.uuid: uuid,
+      contract.name: name,
+      contract.symbol: symbol,
+      contract.isActive: isActive.toInt,
+      contract.createdAt: createdAt.toIso8601String(),
     };
   }
 
   factory Currency.fromMap(Map<String, dynamic> map) {
+    final contract = _CurrencyContract();
+
     return Currency(
-      id: map[_CurrencyContract.id]?.toInt() ?? 0,
-      uuid: map[_CurrencyContract.uuid] ?? '',
-      name: map[_CurrencyContract.name] ?? '',
-      symbol: map[_CurrencyContract.symbol] ?? '',
-      isActive: map[_CurrencyContract.isActive] != 0,
-      createdAt: DateTime.parse(map[_CurrencyContract.createdAt]),
+      id: map[contract.id]?.toInt() ?? 0,
+      uuid: map[contract.uuid] ?? '',
+      name: map[contract.name] ?? '',
+      symbol: map[contract.symbol] ?? '',
+      isActive: map[contract.isActive] != 0,
+      createdAt: DateTime.parse(map[contract.createdAt]),
     );
   }
 
@@ -65,9 +68,8 @@ class Currency {
       Currency.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'Currency(id: $id, uuid: $uuid, name: $name, symbol: $symbol, isActive: $isActive, createdAt: $createdAt)';
-  }
+  String toString() =>
+      'Currency(id: $id, uuid: $uuid, name: $name, symbol: $symbol, isActive: $isActive, createdAt: $createdAt)';
 
   @override
   bool operator ==(Object other) {
@@ -83,21 +85,20 @@ class Currency {
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        uuid.hashCode ^
-        name.hashCode ^
-        symbol.hashCode ^
-        isActive.hashCode ^
-        createdAt.hashCode;
-  }
+  int get hashCode =>
+      id.hashCode ^
+      uuid.hashCode ^
+      name.hashCode ^
+      symbol.hashCode ^
+      isActive.hashCode ^
+      createdAt.hashCode;
 }
 
 class _CurrencyContract {
-  static const id = 'id';
-  static const uuid = 'uuid';
-  static const name = 'name';
-  static const symbol = 'symbol';
-  static const isActive = 'is_active';
-  static const createdAt = 'created_at';
+  final id = 'id';
+  final uuid = 'uuid';
+  final name = 'name';
+  final symbol = 'symbol';
+  final isActive = 'is_active';
+  final createdAt = 'created_at';
 }
