@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants/brand_colors.dart';
 import '../../../constants/hero_tags.dart';
+import '../../../constants/routes.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/app_bar_logo.dart';
+import 'chat_screen.dart';
 import 'consultants/consultants_screen.dart';
 
 class GuestScreen extends StatefulWidget {
@@ -15,9 +18,11 @@ class GuestScreen extends StatefulWidget {
 
 class _GuestScreenState extends State<GuestScreen> {
   final _index = ValueNotifier(0);
-  final _screens = const [
+  final _screens = const <Widget?>[
     ConsultantsScreen(),
     Center(child: Text('Consultations')),
+    null,
+    ChatScreen(),
     Center(child: Text('Profile')),
   ];
 
@@ -37,12 +42,7 @@ class _GuestScreenState extends State<GuestScreen> {
         leading: const AppBarLogo(),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: 'chat'.svg,
-            tooltip: appLocalizations.chat,
-          ),
-          IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, Routes.notifications),
             tooltip: appLocalizations.notifications,
             icon: Badge(isLabelVisible: false, child: 'notifications'.svg),
           ),
@@ -50,65 +50,60 @@ class _GuestScreenState extends State<GuestScreen> {
       ),
       body: ValueListenableBuilder(
         valueListenable: _index,
-        builder: (context, value, child) => _screens[value],
+        builder: (context, value, child) => _screens[value]!,
       ),
-      bottomNavigationBar: _BottomAppBar(index: _index),
+      bottomNavigationBar: _BottomNavigationBar(index: _index),
     );
   }
 }
 
-class _BottomAppBar extends StatelessWidget {
-  const _BottomAppBar({required ValueNotifier<int> index}) : _index = index;
+class _BottomNavigationBar extends StatelessWidget {
+  const _BottomNavigationBar({required ValueNotifier<int> index})
+      : _index = index;
 
   final ValueNotifier<int> _index;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
     final appLocalizations = AppLocalizations.of(context);
 
-    return ValueListenableBuilder<int>(
+    return ValueListenableBuilder(
       valueListenable: _index,
-      builder: (context, value, child) => BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FloatingActionButton.extended(
-              onPressed: () {},
-              elevation: 0.0,
-              heroTag: HeroTags.elevatedButton,
-              extendedPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-              icon: 'send_consultation'.svg,
-              label: Text(
-                appLocalizations.sendConsultation,
-                style: textTheme.bodySmall!.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
+      builder: (context, value, child) => Theme(
+        data: theme.copyWith(
+          useMaterial3: true,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: value,
+          onTap: (value) {
+            if (value == 2) {
+              return;
+            }
+            _index.value = value;
+          },
+          items: [
+            'consultants'.buildBottomAppBarIcon(appLocalizations.consultants),
+            'consultations'.buildBottomAppBarIcon(
+              appLocalizations.consultations,
             ),
-            _buildItem(appLocalizations.consultants, 'home', 0),
-            _buildItem(appLocalizations.consultations, 'document', 1),
-            _buildItem(appLocalizations.profile, 'profile', 2),
+            BottomNavigationBarItem(
+              icon: FloatingActionButton(
+                onPressed: () {},
+                elevation: 0,
+                heroTag: HeroTags.elevatedButton,
+                backgroundColor: BrandColors.orange,
+                child: 'send_consultation'.svg,
+              ),
+              label: appLocalizations.consult,
+            ),
+            'chat'.buildBottomAppBarIcon(appLocalizations.chat),
+            'profile'.buildBottomAppBarIcon(appLocalizations.profile),
           ],
         ),
       ),
     );
   }
-
-  OutlinedButton _buildItem(String title, String icon, int index) =>
-      OutlinedButton(
-        onPressed: () => _index.value = index,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: _index.value != index ? Colors.grey : null,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            icon.imageIcon,
-            5.emptyHeight,
-            Text(title),
-          ],
-        ),
-      );
 }

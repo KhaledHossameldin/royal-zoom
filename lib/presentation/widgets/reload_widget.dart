@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:royake_mobile/utilities/extensions.dart';
+import '../../utilities/extensions.dart';
 
 class ReloadWidget extends StatelessWidget {
   const ReloadWidget({

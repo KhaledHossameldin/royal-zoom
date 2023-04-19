@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="25" viewBox="0 0 26 25">
+  <g id="Group_42679" data-name="Group 42679" transform="translate(0.257 -0.206)">
+    <g id="Button_BG" data-name="Button BG" transform="translate(-0.257 0.206)" fill="#fff" stroke="#a6b1c2" stroke-linejoin="round" stroke-width="0.5">
+      <rect width="26" height="25" rx="5" stroke="none"/>
+      <rect x="0.25" y="0.25" width="25.5" height="24.5" rx="4.75" fill="none"/>
+    </g>
+    <path id="Icon_material-favorite-border" data-name="Icon material-favorite-border" d="M14.665,4.5a4.818,4.818,0,0,0-3.62,1.681A4.818,4.818,0,0,0,7.425,4.5,4.382,4.382,0,0,0,3,8.925c0,3.041,2.735,5.519,6.878,9.284l1.167,1.054L12.211,18.2c4.143-3.757,6.878-6.235,6.878-9.276A4.382,4.382,0,0,0,14.665,4.5Zm-3.54,12.51-.08.08-.08-.08c-3.829-3.467-6.356-5.76-6.356-8.085A2.75,2.75,0,0,1,7.425,6.109a3.145,3.145,0,0,1,2.872,1.9h1.5a3.125,3.125,0,0,1,2.864-1.9,2.75,2.75,0,0,1,2.816,2.816C17.481,11.25,14.955,13.543,11.125,17.01Z" transform="translate(1.996 0.611)" fill="#585858"/>
+  </g>
+</svg>

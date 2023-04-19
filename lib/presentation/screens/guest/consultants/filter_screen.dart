@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:royake_mobile/constants/brand_colors.dart';
-import 'package:royake_mobile/data/models/authentication/city.dart';
-import 'package:royake_mobile/data/models/authentication/country.dart';
-import 'package:royake_mobile/presentation/widgets/reload_widget.dart';
-import 'package:royake_mobile/utilities/extensions.dart';
 
+import '../../../../constants/brand_colors.dart';
 import '../../../../cubits/filter/filter_cubit.dart';
+import '../../../../data/models/authentication/city.dart';
+import '../../../../data/models/authentication/country.dart';
 import '../../../../data/models/major.dart';
 import '../../../../localization/app_localizations.dart';
+import '../../../../utilities/extensions.dart';
+import '../../../widgets/reload_widget.dart';
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
@@ -205,7 +205,7 @@ class _FilterScreenState extends State<FilterScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(appLocalizations.major),
+          Text(appLocalizations.getMajor(true)),
           8.emptyHeight,
           Material(
             color: BrandColors.snowWhite,

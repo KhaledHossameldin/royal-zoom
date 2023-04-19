@@ -18,7 +18,6 @@ class Major {
   Major({
     required this.id,
     required this.uuid,
-    this.parentId,
     required this.type,
     required this.name,
     required this.description,
@@ -26,6 +25,7 @@ class Major {
     required this.isVisible,
     required this.createdAt,
     required this.image,
+    this.parentId,
     this.parent,
   });
 

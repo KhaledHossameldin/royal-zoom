@@ -12,14 +12,16 @@ import '../../../../utilities/validators.dart';
 import '../../../widgets/copyright.dart';
 import '../../../widgets/reset_password_image.dart';
 
-class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({super.key});
+class ResetPasswordDetailsScreen extends StatefulWidget {
+  const ResetPasswordDetailsScreen({super.key});
 
   @override
-  State<DetailsScreen> createState() => _DetailsScreenState();
+  State<ResetPasswordDetailsScreen> createState() =>
+      _ResetPasswordDetailsScreenState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> {
+class _ResetPasswordDetailsScreenState
+    extends State<ResetPasswordDetailsScreen> {
   final _username = TextEditingController();
   final _textFieldKey = GlobalKey<FormFieldState>();
 

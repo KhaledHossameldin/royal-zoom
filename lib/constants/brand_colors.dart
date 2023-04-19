@@ -10,6 +10,7 @@ class BrandColors {
   static const darkBlackGreen = Color(0xFF1A4224);
   static const indigoBlue = Color(0xFF6E7CAC);
   static const darkBlue = Color(0xFF3F4765);
+  static const gray = Color(0xFFBFBFBF);
   static const mediumGray = Color(0xFFAAAAAA);
   static const darkGray = Color(0xFF666666);
   static const black = Color(0xFF2C3F38);

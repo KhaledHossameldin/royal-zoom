@@ -15,4 +15,8 @@ class Routes {
   static const privacyPolicy = 'privacy-policy-screen';
   static const guestHome = 'guest-home-screen';
   static const filter = 'filter-screen';
+  static const consultantDetails = 'consultant-details-screen';
+  static const consultantReport = 'consultant-report-screen';
+  static const consultantReportSuccess = 'consultant-report-success-screen';
+  static const notifications = 'notifications-screen';
 }

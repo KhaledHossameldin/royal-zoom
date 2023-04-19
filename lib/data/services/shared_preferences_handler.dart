@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/preferences_keys.dart';
@@ -13,15 +14,19 @@ class SharedPreferencesHandler {
   Future<void> setLocale(String languageCode) async {
     final preferences = await SharedPreferences.getInstance();
     preferences.setString(PreferencesKeys.locale, languageCode);
+    Intl.defaultLocale = languageCode;
   }
 
   Future<String> getLocale() async {
     if (kDebugMode) {
+      Intl.defaultLocale = 'ar';
       return 'ar';
     }
     final preferences = await SharedPreferences.getInstance();
-    return preferences.getString(PreferencesKeys.locale) ??
+    final code = preferences.getString(PreferencesKeys.locale) ??
         Platform.localeName.substring(0, 2);
+    Intl.defaultLocale = code;
+    return code;
   }
 
   Future<bool> getNotifications() async {

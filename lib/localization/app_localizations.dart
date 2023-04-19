@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../utilities/extensions.dart';
 import 'app_localizations_delegate.dart';
@@ -40,6 +41,10 @@ class AppLocalizations {
   String get notificationsSubtitle => _translate('notifications_subtitle');
 
   String get activateNotifications => _translate('activate_notifications');
+
+  String get notifications => _translate('notifications');
+
+  String get notificationsEmpty => _translate('notifications_empty');
 
   String get skipStep => _translate('skip_step');
 
@@ -132,13 +137,13 @@ class AppLocalizations {
 
   String get privacyPolicyContent => _translate('privacy_policy_content');
 
-  String get notifications => _translate('notifications');
-
-  String get sendConsultation => _translate('send_consultation');
+  String get consult => _translate('consult');
 
   String get consultations => _translate('consultations');
 
   String get chat => _translate('chat');
+
+  String get chatEmpty => _translate('chat_empty');
 
   String get profile => _translate('profile');
 
@@ -148,19 +153,46 @@ class AppLocalizations {
 
   String get consultantsEmpty => _translate('consultants_empty');
 
+  String get consultantDetails => _translate('consultant_details');
+
   String get filter => _translate('filter');
 
   String get none => _translate('none');
 
   String get choose => _translate('choose');
 
-  String get major => _translate('major');
-
   String get country => _translate('country');
 
   String get city => _translate('city');
 
   String get reviews => _translate('reviews');
+
+  String get speaks => _translate('speaks');
+
+  String get experienceYears => _translate('experience_years');
+
+  String get report => _translate('report');
+
+  String get reportSent => _translate('report_sent');
+
+  String get share => _translate('share');
+
+  String get like => _translate('like');
+
+  String get abstract => _translate('abstract');
+
+  String get biography => _translate('biography');
+
+  String get publishedConsultations => _translate('published_consultations');
+
+  String reportAbuse() => '$report ${_translate('abuse')}';
+
+  String reportViolation() => '$report ${_translate('violation')}';
+
+  String reportThisAccount() => '$report ${_translate('this_account')}';
+
+  String getMajor(bool isSingle) => Intl.plural(isSingle ? 1 : 5,
+      one: _translate('major'), other: _translate('majors'));
 
   String getReload(String value) =>
       '${_translate('reload')} ${value.toLowerCase()}';

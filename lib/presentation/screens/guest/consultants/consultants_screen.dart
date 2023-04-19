@@ -156,7 +156,7 @@ class _SearchTextField extends StatelessWidget {
               controller: _controller,
               decoration: InputDecoration(
                 hintText: appLocalizations.searchConsultants,
-                hintStyle: textTheme.bodyMedium!.copyWith(
+                hintStyle: textTheme.bodyLarge!.copyWith(
                   color: BrandColors.indigoBlue,
                 ),
                 suffixIcon: 'search'.imageIcon,
@@ -202,7 +202,7 @@ class _ConsultantItem extends StatelessWidget {
         ),
         onPressed: () {},
         child: Text(
-          appLocalizations.sendConsultation,
+          appLocalizations.consult,
           style: textTheme.labelSmall!.copyWith(color: Colors.white),
         ),
       ),
@@ -231,7 +231,11 @@ class _ConsultantItem extends StatelessWidget {
                 top: Radius.circular(20.0),
                 bottom: Radius.circular(10.0),
               ),
-              onTap: () {},
+              onTap: () => Navigator.pushNamed(
+                context,
+                Routes.consultantDetails,
+                arguments: consultant,
+              ),
             ),
           ),
           Positioned(
@@ -259,7 +263,10 @@ class _ConsultantItem extends StatelessWidget {
                       ratingWidget: RatingWidget(
                         half: const Material(),
                         full: const Icon(Icons.star, color: Colors.amber),
-                        empty: const Icon(Icons.star, color: Colors.white),
+                        empty: Icon(
+                          Icons.star,
+                          color: Colors.amber.withOpacity(0.4),
+                        ),
                       ),
                       onRatingUpdate: (value) {},
                     ),

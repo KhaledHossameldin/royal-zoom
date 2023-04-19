@@ -52,6 +52,8 @@ extension StringExtension on String {
 
   Image get png => Image.asset('assets/images/$this.png');
 
+  LottieBuilder get lottie => Lottie.asset('assets/lottie/$this.json');
+
   Image get permissionImage =>
       Image.asset('assets/images/permissions/$this.png');
 
@@ -65,6 +67,16 @@ extension StringExtension on String {
     final time = timezone.split(':');
     return Duration(hours: int.parse(time[0]), minutes: int.parse(time[1]));
   }
+
+  BottomNavigationBarItem buildBottomAppBarIcon(String label) =>
+      BottomNavigationBarItem(
+          label: label,
+          icon: ImageIcon(AssetImage(
+            'assets/images/bottom_app_bar_icons/$this.png',
+          )),
+          activeIcon: ImageIcon(AssetImage(
+            'assets/images/bottom_app_bar_icons/${this}_active.png',
+          )));
 
   LottieBuilder toLottie(Function(LottieComposition) onLoaded) => Lottie.asset(
         'assets/lottie/$this.json',

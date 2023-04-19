@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="25" viewBox="0 0 26 25">
+  <g id="Group_42678" data-name="Group 42678" transform="translate(0.328 -0.206)">
+    <g id="Button_BG" data-name="Button BG" transform="translate(-0.328 0.206)" fill="#fff" stroke="#a6b1c2" stroke-linejoin="round" stroke-width="0.5">
+      <rect width="26" height="25" rx="5" stroke="none"/>
+      <rect x="0.25" y="0.25" width="25.5" height="24.5" rx="4.75" fill="none"/>
+    </g>
+    <path id="flag" d="M18.171,7.546,20.528,4.4a.925.925,0,0,0-.739-1.479H8.7a.924.924,0,0,0-1.849,0V18.637H5.924a.924.924,0,0,0,0,1.849h3.7a.924.924,0,1,0,0-1.849H8.7v-6.47H19.789a.925.925,0,0,0,.739-1.479Z" transform="translate(-0.363 1.25)" fill="#585858"/>
+  </g>
+</svg>

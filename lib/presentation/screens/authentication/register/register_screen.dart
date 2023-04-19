@@ -348,6 +348,7 @@ class _SwitchToLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
 
     return TextButton(
@@ -357,19 +358,11 @@ class _SwitchToLoginButton extends StatelessWidget {
           children: [
             TextSpan(
               text: appLocalizations.haveAccount,
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: BrandColors.black,
-                fontFamily: 'Droid Arabic Kufi',
-              ),
+              style: textTheme.bodyLarge!.copyWith(color: BrandColors.black),
             ),
             TextSpan(
               text: ' ${appLocalizations.login}',
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: BrandColors.orange,
-                fontFamily: 'Droid Arabic Kufi',
-              ),
+              style: textTheme.bodyLarge,
             ),
           ],
         ),

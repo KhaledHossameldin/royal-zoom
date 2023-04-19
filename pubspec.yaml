@@ -46,6 +46,8 @@ dependencies:
   lottie: ^2.3.0
   animations: ^2.0.7
   flutter_rating_bar: ^4.0.1
+  share_plus: ^6.3.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +78,7 @@ flutter:
     - assets/lottie/
     - assets/svgs/
     - assets/images/permissions/
+    - assets/images/bottom_app_bar_icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

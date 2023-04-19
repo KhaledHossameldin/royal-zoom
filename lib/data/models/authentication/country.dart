@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 class Country {
   int id;
   String uuid;
@@ -60,7 +58,7 @@ class Country {
     return Country(
       id: map[contract.id]?.toInt() ?? 0,
       uuid: map[contract.uuid] ?? '',
-      symbol: map[Icons.euro_symbol] ?? '',
+      symbol: map[contract.symbol] ?? '',
       dialCode: map[contract.dialCode] ?? '',
       channel: map[contract.channel]?.toInt() ?? 0,
       name: map[contract.name] ?? '',
