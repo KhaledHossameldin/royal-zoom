@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen>
           TextButton(
             onPressed: () => Navigator.pushReplacementNamed(
               context,
-              Routes.guestHome,
+              Routes.home,
             ),
             child: Text(appLocalizations.skip),
           ),

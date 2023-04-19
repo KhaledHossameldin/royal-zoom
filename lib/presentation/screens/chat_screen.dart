@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
-import '../../widgets/brand_back_button.dart';
 
-class NotificationsScreen extends StatelessWidget {
-  const NotificationsScreen({super.key});
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,19 +13,15 @@ class NotificationsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: const BrandBackButton(),
-        title: Text(appLocalizations.notifications),
+        title: Text(appLocalizations.chat),
       ),
       body: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            'notifications'.lottie,
-            Text(
-              appLocalizations.notificationsEmpty,
-              style: textTheme.bodyMedium,
-            ),
+            'chat'.lottie,
+            Text(appLocalizations.chatEmpty, style: textTheme.bodyMedium),
           ],
         ),
       ),

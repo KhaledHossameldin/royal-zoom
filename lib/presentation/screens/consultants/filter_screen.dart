@@ -8,7 +8,7 @@ import '../../../../data/models/authentication/country.dart';
 import '../../../../data/models/major.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
-import '../../../widgets/reload_widget.dart';
+import '../../widgets/reload_widget.dart';
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});

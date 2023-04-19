@@ -14,13 +14,12 @@ import '../presentation/screens/authentication/register/terms_and_conditions_scr
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
-import '../presentation/screens/guest/consultants/details_screen.dart';
-import '../presentation/screens/guest/consultants/filter_screen.dart';
-import '../presentation/screens/guest/consultants/report/report_screen.dart';
-import '../presentation/screens/guest/consultants/report/success_screen.dart';
-import '../presentation/screens/guest/guest_screen.dart';
-import '../presentation/screens/guest/notifications_screen.dart';
+import '../presentation/screens/consultants/details_screen.dart';
+import '../presentation/screens/consultants/filter_screen.dart';
+import '../presentation/screens/consultants/report/report_screen.dart';
+import '../presentation/screens/consultants/report/success_screen.dart';
 import '../presentation/screens/home_screen.dart';
+import '../presentation/screens/notifications_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 
@@ -83,7 +82,12 @@ class AppRouter {
         );
 
       case Routes.home:
-        return MaterialPageRoute(builder: (context) => const HomeScreen());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => ConsultantsCubit(),
+            child: const HomeScreen(),
+          ),
+        );
 
       case Routes.termsAndConditions:
         return MaterialPageRoute(
@@ -93,14 +97,6 @@ class AppRouter {
       case Routes.privacyPolicy:
         return MaterialPageRoute(
           builder: (context) => const PrivacyPolicyScreen(),
-        );
-
-      case Routes.guestHome:
-        return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => ConsultantsCubit(),
-            child: const GuestScreen(),
-          ),
         );
 
       case Routes.filter:

@@ -10,7 +10,9 @@ import '../../../../cubits/consultants/consultants_cubit.dart';
 import '../../../../data/models/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
-import '../../../widgets/reload_widget.dart';
+import '../../widgets/app_bar_logo.dart';
+import '../../widgets/reload_widget.dart';
+import '../../widgets/notifications_button.dart';
 
 class ConsultantsScreen extends StatefulWidget {
   const ConsultantsScreen({super.key});
@@ -38,65 +40,74 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
 
-    return BlocBuilder<ConsultantsCubit, ConsultantsState>(
-      builder: (context, state) {
-        switch (state.runtimeType) {
-          case ConsultantsLoading:
-            return const Center(child: CircularProgressIndicator());
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 100.0,
+        leading: const AppBarLogo(),
+        actions: const [NotificationsButton()],
+      ),
+      body: BlocBuilder<ConsultantsCubit, ConsultantsState>(
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case ConsultantsLoading:
+              return const Center(child: CircularProgressIndicator());
 
-          case ConsultantsEmpty:
-            return ReloadWidget(
-              title: appLocalizations.consultantsEmpty,
-              buttonText: appLocalizations.getReload(
-                appLocalizations.consultations,
-              ),
-              onPressed: () => context.read<ConsultantsCubit>().fetch(context),
-            );
+            case ConsultantsEmpty:
+              return ReloadWidget(
+                title: appLocalizations.consultantsEmpty,
+                buttonText: appLocalizations.getReload(
+                  appLocalizations.consultations,
+                ),
+                onPressed: () =>
+                    context.read<ConsultantsCubit>().fetch(context),
+              );
 
-          case ConsultantsLoaded:
-            final consultants = (state as ConsultantsLoaded).consultants;
+            case ConsultantsLoaded:
+              final consultants = (state as ConsultantsLoaded).consultants;
 
-            return Scrollbar(
-              notificationPredicate: (notification) {
-                if (!state.canFetchMore || state.hasEndedScrolling) {
+              return Scrollbar(
+                notificationPredicate: (notification) {
+                  if (!state.canFetchMore || state.hasEndedScrolling) {
+                    return false;
+                  }
+                  if (notification.metrics.pixels >=
+                      notification.metrics.maxScrollExtent) {
+                    context.read<ConsultantsCubit>().fetchMore(context);
+                  }
                   return false;
-                }
-                if (notification.metrics.pixels >=
-                    notification.metrics.maxScrollExtent) {
-                  context.read<ConsultantsCubit>().fetchMore(context);
-                }
-                return false;
-              },
-              child: CustomScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                slivers: [
-                  _SearchTextField(controller: _controller),
-                  _ConsultantsGridView(consultants: consultants),
-                  if (state.canFetchMore)
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(vertical: 16.height),
-                      sliver: const SliverToBoxAdapter(
-                        child: Center(child: CircularProgressIndicator()),
+                },
+                child: CustomScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  slivers: [
+                    _SearchTextField(controller: _controller),
+                    _ConsultantsGridView(consultants: consultants),
+                    if (state.canFetchMore)
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(vertical: 16.height),
+                        sliver: const SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
                       ),
-                    ),
-                ],
-              ),
-            );
+                  ],
+                ),
+              );
 
-          case ConsultantsError:
-            return ReloadWidget(
-              title: (state as ConsultantsError).message,
-              buttonText: appLocalizations.getReload(
-                appLocalizations.consultations,
-              ),
-              onPressed: () => context.read<ConsultantsCubit>().fetch(context),
-            );
+            case ConsultantsError:
+              return ReloadWidget(
+                title: (state as ConsultantsError).message,
+                buttonText: appLocalizations.getReload(
+                  appLocalizations.consultations,
+                ),
+                onPressed: () =>
+                    context.read<ConsultantsCubit>().fetch(context),
+              );
 
-          default:
-            return const Material();
-        }
-      },
+            default:
+              return const Material();
+          }
+        },
+      ),
     );
   }
 }

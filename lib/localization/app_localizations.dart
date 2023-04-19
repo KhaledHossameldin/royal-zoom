@@ -185,6 +185,8 @@ class AppLocalizations {
 
   String get publishedConsultations => _translate('published_consultations');
 
+  String get main => _translate('main');
+
   String reportAbuse() => '$report ${_translate('abuse')}';
 
   String reportViolation() => '$report ${_translate('violation')}';

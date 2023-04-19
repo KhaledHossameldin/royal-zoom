@@ -12,7 +12,7 @@ import '../../../../data/models/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/countries.dart';
 import '../../../../utilities/extensions.dart';
-import '../../../widgets/brand_back_button.dart';
+import '../../widgets/brand_back_button.dart';
 
 class ConsultantDetailsScreen extends StatefulWidget {
   const ConsultantDetailsScreen({super.key, required this.consultant});
