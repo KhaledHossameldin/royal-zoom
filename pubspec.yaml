@@ -48,6 +48,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   share_plus: ^6.3.2
   intl: ^0.17.0
+  video_player: ^2.6.1
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +79,7 @@ flutter:
     - assets/images/
     - assets/lottie/
     - assets/svgs/
+    - assets/videos/
     - assets/images/permissions/
     - assets/images/bottom_app_bar_icons/
 

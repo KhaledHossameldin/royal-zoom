@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.333" height="23.333" viewBox="0 0 23.333 23.333">
+  <g id="vuesax_bold_lock-circle" data-name="vuesax/bold/lock-circle" transform="translate(-2.33 -2.33)">
+    <g id="lock-circle">
+      <path id="Vector" d="M2.625,0C.42,0,0,.922,0,2.625v.723H5.25V2.625C5.25.922,4.83,0,2.625,0Z" transform="translate(11.38 9.04)" fill="#fd6f3d"/>
+      <path id="Vector-2" data-name="Vector" d="M1.283,2.567A1.283,1.283,0,1,0,0,1.283,1.283,1.283,0,0,0,1.283,2.567Z" transform="translate(12.72 15.05)" fill="#fd6f3d"/>
+      <path id="Vector-3" data-name="Vector" d="M11.667,23.333A11.667,11.667,0,1,1,23.333,11.667,11.68,11.68,0,0,1,11.667,23.333Zm0-18.375c-4.375,0-4.375,3.293-4.375,4.375v.852c-1.387.307-1.9,1.182-1.9,3.231v1.167c0,2.575.785,3.36,3.36,3.36h5.834c2.575,0,3.36-.785,3.36-3.36V13.416c0-2.049-.515-2.924-1.9-3.231V9.333C16.042,8.251,16.042,4.958,11.667,4.958Z" transform="translate(2.33 2.33)" fill="#fd6f3d"/>
+    </g>
+  </g>
+</svg>

@@ -24,7 +24,7 @@ class _ConsultantReportScreenState extends State<ConsultantReportScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(appLocalizations.reportThisAccount()),
+        title: Text(appLocalizations.reportThisAccount),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -37,7 +37,7 @@ class _ConsultantReportScreenState extends State<ConsultantReportScreen> {
               builder: (context, setState) => CheckboxListTile(
                 value: _isAbuse,
                 title: Text(
-                  appLocalizations.reportViolation(),
+                  appLocalizations.reportViolation,
                   style: textTheme.bodyMedium!.copyWith(
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
@@ -51,7 +51,7 @@ class _ConsultantReportScreenState extends State<ConsultantReportScreen> {
               builder: (context, setState) => CheckboxListTile(
                 value: _isViolation,
                 title: Text(
-                  appLocalizations.reportAbuse(),
+                  appLocalizations.reportAbuse,
                   style: textTheme.bodyMedium!.copyWith(
                     color: Colors.black,
                     fontWeight: FontWeight.normal,

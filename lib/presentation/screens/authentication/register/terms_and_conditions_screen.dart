@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../../constants/routes.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../widgets/brand_back_button.dart';
 
 class TermsAndConditions extends StatelessWidget {
-  const TermsAndConditions({super.key});
+  const TermsAndConditions({super.key, required this.isGuest});
+
+  final bool isGuest;
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +18,21 @@ class TermsAndConditions extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(appLocalizations.termsOfUseTitle),
         leading: const BrandBackButton(),
+        title: Text(appLocalizations.termsOfUseTitle),
+        actions: isGuest
+            ? [
+                TextButton.icon(
+                  onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.login,
+                    (route) => false,
+                  ),
+                  icon: 'profile'.svg,
+                  label: Text(appLocalizations.register),
+                ),
+              ]
+            : null,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(
@@ -28,10 +44,13 @@ class TermsAndConditions extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              appLocalizations.termsOfUseTitle,
-              style: textTheme.headlineSmall!.copyWith(
-                fontWeight: FontWeight.bold,
+            Hero(
+              tag: appLocalizations.termsOfUseTitle,
+              child: Text(
+                appLocalizations.termsOfUseTitle,
+                style: textTheme.headlineSmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Text(

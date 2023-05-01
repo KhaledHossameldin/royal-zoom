@@ -14,14 +14,16 @@ import '../presentation/screens/authentication/register/terms_and_conditions_scr
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/profile/contact_us_screen.dart';
 import '../presentation/screens/consultants/details_screen.dart';
 import '../presentation/screens/consultants/filter_screen.dart';
 import '../presentation/screens/consultants/report/report_screen.dart';
 import '../presentation/screens/consultants/report/success_screen.dart';
-import '../presentation/screens/home_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/home_screen.dart';
 import '../presentation/screens/notifications_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
 
 class AppRouter {
   static AppRouter instance = AppRouter._();
@@ -90,13 +92,15 @@ class AppRouter {
         );
 
       case Routes.termsAndConditions:
+        final arguments = settings.arguments as bool;
         return MaterialPageRoute(
-          builder: (context) => const TermsAndConditions(),
+          builder: (context) => TermsAndConditions(isGuest: arguments),
         );
 
       case Routes.privacyPolicy:
+        final arguments = settings.arguments as bool;
         return MaterialPageRoute(
-          builder: (context) => const PrivacyPolicyScreen(),
+          builder: (context) => PrivacyPolicyScreen(isGuest: arguments),
         );
 
       case Routes.filter:
@@ -129,6 +133,15 @@ class AppRouter {
       case Routes.notifications:
         return MaterialPageRoute(
           builder: (context) => const NotificationsScreen(),
+        );
+
+      case Routes.about:
+        return MaterialPageRoute(builder: (context) => const AboutScreen());
+
+      case Routes.contactUs:
+        final arguments = settings.arguments as bool;
+        return MaterialPageRoute(
+          builder: (context) => ContactUsScreen(isGuest: arguments),
         );
 
       default:

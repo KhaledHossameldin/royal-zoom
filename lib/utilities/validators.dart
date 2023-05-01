@@ -7,6 +7,30 @@ import '../localization/app_localizations.dart';
 class Validators {
   Validators._();
 
+  static String? message(BuildContext context, {required String message}) {
+    final appLocalizations = AppLocalizations.of(context);
+    if (message.isEmpty) {
+      return appLocalizations.yourMessageValidation;
+    }
+    return null;
+  }
+
+  static String? topic(BuildContext context, {required String topic}) {
+    final appLocalizations = AppLocalizations.of(context);
+    if (topic.isEmpty) {
+      return appLocalizations.topicValidation;
+    }
+    return null;
+  }
+
+  static String? name(BuildContext context, {required String name}) {
+    final appLocalizations = AppLocalizations.of(context);
+    if (name.isEmpty) {
+      return appLocalizations.fullNameValidation;
+    }
+    return null;
+  }
+
   static String? email(BuildContext context, {required String email}) {
     final appLocalizations = AppLocalizations.of(context);
     if (email.isEmpty) {

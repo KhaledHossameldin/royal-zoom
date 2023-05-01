@@ -292,42 +292,52 @@ class _TermsListTile extends StatelessWidget {
               color: field.hasError ? Colors.red : Colors.transparent,
             ),
           ),
-          title: Wrap(
-            alignment: WrapAlignment.start,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              Text(
-                appLocalizations.acceptTerms,
-                style: orangeTextTheme,
-              ),
-              TextButton(
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  Routes.privacyPolicy,
-                ),
-                style: buttonStyle,
-                child: Text(
-                  appLocalizations.privacyPolicy,
-                  style: orangeTextTheme.copyWith(
-                    fontWeight: FontWeight.bold,
+          title: FittedBox(
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: appLocalizations.acceptTerms,
+                    style: orangeTextTheme,
                   ),
-                ),
-              ),
-              Text(appLocalizations.and, style: orangeTextTheme),
-              TextButton(
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  Routes.termsAndConditions,
-                ),
-                style: buttonStyle,
-                child: Text(
-                  appLocalizations.termsOfUse,
-                  style: orangeTextTheme.copyWith(
-                    fontWeight: FontWeight.bold,
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: TextButton(
+                      onPressed: () => Navigator.pushNamed(
+                        context,
+                        Routes.privacyPolicy,
+                        arguments: false,
+                      ),
+                      style: buttonStyle,
+                      child: Text(
+                        appLocalizations.privacyPolicy,
+                        style: orangeTextTheme.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  TextSpan(text: appLocalizations.and, style: orangeTextTheme),
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: TextButton(
+                      onPressed: () => Navigator.pushNamed(
+                        context,
+                        Routes.termsAndConditions,
+                        arguments: false,
+                      ),
+                      style: buttonStyle,
+                      child: Text(
+                        appLocalizations.termsOfUse,
+                        style: orangeTextTheme.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           subtitle: field.errorText != null
               ? Text(

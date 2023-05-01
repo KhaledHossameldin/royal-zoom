@@ -141,10 +141,10 @@ class MyApp extends StatelessWidget {
           fillColor: BrandColors.snowWhite,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(50.0),
+            borderRadius: BorderRadius.circular(29.0),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50.0),
+            borderRadius: BorderRadius.circular(29.0),
             borderSide: const BorderSide(color: Colors.red),
           ),
         ),
@@ -195,6 +195,16 @@ class MyApp extends StatelessWidget {
           ),
         ),
         textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 33.0,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+          displayMedium: TextStyle(
+            fontSize: 30.0,
+            color: BrandColors.black,
+            fontWeight: FontWeight.bold,
+          ),
           headlineLarge: TextStyle(
             fontSize: 27.0,
             color: BrandColors.darkGreen,
@@ -228,6 +238,11 @@ class MyApp extends StatelessWidget {
           labelSmall: TextStyle(
             fontSize: 10.0,
             color: BrandColors.darkGray,
+          ),
+          titleSmall: TextStyle(
+            fontSize: 8.0,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       );

@@ -187,11 +187,91 @@ class AppLocalizations {
 
   String get main => _translate('main');
 
-  String reportAbuse() => '$report ${_translate('abuse')}';
+  String get guest => _translate('guest');
 
-  String reportViolation() => '$report ${_translate('violation')}';
+  String get aboutApplication => _translate('about_application');
 
-  String reportThisAccount() => '$report ${_translate('this_account')}';
+  String get contactUs => _translate('contact_us');
+
+  String get shareWithFriends => _translate('share_with_friends');
+
+  String get royakeForConsultations => _translate('royake_for_consultations');
+
+  String get saudiArabia => _translate('saudi_arabia');
+
+  String get howWorkClientsTitle => _translate('how_work_clients_title');
+
+  String get howWorkClientsSubtitle => _translate('how_work_clients_subtitle');
+
+  String get problemsSolved => _translate('problems_solved');
+
+  String get consultantsHelp => _translate('consultants_help');
+
+  String get sendCounsultationTitle => _translate('send_counsultation_title');
+
+  String get sendCounsultationSubtitle =>
+      _translate('send_counsultation_subtitle');
+
+  String get receiveReplyTitle => _translate('receive_reply_title');
+
+  String get receiveReplySubtitle => _translate('receive_reply_subtitle');
+
+  String get valueConsultationTitle => _translate('value_consultation_title');
+
+  String get valueConsultationSubtitle =>
+      _translate('value_consultation_subtitle');
+
+  String get ourCoreValue => _translate('our_core_value');
+
+  String get valuesShape => _translate('values_shape');
+
+  String get integrityTitle => _translate('integrity_title');
+
+  String get integritySubtitle => _translate('integrity_subtitle');
+
+  String get cooperationTitle => _translate('cooperation_title');
+
+  String get cooperationSubtitle => _translate('cooperation_subtitle');
+
+  String get integrationTitle => _translate('integration_title');
+
+  String get integrationSubtitle => _translate('integration_subtitle');
+
+  String get trustTitle => _translate('trust_title');
+
+  String get trustSubtitle => _translate('trust_subtitle');
+
+  String get ourTeam => _translate('our_team');
+
+  String get teamExperienceTitle => _translate('team_experience_title');
+
+  String get teamExperienceSubtitle => _translate('team_experience_subtitle');
+
+  String get reportAbuse => '$report ${_translate('abuse')}';
+
+  String get reportViolation => '$report ${_translate('violation')}';
+
+  String get reportThisAccount => '$report ${_translate('this_account')}';
+
+  String get whatsappNotInstalled => _translate('whatsapp_not_installed');
+
+  String get yourName => _translate('your_name');
+
+  String get fullName => _translate('full_name');
+
+  String get fullNameValidation => _translate('full_name_validation');
+
+  String get leaveMessage => _translate('leave_message');
+
+  String get topic => _translate('topic');
+
+  String get topicValidation => _translate('topic_validation');
+
+  String get yourMessage => _translate('your_message');
+
+  String get yourMessageValidation => _translate('your_message_validation');
+
+  String get send => _translate('send');
 
   String getMajor(bool isSingle) => Intl.plural(isSingle ? 1 : 5,
       one: _translate('major'), other: _translate('majors'));

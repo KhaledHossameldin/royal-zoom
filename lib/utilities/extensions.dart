@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
+import 'package:video_player/video_player.dart';
 
 import '../constants/brand_colors.dart';
 
@@ -52,6 +53,9 @@ extension StringExtension on String {
 
   Image get png => Image.asset('assets/images/$this.png');
 
+  VideoPlayerController get video =>
+      VideoPlayerController.asset('assets/videos/$this.mp4');
+
   LottieBuilder get lottie => Lottie.asset('assets/lottie/$this.json');
 
   Image get permissionImage =>
@@ -67,6 +71,16 @@ extension StringExtension on String {
     final time = timezone.split(':');
     return Duration(hours: int.parse(time[0]), minutes: int.parse(time[1]));
   }
+
+  ImageIcon buidImageIcon({
+    double size = 20.0,
+    Color color = Colors.black,
+  }) =>
+      ImageIcon(
+        size: size,
+        color: color,
+        AssetImage('assets/images/$this.png'),
+      );
 
   BottomNavigationBarItem buildBottomAppBarIcon(String label) =>
       BottomNavigationBarItem(
@@ -87,14 +101,15 @@ extension StringExtension on String {
   void showSnackbar(BuildContext context, {Color color = BrandColors.orange}) =>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            backgroundColor: color,
-            content: Text(
-              this,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Droid Arabic Kufi',
-              ),
-            )),
+          backgroundColor: color,
+          content: Text(
+            this,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Droid Arabic Kufi',
+            ),
+          ),
+        ),
       );
 }
 

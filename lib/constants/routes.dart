@@ -18,4 +18,6 @@ class Routes {
   static const consultantReport = 'consultant-report-screen';
   static const consultantReportSuccess = 'consultant-report-success-screen';
   static const notifications = 'notifications-screen';
+  static const about = 'about-screen';
+  static const contactUs = 'contact-us-screen';
 }

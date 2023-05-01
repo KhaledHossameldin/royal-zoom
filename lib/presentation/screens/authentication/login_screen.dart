@@ -269,7 +269,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 Navigator.pop(context);
                               },
                               title: Text(
-                                '${country.flag} +${country.name} ${country.dialCode}',
+                                '${country.flag} +${country.dialCode} ${country.name}',
                                 textAlign: TextAlign.end,
                                 style: const TextStyle(
                                   fontFamily: 'Roboto',
