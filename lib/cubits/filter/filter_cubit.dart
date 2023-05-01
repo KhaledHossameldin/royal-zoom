@@ -30,16 +30,18 @@ class FilterCubit extends Cubit<FilterState> {
     ));
   }
 
-  Future<void> fetch(BuildContext context) async {
+  Future<void> fetch(BuildContext context, {int? countryId}) async {
     try {
       emit(const FilterLoading());
       final values = await Future.wait([
         repository.majors(context),
         repository.countries(context),
+        if (countryId != null) repository.cities(context, countryId: countryId),
       ]);
       emit(FilterLoaded(
         majors: values[0] as List<Major>,
         countries: values[1] as List<Country>,
+        cities: countryId != null ? values[2] as List<City> : null,
       ));
     } catch (e) {
       emit(FilterError('$e'));

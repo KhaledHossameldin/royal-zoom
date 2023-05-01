@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../constants/brand_colors.dart';
-import '../../../../constants/hero_tags.dart';
 import '../../../../constants/routes.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/countries.dart';
@@ -61,10 +60,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const BrandBackButton(),
-        title: Hero(
-          tag: appLocalizations.contactUs,
-          child: Text(appLocalizations.contactUs),
-        ),
+        title: Text(appLocalizations.contactUs),
         actions: widget.isGuest
             ? [
                 TextButton.icon(
@@ -114,14 +110,11 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   10.emptyHeight,
                   _buildMessageField(),
                   10.emptyHeight,
-                  Hero(
-                    tag: HeroTags.elevatedButton,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _formKey.currentState?.validate();
-                      },
-                      child: Text(appLocalizations.send),
-                    ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _formKey.currentState?.validate();
+                    },
+                    child: Text(appLocalizations.send),
                   ),
                 ],
               ),

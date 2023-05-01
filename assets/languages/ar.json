@@ -130,5 +130,15 @@
     "topic_validation": "يجب إدخال الموضوع",
     "your_message": "رسالتك",
     "your_message_validation": "يجب إدخال محتوى الرسالة",
-    "send": "ارسال"
+    "send": "ارسال",
+    "favorite": "المفضلة",
+    "sar_h": "ريال/ساعة",
+    "review": "تقييم",
+    "consultant_times": "مواعيد المستشار",
+    "show_prices": "عرض الأسعار",
+    "two_reviews": "تقييمان",
+    "one_review": "تقييم واحد",
+    "many_reviews": "تقييمات",
+    "zero_reviews": "لا يوجد تقييمات",
+    "clear_reviews": "إخلاء التصفية"
 }

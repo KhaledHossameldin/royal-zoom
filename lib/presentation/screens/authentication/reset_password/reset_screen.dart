@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../blocs/reset_password/reset_password_bloc.dart';
-import '../../../../constants/hero_tags.dart';
 import '../../../../constants/routes.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../../utilities/validators.dart';
+import '../../../widgets/app_bar_logo.dart';
 import '../../../widgets/copyright.dart';
 import '../../../widgets/reset_password_image.dart';
 
@@ -41,13 +41,7 @@ class _ResetScreenState extends State<ResetScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        actions: [
-          Container(
-            width: 65.width,
-            margin: EdgeInsets.symmetric(horizontal: 20.width),
-            child: Hero(tag: HeroTags.appLogo, child: 'royake'.png),
-          ),
-        ],
+        actions: const [AppBarLogo(padding: 20)],
       ),
       body: CustomScrollView(
         slivers: [
@@ -117,32 +111,29 @@ class _ResetScreenState extends State<ResetScreen> {
       builder: (context, state) {
         return IgnorePointer(
           ignoring: state is ResetPasswordLoading,
-          child: Hero(
-            tag: HeroTags.elevatedButton,
-            child: ElevatedButton(
-              onPressed: () {
-                final isValid = _formKey.currentState!.validate();
-                if (isValid) {
-                  context.read<ResetPasswordBloc>().add(
-                        ResetPasswordReset(
-                          context,
-                          username: widget.username,
-                          code: widget.code,
-                          newPassword: _new.text,
-                          confirmPassword: _confirm.text,
-                        ),
-                      );
-                }
-              },
-              child: Builder(builder: (context) {
-                if (state is ResetPasswordLoading) {
-                  return const CircularProgressIndicator(
-                    color: Colors.white,
-                  );
-                }
-                return Text(appLocalizations.confirm);
-              }),
-            ),
+          child: ElevatedButton(
+            onPressed: () {
+              final isValid = _formKey.currentState!.validate();
+              if (isValid) {
+                context.read<ResetPasswordBloc>().add(
+                      ResetPasswordReset(
+                        context,
+                        username: widget.username,
+                        code: widget.code,
+                        newPassword: _new.text,
+                        confirmPassword: _confirm.text,
+                      ),
+                    );
+              }
+            },
+            child: Builder(builder: (context) {
+              if (state is ResetPasswordLoading) {
+                return const CircularProgressIndicator(
+                  color: Colors.white,
+                );
+              }
+              return Text(appLocalizations.confirm);
+            }),
           ),
         );
       },

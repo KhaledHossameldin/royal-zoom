@@ -273,6 +273,26 @@ class AppLocalizations {
 
   String get send => _translate('send');
 
+  String get favorite => _translate('favorite');
+
+  String get sarH => _translate('sar_h');
+
+  String get review => _translate('review');
+
+  String get consultantTimes => _translate('consultant_times');
+
+  String get showPrices => _translate('show_prices');
+
+  String get clearReviews => _translate('clear_reviews');
+
+  String getReview(int count) => Intl.plural(
+        count,
+        zero: _translate('zero_reviews'),
+        one: _translate('one_review'),
+        two: _translate('two_reviews'),
+        other: '$count ${_translate('many_reviews')}',
+      );
+
   String getMajor(bool isSingle) => Intl.plural(isSingle ? 1 : 5,
       one: _translate('major'), other: _translate('majors'));
 

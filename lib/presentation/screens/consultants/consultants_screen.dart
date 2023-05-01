@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -7,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
 import '../../../../cubits/consultants/consultants_cubit.dart';
-import '../../../../data/models/consultant.dart';
+import '../../../data/models/consultants/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../widgets/app_bar_logo.dart';
@@ -53,13 +51,27 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
               return const Center(child: CircularProgressIndicator());
 
             case ConsultantsEmpty:
-              return ReloadWidget(
-                title: appLocalizations.consultantsEmpty,
-                buttonText: appLocalizations.getReload(
-                  appLocalizations.consultations,
-                ),
-                onPressed: () =>
-                    context.read<ConsultantsCubit>().fetch(context),
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 27.width,
+                      right: 27.width,
+                      top: 10.height,
+                    ),
+                    child: _SearchTextField(controller: _controller),
+                  ),
+                  Expanded(
+                    child: ReloadWidget(
+                      title: appLocalizations.consultantsEmpty,
+                      buttonText: appLocalizations.getReload(
+                        appLocalizations.consultations,
+                      ),
+                      onPressed: () =>
+                          context.read<ConsultantsCubit>().fetch(context),
+                    ),
+                  ),
+                ],
               );
 
             case ConsultantsLoaded:
@@ -80,7 +92,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   slivers: [
-                    _SearchTextField(controller: _controller),
+                    _SliverSearchTextField(controller: _controller),
                     _ConsultantsGridView(consultants: consultants),
                     if (state.canFetchMore)
                       SliverPadding(
@@ -153,40 +165,61 @@ class _SearchTextField extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
 
-    return SliverPadding(
-      padding: EdgeInsets.only(
-        left: 27.width,
-        right: 27.width,
-        top: 10.height,
-      ),
-      sliver: SliverToBoxAdapter(
-        child: Row(
-          children: [
-            Expanded(
-                child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                hintText: appLocalizations.searchConsultants,
-                hintStyle: textTheme.bodyLarge!.copyWith(
-                  color: BrandColors.indigoBlue,
-                ),
-                suffixIcon: 'search'.imageIcon,
-              ),
-            )),
-            10.emptyWidth,
-            FloatingActionButton(
-              elevation: 0.0,
-              highlightElevation: 0.0,
-              backgroundColor: BrandColors.darkGreen,
-              tooltip: appLocalizations.filter,
-              onPressed: () => Navigator.pushNamed(context, Routes.filter),
-              child: 'filter'.svg,
+    return Row(
+      children: [
+        Expanded(
+            child: TextField(
+          controller: _controller,
+          textInputAction: TextInputAction.search,
+          decoration: InputDecoration(
+            hintText: appLocalizations.searchConsultants,
+            hintStyle: textTheme.bodyLarge!.copyWith(
+              color: BrandColors.indigoBlue,
             ),
-          ],
+            suffixIcon: 'search'.imageIcon,
+          ),
+          onSubmitted: (value) {
+            final cubit = context.read<ConsultantsCubit>();
+            cubit.applyFilter(searchKey: value);
+            cubit.fetch(context);
+          },
+        )),
+        10.emptyWidth,
+        FloatingActionButton(
+          heroTag: 'filter-fab',
+          elevation: 0.0,
+          highlightElevation: 0.0,
+          tooltip: appLocalizations.filter,
+          backgroundColor: BrandColors.darkGreen,
+          onPressed: () => Navigator.pushNamed(
+            context,
+            Routes.filter,
+            arguments: context.read<ConsultantsCubit>(),
+          ),
+          child: 'filter'.svg,
         ),
-      ),
+      ],
     );
   }
+}
+
+class _SliverSearchTextField extends StatelessWidget {
+  const _SliverSearchTextField({required TextEditingController controller})
+      : _controller = controller;
+
+  final TextEditingController _controller;
+
+  @override
+  Widget build(BuildContext context) => SliverPadding(
+        padding: EdgeInsets.only(
+          left: 27.width,
+          right: 27.width,
+          top: 10.height,
+        ),
+        sliver: SliverToBoxAdapter(
+          child: _SearchTextField(controller: _controller),
+        ),
+      );
 }
 
 class _ConsultantItem extends StatelessWidget {
@@ -258,7 +291,7 @@ class _ConsultantItem extends StatelessWidget {
                 padding: EdgeInsetsDirectional.fromSTEB(
                   19.width,
                   68.height,
-                  19.width,
+                  30.width,
                   13.height,
                 ),
                 decoration: const BoxDecoration(
@@ -267,21 +300,6 @@ class _ConsultantItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RatingBar(
-                      itemSize: 12.0,
-                      initialRating: Random().nextInt(5).toDouble(),
-                      ignoreGestures: true,
-                      ratingWidget: RatingWidget(
-                        half: const Material(),
-                        full: const Icon(Icons.star, color: Colors.amber),
-                        empty: Icon(
-                          Icons.star,
-                          color: Colors.amber.withOpacity(0.4),
-                        ),
-                      ),
-                      onRatingUpdate: (value) {},
-                    ),
-                    2.emptyHeight,
                     Text(
                       consultant.previewName ?? appLocalizations.none,
                       overflow: TextOverflow.ellipsis,
@@ -297,6 +315,33 @@ class _ConsultantItem extends StatelessWidget {
                         color: Colors.white,
                         fontWeight: FontWeight.normal,
                       ),
+                    ),
+                    2.emptyHeight,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RatingBar(
+                          itemSize: 11.0,
+                          initialRating: 3,
+                          ignoreGestures: true,
+                          ratingWidget: RatingWidget(
+                            half: const Material(),
+                            full: const Icon(Icons.star, color: Colors.amber),
+                            empty: Icon(
+                              Icons.star,
+                              color: Colors.amber.withOpacity(0.4),
+                            ),
+                          ),
+                          onRatingUpdate: (value) {},
+                        ),
+                        Text(
+                          '${60.0.round()} ${appLocalizations.sarH}',
+                          style: const TextStyle(
+                            fontSize: 10.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

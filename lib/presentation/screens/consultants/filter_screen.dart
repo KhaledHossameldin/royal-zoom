@@ -8,6 +8,7 @@ import '../../../../data/models/authentication/country.dart';
 import '../../../../data/models/major.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
+import '../../../cubits/consultants/consultants_cubit.dart';
 import '../../widgets/reload_widget.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -18,14 +19,13 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  int? majorId;
-  int? countryId;
-  int? cityId;
   int? reviews;
 
   @override
   void initState() {
-    context.read<FilterCubit>().fetch(context);
+    context
+        .read<FilterCubit>()
+        .fetch(context, countryId: context.read<ConsultantsCubit>().countryId);
     super.initState();
   }
 
@@ -102,8 +102,20 @@ class _FilterScreenState extends State<FilterScreen> {
           _buildReviews(),
           20.emptyHeight,
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<ConsultantsCubit>().fetch(context);
+              Navigator.pop(context);
+            },
             child: Text(appLocalizations.confirm),
+          ),
+          20.emptyHeight,
+          OutlinedButton(
+            onPressed: () {
+              context.read<ConsultantsCubit>().clearFilter();
+              context.read<ConsultantsCubit>().fetch(context);
+              Navigator.pop(context);
+            },
+            child: Text(appLocalizations.clearReviews),
           ),
         ],
       ),
@@ -113,11 +125,12 @@ class _FilterScreenState extends State<FilterScreen> {
   StatefulBuilder _buildCities(List<City>? cities) {
     final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
+    final cubit = context.read<ConsultantsCubit>();
 
     return StatefulBuilder(
       builder: (context, setState) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(appLocalizations.city),
           8.emptyHeight,
@@ -127,7 +140,7 @@ class _FilterScreenState extends State<FilterScreen> {
             child: ButtonTheme(
               alignedDropdown: true,
               child: DropdownButton<int>(
-                value: cityId,
+                value: cubit.cityId,
                 isExpanded: true,
                 menuMaxHeight: 300.height,
                 hint: Text(appLocalizations.choose),
@@ -141,7 +154,9 @@ class _FilterScreenState extends State<FilterScreen> {
                     ?.map((item) => DropdownMenuItem<int>(
                         value: item.id, child: Text(item.name)))
                     .toList(),
-                onChanged: (value) => setState(() => cityId = value),
+                onChanged: (value) => setState(
+                  () => cubit.applyFilter(cityId: value),
+                ),
               ),
             ),
           ),
@@ -153,6 +168,7 @@ class _FilterScreenState extends State<FilterScreen> {
   StatefulBuilder _buildCountries(List<Country> countries) {
     final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
+    final cubit = context.read<ConsultantsCubit>();
 
     return StatefulBuilder(
       builder: (context, setState) => Column(
@@ -167,7 +183,7 @@ class _FilterScreenState extends State<FilterScreen> {
             child: ButtonTheme(
               alignedDropdown: true,
               child: DropdownButton<int>(
-                value: countryId,
+                value: cubit.countryId,
                 isExpanded: true,
                 menuMaxHeight: 300.height,
                 hint: Text(appLocalizations.choose),
@@ -182,8 +198,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         value: item.id, child: Text(item.name)))
                     .toList(),
                 onChanged: (value) {
-                  countryId = value;
-                  cityId = null;
+                  cubit.applyFilter(countryId: value, cityId: null);
                   context
                       .read<FilterCubit>()
                       .fetchCities(context, countryId: value!);
@@ -199,11 +214,12 @@ class _FilterScreenState extends State<FilterScreen> {
   StatefulBuilder _buildMajors(List<Major> majors) {
     final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
+    final consultantsCubit = context.read<ConsultantsCubit>();
 
     return StatefulBuilder(
       builder: (context, setState) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(appLocalizations.getMajor(true)),
           8.emptyHeight,
@@ -213,7 +229,7 @@ class _FilterScreenState extends State<FilterScreen> {
             child: ButtonTheme(
               alignedDropdown: true,
               child: DropdownButton<int>(
-                value: majorId,
+                value: consultantsCubit.majorId,
                 isExpanded: true,
                 menuMaxHeight: 300.height,
                 hint: Text(appLocalizations.choose),
@@ -227,7 +243,9 @@ class _FilterScreenState extends State<FilterScreen> {
                     .map((item) => DropdownMenuItem<int>(
                         value: item.id, child: Text(item.name)))
                     .toList(),
-                onChanged: (value) => setState(() => majorId = value),
+                onChanged: (value) => setState(
+                  () => consultantsCubit.applyFilter(majorId: value),
+                ),
               ),
             ),
           ),
@@ -264,10 +282,10 @@ class _FilterScreenState extends State<FilterScreen> {
                   color: BrandColors.darkBlue,
                 ),
                 items: [
-                  for (int i = 1; i < 6; i++)
+                  for (int i = 0; i < 6; i++)
                     DropdownMenuItem(
                       value: i,
-                      child: Text(i.toString()),
+                      child: Text(appLocalizations.getReview(i)),
                     )
                 ],
                 onChanged: (value) => setState(() => reviews = value),

@@ -44,13 +44,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Hero(
-              tag: appLocalizations.privacyPolicy,
-              child: Text(
-                appLocalizations.privacyPolicyTitle,
-                style: textTheme.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              appLocalizations.privacyPolicyTitle,
+              style: textTheme.headlineSmall!.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
             Text(

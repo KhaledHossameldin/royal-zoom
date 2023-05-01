@@ -129,5 +129,15 @@
     "topic_validation": "Must enter topic",
     "your_message": "Your message",
     "your_message_validation": "Must enter a message content",
-    "send": "Send"
+    "send": "Send",
+    "favorite": "Favorite",
+    "sar_h": "Riyal/hour",
+    "review": "Review",
+    "consultant_times": "Consultant times",
+    "show_prices": "Show prices",
+    "two_reviews": "2 reviews",
+    "one_review": "1 review",
+    "many_reviews": "reviews",
+    "zero_reviews": "No reviews",
+    "clear_reviews": "Clear reviews"
 }

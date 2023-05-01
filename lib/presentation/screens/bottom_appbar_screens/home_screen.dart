@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/brand_colors.dart';
-import '../../../../constants/hero_tags.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../blocs/authentication/authentication_bloc.dart';
@@ -75,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: FloatingActionButton(
               onPressed: () {},
               elevation: 0,
-              heroTag: HeroTags.elevatedButton,
               backgroundColor: BrandColors.orange,
               child: 'send_consultation'.svg,
             ),

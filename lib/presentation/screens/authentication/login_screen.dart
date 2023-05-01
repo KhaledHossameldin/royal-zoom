@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/brand_colors.dart';
-import '../../../constants/hero_tags.dart';
 import '../../../constants/routes.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/countries.dart';
@@ -90,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen>
                 children: [
                   SizedBox(
                     width: 169.width,
-                    child: Hero(tag: HeroTags.appLogo, child: 'royake'.png),
+                    child: 'royake'.png,
                   ),
                   Text(
                     appLocalizations.loginToAccount,
@@ -177,29 +176,26 @@ class _LoginScreenState extends State<LoginScreen>
       builder: (context, state) {
         return IgnorePointer(
           ignoring: state is AuthenticationLoading,
-          child: Hero(
-            tag: HeroTags.elevatedButton,
-            child: ElevatedButton(
-              onPressed: () {
-                bool isValid = _validateForm();
-                if (isValid) {
-                  context.read<AuthenticationBloc>().add(AuthenticationLogin(
-                        context,
-                        username: _getUsername(),
-                        password: _password.text,
-                        isRemember: _isRemember,
-                      ));
-                }
-              },
-              child: Builder(builder: (context) {
-                if (state is AuthenticationLoading) {
-                  return const CircularProgressIndicator(
-                    color: Colors.white,
-                  );
-                }
-                return Text(appLocalizations.login);
-              }),
-            ),
+          child: ElevatedButton(
+            onPressed: () {
+              bool isValid = _validateForm();
+              if (isValid) {
+                context.read<AuthenticationBloc>().add(AuthenticationLogin(
+                      context,
+                      username: _getUsername(),
+                      password: _password.text,
+                      isRemember: _isRemember,
+                    ));
+              }
+            },
+            child: Builder(builder: (context) {
+              if (state is AuthenticationLoading) {
+                return const CircularProgressIndicator(
+                  color: Colors.white,
+                );
+              }
+              return Text(appLocalizations.login);
+            }),
           ),
         );
       },

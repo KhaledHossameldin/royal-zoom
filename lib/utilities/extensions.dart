@@ -48,6 +48,10 @@ extension NumbersExtension on num {
   SizedBox get emptyHeight => SizedBox(height: height);
 }
 
+extension NullableStringExtension on String? {
+  bool get isNullOrEmpty => this == null || this!.isEmpty;
+}
+
 extension StringExtension on String {
   SvgPicture get svg => SvgPicture.asset('assets/svgs/$this.svg');
 

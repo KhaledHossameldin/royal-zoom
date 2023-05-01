@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../utilities/extensions.dart';
-import '../enums/gender.dart';
-import '../enums/perview_status.dart';
-import '../enums/user_status.dart';
-import '../enums/user_type.dart';
-import 'authentication/country.dart';
-import 'authentication/nationality.dart';
-import 'authentication/settings.dart';
+import '../../../utilities/extensions.dart';
+import '../../enums/gender.dart';
+import '../../enums/perview_status.dart';
+import '../../enums/user_status.dart';
+import '../../enums/user_type.dart';
+import '../authentication/country.dart';
+import '../authentication/nationality.dart';
+import '../authentication/settings.dart';
 
 class Consultant {
   int id;

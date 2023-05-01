@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
-import '../../../../constants/hero_tags.dart';
 import '../../../../constants/routes.dart';
 import '../../../../data/enums/email_phone.dart';
 import '../../../../localization/app_localizations.dart';
@@ -59,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   SizedBox(
                     width: 169.width,
-                    child: Hero(tag: HeroTags.appLogo, child: 'royake'.png),
+                    child: 'royake'.png,
                   ),
                   Text(
                     appLocalizations.registerTitle,
@@ -127,31 +126,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
       },
       builder: (context, state) {
-        return Hero(
-          tag: HeroTags.elevatedButton,
-          child: IgnorePointer(
-            ignoring: state is AuthenticationLoading,
-            child: ElevatedButton(
-              onPressed: () {
-                final isValid = _formKey.currentState!.validate();
-                if (isValid) {
-                  context.read<AuthenticationBloc>().add(AuthenticationRegister(
-                        context,
-                        username: _getUsername(),
-                        password: _password.text,
-                        confirm: _confirm.text,
-                      ));
-                }
-              },
-              child: Builder(builder: (context) {
-                if (state is AuthenticationLoading) {
-                  return const CircularProgressIndicator(
-                    color: Colors.white,
-                  );
-                }
-                return Text(appLocalizations.register);
-              }),
-            ),
+        return IgnorePointer(
+          ignoring: state is AuthenticationLoading,
+          child: ElevatedButton(
+            onPressed: () {
+              final isValid = _formKey.currentState!.validate();
+              if (isValid) {
+                context.read<AuthenticationBloc>().add(AuthenticationRegister(
+                      context,
+                      username: _getUsername(),
+                      password: _password.text,
+                      confirm: _confirm.text,
+                    ));
+              }
+            },
+            child: Builder(builder: (context) {
+              if (state is AuthenticationLoading) {
+                return const CircularProgressIndicator(
+                  color: Colors.white,
+                );
+              }
+              return Text(appLocalizations.register);
+            }),
           ),
         );
       },

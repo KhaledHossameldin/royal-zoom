@@ -42,14 +42,12 @@ class ProfileScreen extends StatelessWidget {
               icon: 'about-application',
               color: Colors.black,
               title: appLocalizations.aboutApplication,
-              heroTag: appLocalizations.aboutApplication,
               onTap: () => Navigator.pushNamed(context, Routes.about),
             ),
             _Item(
               icon: 'terms-and-conditions',
               color: BrandColors.red,
               title: appLocalizations.termsOfUseTitle,
-              heroTag: appLocalizations.termsOfUseTitle,
               onTap: () => Navigator.pushNamed(
                 context,
                 Routes.termsAndConditions,
@@ -60,7 +58,6 @@ class ProfileScreen extends StatelessWidget {
               icon: 'privacy-policy',
               color: BrandColors.lightBlue,
               title: appLocalizations.privacyPolicy,
-              heroTag: appLocalizations.privacyPolicy,
               onTap: () => Navigator.pushNamed(
                 context,
                 Routes.privacyPolicy,
@@ -73,7 +70,6 @@ class ProfileScreen extends StatelessWidget {
                 icon: 'contact-us',
                 color: BrandColors.purple,
                 title: appLocalizations.contactUs,
-                heroTag: appLocalizations.contactUs,
                 onTap: () => Navigator.pushNamed(
                   context,
                   Routes.contactUs,
@@ -85,7 +81,6 @@ class ProfileScreen extends StatelessWidget {
               icon: 'share-application',
               color: BrandColors.orange,
               title: appLocalizations.shareWithFriends,
-              heroTag: appLocalizations.shareWithFriends,
               onTap: () => Share.share('royake'),
             ),
           ],
@@ -99,14 +94,12 @@ class _Item extends StatelessWidget {
   const _Item({
     required this.icon,
     required this.title,
-    required this.heroTag,
     required this.color,
     required this.onTap,
   });
 
   final String icon;
   final String title;
-  final String heroTag;
   final Color color;
   final VoidCallback onTap;
 
@@ -132,24 +125,9 @@ class _Item extends StatelessWidget {
             ),
             child: icon.svg,
           ),
-          title: Hero(
-            tag: heroTag,
-            child: Text(
-              title,
-              style: const TextStyle(fontSize: 15.0),
-            ),
-            flightShuttleBuilder: (
-              flightContext,
-              animation,
-              flightDirection,
-              fromHeroContext,
-              toHeroContext,
-            ) {
-              return DefaultTextStyle(
-                style: DefaultTextStyle.of(toHeroContext).style,
-                child: toHeroContext.widget,
-              );
-            },
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 15.0),
           ),
           trailing: const Icon(Icons.chevron_right),
           onTap: onTap,

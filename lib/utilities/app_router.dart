@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/routes.dart';
 import '../cubits/consultants/consultants_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
-import '../data/models/consultant.dart';
+import '../data/models/consultants/consultant.dart';
 import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
 import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
@@ -104,10 +104,14 @@ class AppRouter {
         );
 
       case Routes.filter:
+        final arguments = settings.arguments as ConsultantsCubit;
         return MaterialPageRoute(
           fullscreenDialog: true,
-          builder: (context) => BlocProvider(
-            create: (context) => FilterCubit(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => FilterCubit()),
+              BlocProvider<ConsultantsCubit>.value(value: arguments),
+            ],
             child: const FilterScreen(),
           ),
         );

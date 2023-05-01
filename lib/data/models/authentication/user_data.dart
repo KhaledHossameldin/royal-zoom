@@ -7,7 +7,7 @@ import '../../enums/gender.dart';
 import '../../enums/perview_status.dart';
 import '../../enums/user_status.dart';
 import '../../enums/user_type.dart';
-import '../consultant.dart';
+import '../consultants/consultant.dart';
 import 'city.dart';
 import 'country.dart';
 import 'currency.dart';

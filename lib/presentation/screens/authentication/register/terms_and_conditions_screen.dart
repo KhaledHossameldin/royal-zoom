@@ -44,13 +44,10 @@ class TermsAndConditions extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Hero(
-              tag: appLocalizations.termsOfUseTitle,
-              child: Text(
-                appLocalizations.termsOfUseTitle,
-                style: textTheme.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              appLocalizations.termsOfUseTitle,
+              style: textTheme.headlineSmall!.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
             Text(

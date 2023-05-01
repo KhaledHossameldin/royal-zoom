@@ -7,11 +7,11 @@ import 'package:pinput/pinput.dart';
 import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../blocs/reset_password/reset_password_bloc.dart';
 import '../../../constants/brand_colors.dart';
-import '../../../constants/hero_tags.dart';
 import '../../../constants/numbers.dart';
 import '../../../constants/routes.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
+import '../../widgets/app_bar_logo.dart';
 import '../../widgets/copyright.dart';
 import '../../widgets/reset_password_image.dart';
 
@@ -71,13 +71,7 @@ class _OTPScreenState extends State<OTPScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        actions: [
-          Container(
-            width: 65.width,
-            margin: EdgeInsets.symmetric(horizontal: 20.width),
-            child: Hero(tag: HeroTags.appLogo, child: 'royake'.png),
-          ),
-        ],
+        actions: const [AppBarLogo(padding: 20)],
       ),
       body: Builder(builder: (context) {
         if (_timer == null) {
@@ -166,34 +160,31 @@ class _OTPScreenState extends State<OTPScreen> {
       builder: (context, state) {
         return IgnorePointer(
           ignoring: state is AuthenticationLoading,
-          child: Hero(
-            tag: HeroTags.elevatedButton,
-            child: ElevatedButton(
-              onPressed: () {
-                if (_seconds.value <= 0) {
-                  appLocalizations.resetTimerDone.showSnackbar(
-                    context,
-                    color: Colors.red,
+          child: ElevatedButton(
+            onPressed: () {
+              if (_seconds.value <= 0) {
+                appLocalizations.resetTimerDone.showSnackbar(
+                  context,
+                  color: Colors.red,
+                );
+                return;
+              }
+              context.read<AuthenticationBloc>().add(
+                    AuthenticationActivate(
+                      context,
+                      username: widget.username,
+                      code: _otp.text,
+                    ),
                   );
-                  return;
-                }
-                context.read<AuthenticationBloc>().add(
-                      AuthenticationActivate(
-                        context,
-                        username: widget.username,
-                        code: _otp.text,
-                      ),
-                    );
-              },
-              child: Builder(builder: (context) {
-                if (state is AuthenticationLoading) {
-                  return const CircularProgressIndicator(
-                    color: Colors.white,
-                  );
-                }
-                return Text(appLocalizations.confirm);
-              }),
-            ),
+            },
+            child: Builder(builder: (context) {
+              if (state is AuthenticationLoading) {
+                return const CircularProgressIndicator(
+                  color: Colors.white,
+                );
+              }
+              return Text(appLocalizations.confirm);
+            }),
           ),
         );
       },
@@ -225,34 +216,31 @@ class _OTPScreenState extends State<OTPScreen> {
       builder: (context, state) {
         return IgnorePointer(
           ignoring: state is ResetPasswordLoading,
-          child: Hero(
-            tag: HeroTags.elevatedButton,
-            child: ElevatedButton(
-              onPressed: () {
-                if (_seconds.value <= 0) {
-                  appLocalizations.resetTimerDone.showSnackbar(
-                    context,
-                    color: Colors.red,
+          child: ElevatedButton(
+            onPressed: () {
+              if (_seconds.value <= 0) {
+                appLocalizations.resetTimerDone.showSnackbar(
+                  context,
+                  color: Colors.red,
+                );
+                return;
+              }
+              context.read<ResetPasswordBloc>().add(
+                    ResetPasswordOTP(
+                      context,
+                      code: _otp.text,
+                      username: widget.username,
+                    ),
                   );
-                  return;
-                }
-                context.read<ResetPasswordBloc>().add(
-                      ResetPasswordOTP(
-                        context,
-                        code: _otp.text,
-                        username: widget.username,
-                      ),
-                    );
-              },
-              child: Builder(builder: (context) {
-                if (state is ResetPasswordLoading) {
-                  return const CircularProgressIndicator(
-                    color: Colors.white,
-                  );
-                }
-                return Text(appLocalizations.confirm);
-              }),
-            ),
+            },
+            child: Builder(builder: (context) {
+              if (state is ResetPasswordLoading) {
+                return const CircularProgressIndicator(
+                  color: Colors.white,
+                );
+              }
+              return Text(appLocalizations.confirm);
+            }),
           ),
         );
       },

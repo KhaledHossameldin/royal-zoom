@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../constants/brand_colors.dart';
-import '../../../../constants/hero_tags.dart';
 import '../../../../constants/routes.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
@@ -260,7 +259,7 @@ class _SolveProblems extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FloatingActionButton(
-                heroTag: HeroTags.elevatedButton,
+                heroTag: 'video-fab',
                 onPressed: () {
                   if (_videoController.value.isPlaying) {
                     _animationController.forward();

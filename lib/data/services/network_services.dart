@@ -10,7 +10,8 @@ import '../../localization/app_localizations.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
-import '../models/consultant.dart';
+import '../models/consultants/consultant.dart';
+import '../models/consultants/filters.dart';
 import '../models/major.dart';
 import 'app_exception.dart';
 import 'shared_preferences_handler.dart';
@@ -48,11 +49,15 @@ class NetworkServices {
 
   Future<Map<String, Object>> consultants(
     BuildContext context, {
+    required ConsultantsFilter filter,
     required int page,
   }) async {
-    final response = await _get(context, Network.consultants, params: {
-      'page': '$page',
-    });
+    final params = {'page': '$page'};
+    final filterMap = filter.toMap();
+    if (filterMap != null) {
+      params.addAll(filterMap);
+    }
+    final response = await _get(context, Network.consultants, params: params);
     final jsonMap = json.decode(response);
     final consultants = (jsonMap['data'] as List)
         .map((item) => Consultant.fromMap(item))

@@ -1,14 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/numbers.dart';
 import '../../../../constants/routes.dart';
-import '../../../../data/models/consultant.dart';
+import '../../../data/models/consultants/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/countries.dart';
 import '../../../../utilities/extensions.dart';
@@ -85,6 +83,21 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
                       12.emptyHeight,
                       const _StatusRow(),
                       16.emptyHeight,
+                      MaterialButton(
+                        onPressed: () {},
+                        minWidth: double.infinity,
+                        textColor: Colors.white,
+                        shape: const StadiumBorder(),
+                        color: BrandColors.orange,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.calendar_today),
+                            5.emptyWidth,
+                            Text(appLocalizations.consultantTimes),
+                          ],
+                        ),
+                      ),
                       MaterialButton(
                         onPressed: () {},
                         minWidth: double.infinity,
@@ -174,7 +187,7 @@ class _PublishedConsultations extends StatelessWidget {
               ),
               trailing: RatingBar(
                 itemSize: 15.0,
-                initialRating: Random().nextInt(5).toDouble(),
+                initialRating: 4,
                 ignoreGestures: true,
                 ratingWidget: RatingWidget(
                   half: const Material(),
@@ -429,9 +442,9 @@ class _StatusRow extends StatelessWidget {
 
     return Row(
       children: [
-        _buildItem(textTheme, 'consultations_count', Random().nextInt(1000000)),
-        _buildItem(textTheme, 'likes', Random().nextInt(1000000)),
-        _buildItem(textTheme, 'views', Random().nextInt(1000000)),
+        _buildItem(textTheme, 'consultations_count', 1234567),
+        _buildItem(textTheme, 'likes', 1234567),
+        _buildItem(textTheme, 'views', 1234567),
       ],
     );
   }
@@ -487,10 +500,23 @@ class _HeaderImage extends StatelessWidget {
       );
 }
 
-class _Header extends StatelessWidget {
+class _Header extends StatefulWidget {
   const _Header({required this.consultant});
 
   final Consultant consultant;
+
+  @override
+  State<_Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends State<_Header> {
+  bool _isShowPrices = false;
+
+  @override
+  void dispose() {
+    // _isShowPrices.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -547,19 +573,99 @@ class _Header extends StatelessWidget {
             ),
           ),
           5.emptyHeight,
-          Text(
-            '${appLocalizations.getMajor(false)} :',
-            style: textTheme.bodySmall!.copyWith(
-              color: Colors.grey.shade800,
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-          Text(
-            'قضايا الاعتداء الجسدي, قضايا الاعتداء المالي , قضايا الاعتداء الجسدي قضايا الاعتداء المالي',
-            style: textTheme.bodySmall!.copyWith(
-              color: Colors.grey.shade800,
-              fontWeight: FontWeight.normal,
-            ),
+          StatefulBuilder(
+            builder: (context, setState) {
+              final majors = RichText(
+                text: TextSpan(
+                  style: textTheme.bodySmall!.copyWith(
+                    color: Colors.grey.shade800,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:
+                          '${appLocalizations.getMajor(false)} :\nقضايا الاعتداء الجسدي, قضايا الاعتداء المالي , قضايا الاعتداء الجسدي قضايا الاعتداء المالي',
+                    ),
+                    WidgetSpan(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6.width),
+                        child: MaterialButton(
+                          onPressed: () => setState(() => _isShowPrices = true),
+                          elevation: 0.0,
+                          height: 23.height,
+                          highlightElevation: 0.0,
+                          shape: const StadiumBorder(),
+                          textColor: BrandColors.orange,
+                          color: BrandColors.orange.withOpacity(0.2),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          child: Text(
+                            appLocalizations.showPrices,
+                            style: const TextStyle(fontSize: 10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+              final prices = Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: TextButton.icon(
+                      onPressed: () => setState(() => _isShowPrices = false),
+                      icon: const Icon(Icons.expand_less, size: 20.0),
+                      label: const Text(
+                        'أسعار التخصصات لكل ساعة',
+                        style: TextStyle(fontSize: 13.0, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  for (int i = 0; i < 3; i++)
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'قضايا الاعتداء الجسدي :',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: BrandColors.black,
+                              fontFamily: 'Droid Arabic Kufi',
+                            ),
+                          ),
+                          const TextSpan(
+                            text: ' 60 ',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: BrandColors.orange,
+                              fontFamily: 'Droid Arabic Kufi',
+                            ),
+                          ),
+                          TextSpan(
+                            text: appLocalizations.sarH,
+                            style: const TextStyle(
+                              fontSize: 10.0,
+                              color: BrandColors.black,
+                              fontFamily: 'Droid Arabic Kufi',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              );
+              return AnimatedCrossFade(
+                firstChild: majors,
+                secondChild: prices,
+                duration: kTabScrollDuration,
+                alignment: AlignmentDirectional.topStart,
+                crossFadeState: _isShowPrices
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+              );
+            },
           ),
         ],
       );
@@ -622,7 +728,7 @@ class _Header extends StatelessWidget {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(
-              consultant.previewName ?? appLocalizations.none,
+              widget.consultant.previewName ?? appLocalizations.none,
               overflow: TextOverflow.ellipsis,
               style: textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.bold,
@@ -630,11 +736,11 @@ class _Header extends StatelessWidget {
             ),
             Builder(
               builder: (context) {
-                if (consultant.country == null) {
+                if (widget.consultant.country == null) {
                   return const Material();
                 }
                 final country = countries.firstWhere((element) =>
-                    element.dialCode == consultant.country!.dialCode);
+                    element.dialCode == widget.consultant.country!.dialCode);
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.width),
                   child: Text(country.flag),
@@ -651,7 +757,7 @@ class _Header extends StatelessWidget {
           SizedBox(
             width: 120.width,
             child: Text(
-              consultant.previewName ?? appLocalizations.none,
+              widget.consultant.previewName ?? appLocalizations.none,
               overflow: TextOverflow.ellipsis,
               style: textTheme.bodySmall!.copyWith(
                 fontSize: 13.0,
@@ -660,19 +766,42 @@ class _Header extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          RatingBar(
-            itemSize: 15.0,
-            initialRating: Random().nextInt(5).toDouble(),
-            ignoreGestures: true,
-            ratingWidget: RatingWidget(
-              half: const Material(),
-              full: const Icon(Icons.star, color: Colors.amber),
-              empty: Icon(
-                Icons.star,
-                color: Colors.amber.withOpacity(0.4),
-              ),
+          RichText(
+            textAlign: TextAlign.end,
+            text: TextSpan(
+              style: const TextStyle(
+                  fontSize: 11.0,
+                  color: Colors.grey,
+                  fontFamily: 'Droid Arabic Kufi'),
+              children: [
+                TextSpan(text: (0.78 * 10).toStringAsFixed(1)),
+                WidgetSpan(
+                    alignment: PlaceholderAlignment.top,
+                    child: ShaderMask(
+                      blendMode: BlendMode.srcATop,
+                      shaderCallback: (bounds) {
+                        return LinearGradient(
+                          stops: const [0, 0.78, 0.78],
+                          colors: [
+                            Colors.amber,
+                            Colors.amber,
+                            Colors.amber.withOpacity(0),
+                          ],
+                        ).createShader(bounds);
+                      },
+                      child: SizedBox(
+                        width: 20.width,
+                        height: 20.height,
+                        child: Icon(
+                          Icons.star,
+                          size: 20.width,
+                          color: Colors.grey[300],
+                        ),
+                      ),
+                    )),
+                TextSpan(text: '465 ${appLocalizations.review}'),
+              ],
             ),
-            onRatingUpdate: (value) {},
           ),
         ],
       );

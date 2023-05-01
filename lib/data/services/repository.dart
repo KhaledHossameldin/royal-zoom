@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
+import '../models/consultants/filters.dart';
 import '../models/major.dart';
 import 'network_services.dart';
 import 'shared_preferences_handler.dart';
@@ -28,9 +29,10 @@ class Repository {
 
   Future<Map<String, Object>> consultants(
     BuildContext context, {
+    required ConsultantsFilter filter,
     required int page,
   }) async =>
-      _network.consultants(context, page: page);
+      _network.consultants(context, filter: filter, page: page);
 
   Future<User> activate(
     BuildContext context, {

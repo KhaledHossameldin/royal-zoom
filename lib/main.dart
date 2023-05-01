@@ -172,14 +172,11 @@ class MyApp extends StatelessWidget {
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            side: BorderSide.none,
             shape: const StadiumBorder(),
-            padding: const EdgeInsets.symmetric(
-              vertical: 8.0,
-              horizontal: 8.0,
-            ),
+            minimumSize: const Size(double.infinity, 63.0),
+            side: const BorderSide(color: BrandColors.orange),
             textStyle: const TextStyle(
-              fontSize: 11.0,
+              fontSize: 20.0,
               fontFamily: 'Droid Arabic Kufi',
             ),
           ),
