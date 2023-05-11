@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/numbers.dart';
 import '../../../../constants/routes.dart';
+import '../../../constants/fonts.dart';
 import '../../../data/models/consultants/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/countries.dart';
@@ -80,9 +81,9 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
                   Column(
                     children: [
                       _Header(consultant: widget.consultant),
-                      12.emptyHeight,
+                      8.emptyHeight,
+                      const _SocialRow(),
                       const _StatusRow(),
-                      16.emptyHeight,
                       MaterialButton(
                         onPressed: () {},
                         minWidth: double.infinity,
@@ -92,7 +93,7 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.calendar_today),
+                            'consultant_times'.svg,
                             5.emptyWidth,
                             Text(appLocalizations.consultantTimes),
                           ],
@@ -136,6 +137,52 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
       ),
     );
   }
+}
+
+class _SocialRow extends StatelessWidget {
+  const _SocialRow();
+
+  @override
+  Widget build(BuildContext context) => Card(
+        elevation: 0.0,
+        color: Colors.grey.shade100,
+        child: SizedBox(
+          width: double.infinity,
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: 'linkedin'.svg,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: 'twitter'.svg,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: 'facebook'.svg,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: 'instagram'.svg,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: 'whatsapp'.svg,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: 'youtube'.svg,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: 'snapchat'.svg,
+              ),
+            ],
+          ),
+        ),
+      );
 }
 
 class _PublishedConsultations extends StatelessWidget {
@@ -632,7 +679,7 @@ class _HeaderState extends State<_Header> {
                             style: TextStyle(
                               fontSize: 14.0,
                               color: BrandColors.black,
-                              fontFamily: 'Droid Arabic Kufi',
+                              fontFamily: Fonts.main,
                             ),
                           ),
                           const TextSpan(
@@ -640,7 +687,7 @@ class _HeaderState extends State<_Header> {
                             style: TextStyle(
                               fontSize: 16.0,
                               color: BrandColors.orange,
-                              fontFamily: 'Droid Arabic Kufi',
+                              fontFamily: Fonts.main,
                             ),
                           ),
                           TextSpan(
@@ -648,7 +695,7 @@ class _HeaderState extends State<_Header> {
                             style: const TextStyle(
                               fontSize: 10.0,
                               color: BrandColors.black,
-                              fontFamily: 'Droid Arabic Kufi',
+                              fontFamily: Fonts.main,
                             ),
                           ),
                         ],
@@ -770,9 +817,10 @@ class _HeaderState extends State<_Header> {
             textAlign: TextAlign.end,
             text: TextSpan(
               style: const TextStyle(
-                  fontSize: 11.0,
-                  color: Colors.grey,
-                  fontFamily: 'Droid Arabic Kufi'),
+                fontSize: 11.0,
+                color: Colors.grey,
+                fontFamily: Fonts.main,
+              ),
               children: [
                 TextSpan(text: (0.78 * 10).toStringAsFixed(1)),
                 WidgetSpan(

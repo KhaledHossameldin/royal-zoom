@@ -54,7 +54,7 @@ class AppLocalizations {
 
   String get permit => _translate('permit');
 
-  String get skip => _translate('skip');
+  String get continueAsGuest => _translate('continue_as_guest');
 
   String get loginToAccount => _translate('login_to_account');
 

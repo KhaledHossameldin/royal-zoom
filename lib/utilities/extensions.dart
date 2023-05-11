@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
 
 import '../constants/brand_colors.dart';
+import '../constants/fonts.dart';
 
 extension BooleanExtension on bool {
   int get toInt => this ? 1 : 0;
@@ -37,7 +39,7 @@ extension IntegerExtension on int {
 
 extension NumbersExtension on num {
   Size get _screenSize =>
-      MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
+      MediaQueryData.fromView(PlatformDispatcher.instance.views.first).size;
 
   double get width => _screenSize.width * toDouble() / 428;
 
@@ -110,7 +112,7 @@ extension StringExtension on String {
             this,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              fontFamily: 'Droid Arabic Kufi',
+              fontFamily: Fonts.main,
             ),
           ),
         ),

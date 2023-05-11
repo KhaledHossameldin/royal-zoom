@@ -65,11 +65,12 @@ class _LoginScreenState extends State<LoginScreen>
         elevation: 0,
         actions: [
           TextButton(
+            style: TextButton.styleFrom(foregroundColor: BrandColors.orange),
             onPressed: () => Navigator.pushReplacementNamed(
               context,
               Routes.home,
             ),
-            child: Text(appLocalizations.skip),
+            child: Text(appLocalizations.continueAsGuest),
           ),
           21.emptyWidth,
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../constants/brand_colors.dart';
+import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
@@ -103,7 +104,7 @@ class _AboutScreenState extends State<AboutScreen>
                     textStyle: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Droid Arabic Kufi',
+                      fontFamily: Fonts.main,
                     ),
                   ),
                   child: Row(
@@ -394,7 +395,7 @@ class _HowWeWork extends StatelessWidget {
               textStyle: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Droid Arabic Kufi',
+                fontFamily: Fonts.main,
               ),
             ),
             child: Row(

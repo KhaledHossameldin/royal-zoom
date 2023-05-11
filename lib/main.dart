@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'blocs/authentication/authentication_bloc.dart';
 import 'blocs/reset_password/reset_password_bloc.dart';
 import 'constants/brand_colors.dart';
+import 'constants/fonts.dart';
 import 'constants/routes.dart';
 import 'cubits/locale_cubit.dart';
 import 'data/services/repository.dart';
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
   }
 
   ThemeData get _setTheme => ThemeData(
-        fontFamily: 'Droid Arabic Kufi',
+        fontFamily: Fonts.main,
         shadowColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -97,7 +98,7 @@ class MyApp extends StatelessWidget {
           titleTextStyle: TextStyle(
             fontSize: 16.0,
             color: BrandColors.darkBlue,
-            fontFamily: 'Droid Arabic Kufi',
+            fontFamily: Fonts.main,
           ),
         ),
         dividerTheme: const DividerThemeData(thickness: 2.0),
@@ -166,7 +167,7 @@ class MyApp extends StatelessWidget {
             minimumSize: const Size(double.infinity, 63.0),
             textStyle: const TextStyle(
               fontSize: 20.0,
-              fontFamily: 'Droid Arabic Kufi',
+              fontFamily: Fonts.main,
             ),
           ),
         ),
@@ -177,7 +178,7 @@ class MyApp extends StatelessWidget {
             side: const BorderSide(color: BrandColors.orange),
             textStyle: const TextStyle(
               fontSize: 20.0,
-              fontFamily: 'Droid Arabic Kufi',
+              fontFamily: Fonts.main,
             ),
           ),
         ),
@@ -187,7 +188,7 @@ class MyApp extends StatelessWidget {
             foregroundColor: BrandColors.darkGray,
             textStyle: const TextStyle(
               fontSize: 15.0,
-              fontFamily: 'Droid Arabic Kufi',
+              fontFamily: Fonts.main,
             ),
           ),
         ),
