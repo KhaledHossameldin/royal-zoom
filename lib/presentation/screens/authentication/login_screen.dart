@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/brand_colors.dart';
 import '../../../constants/routes.dart';
+import '../../../data/services/location_services.dart';
+import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/countries.dart';
 import '../../../utilities/extensions.dart';
@@ -30,11 +32,13 @@ class _LoginScreenState extends State<LoginScreen>
   final _passwordKey = GlobalKey<FormFieldState>();
   final _isPhone = ValueNotifier<bool>(true);
 
-  Country _country = countries[194];
   bool _isRemember = false;
+  Country _country = LocationServices.instance.country;
 
   @override
   void initState() {
+    Repository.instance.setCurrentLocation().then((value) =>
+        setState(() => _country = LocationServices.instance.country));
     _controller = TabController(length: 2, vsync: this, initialIndex: 1);
     if (kDebugMode) {
       _controller.index = 0;

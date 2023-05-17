@@ -6,8 +6,11 @@ import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 
+// ignore: must_be_immutable
 class LocationPermissionScreen extends StatelessWidget {
-  const LocationPermissionScreen({super.key});
+  LocationPermissionScreen({super.key});
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +55,24 @@ class LocationPermissionScreen extends StatelessWidget {
       padding: padding,
       child: Column(
         children: [
-          ElevatedButton(
-            onPressed: () async {
-              await Permission.location.request();
-              if (context.mounted) {
-                _goToLogin(context);
-              }
-            },
-            child: Text(appLocalizations.permit),
+          StatefulBuilder(
+            builder: (context, setState) => ElevatedButton(
+              onPressed: () async {
+                setState(() => _isLoading = true);
+                await Permission.location.request();
+                await Repository.instance.setCurrentLocation();
+                if (context.mounted) {
+                  _goToLogin(context);
+                  setState(() => _isLoading = true);
+                }
+              },
+              child: Builder(builder: (context) {
+                if (_isLoading) {
+                  return const CircularProgressIndicator(color: Colors.white);
+                }
+                return Text(appLocalizations.permit);
+              }),
+            ),
           ),
           6.emptyHeight,
           TextButton(

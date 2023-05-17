@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../blocs/reset_password/reset_password_bloc.dart';
 import '../../../../constants/routes.dart';
 import '../../../../data/enums/email_phone.dart';
+import '../../../../data/services/location_services.dart';
+import '../../../../data/services/repository.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/countries.dart';
 import '../../../../utilities/extensions.dart';
@@ -25,8 +27,15 @@ class _ResetPasswordDetailsScreenState
   final _username = TextEditingController();
   final _textFieldKey = GlobalKey<FormFieldState>();
 
-  Country _country = countries[194];
+  Country _country = LocationServices.instance.country;
   EmailPhone _emailPhone = EmailPhone.none;
+
+  @override
+  void initState() {
+    Repository.instance.setCurrentLocation().then((value) =>
+        setState(() => _country = LocationServices.instance.country));
+    super.initState();
+  }
 
   @override
   void dispose() {

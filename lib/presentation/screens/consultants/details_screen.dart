@@ -547,23 +547,12 @@ class _HeaderImage extends StatelessWidget {
       );
 }
 
-class _Header extends StatefulWidget {
-  const _Header({required this.consultant});
+// ignore: must_be_immutable
+class _Header extends StatelessWidget {
+  _Header({required this.consultant});
 
   final Consultant consultant;
-
-  @override
-  State<_Header> createState() => _HeaderState();
-}
-
-class _HeaderState extends State<_Header> {
   bool _isShowPrices = false;
-
-  @override
-  void dispose() {
-    // _isShowPrices.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -775,7 +764,7 @@ class _HeaderState extends State<_Header> {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(
-              widget.consultant.previewName ?? appLocalizations.none,
+              consultant.previewName ?? appLocalizations.none,
               overflow: TextOverflow.ellipsis,
               style: textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.bold,
@@ -783,11 +772,11 @@ class _HeaderState extends State<_Header> {
             ),
             Builder(
               builder: (context) {
-                if (widget.consultant.country == null) {
+                if (consultant.country == null) {
                   return const Material();
                 }
                 final country = countries.firstWhere((element) =>
-                    element.dialCode == widget.consultant.country!.dialCode);
+                    element.dialCode == consultant.country!.dialCode);
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.width),
                   child: Text(country.flag),
@@ -804,7 +793,7 @@ class _HeaderState extends State<_Header> {
           SizedBox(
             width: 120.width,
             child: Text(
-              widget.consultant.previewName ?? appLocalizations.none,
+              consultant.previewName ?? appLocalizations.none,
               overflow: TextOverflow.ellipsis,
               style: textTheme.bodySmall!.copyWith(
                 fontSize: 13.0,

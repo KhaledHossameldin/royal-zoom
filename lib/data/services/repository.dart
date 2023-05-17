@@ -5,6 +5,7 @@ import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
 import '../models/consultants/filters.dart';
 import '../models/major.dart';
+import 'location_services.dart';
 import 'network_services.dart';
 import 'shared_preferences_handler.dart';
 
@@ -14,6 +15,7 @@ class Repository {
 
   final _network = NetworkServices.instance;
   final _sharedPreferences = SharedPreferencesHandler.instance;
+  final _location = LocationServices.instance;
 
   Future<List<City>> cities(
     BuildContext context, {
@@ -132,4 +134,7 @@ class Repository {
 
   Future<String> getTokenPreferences() async =>
       await _sharedPreferences.getToken();
+
+  Future<void> setCurrentLocation({bool isFromMain = false}) async =>
+      await _location.setCurrent(isFromMain);
 }

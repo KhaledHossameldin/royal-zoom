@@ -5,6 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
+import '../../../../data/services/location_services.dart';
+import '../../../../data/services/repository.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/countries.dart';
 import '../../../../utilities/extensions.dart';
@@ -32,10 +34,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   final _topic = TextEditingController();
   final _message = TextEditingController();
   final _phoneFocus = FocusNode();
-  Country _country = countries[194];
+  Country _country = LocationServices.instance.country;
 
   @override
   void initState() {
+    Repository.instance.setCurrentLocation().then((value) =>
+        setState(() => _country = LocationServices.instance.country));
     checkWhatsApp(context).then((value) => _isWhatsApp.value = value);
     super.initState();
   }

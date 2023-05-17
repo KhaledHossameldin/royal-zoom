@@ -19,6 +19,7 @@ Future<List<String>> _getStartValues() async {
     repository.getLocalePreferences(),
     repository.getNotificationsPreferences(),
     repository.getLocationPreferences(),
+    repository.setCurrentLocation(isFromMain: true),
   ]);
   String initialRoute = Routes.notificationsPermssion;
   final savedLocale = values[0] as String;

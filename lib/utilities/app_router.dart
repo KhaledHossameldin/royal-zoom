@@ -39,7 +39,7 @@ class AppRouter {
 
       case Routes.locationPermssion:
         return MaterialPageRoute(
-          builder: (context) => const LocationPermissionScreen(),
+          builder: (context) => LocationPermissionScreen(),
         );
 
       case Routes.login:
