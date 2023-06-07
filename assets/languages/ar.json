@@ -140,5 +140,15 @@
     "one_review": "تقييم واحد",
     "many_reviews": "تقييمات",
     "zero_reviews": "لا يوجد تقييمات",
-    "clear_reviews": "إخلاء التصفية"
+    "clear_reviews": "إخلاء التصفية",
+    "review_application": "قيم التطبيق",
+    "excellent": "ممتازة",
+    "very_good": "جيدة جدا",
+    "good": "جيدة",
+    "acceptable": "مقبولة",
+    "weak": "ضعيفة",
+    "app_review_title": "كيف كانت تجربتك مع تطبيق رؤياك للاستشارات ؟",
+    "comment": "تعليق",
+    "write_comment": "... اكتب تعليق",
+    "show_name": "اظهر اسمي"
 }

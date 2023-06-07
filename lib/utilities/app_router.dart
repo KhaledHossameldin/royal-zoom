@@ -16,6 +16,7 @@ import '../presentation/screens/authentication/reset_password/details_screen.dar
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/contact_us_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/profile/review_app_screen.dart';
 import '../presentation/screens/consultants/details_screen.dart';
 import '../presentation/screens/consultants/filter_screen.dart';
 import '../presentation/screens/consultants/report/report_screen.dart';
@@ -156,6 +157,9 @@ class AppRouter {
             isGuest: isGuest,
           ),
         );
+
+      case Routes.reviewApp:
+        return MaterialPageRoute(builder: (context) => const ReviewAppScreen());
 
       default:
         return null;

@@ -285,6 +285,35 @@ class AppLocalizations {
 
   String get clearReviews => _translate('clear_reviews');
 
+  String get reviewApplication => _translate('review_application');
+
+  String get appReviewTitle => _translate('app_review_title');
+
+  String get comment => _translate('comment');
+
+  String get writeComment => _translate('write_comment');
+
+  String get showName => _translate('show_name');
+
+  String getRate(int rate) {
+    switch (rate) {
+      case 1:
+        return _translate('weak');
+
+      case 2:
+        return _translate('acceptable');
+
+      case 3:
+        return _translate('good');
+
+      case 4:
+        return _translate('very_good');
+
+      default:
+        return _translate('excellent');
+    }
+  }
+
   String getReview(int count) => Intl.plural(
         count,
         zero: _translate('zero_reviews'),

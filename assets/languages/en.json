@@ -139,5 +139,15 @@
     "one_review": "1 review",
     "many_reviews": "reviews",
     "zero_reviews": "No reviews",
-    "clear_reviews": "Clear reviews"
+    "clear_reviews": "Clear reviews",
+    "review_application": "Review Application",
+    "excellent": "Excellent",
+    "very_good": "Very Good",
+    "good": "Good",
+    "acceptable": "Acceptable",
+    "weak": "Weak",
+    "app_review_title": "How was your experience with the application of Royake for consulting?",
+    "comment": "Comment",
+    "write_comment": "Write comment ...",
+    "show_name": "Show name"
 }

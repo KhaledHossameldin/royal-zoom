@@ -54,16 +54,19 @@ class ProfileScreen extends StatelessWidget {
                 arguments: true,
               ),
             ),
-            _Item(
-              icon: 'privacy-policy',
-              color: BrandColors.lightBlue,
-              title: appLocalizations.privacyPolicy,
-              onTap: () => Navigator.pushNamed(
-                context,
-                Routes.privacyPolicy,
-                arguments: true,
-              ),
-            ),
+            Builder(builder: (context) {
+              final user = context.read<AuthenticationBloc>().user;
+              return _Item(
+                icon: 'privacy-policy',
+                color: BrandColors.lightBlue,
+                title: appLocalizations.privacyPolicy,
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  Routes.privacyPolicy,
+                  arguments: user == null,
+                ),
+              );
+            }),
             Builder(builder: (context) {
               final user = context.read<AuthenticationBloc>().user;
               return _Item(
@@ -82,6 +85,12 @@ class ProfileScreen extends StatelessWidget {
               color: BrandColors.orange,
               title: appLocalizations.shareWithFriends,
               onTap: () => Share.share('royake'),
+            ),
+            _Item(
+              icon: 'share-application',
+              color: BrandColors.lightBlue,
+              title: appLocalizations.reviewApplication,
+              onTap: () => Navigator.pushNamed(context, Routes.reviewApp),
             ),
           ],
         ),

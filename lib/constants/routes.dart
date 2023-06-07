@@ -22,4 +22,5 @@ class Routes {
   static const contactUs = 'contact-us-screen';
   static const termsAndConditionsDetails =
       'terms-and-conditions-details-screen';
+  static const reviewApp = 'review-app-screen';
 }
