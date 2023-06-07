@@ -1,4 +1,4 @@
-package com.royake.sa.royake_mobile
+package com.widetechnology.royake
 
 import io.flutter.embedding.android.FlutterActivity
 

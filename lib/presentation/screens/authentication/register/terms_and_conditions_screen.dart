@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
@@ -12,9 +13,7 @@ class TermsAndConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
-    final bottomViewPadding = MediaQuery.of(context).viewPadding.bottom;
 
     return Scaffold(
       appBar: AppBar(
@@ -34,31 +33,88 @@ class TermsAndConditions extends StatelessWidget {
               ]
             : null,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(
-          16.width,
-          12.height,
-          16.width,
-          bottomViewPadding,
+      body: ListView(
+        padding: EdgeInsets.symmetric(
+          vertical: 12.height,
+          horizontal: 16.width,
+        ),
+        children: [_TermsItem(isGuest: isGuest)],
+      ),
+    );
+  }
+}
+
+class _TermsItem extends StatelessWidget {
+  const _TermsItem({
+    required this.isGuest,
+  });
+
+  final bool isGuest;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.pushNamed(
+        context,
+        Routes.termsAndConditionsDetails,
+        arguments: isGuest,
+      ),
+      borderRadius: BorderRadius.circular(10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade400),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        padding: EdgeInsets.symmetric(
+          vertical: 16.height,
+          horizontal: 20.width,
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              appLocalizations.termsOfUseTitle,
-              style: textTheme.headlineSmall!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              appLocalizations.termsOfUseSubtitle,
-              style: textTheme.labelSmall,
-            ),
-            12.emptyHeight,
-            Text(
-              appLocalizations.termsOfUseContent,
-              style: textTheme.bodySmall,
-            ),
+            Builder(builder: (context) {
+              const textStyle = TextStyle(
+                fontSize: 17.0,
+                fontWeight: FontWeight.normal,
+                color: BrandColors.darkBlackGreen,
+              );
+              return const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('سياسة التسجيل', style: textStyle),
+                  Text('1.00', style: textStyle),
+                ],
+              );
+            }),
+            9.emptyHeight,
+            Builder(builder: (context) {
+              final textStyle = TextStyle(
+                fontSize: 10.0,
+                fontWeight: FontWeight.normal,
+                color: Colors.grey.shade800,
+              );
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('تاريخ الاصدار', style: textStyle),
+                  Text('تاريخ التعديل', style: textStyle),
+                ],
+              );
+            }),
+            3.emptyHeight,
+            Builder(builder: (context) {
+              final textStyle = TextStyle(
+                fontSize: 17.0,
+                fontWeight: FontWeight.normal,
+                color: Colors.grey.shade700,
+              );
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('22/07/2022', style: textStyle),
+                  Text('22/07/2022', style: textStyle),
+                ],
+              );
+            }),
           ],
         ),
       ),

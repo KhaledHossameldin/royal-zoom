@@ -10,6 +10,7 @@ import '../presentation/screens/authentication/otp_screen.dart';
 import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
 import '../presentation/screens/authentication/register/register_screen.dart';
 import '../presentation/screens/authentication/register/success_screen.dart';
+import '../presentation/screens/authentication/register/terms_and_conditions_details_screen.dart';
 import '../presentation/screens/authentication/register/terms_and_conditions_screen.dart';
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
@@ -146,6 +147,14 @@ class AppRouter {
         final arguments = settings.arguments as bool;
         return MaterialPageRoute(
           builder: (context) => ContactUsScreen(isGuest: arguments),
+        );
+
+      case Routes.termsAndConditionsDetails:
+        final isGuest = settings.arguments as bool;
+        return MaterialPageRoute(
+          builder: (context) => TermsAndConditionsDetailsScreen(
+            isGuest: isGuest,
+          ),
         );
 
       default:

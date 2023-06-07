@@ -20,4 +20,6 @@ class Routes {
   static const notifications = 'notifications-screen';
   static const about = 'about-screen';
   static const contactUs = 'contact-us-screen';
+  static const termsAndConditionsDetails =
+      'terms-and-conditions-details-screen';
 }
