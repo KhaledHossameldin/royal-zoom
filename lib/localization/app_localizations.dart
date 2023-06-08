@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import '../utilities/extensions.dart';
 import 'app_localizations_delegate.dart';
 
 class AppLocalizations {
@@ -332,7 +331,7 @@ class AppLocalizations {
       '${_translate('code_sent')}\n$username';
 
   String getTimerText(int seconds) =>
-      '${_translate('resend_otp_1')} ${seconds.threeDigit} ${_translate('resend_otp_2')}';
+      '${_translate('resend_otp_1')} $seconds ${_translate('resend_otp_2')}';
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
       AppLocalizationsDelegate();

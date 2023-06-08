@@ -95,7 +95,7 @@ class _ResetPasswordDetailsScreenState
   String _getUsername() {
     String username = _username.text;
     if (_emailPhone == EmailPhone.phone) {
-      return '+${_country.dialCode}$username';
+      return '${_country.dialCode}$username';
     }
     return username;
   }
