@@ -87,6 +87,7 @@ class UserData extends Consultant {
     Language? language,
     Timezone? timezone,
     Currency? currency,
+    bool? selected,
   }) =>
       UserData(
         id: id ?? this.id,

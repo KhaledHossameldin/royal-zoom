@@ -26,6 +26,9 @@ import '../presentation/screens/notifications_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
+import '../presentation/screens/send_consultations/normal/choose_consultant_screen.dart';
+import '../presentation/screens/send_consultations/normal/content_screen.dart';
+import '../presentation/screens/send_consultations/normal/filter_screen.dart';
 
 class AppRouter {
   static AppRouter instance = AppRouter._();
@@ -105,7 +108,7 @@ class AppRouter {
           builder: (context) => PrivacyPolicyScreen(isGuest: arguments),
         );
 
-      case Routes.filter:
+      case Routes.consultantFilter:
         final arguments = settings.arguments as ConsultantsCubit;
         return MaterialPageRoute(
           fullscreenDialog: true,
@@ -114,7 +117,7 @@ class AppRouter {
               BlocProvider(create: (context) => FilterCubit()),
               BlocProvider<ConsultantsCubit>.value(value: arguments),
             ],
-            child: const FilterScreen(),
+            child: const ConsultantsFilterScreen(),
           ),
         );
 
@@ -160,6 +163,25 @@ class AppRouter {
 
       case Routes.reviewApp:
         return MaterialPageRoute(builder: (context) => const ReviewAppScreen());
+
+      case Routes.chooseConsultant:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => ConsultantsCubit(),
+            child: const ChooseConsultantScreen(),
+          ),
+        );
+
+      case Routes.sendConsultationFilter:
+        return MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const SendConsultantionFilterScreen(),
+        );
+
+      case Routes.consultationContent:
+        return MaterialPageRoute(
+          builder: (context) => const ConsultationContentScreen(),
+        );
 
       default:
         return null;

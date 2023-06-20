@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,6 +6,7 @@ import '../../../../constants/brand_colors.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../blocs/authentication/authentication_bloc.dart';
+import '../../../constants/routes.dart';
 import 'chat_screen.dart';
 import '../consultants/consultants_screen.dart';
 import 'profile/profile_screen.dart';
@@ -72,7 +74,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                if (user == null) {
+                  Navigator.pushReplacementNamed(context, Routes.login);
+                  return;
+                }
+                showModal(
+                  context: context,
+                  builder: (context) => const _ConsultationDialog(),
+                );
+              },
               elevation: 0,
               backgroundColor: BrandColors.orange,
               child: 'send_consultation'.svg,
@@ -83,6 +94,97 @@ class _HomeScreenState extends State<HomeScreen> {
           'profile'.buildBottomAppBarIcon(appLocalizations.profile),
         ],
       ),
+    );
+  }
+}
+
+class _ConsultationDialog extends StatelessWidget {
+  const _ConsultationDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              24.width,
+              22.height,
+              24.width,
+              18.height,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  appLocalizations.chooseConsultationType,
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    color: BrandColors.orange,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                20.emptyHeight,
+                _buildItem(
+                  context,
+                  appLocalizations,
+                  icon: 'normal_consultation',
+                  title: appLocalizations.normalConsultation,
+                  route: Routes.chooseConsultant,
+                ),
+                13.emptyHeight,
+                _buildItem(
+                  context,
+                  appLocalizations,
+                  icon: 'customized_consultation',
+                  title: appLocalizations.customizedConsultation,
+                  route: '',
+                ),
+              ],
+            ),
+          ),
+          Positioned.directional(
+            top: -25.height,
+            start: 10.width,
+            textDirection: TextDirection.rtl,
+            child: FloatingActionButton.small(
+              backgroundColor: Colors.white,
+              child: const Icon(
+                Icons.close,
+                color: BrandColors.gray,
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  ListTile _buildItem(
+    BuildContext context,
+    AppLocalizations appLocalizations, {
+    required String icon,
+    required String title,
+    required String route,
+  }) {
+    return ListTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: const BorderSide(color: BrandColors.gray),
+      ),
+      leading: icon.buidImageIcon(color: BrandColors.orange),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+      ),
+      onTap: () => Navigator.popAndPushNamed(context, route),
     );
   }
 }

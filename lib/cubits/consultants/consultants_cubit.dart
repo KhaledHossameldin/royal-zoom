@@ -21,6 +21,17 @@ class ConsultantsCubit extends Cubit<ConsultantsState> {
 
   void clearFilter() => _filter = _filter.clear();
 
+  void toggleSelection(int index) {
+    final currentState = (state as ConsultantsLoaded);
+    currentState.consultants[index].selected =
+        !currentState.consultants[index].selected;
+    emit(ConsultantsLoaded(
+      currentState.consultants,
+      canFetchMore: currentState.canFetchMore,
+      hasEndedScrolling: currentState.hasEndedScrolling,
+    ));
+  }
+
   void applyFilter({
     int? majorId,
     int? countryId,

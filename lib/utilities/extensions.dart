@@ -78,6 +78,11 @@ extension StringExtension on String {
     return Duration(hours: int.parse(time[0]), minutes: int.parse(time[1]));
   }
 
+  SvgPicture buildSVG({required Color color}) => SvgPicture.asset(
+        'assets/svgs/$this.svg',
+        colorFilter: ColorFilter.mode(color, BlendMode.modulate),
+      );
+
   ImageIcon buidImageIcon({
     double size = 20.0,
     Color color = Colors.black,

@@ -150,5 +150,12 @@
     "app_review_title": "كيف كانت تجربتك مع تطبيق رؤياك للاستشارات ؟",
     "comment": "تعليق",
     "write_comment": "... اكتب تعليق",
-    "show_name": "اظهر اسمي"
+    "show_name": "اظهر اسمي",
+    "choose_consultation_type": "اختر نوع الاستشارة",
+    "normal_consultation": "استشارة عادية",
+    "customized_consultation": "استشارة مخصصة",
+    "choose_consultant": "اختر المستشار",
+    "hide_from_consultant": "إخفاء الاسم عن المستشار",
+    "next": "التالي",
+    "cancel": "الغاء"
 }

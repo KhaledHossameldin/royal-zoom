@@ -38,6 +38,7 @@ class Consultant {
   Country? country;
   Nationality? nationality;
   Settings? settings;
+  bool selected;
 
   Consultant({
     required this.id,
@@ -66,6 +67,7 @@ class Consultant {
     this.country,
     this.nationality,
     this.settings,
+    this.selected = false,
   });
 
   Consultant copyWith({
@@ -95,6 +97,7 @@ class Consultant {
     Country? country,
     Nationality? nationality,
     Settings? settings,
+    bool? selected,
   }) =>
       Consultant(
         id: id ?? this.id,
@@ -123,6 +126,7 @@ class Consultant {
         country: country ?? this.country,
         nationality: nationality ?? this.nationality,
         settings: settings ?? this.settings,
+        selected: selected ?? this.selected,
       );
 
   Map<String, dynamic> toMap() {
@@ -207,7 +211,7 @@ class Consultant {
 
   @override
   String toString() =>
-      'Consultant(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, email: $email, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, phone: $phone, lastLoginAt: $lastLoginAt, country: $country, nationality: $nationality, settings: $settings)';
+      'Consultant(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, email: $email, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, phone: $phone, lastLoginAt: $lastLoginAt, country: $country, nationality: $nationality, settings: $settings, selected: $selected)';
 
   @override
   bool operator ==(Object other) {
@@ -239,7 +243,8 @@ class Consultant {
         other.lastLoginAt == lastLoginAt &&
         other.country == country &&
         other.nationality == nationality &&
-        other.settings == settings;
+        other.settings == settings &&
+        other.selected == selected;
   }
 
   @override
@@ -269,7 +274,8 @@ class Consultant {
       lastLoginAt.hashCode ^
       country.hashCode ^
       nationality.hashCode ^
-      settings.hashCode;
+      settings.hashCode ^
+      selected.hashCode;
 }
 
 class ConsultantContract {

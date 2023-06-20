@@ -294,6 +294,20 @@ class AppLocalizations {
 
   String get showName => _translate('show_name');
 
+  String get chooseConsultationType => _translate('choose_consultation_type');
+
+  String get normalConsultation => _translate('normal_consultation');
+
+  String get customizedConsultation => _translate('customized_consultation');
+
+  String get chooseConsultant => _translate('choose_consultant');
+
+  String get hideFromConsultant => _translate('hide_from_consultant');
+
+  String get next => _translate('next');
+
+  String get cancel => _translate('cancel');
+
   String getRate(int rate) {
     switch (rate) {
       case 1:

@@ -193,7 +193,7 @@ class _SearchTextField extends StatelessWidget {
           backgroundColor: BrandColors.darkGreen,
           onPressed: () => Navigator.pushNamed(
             context,
-            Routes.filter,
+            Routes.consultantFilter,
             arguments: context.read<ConsultantsCubit>(),
           ),
           child: 'filter'.svg,

@@ -11,14 +11,15 @@ import '../../../../utilities/extensions.dart';
 import '../../../cubits/consultants/consultants_cubit.dart';
 import '../../widgets/reload_widget.dart';
 
-class FilterScreen extends StatefulWidget {
-  const FilterScreen({super.key});
+class ConsultantsFilterScreen extends StatefulWidget {
+  const ConsultantsFilterScreen({super.key});
 
   @override
-  State<FilterScreen> createState() => _FilterScreenState();
+  State<ConsultantsFilterScreen> createState() =>
+      _ConsultantsFilterScreenState();
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
   int? reviews;
 
   @override

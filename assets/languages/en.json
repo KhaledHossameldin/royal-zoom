@@ -149,5 +149,12 @@
     "app_review_title": "How was your experience with the application of Royake for consulting?",
     "comment": "Comment",
     "write_comment": "Write comment ...",
-    "show_name": "Show name"
+    "show_name": "Show name",
+    "choose_consultation_type": "Choose the consultation type",
+    "normal_consultation": "Normal consultation",
+    "customized_consultation": "Customized consultation",
+    "choose_consultant": "Select consultant",
+    "hide_from_consultant": "Hide name from consultant",
+    "next": "Next",
+    "cancel": "Cancel"
 }

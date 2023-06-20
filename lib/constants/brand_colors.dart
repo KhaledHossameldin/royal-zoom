@@ -8,6 +8,7 @@ class BrandColors {
   static const purple = Color(0xFFA096FF);
   static const snowWhite = Color(0xFFF8F8F8);
   static const mediumGreen = Color(0xFF5D6864);
+  static const green = Color(0xFF5DBC2E);
   static const darkGreen = Color(0xFF1A4224);
   static const darkBlackGreen = Color(0xFF1A4224);
   static const lightBlue = Color(0xFF03BDDE);

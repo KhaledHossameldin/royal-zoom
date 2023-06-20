@@ -13,7 +13,7 @@ class Routes {
   static const registerSuccess = 'register-success-screen';
   static const termsAndConditions = 'terms-and-conditions-screen';
   static const privacyPolicy = 'privacy-policy-screen';
-  static const filter = 'filter-screen';
+  static const consultantFilter = 'consultants-filter-screen';
   static const consultantDetails = 'consultant-details-screen';
   static const consultantReport = 'consultant-report-screen';
   static const consultantReportSuccess = 'consultant-report-success-screen';
@@ -23,4 +23,7 @@ class Routes {
   static const termsAndConditionsDetails =
       'terms-and-conditions-details-screen';
   static const reviewApp = 'review-app-screen';
+  static const chooseConsultant = 'choose-consultant-screen';
+  static const sendConsultationFilter = 'send-consultation-filter-screen';
+  static const consultationContent = 'consultation-content-screen';
 }
