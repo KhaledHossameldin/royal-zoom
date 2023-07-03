@@ -2,9 +2,11 @@
   InfoPlist.strings
   Runner
 
-  Created by Khaled Hossameldin on 02/04/2023.
+  Created by Khaled Hossameldin on 30/06/2023.
   
 */
 
 "CFBundleDisplayName" = "Royake";
 "CFBundleName" = "Royake";
+
+"NSLocationWhenInUseUsageDescription" = "Royake would like to access your location";

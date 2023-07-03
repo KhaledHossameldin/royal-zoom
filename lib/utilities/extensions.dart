@@ -35,6 +35,8 @@ extension IntegerExtension on int {
       return '0$this';
     }
   }
+
+  String get seconds => '${(this ~/ 60).twoDigits}:${(this % 60).twoDigits}';
 }
 
 extension NumbersExtension on num {

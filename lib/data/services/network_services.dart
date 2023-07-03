@@ -12,6 +12,7 @@ import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
 import '../models/consultants/consultant.dart';
 import '../models/consultants/filters.dart';
+import '../models/consultations/fast.dart';
 import '../models/major.dart';
 import 'app_exception.dart';
 import 'shared_preferences_handler.dart';
@@ -20,6 +21,26 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<void> fastConsultation(
+    BuildContext context, {
+    required FastConsultation consultation,
+  }) async {
+    final files = await Future.wait(consultation.paths
+        .map((e) async => await _upload(context, path: e))
+        .toList());
+    final attachments =
+        files.map((e) => json.decode(e)['path'] as String).toList();
+    if (context.mounted) {
+      final response = await _post(
+        context,
+        Network.fastConsultation,
+        body: consultation.toMap(
+                attachments: Platform.isAndroid ? attachments : files)
+            as Map<String, Object>,
+      );
+    }
+  }
 
   Future<List<City>> cities(
     BuildContext context, {
@@ -143,6 +164,24 @@ class NetworkServices {
       'password': password,
     });
     return User.fromJson(response);
+  }
+
+  Future<String> _upload(
+    BuildContext context, {
+    required String path,
+  }) async {
+    try {
+      final request = http.MultipartRequest(
+          'POST', Uri.https(Network.domain, Network.upload))
+        // ignore: use_build_context_synchronously
+        ..headers.addAll(await _getHeaders(context))
+        ..files.add(await http.MultipartFile.fromPath('file', path));
+
+      final response = await request.send();
+      return await response.stream.bytesToString();
+    } catch (e) {
+      throw _getExceptionString(context, error: e as Exception);
+    }
   }
 
   Future<String> _get(

@@ -308,6 +308,71 @@ class AppLocalizations {
 
   String get cancel => _translate('cancel');
 
+  String get consultationContent => _translate('consultation_content');
+
+  String get chooseConsultationContent =>
+      _translate('choose_consultation_content');
+
+  String get consultation => _translate('consultation');
+
+  String get enterConsultation => _translate('enter_consultation');
+
+  String get attachedFiles => _translate('attached_files');
+
+  String get previous => _translate('previous');
+
+  String get searchEmpty => _translate('search_empty');
+
+  String get textType => _translate('text_type');
+
+  String get voiceType => _translate('voice_type');
+
+  String get filesLimitTitle => _translate('files_limit_title');
+
+  String get filesLimitSubtitle => _translate('files_limit_subtitle');
+
+  String get filesLimitError => _translate('files_limit_error');
+
+  String get filesSizeError => _translate('files_size_error');
+
+  String get consultantAnswer => _translate('consultant_answer');
+
+  String get answerPreference => _translate('answer_preference');
+
+  String get connectNowTitle => _translate('connect_now_title');
+
+  String get connectNowSubtitle => _translate('connect_now_subtitle');
+
+  String get voiceTitle => _translate('voice_title');
+
+  String get voiceSubtitle => _translate('voice_subtitle');
+
+  String get videoTitle => _translate('video_title');
+
+  String get videoSubtitle => _translate('video_subtitle');
+
+  String get consultationPriceTitle => _translate('consultation_price_title');
+
+  String get chooseConsultationTypeError =>
+      _translate('choose_consultation_type_error');
+
+  String get consultationPriceSubitle =>
+      _translate('consultation_price_subtitle');
+
+  String get consultationSentTitle => _translate('consultation_sent_title');
+
+  String get consultationSentSubtitle =>
+      _translate('consultation_sent_subtitle');
+
+  String get consultationSentNotifications =>
+      _translate('consultation_sent_notifications');
+
+  String get consultationSentContact => _translate('consultation_sent_contact');
+
+  String get payment => _translate('payment');
+
+  String get skip => _translate('skip');
+
   String getRate(int rate) {
     switch (rate) {
       case 1:

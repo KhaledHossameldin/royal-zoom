@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../constants/routes.dart';
 import '../cubits/consultants/consultants_cubit.dart';
+import '../cubits/consultation_recording/consultation_recording_cubit.dart';
+import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
 import '../data/models/consultants/consultant.dart';
 import '../presentation/screens/authentication/login_screen.dart';
@@ -27,8 +29,10 @@ import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
 import '../presentation/screens/send_consultations/normal/choose_consultant_screen.dart';
+import '../presentation/screens/send_consultations/normal/consultant_answer_screen.dart';
 import '../presentation/screens/send_consultations/normal/content_screen.dart';
 import '../presentation/screens/send_consultations/normal/filter_screen.dart';
+import '../presentation/screens/send_consultations/normal/sent_screen.dart';
 
 class AppRouter {
   static AppRouter instance = AppRouter._();
@@ -166,8 +170,11 @@ class AppRouter {
 
       case Routes.chooseConsultant:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => ConsultantsCubit(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ConsultantsCubit()),
+              BlocProvider(create: (context) => FastConsultationCubit()),
+            ],
             child: const ChooseConsultantScreen(),
           ),
         );
@@ -179,8 +186,33 @@ class AppRouter {
         );
 
       case Routes.consultationContent:
+        final cubit = settings.arguments as FastConsultationCubit;
         return MaterialPageRoute(
-          builder: (context) => const ConsultationContentScreen(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ConsultationRecordingCubit()),
+              BlocProvider.value(value: cubit),
+            ],
+            child: const ConsultationContentScreen(),
+          ),
+        );
+
+      case Routes.consultantAnswer:
+        final cubit = settings.arguments as FastConsultationCubit;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: cubit,
+            child: const ConsultantAnswerScreen(),
+          ),
+        );
+
+      case Routes.consultationSent:
+        final cubit = settings.arguments as FastConsultationCubit;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: cubit,
+            child: const ConsultationSentScreen(),
+          ),
         );
 
       default:

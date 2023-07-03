@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,6 +7,7 @@ import '../../../../constants/brand_colors.dart';
 import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
 import '../../../../cubits/consultants/consultants_cubit.dart';
+import '../../../../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../../../../data/models/consultants/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
@@ -21,7 +24,7 @@ class ChooseConsultantScreen extends StatefulWidget {
 class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
   final _controller = TextEditingController();
   final _showBottom = ValueNotifier<bool>(false);
-  final _selected = ValueNotifier<int>(0);
+  final _consultantId = ValueNotifier<int>(-1);
   bool _isHideName = false;
 
   @override
@@ -43,7 +46,7 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
     return Scaffold(
       backgroundColor: BrandColors.snowWhite,
       appBar: AppBar(
-        toolbarHeight: kToolbarHeight * 1.2,
+        toolbarHeight: kToolbarHeight * 1.5,
         centerTitle: true,
         title: Column(
           children: [
@@ -65,16 +68,19 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
                 padding: 8.width,
                 progress: 0.33,
               ),
-              child: const Center(
-                child: Text.rich(
-                  style: TextStyle(color: BrandColors.gray),
-                  TextSpan(children: [
-                    TextSpan(
-                      text: '1',
-                      style: TextStyle(color: BrandColors.orange),
-                    ),
-                    TextSpan(text: '/3'),
-                  ]),
+              child: Transform.translate(
+                offset: const Offset(0, 2),
+                child: const Center(
+                  child: Text.rich(
+                    style: TextStyle(color: BrandColors.gray),
+                    TextSpan(children: [
+                      TextSpan(
+                        text: '1',
+                        style: TextStyle(color: BrandColors.orange),
+                      ),
+                      TextSpan(text: '/3'),
+                    ]),
+                  ),
                 ),
               ),
             ),
@@ -95,27 +101,28 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
               return const Center(child: CircularProgressIndicator());
 
             case ConsultantsEmpty:
-              return Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 27.width,
-                      right: 27.width,
-                      top: 10.height,
-                    ),
-                    child: _SearchTextField(controller: _controller),
-                  ),
-                  Expanded(
-                    child: ReloadWidget(
-                      title: appLocalizations.consultantsEmpty,
-                      buttonText: appLocalizations.getReload(
-                        appLocalizations.consultations,
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: 27.width,
+                  right: 27.width,
+                  top: 10.height,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _SearchTextField(controller: _controller),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          'consultants_empty'.svg,
+                          16.emptyHeight,
+                          Text(appLocalizations.searchEmpty),
+                        ],
                       ),
-                      onPressed: () =>
-                          context.read<ConsultantsCubit>().fetch(context),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
 
             case ConsultantsLoaded:
@@ -139,7 +146,7 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
                     _SliverSearchTextField(controller: _controller),
                     _SliverListView(
                       consultants: consultants,
-                      selected: _selected,
+                      selected: _consultantId,
                     ),
                     if (state.canFetchMore)
                       SliverPadding(
@@ -167,11 +174,11 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
           }
         },
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: _buildBottomNavigationBar,
     );
   }
 
-  ValueListenableBuilder<bool> _buildBottomNavigationBar() {
+  ValueListenableBuilder<bool> get _buildBottomNavigationBar {
     final appLocalizations = AppLocalizations.of(context);
 
     return ValueListenableBuilder<bool>(
@@ -209,15 +216,16 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
                     left: 27.width,
                     top: 24.height,
                     right: 27.width,
+                    bottom: Platform.isAndroid ? 17.height : 0.0,
                   ),
                   child: Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
+                        child: OutlinedButton(
                           onPressed: () => Navigator.pop(context),
-                          style: ElevatedButton.styleFrom(
+                          style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.grey.shade700,
-                            backgroundColor: Colors.grey.shade100,
+                            side: const BorderSide(color: Colors.grey),
                           ),
                           child: Text(appLocalizations.cancel),
                         ),
@@ -227,10 +235,24 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
                         child: Directionality(
                           textDirection: TextDirection.ltr,
                           child: ValueListenableBuilder<int>(
-                            valueListenable: _selected,
+                            valueListenable: _consultantId,
                             builder: (context, value, child) =>
                                 ElevatedButton.icon(
-                              onPressed: value <= 0 ? null : () {},
+                              onPressed: value <= -1
+                                  ? null
+                                  : () {
+                                      final cubit =
+                                          context.read<FastConsultationCubit>();
+                                      cubit.chooseConsultant(
+                                        _consultantId.value,
+                                        isHideName: _isHideName,
+                                      );
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.consultationContent,
+                                        arguments: cubit,
+                                      );
+                                    },
                               icon: const Icon(
                                 Icons.keyboard_double_arrow_left_outlined,
                               ),
@@ -259,18 +281,20 @@ class _SliverListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.height,
-        horizontal: 27.width,
-      ),
-      sliver: SliverList.separated(
-        itemCount: consultants.length,
-        separatorBuilder: (context, index) => 10.emptyHeight,
-        itemBuilder: (context, index) => _ConsultantItem(
-          index: index,
-          consultant: consultants[index],
-          selected: selected,
+    return ValueListenableBuilder(
+      valueListenable: selected,
+      builder: (context, value, child) => SliverPadding(
+        padding: EdgeInsets.symmetric(
+          vertical: 10.height,
+          horizontal: 27.width,
+        ),
+        sliver: SliverList.separated(
+          itemCount: consultants.length,
+          separatorBuilder: (context, index) => 10.emptyHeight,
+          itemBuilder: (context, index) => _ConsultantItem(
+            consultant: consultants[index],
+            selected: selected,
+          ),
         ),
       ),
     );
@@ -279,12 +303,10 @@ class _SliverListView extends StatelessWidget {
 
 class _ConsultantItem extends StatelessWidget {
   const _ConsultantItem({
-    required this.index,
     required this.consultant,
     required this.selected,
   });
 
-  final int index;
   final Consultant consultant;
   final ValueNotifier<int> selected;
 
@@ -298,18 +320,13 @@ class _ConsultantItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
         side: BorderSide(
-          color: consultant.selected ? BrandColors.green : BrandColors.gray,
-          width: consultant.selected ? 2.0 : 1.0,
+          color: selected.value == consultant.id
+              ? BrandColors.green
+              : BrandColors.gray,
+          width: selected.value == consultant.id ? 2.0 : 1.0,
         ),
       ),
-      onTap: () {
-        context.read<ConsultantsCubit>().toggleSelection(index);
-        if (consultant.selected) {
-          selected.value++;
-        } else {
-          selected.value--;
-        }
-      },
+      onTap: () => selected.value = consultant.id,
       leading: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
@@ -388,8 +405,9 @@ class _ConsultantItem extends StatelessWidget {
         ],
       ),
       trailing: CircleAvatar(
-        backgroundColor:
-            consultant.selected ? BrandColors.green : Colors.grey.shade400,
+        backgroundColor: selected.value == consultant.id
+            ? BrandColors.green
+            : Colors.grey.shade400,
         child: const Icon(Icons.done, color: Colors.white),
       ),
     );

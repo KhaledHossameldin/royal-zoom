@@ -4,6 +4,7 @@ import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
 import '../models/consultants/filters.dart';
+import '../models/consultations/fast.dart';
 import '../models/major.dart';
 import 'location_services.dart';
 import 'network_services.dart';
@@ -16,6 +17,12 @@ class Repository {
   final _network = NetworkServices.instance;
   final _sharedPreferences = SharedPreferencesHandler.instance;
   final _location = LocationServices.instance;
+
+  Future<void> fastConsultation(
+    BuildContext context, {
+    required FastConsultation consultation,
+  }) async =>
+      _network.fastConsultation(context, consultation: consultation);
 
   Future<List<City>> cities(
     BuildContext context, {
@@ -101,6 +108,7 @@ class Repository {
       username: username,
       password: password,
     );
+    await _sharedPreferences.setToken(user.token);
     if (isRemember) {
       await _sharedPreferences.setUser(user);
     }

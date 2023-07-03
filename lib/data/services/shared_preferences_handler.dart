@@ -57,7 +57,7 @@ class SharedPreferencesHandler {
   Future<String> getToken() async {
     final preferences = await SharedPreferences.getInstance();
     final token = preferences.getString(PreferencesKeys.token) ?? '';
-    return 'bearer $token';
+    return 'Bearer $token';
   }
 
   Future<void> setUser(User user) async {
