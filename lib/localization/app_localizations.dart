@@ -166,8 +166,6 @@ class AppLocalizations {
 
   String get reviews => _translate('reviews');
 
-  String get speaks => _translate('speaks');
-
   String get experienceYears => _translate('experience_years');
 
   String get report => _translate('report');
@@ -372,6 +370,32 @@ class AppLocalizations {
   String get payment => _translate('payment');
 
   String get skip => _translate('skip');
+
+  String get viewVerifiedOnly => _translate('view_verified_only');
+
+  String get pricePerHour => _translate('price_per_hour');
+
+  String get from => _translate('from');
+
+  String get to => _translate('to');
+
+  String get sar => _translate('sar');
+
+  String get viewResults => _translate('view_results');
+
+  String get reset => _translate('reset');
+
+  String get majorPricePerHour => _translate('major_price_per_hour');
+
+  String get answerDuration => _translate('answer_duration');
+
+  String getStars(int count) => Intl.plural(
+        count,
+        zero: _translate('not_reviewed'),
+        one: _translate('one_star'),
+        two: _translate('two_stars'),
+        other: '$count ${_translate('نجوم')}',
+      );
 
   String getRate(int rate) {
     switch (rate) {

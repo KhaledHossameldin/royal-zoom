@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utilities/extensions.dart';
@@ -10,64 +11,46 @@ import '../../enums/user_type.dart';
 import '../authentication/country.dart';
 import '../authentication/nationality.dart';
 import '../authentication/settings.dart';
+import '../person.dart';
+import 'default_major.dart';
 
-class Consultant {
-  int id;
-  String uuid;
-  String image;
-  num walletBalance;
-  Gender gender;
-  Color color;
-  PreviewStatus previewStatus;
-  UserStatus status;
-  UserType type;
-  DateTime createdAt;
-  String? email;
-  int? countryId;
-  int? nationalityId;
-  int? cityId;
-  int? countryTimeZoneId;
-  int? languageId;
-  int? currencyId;
-  String? firstName;
-  String? middleName;
-  String? lastName;
-  String? previewName;
-  String? phone;
-  DateTime? lastLoginAt;
-  Country? country;
-  Nationality? nationality;
-  Settings? settings;
-  bool selected;
+class Consultant extends Account {
+  final bool isFavourite;
+  final DefaultMajor major;
+  final List<DefaultMajor> majors;
 
   Consultant({
-    required this.id,
-    required this.uuid,
-    required this.image,
-    required this.walletBalance,
-    required this.gender,
-    required this.color,
-    required this.previewStatus,
-    required this.status,
-    required this.type,
-    required this.createdAt,
-    this.email,
-    this.countryId,
-    this.nationalityId,
-    this.cityId,
-    this.countryTimeZoneId,
-    this.languageId,
-    this.currencyId,
-    this.firstName,
-    this.middleName,
-    this.lastName,
-    this.previewName,
-    this.phone,
-    this.lastLoginAt,
-    this.country,
-    this.nationality,
-    this.settings,
-    this.selected = false,
+    required super.id,
+    required super.uuid,
+    required super.image,
+    required super.walletBalance,
+    required super.gender,
+    required super.color,
+    required super.previewStatus,
+    required super.status,
+    required super.type,
+    required super.createdAt,
+    super.countryId,
+    super.nationalityId,
+    super.cityId,
+    super.countryTimeZoneId,
+    super.languageId,
+    super.currencyId,
+    super.firstName,
+    super.middleName,
+    super.lastName,
+    super.previewName,
+    super.email,
+    super.phone,
+    super.lastLoginAt,
+    super.emailVerifiedAt,
+    super.phoneVerifiedAt,
+    super.country,
+    super.nationality,
+    super.settings,
+    required this.isFavourite,
+    required this.major,
+    required this.majors,
   });
 
   Consultant copyWith({
@@ -81,7 +64,6 @@ class Consultant {
     UserStatus? status,
     UserType? type,
     DateTime? createdAt,
-    String? email,
     int? countryId,
     int? nationalityId,
     int? cityId,
@@ -92,45 +74,55 @@ class Consultant {
     String? middleName,
     String? lastName,
     String? previewName,
+    String? email,
     String? phone,
     DateTime? lastLoginAt,
+    DateTime? emailVerifiedAt,
+    DateTime? phoneVerifiedAt,
     Country? country,
     Nationality? nationality,
     Settings? settings,
-    bool? selected,
-  }) =>
-      Consultant(
-        id: id ?? this.id,
-        uuid: uuid ?? this.uuid,
-        image: image ?? this.image,
-        walletBalance: walletBalance ?? this.walletBalance,
-        gender: gender ?? this.gender,
-        color: color ?? this.color,
-        previewStatus: previewStatus ?? this.previewStatus,
-        status: status ?? this.status,
-        type: type ?? this.type,
-        createdAt: createdAt ?? this.createdAt,
-        email: email ?? this.email,
-        countryId: countryId ?? this.countryId,
-        nationalityId: nationalityId ?? this.nationalityId,
-        cityId: cityId ?? this.cityId,
-        countryTimeZoneId: countryTimeZoneId ?? this.countryTimeZoneId,
-        languageId: languageId ?? this.languageId,
-        currencyId: currencyId ?? this.currencyId,
-        firstName: firstName ?? this.firstName,
-        middleName: middleName ?? this.middleName,
-        lastName: lastName ?? this.lastName,
-        previewName: previewName ?? this.previewName,
-        phone: phone ?? this.phone,
-        lastLoginAt: lastLoginAt ?? this.lastLoginAt,
-        country: country ?? this.country,
-        nationality: nationality ?? this.nationality,
-        settings: settings ?? this.settings,
-        selected: selected ?? this.selected,
-      );
+    bool? isFavourite,
+    DefaultMajor? major,
+    List<DefaultMajor>? majors,
+  }) {
+    return Consultant(
+      id: id ?? super.id,
+      uuid: uuid ?? super.uuid,
+      image: image ?? super.image,
+      walletBalance: walletBalance ?? super.walletBalance,
+      color: color ?? super.color,
+      gender: gender ?? super.gender,
+      previewStatus: previewStatus ?? super.previewStatus,
+      status: status ?? super.status,
+      type: type ?? super.type,
+      createdAt: createdAt ?? super.createdAt,
+      countryId: countryId ?? super.countryId,
+      nationalityId: nationalityId ?? super.nationalityId,
+      cityId: cityId ?? super.cityId,
+      countryTimeZoneId: countryTimeZoneId ?? super.countryTimeZoneId,
+      languageId: languageId ?? super.languageId,
+      currencyId: currencyId ?? super.currencyId,
+      firstName: firstName ?? super.firstName,
+      middleName: middleName ?? super.middleName,
+      lastName: lastName ?? super.lastName,
+      previewName: previewName ?? super.previewName,
+      email: email ?? super.email,
+      phone: phone ?? super.phone,
+      lastLoginAt: lastLoginAt ?? super.lastLoginAt,
+      emailVerifiedAt: emailVerifiedAt ?? super.emailVerifiedAt,
+      phoneVerifiedAt: phoneVerifiedAt ?? super.phoneVerifiedAt,
+      country: country ?? super.country,
+      nationality: nationality ?? super.nationality,
+      settings: settings ?? super.settings,
+      isFavourite: isFavourite ?? this.isFavourite,
+      major: major ?? this.major,
+      majors: majors ?? this.majors,
+    );
+  }
 
   Map<String, dynamic> toMap() {
-    final contract = ConsultantContract();
+    final contract = _ConsultantContract();
 
     return {
       contract.id: id,
@@ -159,11 +151,16 @@ class Consultant {
       contract.country: country?.toMap(),
       contract.nationality: nationality?.toMap(),
       contract.settings: settings?.toMap(),
+      contract.emailVerifiedAt: emailVerifiedAt?.toIso8601String(),
+      contract.phoneVerifiedAt: phoneVerifiedAt?.toIso8601String(),
+      contract.isFavourite: isFavourite,
+      contract.major: major.toMap(),
+      contract.majors: majors.map((x) => x.toMap()).toList(),
     };
   }
 
   factory Consultant.fromMap(Map<String, dynamic> map) {
-    final contract = ConsultantContract();
+    final contract = _ConsultantContract();
 
     return Consultant(
       id: map[contract.id]?.toInt() ?? 0,
@@ -201,6 +198,16 @@ class Consultant {
       settings: map[contract.settings] != null
           ? Settings.fromMap(map[contract.settings])
           : null,
+      emailVerifiedAt: map[contract.emailVerifiedAt] != null
+          ? DateTime.parse(map[contract.emailVerifiedAt])
+          : null,
+      phoneVerifiedAt: map[contract.phoneVerifiedAt] != null
+          ? DateTime.parse(map[contract.phoneVerifiedAt])
+          : null,
+      isFavourite: map[contract.isFavourite] ?? false,
+      major: DefaultMajor.fromMap(map[contract.major]),
+      majors: List<DefaultMajor>.from(
+          map[contract.majors]?.map((x) => DefaultMajor.fromMap(x))),
     );
   }
 
@@ -211,7 +218,7 @@ class Consultant {
 
   @override
   String toString() =>
-      'Consultant(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, email: $email, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, phone: $phone, lastLoginAt: $lastLoginAt, country: $country, nationality: $nationality, settings: $settings, selected: $selected)';
+      'Consultant(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, email: $email, phone: $phone, lastLoginAt: $lastLoginAt, emailVerifiedAt: $emailVerifiedAt, phoneVerifiedAt: $phoneVerifiedAt, country: $country, nationality: $nationality, settings: $settings, isFavourite: $isFavourite, major: $major, majors: $majors)';
 
   @override
   bool operator ==(Object other) {
@@ -228,7 +235,6 @@ class Consultant {
         other.status == status &&
         other.type == type &&
         other.createdAt == createdAt &&
-        other.email == email &&
         other.countryId == countryId &&
         other.nationalityId == nationalityId &&
         other.cityId == cityId &&
@@ -239,12 +245,17 @@ class Consultant {
         other.middleName == middleName &&
         other.lastName == lastName &&
         other.previewName == previewName &&
+        other.email == email &&
         other.phone == phone &&
         other.lastLoginAt == lastLoginAt &&
+        other.emailVerifiedAt == emailVerifiedAt &&
+        other.phoneVerifiedAt == phoneVerifiedAt &&
         other.country == country &&
         other.nationality == nationality &&
         other.settings == settings &&
-        other.selected == selected;
+        other.isFavourite == isFavourite &&
+        other.major == major &&
+        listEquals(other.majors, majors);
   }
 
   @override
@@ -259,7 +270,6 @@ class Consultant {
       status.hashCode ^
       type.hashCode ^
       createdAt.hashCode ^
-      email.hashCode ^
       countryId.hashCode ^
       nationalityId.hashCode ^
       cityId.hashCode ^
@@ -270,39 +280,21 @@ class Consultant {
       middleName.hashCode ^
       lastName.hashCode ^
       previewName.hashCode ^
+      email.hashCode ^
       phone.hashCode ^
       lastLoginAt.hashCode ^
+      emailVerifiedAt.hashCode ^
+      phoneVerifiedAt.hashCode ^
       country.hashCode ^
       nationality.hashCode ^
       settings.hashCode ^
-      selected.hashCode;
+      isFavourite.hashCode ^
+      major.hashCode ^
+      majors.hashCode;
 }
 
-class ConsultantContract {
-  final id = 'id';
-  final uuid = 'uuid';
-  final image = 'image';
-  final walletBalance = 'wallet_balance';
-  final gender = 'gender';
-  final color = 'color';
-  final previewStatus = 'preview_status';
-  final status = 'status';
-  final type = 'user_type';
-  final createdAt = 'created_at';
-  final email = 'email';
-  final countryId = 'country_id';
-  final nationalityId = 'nationality_id';
-  final cityId = 'city_id';
-  final countryTimeZoneId = 'country_time_zone_id';
-  final languageId = 'language_id';
-  final currencyId = 'currency_id';
-  final firstName = 'first_name';
-  final middleName = 'middle_name';
-  final lastName = 'last_name';
-  final previewName = 'preview_name';
-  final phone = 'phone';
-  final lastLoginAt = 'last_login_at';
-  final country = 'country';
-  final nationality = 'nationality';
-  final settings = 'settings';
+class _ConsultantContract extends PersonContract {
+  final isFavourite = 'is_favourite';
+  final major = 'default_major';
+  final majors = 'majors';
 }

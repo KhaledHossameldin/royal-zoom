@@ -7,7 +7,7 @@ import '../../enums/gender.dart';
 import '../../enums/perview_status.dart';
 import '../../enums/user_status.dart';
 import '../../enums/user_type.dart';
-import '../consultants/consultant.dart';
+import '../person.dart';
 import 'city.dart';
 import 'country.dart';
 import 'currency.dart';
@@ -16,7 +16,7 @@ import 'nationality.dart';
 import 'settings.dart';
 import 'timezone.dart';
 
-class UserData extends Consultant {
+class UserData extends Account {
   City? city;
   Language? language;
   Timezone? timezone;
@@ -33,7 +33,6 @@ class UserData extends Consultant {
     required super.status,
     required super.type,
     required super.createdAt,
-    super.email,
     super.countryId,
     super.nationalityId,
     super.cityId,
@@ -44,8 +43,11 @@ class UserData extends Consultant {
     super.middleName,
     super.lastName,
     super.previewName,
+    super.email,
     super.phone,
     super.lastLoginAt,
+    super.emailVerifiedAt,
+    super.phoneVerifiedAt,
     super.country,
     super.nationality,
     super.settings,
@@ -55,7 +57,6 @@ class UserData extends Consultant {
     this.currency,
   });
 
-  @override
   UserData copyWith({
     int? id,
     String? uuid,
@@ -67,7 +68,6 @@ class UserData extends Consultant {
     UserStatus? status,
     UserType? type,
     DateTime? createdAt,
-    String? email,
     int? countryId,
     int? nationalityId,
     int? cityId,
@@ -78,8 +78,11 @@ class UserData extends Consultant {
     String? middleName,
     String? lastName,
     String? previewName,
+    String? email,
     String? phone,
     DateTime? lastLoginAt,
+    DateTime? emailVerifiedAt,
+    DateTime? phoneVerifiedAt,
     Country? country,
     Nationality? nationality,
     Settings? settings,
@@ -87,42 +90,43 @@ class UserData extends Consultant {
     Language? language,
     Timezone? timezone,
     Currency? currency,
-    bool? selected,
-  }) =>
-      UserData(
-        id: id ?? this.id,
-        uuid: uuid ?? this.uuid,
-        image: image ?? this.image,
-        walletBalance: walletBalance ?? this.walletBalance,
-        gender: gender ?? this.gender,
-        color: color ?? this.color,
-        previewStatus: previewStatus ?? this.previewStatus,
-        status: status ?? this.status,
-        type: type ?? this.type,
-        createdAt: createdAt ?? this.createdAt,
-        email: email ?? this.email,
-        countryId: countryId ?? this.countryId,
-        nationalityId: nationalityId ?? this.nationalityId,
-        cityId: cityId ?? this.cityId,
-        countryTimeZoneId: countryTimeZoneId ?? this.countryTimeZoneId,
-        languageId: languageId ?? this.languageId,
-        currencyId: currencyId ?? this.currencyId,
-        firstName: firstName ?? this.firstName,
-        middleName: middleName ?? this.middleName,
-        lastName: lastName ?? this.lastName,
-        previewName: previewName ?? this.previewName,
-        phone: phone ?? this.phone,
-        lastLoginAt: lastLoginAt ?? this.lastLoginAt,
-        country: country ?? this.country,
-        nationality: nationality ?? this.nationality,
-        settings: settings ?? this.settings,
-        city: city ?? this.city,
-        language: language ?? this.language,
-        timezone: timezone ?? this.timezone,
-        currency: currency ?? this.currency,
-      );
+  }) {
+    return UserData(
+      id: id ?? super.id,
+      uuid: uuid ?? super.uuid,
+      image: image ?? super.image,
+      walletBalance: walletBalance ?? super.walletBalance,
+      color: color ?? super.color,
+      gender: gender ?? super.gender,
+      previewStatus: previewStatus ?? super.previewStatus,
+      status: status ?? super.status,
+      type: type ?? super.type,
+      createdAt: createdAt ?? super.createdAt,
+      countryId: countryId ?? super.countryId,
+      nationalityId: nationalityId ?? super.nationalityId,
+      cityId: cityId ?? super.cityId,
+      countryTimeZoneId: countryTimeZoneId ?? super.countryTimeZoneId,
+      languageId: languageId ?? super.languageId,
+      currencyId: currencyId ?? super.currencyId,
+      firstName: firstName ?? super.firstName,
+      middleName: middleName ?? super.middleName,
+      lastName: lastName ?? super.lastName,
+      previewName: previewName ?? super.previewName,
+      email: email ?? super.email,
+      phone: phone ?? super.phone,
+      lastLoginAt: lastLoginAt ?? super.lastLoginAt,
+      emailVerifiedAt: emailVerifiedAt ?? super.emailVerifiedAt,
+      phoneVerifiedAt: phoneVerifiedAt ?? super.phoneVerifiedAt,
+      country: country ?? super.country,
+      nationality: nationality ?? super.nationality,
+      settings: settings ?? super.settings,
+      city: city ?? this.city,
+      language: language ?? this.language,
+      timezone: timezone ?? this.timezone,
+      currency: currency ?? this.currency,
+    );
+  }
 
-  @override
   Map<String, dynamic> toMap() {
     final contract = _UserDataContract();
 
@@ -153,6 +157,8 @@ class UserData extends Consultant {
       contract.country: country?.toMap(),
       contract.nationality: nationality?.toMap(),
       contract.settings: settings?.toMap(),
+      contract.emailVerifiedAt: emailVerifiedAt?.toIso8601String(),
+      contract.phoneVerifiedAt: phoneVerifiedAt?.toIso8601String(),
       contract.city: city?.toMap(),
       contract.language: language?.toMap(),
       contract.timezone: timezone?.toMap(),
@@ -199,6 +205,12 @@ class UserData extends Consultant {
       settings: map[contract.settings] != null
           ? Settings.fromMap(map[contract.settings])
           : null,
+      emailVerifiedAt: map[contract.emailVerifiedAt] != null
+          ? DateTime.parse(map[contract.emailVerifiedAt])
+          : null,
+      phoneVerifiedAt: map[contract.phoneVerifiedAt] != null
+          ? DateTime.parse(map[contract.phoneVerifiedAt])
+          : null,
       city:
           map[contract.city] != null ? City.fromMap(map[contract.city]) : null,
       language: map[contract.language] != null
@@ -213,15 +225,15 @@ class UserData extends Consultant {
     );
   }
 
-  @override
   String toJson() => json.encode(toMap());
 
   factory UserData.fromJson(String source) =>
       UserData.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'UserData((id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, email: $email, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, phone: $phone, lastLoginAt: $lastLoginAt, country: $country, nationality: $nationality, settings: $settings, city: $city, language: $language, timezone: $timezone, currency: $currency)';
+  String toString() {
+    return 'UserData(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, email: $email, phone: $phone, lastLoginAt: $lastLoginAt, emailVerifiedAt: $emailVerifiedAt, phoneVerifiedAt: $phoneVerifiedAt, country: $country, nationality: $nationality, settings: $settings, city: $city, language: $language, timezone: $timezone, currency: $currency)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -238,7 +250,6 @@ class UserData extends Consultant {
         other.status == status &&
         other.type == type &&
         other.createdAt == createdAt &&
-        other.email == email &&
         other.countryId == countryId &&
         other.nationalityId == nationalityId &&
         other.cityId == cityId &&
@@ -249,8 +260,11 @@ class UserData extends Consultant {
         other.middleName == middleName &&
         other.lastName == lastName &&
         other.previewName == previewName &&
+        other.email == email &&
         other.phone == phone &&
         other.lastLoginAt == lastLoginAt &&
+        other.emailVerifiedAt == emailVerifiedAt &&
+        other.phoneVerifiedAt == phoneVerifiedAt &&
         other.country == country &&
         other.nationality == nationality &&
         other.settings == settings &&
@@ -272,7 +286,6 @@ class UserData extends Consultant {
       status.hashCode ^
       type.hashCode ^
       createdAt.hashCode ^
-      email.hashCode ^
       countryId.hashCode ^
       nationalityId.hashCode ^
       cityId.hashCode ^
@@ -283,8 +296,11 @@ class UserData extends Consultant {
       middleName.hashCode ^
       lastName.hashCode ^
       previewName.hashCode ^
+      email.hashCode ^
       phone.hashCode ^
       lastLoginAt.hashCode ^
+      emailVerifiedAt.hashCode ^
+      phoneVerifiedAt.hashCode ^
       country.hashCode ^
       nationality.hashCode ^
       settings.hashCode ^
@@ -294,7 +310,7 @@ class UserData extends Consultant {
       currency.hashCode;
 }
 
-class _UserDataContract extends ConsultantContract {
+class _UserDataContract extends PersonContract {
   final city = 'city';
   final language = 'language';
   final timezone = 'timezone';

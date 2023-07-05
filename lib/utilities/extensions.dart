@@ -66,6 +66,11 @@ extension StringExtension on String {
 
   LottieBuilder get lottie => Lottie.asset('assets/lottie/$this.json');
 
+  LottieBuilder get lottieOneTime => Lottie.asset(
+        'assets/lottie/$this.json',
+        repeat: false,
+      );
+
   Image get permissionImage =>
       Image.asset('assets/images/permissions/$this.png');
 

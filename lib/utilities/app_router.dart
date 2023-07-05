@@ -180,9 +180,18 @@ class AppRouter {
         );
 
       case Routes.sendConsultationFilter:
-        return MaterialPageRoute(
+        final arguments = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute<int>(
           fullscreenDialog: true,
-          builder: (context) => const SendConsultantionFilterScreen(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => FilterCubit()),
+              BlocProvider<ConsultantsCubit>.value(
+                  value: arguments['cubit'] as ConsultantsCubit),
+            ],
+            child: SendConsultantionFilterScreen(
+                maxPrice: arguments['maxPrice'] as num),
+          ),
         );
 
       case Routes.consultationContent:
@@ -207,12 +216,9 @@ class AppRouter {
         );
 
       case Routes.consultationSent:
-        final cubit = settings.arguments as FastConsultationCubit;
         return MaterialPageRoute(
-          builder: (context) => BlocProvider.value(
-            value: cubit,
-            child: const ConsultationSentScreen(),
-          ),
+          settings: settings,
+          builder: (context) => const ConsultationSentScreen(),
         );
 
       default:

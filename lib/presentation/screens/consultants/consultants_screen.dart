@@ -300,12 +300,36 @@ class _ConsultantItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      consultant.previewName ?? appLocalizations.none,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodySmall!.copyWith(
-                        color: Colors.white,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          consultant.previewName ?? appLocalizations.none,
+                          overflow: TextOverflow.ellipsis,
+                          style: textTheme.bodySmall!.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                        if (consultant.major.isVerified)
+                          Row(
+                            children: [
+                              5.emptyWidth,
+                              SizedBox.square(
+                                dimension: 10.width,
+                                child: 'verified'.png,
+                              ),
+                            ],
+                          ),
+                        if (consultant.major.isActive)
+                          Row(
+                            children: [
+                              5.emptyWidth,
+                              CircleAvatar(
+                                backgroundColor: Colors.green,
+                                radius: 5.width,
+                              ),
+                            ],
+                          ),
+                      ],
                     ),
                     2.emptyHeight,
                     Text(
@@ -334,8 +358,14 @@ class _ConsultantItem extends StatelessWidget {
                           ),
                           onRatingUpdate: (value) {},
                         ),
-                        Text(
-                          '${60.0.round()} ${appLocalizations.sarH}',
+                        Text.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: '${consultant.major.pricePerHour.round()} ',
+                              style: const TextStyle(color: BrandColors.orange),
+                            ),
+                            TextSpan(text: appLocalizations.sarH),
+                          ]),
                           style: const TextStyle(
                             fontSize: 10.0,
                             color: Colors.white,

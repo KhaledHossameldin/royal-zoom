@@ -23,7 +23,7 @@ class ConsultationSentScreen extends StatelessWidget {
               children: [
                 SizedBox.square(
                   dimension: 280.width,
-                  child: 'report'.lottie,
+                  child: 'report'.lottieOneTime,
                 ),
                 25.emptyHeight,
                 Text.rich(
@@ -38,7 +38,9 @@ class ConsultationSentScreen extends StatelessWidget {
                         text: appLocalizations.consultationSentTitle,
                         style: const TextStyle(color: BrandColors.orange),
                       ),
-                      const TextSpan(text: ' 215245'),
+                      TextSpan(
+                        text: ' ${ModalRoute.of(context)!.settings.arguments}',
+                      ),
                     ],
                   ),
                   textAlign: TextAlign.center,

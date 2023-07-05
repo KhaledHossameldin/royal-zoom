@@ -146,41 +146,34 @@ class _SocialRow extends StatelessWidget {
   Widget build(BuildContext context) => Card(
         elevation: 0.0,
         color: Colors.grey.shade100,
-        child: SizedBox(
-          width: double.infinity,
-          child: Wrap(
-            alignment: WrapAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: 'linkedin'.svg,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: 'twitter'.svg,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: 'facebook'.svg,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: 'instagram'.svg,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: 'whatsapp'.svg,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: 'youtube'.svg,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: 'snapchat'.svg,
-              ),
-            ],
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: 'linkedin'.svg,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: 'twitter'.svg,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: 'facebook'.svg,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: 'instagram'.svg,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: 'whatsapp'.svg,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: 'youtube'.svg,
+            ),
+          ],
         ),
       );
 }
@@ -581,129 +574,108 @@ class _Header extends StatelessWidget {
     );
   }
 
-  Column _buildFourthRow(
+  StatefulBuilder _buildFourthRow(
     AppLocalizations appLocalizations,
     TextTheme textTheme,
   ) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RichText(
+      StatefulBuilder(
+        builder: (context, setState) {
+          final majors = RichText(
             text: TextSpan(
+              style: textTheme.bodySmall!.copyWith(
+                color: Colors.grey.shade800,
+                fontWeight: FontWeight.normal,
+              ),
               children: [
                 TextSpan(
-                  text: '${appLocalizations.speaks} :',
-                  style: textTheme.bodySmall!.copyWith(
-                    color: Colors.grey.shade700,
-                    fontWeight: FontWeight.normal,
-                  ),
+                  text:
+                      '${appLocalizations.getMajor(false)} :\nقضايا الاعتداء الجسدي, قضايا الاعتداء المالي , قضايا الاعتداء الجسدي قضايا الاعتداء المالي',
                 ),
-                WidgetSpan(child: SizedBox(width: 15.width)),
-                TextSpan(
-                  text: 'الانكليزية',
-                  style: textTheme.bodySmall!.copyWith(
-                    color: Colors.black,
+                WidgetSpan(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 6.width),
+                    child: MaterialButton(
+                      onPressed: () => setState(() => _isShowPrices = true),
+                      elevation: 0.0,
+                      height: 23.height,
+                      highlightElevation: 0.0,
+                      shape: const StadiumBorder(),
+                      textColor: BrandColors.orange,
+                      color: BrandColors.orange.withOpacity(0.2),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      child: Text(
+                        appLocalizations.showPrices,
+                        style: const TextStyle(fontSize: 10.0),
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-          5.emptyHeight,
-          StatefulBuilder(
-            builder: (context, setState) {
-              final majors = RichText(
-                text: TextSpan(
-                  style: textTheme.bodySmall!.copyWith(
-                    color: Colors.grey.shade800,
-                    fontWeight: FontWeight.normal,
+          );
+          final prices = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: TextButton.icon(
+                  onPressed: () => setState(() => _isShowPrices = false),
+                  icon: const Icon(Icons.expand_less, size: 20.0),
+                  label: Text(
+                    appLocalizations.majorPricePerHour,
+                    style: const TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.grey,
+                    ),
                   ),
-                  children: [
-                    TextSpan(
-                      text:
-                          '${appLocalizations.getMajor(false)} :\nقضايا الاعتداء الجسدي, قضايا الاعتداء المالي , قضايا الاعتداء الجسدي قضايا الاعتداء المالي',
-                    ),
-                    WidgetSpan(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 6.width),
-                        child: MaterialButton(
-                          onPressed: () => setState(() => _isShowPrices = true),
-                          elevation: 0.0,
-                          height: 23.height,
-                          highlightElevation: 0.0,
-                          shape: const StadiumBorder(),
-                          textColor: BrandColors.orange,
-                          color: BrandColors.orange.withOpacity(0.2),
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          child: Text(
-                            appLocalizations.showPrices,
-                            style: const TextStyle(fontSize: 10.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
-              );
-              final prices = Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: TextButton.icon(
-                      onPressed: () => setState(() => _isShowPrices = false),
-                      icon: const Icon(Icons.expand_less, size: 20.0),
-                      label: const Text(
-                        'أسعار التخصصات لكل ساعة',
-                        style: TextStyle(fontSize: 13.0, color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                  for (int i = 0; i < 3; i++)
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: 'قضايا الاعتداء الجسدي :',
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              color: BrandColors.black,
-                              fontFamily: Fonts.main,
-                            ),
+              ),
+              Column(
+                children: consultant.majors
+                    .map((e) => RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${e.terms} :',
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  color: BrandColors.black,
+                                  fontFamily: Fonts.main,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' ${e.pricePerHour.round()} ',
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                  color: BrandColors.orange,
+                                  fontFamily: Fonts.main,
+                                ),
+                              ),
+                              TextSpan(
+                                text: appLocalizations.sarH,
+                                style: const TextStyle(
+                                  fontSize: 10.0,
+                                  color: BrandColors.black,
+                                  fontFamily: Fonts.main,
+                                ),
+                              ),
+                            ],
                           ),
-                          const TextSpan(
-                            text: ' 60 ',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: BrandColors.orange,
-                              fontFamily: Fonts.main,
-                            ),
-                          ),
-                          TextSpan(
-                            text: appLocalizations.sarH,
-                            style: const TextStyle(
-                              fontSize: 10.0,
-                              color: BrandColors.black,
-                              fontFamily: Fonts.main,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              );
-              return AnimatedCrossFade(
-                firstChild: majors,
-                secondChild: prices,
-                duration: kTabScrollDuration,
-                alignment: AlignmentDirectional.topStart,
-                crossFadeState: _isShowPrices
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst,
-              );
-            },
-          ),
-        ],
+                        ))
+                    .toList(),
+              ),
+            ],
+          );
+          return AnimatedCrossFade(
+            firstChild: majors,
+            secondChild: prices,
+            duration: kTabScrollDuration,
+            alignment: AlignmentDirectional.topStart,
+            crossFadeState: _isShowPrices
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+          );
+        },
       );
 
   Row _buildThirdRow(AppLocalizations appLocalizations, TextTheme textTheme) =>
@@ -713,7 +685,7 @@ class _Header extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: '${appLocalizations.speaks} :',
+                  text: '${appLocalizations.answerDuration} :',
                   style: textTheme.bodySmall!.copyWith(
                     color: Colors.grey.shade700,
                     fontWeight: FontWeight.normal,
@@ -721,7 +693,7 @@ class _Header extends StatelessWidget {
                 ),
                 WidgetSpan(child: SizedBox(width: 15.width)),
                 TextSpan(
-                  text: ' العربية',
+                  text: ' ساعة ونصف',
                   style: textTheme.bodySmall!.copyWith(
                     color: Colors.black,
                   ),

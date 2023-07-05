@@ -78,7 +78,6 @@
     "country": "Country",
     "city": "City",
     "reviews": "Reviews",
-    "speaks": "Speaks",
     "experience_years": "Experience years",
     "majors": "Majors",
     "report": "Report",
@@ -186,5 +185,18 @@
     "consultation_sent_notifications": "Please pay attention to notifications to see updates on your consultation",
     "consultation_sent_contact": "You can contact your consultant through",
     "payment": "Payment",
-    "skip": "Skip"
+    "skip": "Skip",
+    "view_verified_only": "View verified consultants only",
+    "price_per_hour": "Price per hour",
+    "from": "From",
+    "to": "To",
+    "sar": "Riyal",
+    "not_reviewed": "Not reviewed",
+    "one_star": "One star",
+    "two_stars": "Two stars",
+    "stars": "stars",
+    "view_results": "View results",
+    "reset": "Reset",
+    "major_price_per_hour": "Majors prices per hour",
+    "answer_duration": "Answer duration"
 }

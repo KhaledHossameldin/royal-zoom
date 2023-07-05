@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
@@ -18,7 +19,7 @@ class Repository {
   final _sharedPreferences = SharedPreferencesHandler.instance;
   final _location = LocationServices.instance;
 
-  Future<void> fastConsultation(
+  Future<int> fastConsultation(
     BuildContext context, {
     required FastConsultation consultation,
   }) async =>
@@ -145,4 +146,6 @@ class Repository {
 
   Future<void> setCurrentLocation({bool isFromMain = false}) async =>
       await _location.setCurrent(isFromMain);
+
+  Placemark get currentLocation => _location.current;
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -22,24 +23,24 @@ class NetworkServices {
 
   NetworkServices._();
 
-  Future<void> fastConsultation(
+  Future<int> fastConsultation(
     BuildContext context, {
     required FastConsultation consultation,
   }) async {
     final files = await Future.wait(consultation.paths
         .map((e) async => await _upload(context, path: e))
         .toList());
-    final attachments =
-        files.map((e) => json.decode(e)['path'] as String).toList();
-    if (context.mounted) {
-      final response = await _post(
-        context,
-        Network.fastConsultation,
-        body: consultation.toMap(
-                attachments: Platform.isAndroid ? attachments : files)
-            as Map<String, Object>,
-      );
+    if (consultation.isVoice) {
+      consultation = consultation.copyWith(content: files[0]);
+      files.removeAt(0);
     }
+    // ignore: use_build_context_synchronously
+    final response = await _post(
+      context,
+      Network.fastConsultation,
+      body: consultation.toMap(attachments: files) as Map<String, Object>,
+    );
+    return json.decode(response)['data']['id'];
   }
 
   Future<List<City>> cities(
@@ -178,7 +179,8 @@ class NetworkServices {
         ..files.add(await http.MultipartFile.fromPath('file', path));
 
       final response = await request.send();
-      return await response.stream.bytesToString();
+      final result = await response.stream.bytesToString();
+      return json.decode(result)['path'];
     } catch (e) {
       throw _getExceptionString(context, error: e as Exception);
     }
@@ -215,6 +217,7 @@ class NetworkServices {
             body: json.encode(body),
           )
           .timeout(const Duration(minutes: 1));
+      log(response.body);
       return _processResponse(response);
     } catch (e) {
       throw _getExceptionString(context, error: e as Exception);
@@ -255,8 +258,12 @@ class NetworkServices {
   }
 
   String _processResponse(http.Response response) {
+    log(response.statusCode.toString());
     switch (response.statusCode) {
       case HttpStatus.ok:
+        return response.body;
+
+      case HttpStatus.created:
         return response.body;
 
       case HttpStatus.badRequest:

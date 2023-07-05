@@ -16,23 +16,22 @@ class FastConsultationCubit extends Cubit<FastConsultationState> {
 
   FastConsultation _consultation = FastConsultation();
 
-  void chooseConsultant(int id, {bool? isHideName}) =>
+  void chooseConsultant(int id, {bool? isHideName, int? majorId}) =>
       _consultation = _consultation.copyWith(
         consultantId: id,
         isHideName: isHideName,
+        majorId: majorId,
       );
 
   void setContent({
     required ConsultationContentType type,
     String? content,
     List<PlatformFile>? files,
-    String? recordPath,
   }) {
     _consultation = _consultation.copyWith(
       contentType: type,
       content: content,
       files: files,
-      recordPath: recordPath,
     );
   }
 
@@ -43,8 +42,9 @@ class FastConsultationCubit extends Cubit<FastConsultationState> {
     _consultation = _consultation.copyWith(responseType: type);
     try {
       emit(const FastConsultationSending());
-      await repository.fastConsultation(context, consultation: _consultation);
-      emit(const FastConsultationSent());
+      final id = await repository.fastConsultation(context,
+          consultation: _consultation);
+      emit(FastConsultationSent(id));
     } catch (e) {
       emit(FastConsultationError('$e'));
     }

@@ -5,12 +5,14 @@ class ConsultantsFilter {
   final int? countryId;
   final int? cityId;
   final String? searchKey;
+  final bool verifiedOnly;
 
   ConsultantsFilter({
     this.majorId,
     this.countryId,
     this.cityId,
     this.searchKey,
+    this.verifiedOnly = false,
   });
 
   Map<String, String>? toMap() {
@@ -27,6 +29,9 @@ class ConsultantsFilter {
     if (searchKey != null) {
       map.putIfAbsent('search_key', () => searchKey!);
     }
+    if (verifiedOnly) {
+      map.putIfAbsent('verified_only', () => verifiedOnly.toString());
+    }
     if (map.isEmpty) {
       return null;
     }
@@ -38,12 +43,14 @@ class ConsultantsFilter {
     int? countryId,
     int? cityId,
     String? searchKey,
+    bool? verifiedOnly,
   }) {
     return ConsultantsFilter(
       majorId: majorId ?? this.majorId,
       countryId: countryId ?? this.countryId,
       cityId: cityId ?? this.cityId,
       searchKey: searchKey.isNullOrEmpty ? null : searchKey,
+      verifiedOnly: verifiedOnly ?? this.verifiedOnly,
     );
   }
 

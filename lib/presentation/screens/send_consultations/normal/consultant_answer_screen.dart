@@ -172,7 +172,7 @@ class _ConsultantAnswerScreenState extends State<ConsultantAnswerScreen> {
                           Navigator.pushNamed(
                             context,
                             Routes.consultationSent,
-                            arguments: context.read<FastConsultationCubit>(),
+                            arguments: state.id,
                           );
                         } else if (state is FastConsultationError) {
                           showDialog(

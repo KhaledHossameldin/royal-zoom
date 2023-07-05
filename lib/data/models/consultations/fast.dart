@@ -9,22 +9,22 @@ class FastConsultation {
   final bool isHideName;
   final ConsultationContentType contentType;
   final ConsultantResponseType responseType;
-  final String? content;
+  final String content;
   final List<PlatformFile>? files;
   final int attendees;
   final int? majorId;
-  final String? recordPath;
+
+  bool get isVoice => contentType == ConsultationContentType.voice;
 
   FastConsultation({
     this.consultantId = -1,
     this.isHideName = false,
     this.contentType = ConsultationContentType.text,
     this.responseType = ConsultantResponseType.text,
-    this.content,
+    this.content = '',
     this.files,
     this.attendees = 1,
     this.majorId,
-    this.recordPath,
   });
 
   FastConsultation copyWith({
@@ -36,7 +36,6 @@ class FastConsultation {
     List<PlatformFile>? files,
     int? attendees,
     int? majorId,
-    String? recordPath,
   }) =>
       FastConsultation(
         consultantId: consultantId ?? this.consultantId,
@@ -47,27 +46,22 @@ class FastConsultation {
         files: files ?? this.files,
         attendees: attendees ?? this.attendees,
         majorId: majorId ?? this.majorId,
-        recordPath: recordPath ?? this.recordPath,
       );
 
   @override
   String toString() =>
-      'FastConsultation(consultantId: $consultantId, isHideName: $isHideName, contentType: $contentType, responseType: $responseType, content: $content, files: $files, attendees: $attendees, majorId: $majorId, recordPath: $recordPath)';
+      'FastConsultation(consultantId: $consultantId, isHideName: $isHideName, contentType: $contentType, responseType: $responseType, content: $content, files: $files, attendees: $attendees, majorId: $majorId)';
 
-  Map<String, dynamic> toMap({List<String>? attachments}) {
+  Map<String, dynamic> toMap({required List<String> attachments}) {
     final map = {
       'content_type': contentType.toMap(),
       'consultant_response_type': responseType.toMap,
       'hide_name_from_consultants': isHideName.toInt,
       'attendee_number': attendees.toString(),
       'consultant_id': consultantId.toString(),
+      'content': content,
+      'attachments': attachments,
     };
-    if (attachments != null) {
-      map.putIfAbsent('attachments', () => attachments);
-    }
-    if (contentType == ConsultationContentType.text) {
-      map.putIfAbsent('content', () => content!);
-    }
     if (majorId != null) {
       map.putIfAbsent('major_id', () => majorId.toString());
     }
@@ -76,8 +70,8 @@ class FastConsultation {
 
   List<String> get paths {
     final paths = <String>[];
-    if (contentType == ConsultationContentType.voice) {
-      paths.add(recordPath!);
+    if (isVoice) {
+      paths.add(content);
     }
     if (files != null) {
       paths.addAll(files!.map((e) => e.path!).toList());

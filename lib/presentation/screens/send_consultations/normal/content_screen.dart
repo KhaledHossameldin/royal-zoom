@@ -317,11 +317,13 @@ class _ConsultationContentScreenState extends State<ConsultationContentScreen>
                                   context.read<FastConsultationCubit>();
                               cubit.setContent(
                                 type: _type.value,
-                                content: _contentController.text,
                                 files: _files.value,
-                                recordPath: context
-                                    .read<ConsultationRecordingCubit>()
-                                    .recordPath,
+                                content:
+                                    _type.value == ConsultationContentType.text
+                                        ? _contentController.text
+                                        : context
+                                            .read<ConsultationRecordingCubit>()
+                                            .recordPath,
                               );
                               Navigator.pushNamed(
                                 context,

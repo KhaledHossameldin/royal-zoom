@@ -14,7 +14,8 @@ class FastConsultationSending extends FastConsultationState {
 }
 
 class FastConsultationSent extends FastConsultationState {
-  const FastConsultationSent();
+  final int id;
+  const FastConsultationSent(this.id);
 }
 
 class FastConsultationError extends FastConsultationState {

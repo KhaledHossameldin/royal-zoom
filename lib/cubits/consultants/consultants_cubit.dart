@@ -18,13 +18,12 @@ class ConsultantsCubit extends Cubit<ConsultantsState> {
   int? get majorId => _filter.majorId;
   int? get countryId => _filter.countryId;
   int? get cityId => _filter.cityId;
+  bool get verifiedOnly => _filter.verifiedOnly;
 
   void clearFilter() => _filter = _filter.clear();
 
   void toggleSelection(int index) {
     final currentState = (state as ConsultantsLoaded);
-    currentState.consultants[index].selected =
-        !currentState.consultants[index].selected;
     emit(ConsultantsLoaded(
       currentState.consultants,
       canFetchMore: currentState.canFetchMore,
@@ -37,12 +36,14 @@ class ConsultantsCubit extends Cubit<ConsultantsState> {
     int? countryId,
     int? cityId,
     String? searchKey,
+    bool? verifiedOnly,
   }) =>
       _filter = _filter.copyWith(
         majorId: majorId,
         countryId: countryId,
         cityId: cityId,
         searchKey: searchKey,
+        verifiedOnly: verifiedOnly,
       );
 
   Future<void> fetchMore(BuildContext context) async {

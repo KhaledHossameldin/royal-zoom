@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
   final _showBottom = ValueNotifier<bool>(false);
   final _consultantId = ValueNotifier<int>(-1);
   bool _isHideName = false;
+  int? majorId;
 
   @override
   void initState() {
@@ -110,7 +112,7 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _SearchTextField(controller: _controller),
+                    _buildSearchTextField([]),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +145,16 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   slivers: [
-                    _SliverSearchTextField(controller: _controller),
+                    SliverPadding(
+                      padding: EdgeInsets.only(
+                        left: 27.width,
+                        right: 27.width,
+                        top: 10.height,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: _buildSearchTextField(state.consultants),
+                      ),
+                    ),
                     _SliverListView(
                       consultants: consultants,
                       selected: _consultantId,
@@ -175,6 +186,55 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
         },
       ),
       bottomNavigationBar: _buildBottomNavigationBar,
+    );
+  }
+
+  Row _buildSearchTextField(List<Consultant> consultants) {
+    final appLocalizations = AppLocalizations.of(context);
+    final textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      children: [
+        Expanded(
+            child: TextField(
+          controller: _controller,
+          textInputAction: TextInputAction.search,
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            isDense: true,
+            hintText: appLocalizations.searchConsultants,
+            hintStyle: textTheme.bodyLarge!.copyWith(
+              color: BrandColors.indigoBlue,
+            ),
+            suffixIcon: 'search'.imageIcon,
+          ),
+          onSubmitted: (value) {
+            final cubit = context.read<ConsultantsCubit>();
+            cubit.applyFilter(searchKey: value);
+            cubit.fetch(context);
+          },
+        )),
+        10.emptyWidth,
+        FloatingActionButton(
+          heroTag: 'filter-fab',
+          elevation: 0.0,
+          highlightElevation: 0.0,
+          tooltip: appLocalizations.filter,
+          backgroundColor: Colors.white,
+          onPressed: () async {
+            majorId = await Navigator.pushNamed<int>(
+              context,
+              Routes.sendConsultationFilter,
+              arguments: {
+                'cubit': context.read<ConsultantsCubit>(),
+                'maxPrice':
+                    consultants.map((e) => e.major.pricePerHour).reduce(max),
+              },
+            );
+          },
+          child: 'filter'.buildSVG(color: BrandColors.gray),
+        ),
+      ],
     );
   }
 
@@ -246,6 +306,7 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
                                       cubit.chooseConsultant(
                                         _consultantId.value,
                                         isHideName: _isHideName,
+                                        majorId: majorId,
                                       );
                                       Navigator.pushNamed(
                                         context,
@@ -347,7 +408,17 @@ class _ConsultantItem extends StatelessWidget {
           ),
         ),
       ),
-      title: Text(consultant.previewName ?? appLocalizations.none),
+      title: Row(
+        children: [
+          Text(consultant.previewName ?? appLocalizations.none),
+          6.emptyWidth,
+          if (consultant.major.isVerified)
+            SizedBox.square(
+              dimension: 16.width,
+              child: 'verified'.png,
+            ),
+        ],
+      ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -412,73 +483,4 @@ class _ConsultantItem extends StatelessWidget {
       ),
     );
   }
-}
-
-class _SearchTextField extends StatelessWidget {
-  const _SearchTextField({required TextEditingController controller})
-      : _controller = controller;
-
-  final TextEditingController _controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final appLocalizations = AppLocalizations.of(context);
-
-    return Row(
-      children: [
-        Expanded(
-            child: TextField(
-          controller: _controller,
-          textInputAction: TextInputAction.search,
-          decoration: InputDecoration(
-            fillColor: Colors.white,
-            isDense: true,
-            hintText: appLocalizations.searchConsultants,
-            hintStyle: textTheme.bodyLarge!.copyWith(
-              color: BrandColors.indigoBlue,
-            ),
-            suffixIcon: 'search'.imageIcon,
-          ),
-          onSubmitted: (value) {
-            final cubit = context.read<ConsultantsCubit>();
-            cubit.applyFilter(searchKey: value);
-            cubit.fetch(context);
-          },
-        )),
-        10.emptyWidth,
-        FloatingActionButton(
-          heroTag: 'filter-fab',
-          elevation: 0.0,
-          highlightElevation: 0.0,
-          tooltip: appLocalizations.filter,
-          backgroundColor: Colors.white,
-          onPressed: () => Navigator.pushNamed(
-            context,
-            Routes.sendConsultationFilter,
-          ),
-          child: 'filter'.buildSVG(color: BrandColors.gray),
-        ),
-      ],
-    );
-  }
-}
-
-class _SliverSearchTextField extends StatelessWidget {
-  const _SliverSearchTextField({required TextEditingController controller})
-      : _controller = controller;
-
-  final TextEditingController _controller;
-
-  @override
-  Widget build(BuildContext context) => SliverPadding(
-        padding: EdgeInsets.only(
-          left: 27.width,
-          right: 27.width,
-          top: 10.height,
-        ),
-        sliver: SliverToBoxAdapter(
-          child: _SearchTextField(controller: _controller),
-        ),
-      );
 }

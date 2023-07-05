@@ -39,6 +39,16 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
         elevation: 0.0,
         centerTitle: true,
         title: Text(appLocalizations.filter),
+        actions: [
+          TextButton(
+            onPressed: () {
+              context.read<ConsultantsCubit>().clearFilter();
+              context.read<ConsultantsCubit>().fetch(context);
+              Navigator.pop(context);
+            },
+            child: Text(appLocalizations.reset),
+          ),
+        ],
       ),
       body: BlocBuilder<FilterCubit, FilterState>(
         builder: (context, state) {
@@ -107,16 +117,7 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
               context.read<ConsultantsCubit>().fetch(context);
               Navigator.pop(context);
             },
-            child: Text(appLocalizations.confirm),
-          ),
-          20.emptyHeight,
-          OutlinedButton(
-            onPressed: () {
-              context.read<ConsultantsCubit>().clearFilter();
-              context.read<ConsultantsCubit>().fetch(context);
-              Navigator.pop(context);
-            },
-            child: Text(appLocalizations.clearReviews),
+            child: Text(appLocalizations.viewResults),
           ),
         ],
       ),
