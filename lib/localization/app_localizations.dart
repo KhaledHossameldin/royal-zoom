@@ -394,7 +394,7 @@ class AppLocalizations {
         zero: _translate('not_reviewed'),
         one: _translate('one_star'),
         two: _translate('two_stars'),
-        other: '$count ${_translate('نجوم')}',
+        other: '$count ${_translate('stars')}',
       );
 
   String getRate(int rate) {

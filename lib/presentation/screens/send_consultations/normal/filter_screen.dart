@@ -25,6 +25,8 @@ class SendConsultantionFilterScreen extends StatefulWidget {
 
 class _SendConsultantionFilterScreenState
     extends State<SendConsultantionFilterScreen> {
+  bool isFavouriteOnly = false;
+
   int? majorId;
 
   late RangeValues rangeValues = RangeValues(0, widget.maxPrice.toDouble());
@@ -32,6 +34,7 @@ class _SendConsultantionFilterScreenState
   final _start = TextEditingController(text: '0');
   late final _end =
       TextEditingController(text: widget.maxPrice.toInt().toString());
+  final reviews = [];
 
   @override
   void initState() {
@@ -129,6 +132,36 @@ class _SendConsultantionFilterScreenState
           15.emptyHeight,
           _buildMajors(state.majors!),
           15.emptyHeight,
+          StatefulBuilder(
+            builder: (context, setState) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(appLocalizations.review),
+                Wrap(
+                  spacing: 10.width,
+                  children: [
+                    _buildReviewChip(setState, index: 0),
+                    _buildReviewChip(setState, index: 1),
+                    _buildReviewChip(setState, index: 2),
+                    _buildReviewChip(setState, index: 3),
+                    _buildReviewChip(setState, index: 4),
+                    _buildReviewChip(setState, index: 5),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          15.emptyHeight,
+          StatefulBuilder(
+            builder: (context, setState) => CheckboxListTile(
+              dense: true,
+              controlAffinity: ListTileControlAffinity.leading,
+              title: Text(appLocalizations.favorite),
+              value: isFavouriteOnly,
+              onChanged: (value) => setState(() => isFavouriteOnly = value!),
+            ),
+          ),
+          15.emptyHeight,
           ElevatedButton(
             onPressed: () {
               context.read<ConsultantsCubit>().fetch(context);
@@ -138,6 +171,26 @@ class _SendConsultantionFilterScreenState
           ),
         ],
       ),
+    );
+  }
+
+  ChoiceChip _buildReviewChip(StateSetter setState, {required int index}) {
+    final appLocalizations = AppLocalizations.of(context);
+
+    bool isSelected = reviews.contains(index);
+
+    return ChoiceChip(
+      label: Text(appLocalizations.getStars(index)),
+      selected: isSelected,
+      onSelected: (value) {
+        setState(() {
+          if (isSelected) {
+            reviews.remove(index);
+            return;
+          }
+          reviews.add(index);
+        });
+      },
     );
   }
 

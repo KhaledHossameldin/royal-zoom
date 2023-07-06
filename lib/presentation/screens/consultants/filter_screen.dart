@@ -20,7 +20,7 @@ class ConsultantsFilterScreen extends StatefulWidget {
 }
 
 class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
-  int? reviews;
+  final reviews = [];
 
   @override
   void initState() {
@@ -121,6 +121,26 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  ChoiceChip _buildReviewChip(StateSetter setState, {required int index}) {
+    final appLocalizations = AppLocalizations.of(context);
+
+    bool isSelected = reviews.contains(index);
+
+    return ChoiceChip(
+      label: Text(appLocalizations.getStars(index)),
+      selected: isSelected,
+      onSelected: (value) {
+        setState(() {
+          if (isSelected) {
+            reviews.remove(index);
+            return;
+          }
+          reviews.add(index);
+        });
+      },
     );
   }
 
@@ -257,42 +277,23 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
   }
 
   StatefulBuilder _buildReviews() {
-    final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
 
     return StatefulBuilder(
       builder: (context, setState) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(appLocalizations.reviews),
-          8.emptyHeight,
-          Material(
-            color: BrandColors.snowWhite,
-            borderRadius: BorderRadius.circular(12.0),
-            child: ButtonTheme(
-              alignedDropdown: true,
-              child: DropdownButton<int>(
-                value: reviews,
-                isExpanded: true,
-                menuMaxHeight: 300.height,
-                hint: Text(appLocalizations.choose),
-                underline: const Material(),
-                borderRadius: BorderRadius.circular(12.0),
-                icon: const Icon(Icons.expand_more_rounded),
-                style: textTheme.bodySmall!.copyWith(
-                  color: BrandColors.darkBlue,
-                ),
-                items: [
-                  for (int i = 0; i < 6; i++)
-                    DropdownMenuItem(
-                      value: i,
-                      child: Text(appLocalizations.getReview(i)),
-                    )
-                ],
-                onChanged: (value) => setState(() => reviews = value),
-              ),
-            ),
+          Text(appLocalizations.review),
+          Wrap(
+            spacing: 10.width,
+            children: [
+              _buildReviewChip(setState, index: 0),
+              _buildReviewChip(setState, index: 1),
+              _buildReviewChip(setState, index: 2),
+              _buildReviewChip(setState, index: 3),
+              _buildReviewChip(setState, index: 4),
+              _buildReviewChip(setState, index: 5),
+            ],
           ),
         ],
       ),

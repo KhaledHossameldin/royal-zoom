@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -217,7 +216,6 @@ class NetworkServices {
             body: json.encode(body),
           )
           .timeout(const Duration(minutes: 1));
-      log(response.body);
       return _processResponse(response);
     } catch (e) {
       throw _getExceptionString(context, error: e as Exception);
@@ -258,7 +256,6 @@ class NetworkServices {
   }
 
   String _processResponse(http.Response response) {
-    log(response.statusCode.toString());
     switch (response.statusCode) {
       case HttpStatus.ok:
         return response.body;

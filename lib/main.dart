@@ -102,6 +102,20 @@ class MyApp extends StatelessWidget {
             fontFamily: Fonts.main,
           ),
         ),
+        chipTheme: const ChipThemeData(
+          backgroundColor: BrandColors.snowWhite,
+          selectedColor: BrandColors.orange,
+          secondaryLabelStyle: TextStyle(
+            fontSize: 12.0,
+            fontFamily: Fonts.main,
+            color: Colors.white,
+          ),
+          labelStyle: TextStyle(
+            fontSize: 12.0,
+            fontFamily: Fonts.main,
+            color: BrandColors.black,
+          ),
+        ),
         dividerTheme: const DividerThemeData(thickness: 2.0),
         cardTheme: CardTheme(
           elevation: 5.0,
