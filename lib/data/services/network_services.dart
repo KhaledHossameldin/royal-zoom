@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -216,6 +217,7 @@ class NetworkServices {
             body: json.encode(body),
           )
           .timeout(const Duration(minutes: 1));
+      log(response.body, name: 'Body');
       return _processResponse(response);
     } catch (e) {
       throw _getExceptionString(context, error: e as Exception);

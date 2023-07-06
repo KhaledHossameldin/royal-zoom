@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -62,6 +63,7 @@ class SharedPreferencesHandler {
 
   Future<void> setUser(User user) async {
     final preferences = await SharedPreferences.getInstance();
+    log(user.toJson(), name: 'Save');
     preferences.setString(PreferencesKeys.user, user.toJson());
   }
 

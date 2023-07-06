@@ -134,9 +134,9 @@ class UserData extends Account {
       contract.id: id,
       contract.uuid: uuid,
       contract.image: image,
-      contract.walletBalance: walletBalance,
+      contract.walletBalance: walletBalance.toString(),
       contract.gender: gender.toMap(),
-      contract.color: color.value,
+      contract.color: color.hex,
       contract.previewStatus: previewStatus.toMap(),
       contract.status: status.toMap(),
       contract.type: type.toMap(),
@@ -163,6 +163,7 @@ class UserData extends Account {
       contract.language: language?.toMap(),
       contract.timezone: timezone?.toMap(),
       contract.currency: currency?.toMap(),
+      contract.settings: settings?.toMap(),
     };
   }
 
