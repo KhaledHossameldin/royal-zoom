@@ -40,7 +40,9 @@ class _SendConsultantionFilterScreenState
   void initState() {
     final country = countries.firstWhere((element) =>
         element.code == Repository.instance.currentLocation.isoCountryCode);
-    context.read<FilterCubit>().fetch(context, countryId: country.id);
+    context
+        .read<ConsultantsFilterCubit>()
+        .fetch(context, countryId: country.id);
     super.initState();
   }
 
@@ -71,7 +73,7 @@ class _SendConsultantionFilterScreenState
           ),
         ],
       ),
-      body: BlocBuilder<FilterCubit, FilterState>(
+      body: BlocBuilder<ConsultantsFilterCubit, ConsultantsFilterState>(
         builder: (context, state) {
           switch (state.runtimeType) {
             case FilterLoading:
@@ -82,18 +84,19 @@ class _SendConsultantionFilterScreenState
                 return _buildBody(state);
               }
 
-            case FilterLoaded:
-              state as FilterLoaded;
+            case ConsultantsFilterLoaded:
+              state as ConsultantsFilterLoaded;
               return _buildBody(state);
 
-            case FilterError:
-              state as FilterError;
+            case ConsultantsFilterError:
+              state as ConsultantsFilterError;
               if (state.countries == null) {
                 return ReloadWidget(
                   title: state.message,
                   buttonText:
                       appLocalizations.getReload(appLocalizations.filter),
-                  onPressed: () => context.read<FilterCubit>().fetch(context),
+                  onPressed: () =>
+                      context.read<ConsultantsFilterCubit>().fetch(context),
                 );
               } else {
                 return _buildBody(state);
@@ -107,7 +110,7 @@ class _SendConsultantionFilterScreenState
     );
   }
 
-  SingleChildScrollView _buildBody(FilterState state) {
+  SingleChildScrollView _buildBody(ConsultantsFilterState state) {
     final appLocalizations = AppLocalizations.of(context);
 
     return SingleChildScrollView(
@@ -119,10 +122,10 @@ class _SendConsultantionFilterScreenState
           Builder(builder: (context) {
             if (state is FilterLoading) {
               return const CircularProgressIndicator();
-            } else if (state is FilterError) {
+            } else if (state is ConsultantsFilterError) {
               return Text(state.message);
             } else {
-              return _buildCities((state as FilterLoaded).cities);
+              return _buildCities((state as ConsultantsFilterLoaded).cities);
             }
           }),
           15.emptyHeight,

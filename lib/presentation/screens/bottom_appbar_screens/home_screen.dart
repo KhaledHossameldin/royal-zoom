@@ -7,6 +7,7 @@ import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/routes.dart';
+import '../consultations/consultations_screen.dart';
 import 'chat_screen.dart';
 import '../consultants/consultants_screen.dart';
 import 'profile/profile_screen.dart';
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             return const Center(child: Text('Home'));
           } else if (_index == 1) {
-            return const Center(child: Text('Consultations'));
+            return const ConsultationsScreen();
           } else if (_index == 3) {
             return const ChatScreen();
           } else {

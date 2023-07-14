@@ -25,7 +25,7 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
   @override
   void initState() {
     context
-        .read<FilterCubit>()
+        .read<ConsultantsFilterCubit>()
         .fetch(context, countryId: context.read<ConsultantsCubit>().countryId);
     super.initState();
   }
@@ -50,7 +50,7 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
           ),
         ],
       ),
-      body: BlocBuilder<FilterCubit, FilterState>(
+      body: BlocBuilder<ConsultantsFilterCubit, ConsultantsFilterState>(
         builder: (context, state) {
           switch (state.runtimeType) {
             case FilterLoading:
@@ -61,18 +61,19 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
                 return _buildBody(state);
               }
 
-            case FilterLoaded:
-              state as FilterLoaded;
+            case ConsultantsFilterLoaded:
+              state as ConsultantsFilterLoaded;
               return _buildBody(state);
 
-            case FilterError:
-              state as FilterError;
+            case ConsultantsFilterError:
+              state as ConsultantsFilterError;
               if (state.countries == null) {
                 return ReloadWidget(
                   title: state.message,
                   buttonText:
                       appLocalizations.getReload(appLocalizations.filter),
-                  onPressed: () => context.read<FilterCubit>().fetch(context),
+                  onPressed: () =>
+                      context.read<ConsultantsFilterCubit>().fetch(context),
                 );
               } else {
                 return _buildBody(state);
@@ -86,7 +87,7 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
     );
   }
 
-  SingleChildScrollView _buildBody(FilterState state) {
+  SingleChildScrollView _buildBody(ConsultantsFilterState state) {
     final appLocalizations = AppLocalizations.of(context);
 
     return SingleChildScrollView(
@@ -103,10 +104,10 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
           Builder(builder: (context) {
             if (state is FilterLoading) {
               return const CircularProgressIndicator();
-            } else if (state is FilterError) {
+            } else if (state is ConsultantsFilterError) {
               return Text(state.message);
             } else {
-              return _buildCities((state as FilterLoaded).cities);
+              return _buildCities((state as ConsultantsFilterLoaded).cities);
             }
           }),
           10.emptyHeight,
@@ -222,7 +223,7 @@ class _ConsultantsFilterScreenState extends State<ConsultantsFilterScreen> {
                 onChanged: (value) {
                   cubit.applyFilter(countryId: value, cityId: null);
                   context
-                      .read<FilterCubit>()
+                      .read<ConsultantsFilterCubit>()
                       .fetchCities(context, countryId: value!);
                 },
               ),

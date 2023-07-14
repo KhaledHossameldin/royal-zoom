@@ -92,6 +92,9 @@ class MyApp extends StatelessWidget {
           primary: BrandColors.orange,
           secondary: BrandColors.orange,
         ),
+        datePickerTheme: const DatePickerThemeData(
+          rangePickerHeaderForegroundColor: BrandColors.darkBlackGreen,
+        ),
         appBarTheme: const AppBarTheme(
           centerTitle: false,
           color: Colors.white,

@@ -8,8 +8,8 @@ import '../../data/services/repository.dart';
 
 part 'filter_state.dart';
 
-class FilterCubit extends Cubit<FilterState> {
-  FilterCubit() : super(const FilterInitial());
+class ConsultantsFilterCubit extends Cubit<ConsultantsFilterState> {
+  ConsultantsFilterCubit() : super(const ConsultantsFilterInitial());
 
   final repository = Repository.instance;
 
@@ -17,13 +17,13 @@ class FilterCubit extends Cubit<FilterState> {
     BuildContext context, {
     required int countryId,
   }) async {
-    final currentState = state as FilterLoaded;
+    final currentState = state as ConsultantsFilterLoaded;
     emit(FilterLoading(
       majors: currentState.majors,
       countries: currentState.countries,
     ));
     final cities = await repository.cities(context, countryId: countryId);
-    emit(FilterLoaded(
+    emit(ConsultantsFilterLoaded(
       majors: currentState.majors,
       countries: currentState.countries,
       cities: cities,
@@ -38,13 +38,13 @@ class FilterCubit extends Cubit<FilterState> {
         repository.countries(context),
         if (countryId != null) repository.cities(context, countryId: countryId),
       ]);
-      emit(FilterLoaded(
+      emit(ConsultantsFilterLoaded(
         majors: values[0] as List<Major>,
         countries: values[1] as List<Country>,
         cities: countryId != null ? values[2] as List<City> : null,
       ));
     } catch (e) {
-      emit(FilterError('$e'));
+      emit(ConsultantsFilterError('$e'));
     }
   }
 }

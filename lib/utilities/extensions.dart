@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
 
@@ -14,6 +15,10 @@ extension BooleanExtension on bool {
 extension DurationExtension on Duration {
   String get timezoneOffset {
     return 'UTC ${inHours < 0 ? '-' : '+'}${inHours.abs().twoDigits}:${inMinutes.remainder(60).twoDigits}';
+  }
+
+  String get audioTime {
+    return '${inMinutes.remainder(60).twoDigits}:${inSeconds.remainder(60).twoDigits}';
   }
 }
 
@@ -134,4 +139,11 @@ extension StringExtension on String {
 extension ColorExtension on Color {
   String get hex =>
       '#${(value & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
+}
+
+extension DateTimeRangeExtension on DateTimeRange {
+  String get text {
+    final format = DateFormat('yyyy-MM-dd', 'en');
+    return '${format.format(start)} - ${format.format(end)}';
+  }
 }

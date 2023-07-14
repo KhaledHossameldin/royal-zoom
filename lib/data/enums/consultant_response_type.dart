@@ -11,7 +11,7 @@ enum ConsultantResponseType {
 }
 
 extension ConsultationContentTypeExtension on ConsultantResponseType {
-  int get toMap {
+  int toMap() {
     switch (this) {
       case ConsultantResponseType.text:
         return 1;

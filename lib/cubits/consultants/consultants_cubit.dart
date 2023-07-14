@@ -51,8 +51,7 @@ class ConsultantsCubit extends Cubit<ConsultantsState> {
     emit(ConsultantsLoaded(consultants, hasEndedScrolling: true));
     final response = await repository.consultants(
       context,
-      filter: _filter,
-      page: _page,
+      params: _filter.toMap(_page),
     );
     final newConsultants = response['consultants'] as List<Consultant>;
     final perPage = response['per_page'] as int;
@@ -71,8 +70,7 @@ class ConsultantsCubit extends Cubit<ConsultantsState> {
       emit(const ConsultantsLoading());
       final response = await repository.consultants(
         context,
-        filter: _filter,
-        page: _page,
+        params: _filter.toMap(_page),
       );
       final consultants = response['consultants'] as List<Consultant>;
       final perPage = response['per_page'] as int;

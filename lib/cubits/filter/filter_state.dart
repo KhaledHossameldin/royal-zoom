@@ -1,30 +1,30 @@
 part of 'filter_cubit.dart';
 
 @immutable
-abstract class FilterState {
+abstract class ConsultantsFilterState {
   final List<Major>? majors;
   final List<Country>? countries;
-  const FilterState({this.majors, this.countries});
+  const ConsultantsFilterState({this.majors, this.countries});
 }
 
-class FilterInitial extends FilterState {
-  const FilterInitial();
+class ConsultantsFilterInitial extends ConsultantsFilterState {
+  const ConsultantsFilterInitial();
 }
 
-class FilterLoading extends FilterState {
+class FilterLoading extends ConsultantsFilterState {
   const FilterLoading({super.majors, super.countries});
 }
 
-class FilterLoaded extends FilterState {
+class ConsultantsFilterLoaded extends ConsultantsFilterState {
   final List<City>? cities;
-  const FilterLoaded({
+  const ConsultantsFilterLoaded({
     required super.majors,
     required super.countries,
     this.cities,
   });
 }
 
-class FilterError extends FilterState {
+class ConsultantsFilterError extends ConsultantsFilterState {
   final String message;
-  const FilterError(this.message, {super.majors, super.countries});
+  const ConsultantsFilterError(this.message, {super.majors, super.countries});
 }

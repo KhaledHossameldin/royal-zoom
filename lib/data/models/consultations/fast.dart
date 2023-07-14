@@ -55,7 +55,7 @@ class FastConsultation {
   Map<String, dynamic> toMap({required List<String> attachments}) {
     final map = {
       'content_type': contentType.toMap(),
-      'consultant_response_type': responseType.toMap,
+      'consultant_response_type': responseType.toMap(),
       'hide_name_from_consultants': isHideName.toInt,
       'attendee_number': attendees.toString(),
       'consultant_id': consultantId.toString(),

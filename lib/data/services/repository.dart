@@ -4,9 +4,9 @@ import 'package:geocoding/geocoding.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
-import '../models/consultants/filters.dart';
 import '../models/consultations/fast.dart';
 import '../models/major.dart';
+import 'audio_handler.dart';
 import 'location_services.dart';
 import 'network_services.dart';
 import 'shared_preferences_handler.dart';
@@ -18,6 +18,25 @@ class Repository {
   final _network = NetworkServices.instance;
   final _sharedPreferences = SharedPreferencesHandler.instance;
   final _location = LocationServices.instance;
+  final _audio = AudioHandler.instance;
+
+  Stream<Duration> get bufferedPositionStream => _audio.bufferedPositionStream;
+
+  Future<void> playAudio() async => await _audio.play();
+
+  Future<void> stopAudio() async => await _audio.stop();
+
+  Future<void> setAudioFilePath(String path) async => _audio.setFilePath(path);
+
+  Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
+
+  void disposeAudio() => _audio.dispose();
+
+  Future<Map<String, Object>> consultations(
+    BuildContext context, {
+    required Map<String, Object> params,
+  }) async =>
+      _network.consultations(context, params: params);
 
   Future<int> fastConsultation(
     BuildContext context, {
@@ -39,10 +58,9 @@ class Repository {
 
   Future<Map<String, Object>> consultants(
     BuildContext context, {
-    required ConsultantsFilter filter,
-    required int page,
+    required Map<String, Object> params,
   }) async =>
-      _network.consultants(context, filter: filter, page: page);
+      _network.consultants(context, params: params);
 
   Future<User> activate(
     BuildContext context, {

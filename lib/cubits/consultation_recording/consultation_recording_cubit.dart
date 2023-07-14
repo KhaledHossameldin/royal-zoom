@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
+
+import '../../data/services/repository.dart';
 
 part 'consultation_recording_state.dart';
 
@@ -14,7 +15,7 @@ class ConsultationRecordingCubit extends Cubit<ConsultationRecordingState> {
   Timer? timer;
   final record = Record();
   String? recordPath;
-  final player = AudioPlayer();
+  final repository = Repository.instance;
 
   Future<void> start({required TickerProvider vsync}) async {
     final path = await getTemporaryDirectory();
@@ -31,13 +32,13 @@ class ConsultationRecordingCubit extends Cubit<ConsultationRecordingState> {
 
   Future<void> stop() async {
     await record.stop();
-    await player.setFilePath(recordPath!);
+    await repository.setAudioFilePath(recordPath!);
     final currentState = state as ConsultationRecordingWorking;
     timer?.cancel;
     emit(ConsultationRecordingEnded(seconds: currentState.seconds.value));
   }
 
-  Future<void> play() async => player.play();
+  Future<void> play() async => repository.playAudio();
 
   void cancel() {
     emit(const ConsultationRecordingInitial());
@@ -47,7 +48,7 @@ class ConsultationRecordingCubit extends Cubit<ConsultationRecordingState> {
   Future<void> close() {
     timer?.cancel();
     record.dispose();
-    player.dispose();
+    repository.disposeAudio();
     return super.close();
   }
 }

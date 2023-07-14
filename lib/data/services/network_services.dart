@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
 import '../models/consultants/consultant.dart';
-import '../models/consultants/filters.dart';
+import '../models/consultations/consultation.dart';
 import '../models/consultations/fast.dart';
 import '../models/major.dart';
 import 'app_exception.dart';
@@ -22,6 +21,22 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<Map<String, Object>> consultations(
+    BuildContext context, {
+    required Map<String, Object> params,
+  }) async {
+    final response = await _get(context, Network.consultations, params: params);
+    final jsonMap = json.decode(response);
+
+    final consultations = (jsonMap['data'] as List)
+        .map((item) => Consultation.fromMap(item))
+        .toList();
+    return {
+      'consultations': consultations,
+      'per_page': jsonMap['meta']['per_page'],
+    };
+  }
 
   Future<int> fastConsultation(
     BuildContext context, {
@@ -71,14 +86,8 @@ class NetworkServices {
 
   Future<Map<String, Object>> consultants(
     BuildContext context, {
-    required ConsultantsFilter filter,
-    required int page,
+    required Map<String, Object> params,
   }) async {
-    final params = {'page': '$page'};
-    final filterMap = filter.toMap();
-    if (filterMap != null) {
-      params.addAll(filterMap);
-    }
     final response = await _get(context, Network.consultants, params: params);
     final jsonMap = json.decode(response);
     final consultants = (jsonMap['data'] as List)
@@ -217,7 +226,6 @@ class NetworkServices {
             body: json.encode(body),
           )
           .timeout(const Duration(minutes: 1));
-      log(response.body, name: 'Body');
       return _processResponse(response);
     } catch (e) {
       throw _getExceptionString(context, error: e as Exception);

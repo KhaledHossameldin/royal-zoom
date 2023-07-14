@@ -17,4 +17,5 @@ class Network {
   static const fastConsultation =
       '$_apiPath/user/consultations/fast-consultation';
   static const upload = '$_apiPath/upload';
+  static const consultations = '$_apiPath/user/consultations';
 }

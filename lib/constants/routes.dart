@@ -28,4 +28,5 @@ class Routes {
   static const consultationContent = 'consultation-content-screen';
   static const consultantAnswer = 'consultant-answer-screen';
   static const consultationSent = 'consultation-sent-screen';
+  static const consultationsFilter = 'consultations-filter-screen';
 }

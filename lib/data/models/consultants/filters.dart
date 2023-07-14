@@ -15,8 +15,8 @@ class ConsultantsFilter {
     this.verifiedOnly = false,
   });
 
-  Map<String, String>? toMap() {
-    Map<String, String> map = {};
+  Map<String, Object> toMap(int page) {
+    Map<String, String> map = {'page': page.toString()};
     if (majorId != null) {
       map.putIfAbsent('major_id', () => majorId.toString());
     }
@@ -31,9 +31,6 @@ class ConsultantsFilter {
     }
     if (verifiedOnly) {
       map.putIfAbsent('verified_only', () => verifiedOnly.toString());
-    }
-    if (map.isEmpty) {
-      return null;
     }
     return map;
   }

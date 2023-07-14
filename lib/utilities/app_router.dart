@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/routes.dart';
 import '../cubits/consultants/consultants_cubit.dart';
 import '../cubits/consultation_recording/consultation_recording_cubit.dart';
+import '../cubits/consultations/consultations_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
 import '../data/models/consultants/consultant.dart';
@@ -24,15 +25,16 @@ import '../presentation/screens/consultants/filter_screen.dart';
 import '../presentation/screens/consultants/report/report_screen.dart';
 import '../presentation/screens/consultants/report/success_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/home_screen.dart';
+import '../presentation/screens/consultations/filter_screen.dart';
 import '../presentation/screens/notifications_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
-import '../presentation/screens/send_consultations/normal/choose_consultant_screen.dart';
-import '../presentation/screens/send_consultations/normal/consultant_answer_screen.dart';
-import '../presentation/screens/send_consultations/normal/content_screen.dart';
-import '../presentation/screens/send_consultations/normal/filter_screen.dart';
-import '../presentation/screens/send_consultations/normal/sent_screen.dart';
+import '../presentation/screens/send_consultations/fast/choose_consultant_screen.dart';
+import '../presentation/screens/send_consultations/fast/consultant_answer_screen.dart';
+import '../presentation/screens/send_consultations/fast/content_screen.dart';
+import '../presentation/screens/send_consultations/fast/filter_screen.dart';
+import '../presentation/screens/send_consultations/fast/sent_screen.dart';
 
 class AppRouter {
   static AppRouter instance = AppRouter._();
@@ -94,8 +96,11 @@ class AppRouter {
 
       case Routes.home:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => ConsultantsCubit(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ConsultantsCubit()),
+              BlocProvider(create: (context) => ConsultationsCubit()),
+            ],
             child: const HomeScreen(),
           ),
         );
@@ -118,7 +123,7 @@ class AppRouter {
           fullscreenDialog: true,
           builder: (context) => MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => FilterCubit()),
+              BlocProvider(create: (context) => ConsultantsFilterCubit()),
               BlocProvider<ConsultantsCubit>.value(value: arguments),
             ],
             child: const ConsultantsFilterScreen(),
@@ -185,7 +190,7 @@ class AppRouter {
           fullscreenDialog: true,
           builder: (context) => MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => FilterCubit()),
+              BlocProvider(create: (context) => ConsultantsFilterCubit()),
               BlocProvider<ConsultantsCubit>.value(
                   value: arguments['cubit'] as ConsultantsCubit),
             ],
@@ -219,6 +224,16 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => const ConsultationSentScreen(),
+        );
+
+      case Routes.consultationsFilter:
+        final cubit = settings.arguments as ConsultationsCubit;
+        return MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => BlocProvider.value(
+            value: cubit,
+            child: const ConsultationsFilterScreen(),
+          ),
         );
 
       default:

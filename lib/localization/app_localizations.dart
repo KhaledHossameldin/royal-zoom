@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../data/enums/consultation_status.dart';
 import 'app_localizations_delegate.dart';
 
 class AppLocalizations {
@@ -388,6 +389,34 @@ class AppLocalizations {
   String get majorPricePerHour => _translate('major_price_per_hour');
 
   String get answerDuration => _translate('answer_duration');
+
+  String get searchConsultations => _translate('search_consultations');
+
+  String get consultationsEmpty => _translate('consultations_empty');
+
+  String get consultationNumber => _translate('consultation_number');
+
+  String get status => _translate('status');
+
+  String get date => _translate('date');
+
+  String getConsultationStatus(ConsultationStatus status, bool isHidden) {
+    if (isHidden) {
+      return _translate('hidden');
+    }
+    return _translate('scheduled');
+  }
+
+  String getConsultationPaymentStatus(num maximumPrice, bool isPaid) {
+    String status = _translate('payment_status');
+    if (maximumPrice <= 0) {
+      return status + _translate('free');
+    }
+    if (isPaid) {
+      return status + _translate('paid');
+    }
+    return status + _translate('not_paid');
+  }
 
   String getStars(int count) => Intl.plural(
         count,
