@@ -404,7 +404,35 @@ class AppLocalizations {
     if (isHidden) {
       return _translate('hidden');
     }
-    return _translate('scheduled');
+    if (status == ConsultationStatus.draft) {
+      return _translate('draft');
+    }
+    if (status == ConsultationStatus.pending) {
+      return _translate('pending');
+    }
+    if (status == ConsultationStatus.scehduled) {
+      return _translate('scheduled');
+    }
+    if (status == ConsultationStatus.requestToChangetime) {
+      return _translate('request_to_change_time');
+    }
+    if (status == ConsultationStatus.approvedByConsultant ||
+        status == ConsultationStatus.confirmedByUser) {
+      return _translate('approved');
+    }
+    if (status == ConsultationStatus.pendingPayment) {
+      return _translate('pending_payment');
+    }
+    if (status == ConsultationStatus.underReview) {
+      return _translate('under_review');
+    }
+    if (status == ConsultationStatus.answeredByConsultant) {
+      return _translate('answered');
+    }
+    if (status == ConsultationStatus.ended) {
+      return _translate('ended');
+    }
+    return _translate('canelled');
   }
 
   String getConsultationPaymentStatus(num maximumPrice, bool isPaid) {

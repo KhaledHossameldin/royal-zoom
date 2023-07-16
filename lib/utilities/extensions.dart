@@ -7,6 +7,7 @@ import 'package:video_player/video_player.dart';
 
 import '../constants/brand_colors.dart';
 import '../constants/fonts.dart';
+import '../data/enums/consultation_status.dart';
 
 extension BooleanExtension on bool {
   int get toInt => this ? 1 : 0;
@@ -145,5 +146,39 @@ extension DateTimeRangeExtension on DateTimeRange {
   String get text {
     final format = DateFormat('yyyy-MM-dd', 'en');
     return '${format.format(start)} - ${format.format(end)}';
+  }
+}
+
+extension ConsultationStatusExtension on ConsultationStatus {
+  Color get color {
+    if (this == ConsultationStatus.draft) {
+      return BrandColors.black;
+    }
+    if (this == ConsultationStatus.pending) {
+      return const Color(0xFF2E59BC);
+    }
+    if (this == ConsultationStatus.scehduled) {
+      return const Color(0xFF9A9A9A);
+    }
+    if (this == ConsultationStatus.requestToChangetime) {
+      return const Color(0xFFE93BE3);
+    }
+    if (this == ConsultationStatus.approvedByConsultant ||
+        this == ConsultationStatus.confirmedByUser) {
+      return Colors.green;
+    }
+    if (this == ConsultationStatus.pendingPayment) {
+      return BrandColors.orange;
+    }
+    if (this == ConsultationStatus.underReview) {
+      return Colors.brown;
+    }
+    if (this == ConsultationStatus.answeredByConsultant) {
+      return Colors.lime;
+    }
+    if (this == ConsultationStatus.ended) {
+      return const Color(0xFF6E7CAC);
+    }
+    return Colors.red;
   }
 }

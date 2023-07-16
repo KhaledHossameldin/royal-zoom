@@ -208,14 +208,14 @@
     "paid": "مدفوعة",
     "free": "مجانية",
     "draft": "مسودة",
-    "pending": "جاري الاطلاع",
+    "pending": "جاري الإطلاع",
     "scheduled": "مجدولة",
-    "request_to_change_time": "طلب تغيير موعد",
-    "pending_payment": "استكمال الدفع",
+    "request_to_change_time": "طلب تغير موعد",
+    "approved": "مقبولة",
+    "pending_payment": "إستكمال الدفع",
+    "under_review": "قيد المراجعة",
+    "answered": "تم الرد",
     "ended": "منتهية",
-    "hidden": "مخفية",
-    "set_price": "تحديد السعر",
-    "deleted": "محذوفة",
-    "status": "الحالة",
-    "date": "التاريخ"
+    "canelled": "تم الإلغاء",
+    "hidden": "مخفية"
 }

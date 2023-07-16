@@ -7,10 +7,11 @@ enum ConsultationStatus {
   confirmedByUser,
   pendingPayment,
   underReview,
-  hold,
+  answeredByConsultant,
   ended,
   cancelledByConsultant,
   cancelledByUser,
+  cancelledBySystem,
 }
 
 extension ConsultationStatusExtension on ConsultationStatus {
@@ -40,7 +41,7 @@ extension ConsultationStatusExtension on ConsultationStatus {
       case ConsultationStatus.underReview:
         return 8;
 
-      case ConsultationStatus.hold:
+      case ConsultationStatus.answeredByConsultant:
         return 9;
 
       case ConsultationStatus.ended:
@@ -49,8 +50,11 @@ extension ConsultationStatusExtension on ConsultationStatus {
       case ConsultationStatus.cancelledByConsultant:
         return 11;
 
-      default:
+      case ConsultationStatus.cancelledByUser:
         return 12;
+
+      default:
+        return 13;
     }
   }
 }
@@ -83,7 +87,7 @@ extension ConsultationStatusIntExtension on int {
         return ConsultationStatus.underReview;
 
       case 9:
-        return ConsultationStatus.hold;
+        return ConsultationStatus.answeredByConsultant;
 
       case 10:
         return ConsultationStatus.ended;
@@ -91,8 +95,11 @@ extension ConsultationStatusIntExtension on int {
       case 11:
         return ConsultationStatus.cancelledByConsultant;
 
-      default:
+      case 12:
         return ConsultationStatus.cancelledByUser;
+
+      default:
+        return ConsultationStatus.cancelledBySystem;
     }
   }
 }

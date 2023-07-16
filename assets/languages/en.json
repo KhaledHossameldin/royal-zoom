@@ -210,12 +210,10 @@
     "pending": "Pending",
     "scheduled": "Scheduled",
     "request_to_change_time": "Request to change time",
-    "pending_payment": "Complete payment",
+    "approved": "Approved",
+    "pending_payment": "Pending payment",
+    "under_review": "Under review",
+    "answered": "Answered",
     "ended": "Ended",
-    "hidden": "Hidden",
-    "set_price": "Setting price",
-    "deleted": "Deleted",
-    "not_approved": "Unacceptable",
-    "status": "Status",
-    "date": "Date"
+    "canelled": "Cancelled"
 }
