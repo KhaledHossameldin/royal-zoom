@@ -20,11 +20,7 @@ class Repository {
   final _location = LocationServices.instance;
   final _audio = AudioHandler.instance;
 
-  Stream<Duration> get bufferedPositionStream => _audio.bufferedPositionStream;
-
   Future<void> playAudio() async => await _audio.play();
-
-  Future<void> stopAudio() async => await _audio.stop();
 
   Future<void> setAudioFilePath(String path) async => _audio.setFilePath(path);
 

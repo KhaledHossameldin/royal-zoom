@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:just_audio/just_audio.dart';
+
 import '../../../utilities/extensions.dart';
 import '../../enums/consultant_response_type.dart';
 import '../../enums/consultation_content_type.dart';
@@ -35,6 +37,7 @@ class Consultation {
   final DateTime? appointmentDate;
   final DateTime? maxTimeToReceiveOffers;
   final Consultant? consultant;
+  final AudioPlayer? audioPlayer;
 
   Consultation({
     required this.id,
@@ -63,6 +66,7 @@ class Consultation {
     this.appointmentDate,
     this.maxTimeToReceiveOffers,
     this.consultant,
+    this.audioPlayer,
   });
 
   Consultation copyWith({
@@ -92,6 +96,7 @@ class Consultation {
     DateTime? appointmentDate,
     DateTime? maxTimeToReceiveOffers,
     Consultant? consultant,
+    AudioPlayer? audioPlayer,
   }) {
     return Consultation(
       id: id ?? this.id,
@@ -124,6 +129,7 @@ class Consultation {
       maxTimeToReceiveOffers:
           maxTimeToReceiveOffers ?? this.maxTimeToReceiveOffers,
       consultant: consultant ?? this.consultant,
+      audioPlayer: audioPlayer ?? this.audioPlayer,
     );
   }
 
@@ -214,7 +220,7 @@ class Consultation {
 
   @override
   String toString() {
-    return 'Consultation(id: $id, uuid: $uuid, majorId: $majorId, userId: $userId, contentType: $contentType, content: $content, responseType: $responseType, maximumPrice: $maximumPrice, isAcceptingOffersFromAll: $isAcceptingOffersFromAll, isHelpRequested: $isHelpRequested, isHideNameFromConsultants: $isHideNameFromConsultants, isAcceptMinimumOfferByDefault: $isAcceptMinimumOfferByDefault, attendeeNumber: $attendeeNumber, status: $status, isPaid: $isPaid, isUnscheduled: $isUnscheduled, visibilityStatus: $visibilityStatus, publishedAt: $publishedAt, createdAt: $createdAt, isFavourite: $isFavourite, isFastConsultation: $isFastConsultation, major: $major, consultantId: $consultantId, appointmentDate: $appointmentDate, maxTimeToReceiveOffers: $maxTimeToReceiveOffers, consultant: $consultant)';
+    return 'Consultation(id: $id, uuid: $uuid, majorId: $majorId, userId: $userId, contentType: $contentType, content: $content, responseType: $responseType, maximumPrice: $maximumPrice, isAcceptingOffersFromAll: $isAcceptingOffersFromAll, isHelpRequested: $isHelpRequested, isHideNameFromConsultants: $isHideNameFromConsultants, isAcceptMinimumOfferByDefault: $isAcceptMinimumOfferByDefault, attendeeNumber: $attendeeNumber, status: $status, isPaid: $isPaid, isUnscheduled: $isUnscheduled, visibilityStatus: $visibilityStatus, publishedAt: $publishedAt, createdAt: $createdAt, isFavourite: $isFavourite, isFastConsultation: $isFastConsultation, major: $major, consultantId: $consultantId, appointmentDate: $appointmentDate, maxTimeToReceiveOffers: $maxTimeToReceiveOffers, consultant: $consultant, audioPlayer: $audioPlayer)';
   }
 
   @override
@@ -247,7 +253,8 @@ class Consultation {
         other.consultantId == consultantId &&
         other.appointmentDate == appointmentDate &&
         other.maxTimeToReceiveOffers == maxTimeToReceiveOffers &&
-        other.consultant == consultant;
+        other.consultant == consultant &&
+        other.audioPlayer == audioPlayer;
   }
 
   @override
@@ -277,7 +284,8 @@ class Consultation {
         consultantId.hashCode ^
         appointmentDate.hashCode ^
         maxTimeToReceiveOffers.hashCode ^
-        consultant.hashCode;
+        consultant.hashCode ^
+        audioPlayer.hashCode;
   }
 }
 

@@ -4,9 +4,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:just_audio/just_audio.dart';
 
 import '../../constants/network.dart';
 import '../../localization/app_localizations.dart';
+import '../enums/consultation_content_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
@@ -29,9 +31,17 @@ class NetworkServices {
     final response = await _get(context, Network.consultations, params: params);
     final jsonMap = json.decode(response);
 
-    final consultations = (jsonMap['data'] as List)
-        .map((item) => Consultation.fromMap(item))
-        .toList();
+    final consultations =
+        await Future.wait((jsonMap['data'] as List).map((item) async {
+      final consultation = Consultation.fromMap(item);
+      if (consultation.contentType == ConsultationContentType.voice) {
+        final player = AudioPlayer();
+        await player.setUrl(consultation.content);
+        await player.pause();
+        return consultation.copyWith(audioPlayer: player);
+      }
+      return consultation;
+    }).toList());
     return {
       'consultations': consultations,
       'per_page': jsonMap['meta']['per_page'],

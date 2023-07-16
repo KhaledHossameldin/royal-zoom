@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../constants/brand_colors.dart';
 import '../../../constants/routes.dart';
 import '../../../cubits/consultations/consultations_cubit.dart';
 import '../../../data/enums/consultation_content_type.dart';
 import '../../../data/models/consultations/consultation.dart';
-import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/reload_widget.dart';
@@ -354,35 +353,43 @@ class _ConsultationItem extends StatelessWidget {
                       ConsultationContentType.text) {
                     return Text(consultation.content);
                   }
-                  final repository = Repository.instance;
-                  return FutureBuilder<Duration?>(
-                    future: repository.setAudioUrl(consultation.content),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      return Row(
-                        children: [
-                          Text(
-                            snapshot.data?.audioTime ?? Duration.zero.audioTime,
-                            style: const TextStyle(
-                              fontSize: 9.0,
-                              color: BrandColors.black,
-                              fontWeight: FontWeight.bold,
+                  return Row(
+                    children: [
+                      Text(
+                        consultation.audioPlayer!.duration!.audioTime,
+                        style: const TextStyle(
+                          fontSize: 9.0,
+                          color: BrandColors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      8.emptyWidth,
+                      Expanded(
+                        child: StreamBuilder(
+                          stream: consultation.audioPlayer!.positionStream,
+                          builder: (context, snapshot) => Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: LinearProgressIndicator(
+                              color: BrandColors.orange,
+                              backgroundColor: Colors.grey,
+                              value: (snapshot.data ?? Duration.zero)
+                                      .inSeconds /
+                                  consultation.audioPlayer!.duration!.inSeconds,
                             ),
                           ),
-                          8.emptyWidth,
-                          const Expanded(child: SizedBox()),
-                          8.emptyWidth,
-                          FloatingActionButton.small(
-                            elevation: 0.0,
-                            heroTag: 'id-${consultation.id}',
-                            child: const Icon(Icons.play_arrow_rounded),
-                            onPressed: () => repository.playAudio(),
-                          ),
-                        ],
-                      );
-                    },
+                        ),
+                      ),
+                      8.emptyWidth,
+                      FloatingActionButton.small(
+                        elevation: 0.0,
+                        heroTag: 'id-${consultation.id}',
+                        child: const Icon(Icons.play_arrow_rounded),
+                        onPressed: () async {
+                          await consultation.audioPlayer!.seek(Duration.zero);
+                          consultation.audioPlayer!.play();
+                        },
+                      ),
+                    ],
                   );
                 },
               ),
