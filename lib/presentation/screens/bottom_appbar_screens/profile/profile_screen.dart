@@ -17,6 +17,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
     final materialLocalizations = MaterialLocalizations.of(context);
+    final user = context.read<AuthenticationBloc>().user;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +39,13 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const _Header(),
             20.emptyHeight,
+            if (user != null)
+              _Item(
+                icon: 'search',
+                color: BrandColors.lightBlue,
+                title: appLocalizations.search,
+                onTap: () => Navigator.pushNamed(context, Routes.search),
+              ),
             _Item(
               icon: 'about-application',
               color: Colors.black,
@@ -54,32 +62,26 @@ class ProfileScreen extends StatelessWidget {
                 arguments: true,
               ),
             ),
-            Builder(builder: (context) {
-              final user = context.read<AuthenticationBloc>().user;
-              return _Item(
-                icon: 'privacy-policy',
-                color: BrandColors.lightBlue,
-                title: appLocalizations.privacyPolicy,
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  Routes.privacyPolicy,
-                  arguments: user == null,
-                ),
-              );
-            }),
-            Builder(builder: (context) {
-              final user = context.read<AuthenticationBloc>().user;
-              return _Item(
-                icon: 'contact-us',
-                color: BrandColors.purple,
-                title: appLocalizations.contactUs,
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  Routes.contactUs,
-                  arguments: user == null,
-                ),
-              );
-            }),
+            _Item(
+              icon: 'privacy-policy',
+              color: BrandColors.lightBlue,
+              title: appLocalizations.privacyPolicy,
+              onTap: () => Navigator.pushNamed(
+                context,
+                Routes.privacyPolicy,
+                arguments: user == null,
+              ),
+            ),
+            _Item(
+              icon: 'contact-us',
+              color: BrandColors.purple,
+              title: appLocalizations.contactUs,
+              onTap: () => Navigator.pushNamed(
+                context,
+                Routes.contactUs,
+                arguments: user == null,
+              ),
+            ),
             _Item(
               icon: 'share-application',
               color: BrandColors.orange,
@@ -87,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
               onTap: () => Share.share('royake'),
             ),
             _Item(
-              icon: 'share-application',
+              icon: 'rate',
               color: BrandColors.lightBlue,
               title: appLocalizations.reviewApplication,
               onTap: () => Navigator.pushNamed(context, Routes.reviewApp),

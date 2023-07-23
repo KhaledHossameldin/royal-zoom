@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../data/enums/consultant_response_type.dart';
 import '../data/enums/consultation_status.dart';
 import 'app_localizations_delegate.dart';
 
@@ -399,6 +400,79 @@ class AppLocalizations {
   String get status => _translate('status');
 
   String get date => _translate('date');
+
+  String get search => _translate('search');
+
+  String get mainMajor => _translate('main_major');
+
+  String get subMajor => _translate('sub_major');
+
+  String get consultationNumberTitle => _translate('consultation_number_title');
+
+  String get consultationStatus => _translate('consultation_status');
+
+  String get consultant => _translate('consultant');
+
+  String get unreviewed => _translate('unreviewed');
+
+  String get reviewed => _translate('reviewed');
+
+  String get consultantResponse => _translate('consultant_response');
+
+  String get appointments => _translate('appointments');
+
+  String get dateChange => _translate('date_change');
+
+  String get consultantAppointments => _translate('consultant_appointments');
+
+  String get notIncludedAppointments => _translate('not_included_appointments');
+
+  String get consultationPrice => _translate('consultation_price');
+
+  String get paymentStatusSearch => _translate('payment_status_search');
+
+  String get paid => _translate('paid');
+
+  String get notPaid => _translate('not_paid');
+
+  String get paymentEvaluation => _translate('payment_evaluation');
+
+  String get evaluatedByUser => _translate('evaluated_by_user');
+
+  String get evaluatedByConsultant => _translate('evaluated_by_consultant');
+
+  String get paymentType => _translate('payment_type');
+
+  String get specifiedByConsultant => _translate('specified_by_consultant');
+
+  String get specificCeiling => _translate('specific_ceiling');
+
+  String get searchResults => _translate('search_results');
+
+  String getConsultantResponseType(ConsultantResponseType type) {
+    if (type == ConsultantResponseType.text) {
+      return _translate('text');
+    }
+    if (type == ConsultantResponseType.voice) {
+      return _translate('voice');
+    }
+    if (type == ConsultantResponseType.video) {
+      return _translate('video');
+    }
+    if (type == ConsultantResponseType.onlineMeeting) {
+      return _translate('online_meeting');
+    }
+    if (type == ConsultantResponseType.appropriateForConsultant) {
+      return _translate('appropriate_for_consultant');
+    }
+    if (type == ConsultantResponseType.fieldConsultation) {
+      return _translate('field_consultation');
+    }
+    if (type == ConsultantResponseType.appCall) {
+      return _translate('app_call');
+    }
+    return _translate('frequent_consultation');
+  }
 
   String getConsultationStatus(ConsultationStatus status, bool isHidden) {
     if (isHidden) {

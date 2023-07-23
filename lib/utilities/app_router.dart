@@ -7,6 +7,7 @@ import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
+import '../cubits/search/search_cubit.dart';
 import '../data/models/consultants/consultant.dart';
 import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
@@ -30,6 +31,8 @@ import '../presentation/screens/notifications_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
+import '../presentation/screens/search/results_screen.dart';
+import '../presentation/screens/search/search_screen.dart';
 import '../presentation/screens/send_consultations/fast/choose_consultant_screen.dart';
 import '../presentation/screens/send_consultations/fast/consultant_answer_screen.dart';
 import '../presentation/screens/send_consultations/fast/content_screen.dart';
@@ -233,6 +236,23 @@ class AppRouter {
           builder: (context) => BlocProvider.value(
             value: cubit,
             child: const ConsultationsFilterScreen(),
+          ),
+        );
+
+      case Routes.search:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => SearchCubit(),
+            child: const SearchScreen(),
+          ),
+        );
+
+      case Routes.consultationsResults:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (context) => ConsultationsCubit(),
+            child: const ConsultationsResultsScreen(),
           ),
         );
 

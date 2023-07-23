@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/enums/consultant_response_type.dart';
 import '../../data/enums/consultation_status.dart';
+import '../../data/models/consultants/consultant.dart';
 import '../../data/models/consultations/consultation.dart';
 import '../../data/models/consultations/consultations_filter.dart';
 import '../../data/services/repository.dart';
@@ -16,18 +18,37 @@ class ConsultationsCubit extends Cubit<ConsultationsState> {
   ConsultationsFilter _filter = ConsultationsFilter();
   int _page = 1;
 
-  ConsultationStatus? get status => _filter.status;
+  ConsultationStatus? get firstStatus => _filter.status?[0];
   DateTimeRange? get dateRange => _filter.dateRange;
 
   void clearFilters() => _filter.clear();
 
   void applyFilters({
-    ConsultationStatus? status,
+    List<ConsultationStatus>? status,
     DateTimeRange? dateRange,
     String? searchText,
-  }) =>
-      _filter = _filter.copyWith(
-          status: status, dateRange: dateRange, searchText: searchText);
+    int? mainMajorId,
+    int? subMajorId,
+    List<Consultant>? consultants,
+    List<ConsultantResponseType>? responseTypes,
+    bool? isPaid,
+    ConsultationsFilter? filter,
+  }) {
+    if (filter != null) {
+      _filter = filter;
+      return;
+    }
+    _filter = _filter.copyWith(
+      status: status,
+      dateRange: dateRange,
+      searchText: searchText,
+      mainMajorId: mainMajorId,
+      subMajorId: subMajorId,
+      consultants: consultants,
+      responseTypes: responseTypes,
+      isPaid: isPaid,
+    );
+  }
 
   Future<void> fetchMore(BuildContext context) async {
     final consultants = (state as ConsultationsLoaded).consultations;

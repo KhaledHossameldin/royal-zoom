@@ -102,6 +102,7 @@ class _DateRangeTextField extends StatelessWidget {
         enableInteractiveSelection: false,
         decoration: const InputDecoration(
           isDense: true,
+          prefixIcon: Icon(Icons.calendar_month_rounded),
           suffixIcon: Icon(Icons.expand_more_rounded, size: 25.0),
           suffixIconColor: Colors.grey,
         ),
@@ -138,25 +139,107 @@ class _StatusDropDown extends StatelessWidget {
         child: ButtonTheme(
           alignedDropdown: true,
           child: DropdownButton<ConsultationStatus>(
-            value: cubit.status,
+            value: cubit.firstStatus,
             isExpanded: true,
             menuMaxHeight: 300.height,
             underline: const Material(),
             hint: Text(appLocalizations.choose),
             borderRadius: BorderRadius.circular(12.0),
             icon: const Icon(Icons.expand_more_rounded),
-            items: const [
+            items: [
               DropdownMenuItem(
                 value: ConsultationStatus.draft,
-                child: Text('draft'),
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.draft,
+                    false,
+                  ),
+                ),
               ),
               DropdownMenuItem(
                 value: ConsultationStatus.pending,
-                child: Text('pending'),
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.pending,
+                    false,
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: ConsultationStatus.scehduled,
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.scehduled,
+                    false,
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: ConsultationStatus.requestToChangetime,
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.requestToChangetime,
+                    false,
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: ConsultationStatus.approvedByConsultant,
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.approvedByConsultant,
+                    false,
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: ConsultationStatus.pendingPayment,
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.pendingPayment,
+                    false,
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: ConsultationStatus.underReview,
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.underReview,
+                    false,
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: ConsultationStatus.answeredByConsultant,
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.answeredByConsultant,
+                    false,
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: ConsultationStatus.ended,
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.ended,
+                    false,
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: ConsultationStatus.cancelledByConsultant,
+                child: Text(
+                  appLocalizations.getConsultationStatus(
+                    ConsultationStatus.cancelledByConsultant,
+                    false,
+                  ),
+                ),
               ),
             ],
-            onChanged: (value) =>
-                setState(() => cubit.applyFilters(status: value)),
+            onChanged: (value) => setState(
+                () => cubit.applyFilters(status: value != null ? [value] : [])),
           ),
         ),
       ),

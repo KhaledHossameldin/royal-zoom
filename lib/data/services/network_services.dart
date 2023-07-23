@@ -105,7 +105,7 @@ class NetworkServices {
         .toList();
     return {
       'consultants': consultants,
-      'per_page': jsonMap['meta']['per_page'],
+      'per_page': jsonMap['meta']?['per_page'] ?? '1',
     };
   }
 

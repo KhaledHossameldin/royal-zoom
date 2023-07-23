@@ -56,6 +56,7 @@ dependencies:
   record: ^4.4.4
   path_provider: ^2.0.15
   just_audio: ^0.9.34
+  search_choices: ^2.2.5
 
 dev_dependencies:
   flutter_test:
