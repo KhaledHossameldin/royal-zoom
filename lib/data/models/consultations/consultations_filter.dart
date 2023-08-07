@@ -65,7 +65,7 @@ class ConsultationsFilter {
     if (consultants != null && consultants!.isNotEmpty) {
       params.putIfAbsent(
         'consultants[]',
-        () => consultants!.map((e) => e.id).toList(),
+        () => consultants!.map((e) => e.id.toString()).toList(),
       );
     }
     if (responseTypes != null && responseTypes!.isNotEmpty) {

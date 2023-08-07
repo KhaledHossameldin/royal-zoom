@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +7,6 @@ import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/routes.dart';
-import '../../../data/models/consultants/consultant.dart';
 import '../consultations/consultations_screen.dart';
 import 'chat_screen.dart';
 import '../consultants/consultants_screen.dart';
@@ -79,49 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: FloatingActionButton(
               onPressed: () {
-                log(Consultant.fromMap({
-                  'id': 1,
-                  'uuid': '9931c9b6-a669-4380-be98-2dab243443ce',
-                  'country_id': null,
-                  'nationality_id': null,
-                  'city_id': null,
-                  'country_time_zone_id': null,
-                  'language_id': null,
-                  'currency_id': null,
-                  'first_name': null,
-                  'middle_name': null,
-                  'last_name': null,
-                  'preview_name': 'اختبار 2',
-                  'image': '',
-                  'email': 'hossam@gmail.com',
-                  'phone': '+201010101011',
-                  'wallet_balance': '0.00',
-                  'gender': 1,
-                  'color': '#ffffff',
-                  'preview_status': 1,
-                  'last_login_at': null,
-                  'email_verified_at': '2023-06-06 14:00:28',
-                  'phone_verified_at': '2023-06-06 14:12:52',
-                  'status': 2,
-                  'is_favourite': false,
-                  'user_type': 2,
-                  'created_at': '2023-05-18T06:26:06.000000Z',
-                  'default_major': {
-                    'id': 2,
-                    'uuid': '993274c2-690f-4da5-80a4-6a17d99c67f1',
-                    'user_id': 1,
-                    'major_id': 3,
-                    'is_verified': 0,
-                    'is_active': 1,
-                    'is_free': 0,
-                    'years_of_experience': 2,
-                    'price_per_hour': '2.00',
-                    'terms': '2',
-                    'is_notifications_enabled': 0,
-                    'is_default': 1
-                  },
-                  'settings': null
-                }).toString());
                 if (user == null) {
                   Navigator.pushReplacementNamed(context, Routes.login);
                   return;

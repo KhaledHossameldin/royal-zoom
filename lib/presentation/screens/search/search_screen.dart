@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -10,6 +8,7 @@ import '../../../constants/routes.dart';
 import '../../../cubits/search/search_cubit.dart';
 import '../../../data/enums/consultant_response_type.dart';
 import '../../../data/enums/consultation_status.dart';
+import '../../../data/models/consultants/consultant.dart';
 import '../../../data/models/consultations/consultations_filter.dart';
 import '../../../data/models/major.dart';
 import '../../../localization/app_localizations.dart';
@@ -100,6 +99,7 @@ class _SearchScreenState extends State<SearchScreen>
   double _reviewsCount = 0.0;
   bool _isFavourite = false;
   RangeValues rangeValues = const RangeValues(0, 1000);
+  List<Consultant> _consultants = [];
 
   int? _mainMajorId;
   int? _subMajorId;
@@ -147,7 +147,6 @@ class _SearchScreenState extends State<SearchScreen>
               state as SearchLoaded;
               final majors = state.majors;
               final consultants = state.consultants;
-              log(consultants.toString());
               return Column(
                 children: [
                   Padding(
@@ -202,39 +201,36 @@ class _SearchScreenState extends State<SearchScreen>
                                   child: SearchChoices.multiple(
                                     isExpanded: true,
                                     rightToLeft: true,
-                                    selectedItems: const [],
+                                    selectedItems: _consultants
+                                        .map((e) => consultants.indexOf(e))
+                                        .toList(),
                                     displayClearIcon: false,
                                     underline: const Material(),
                                     hint: appLocalizations.choose,
                                     icon: const Icon(Icons.expand_more),
-                                    onChanged: (value) {},
+                                    onChanged: (value) {
+                                      _consultants = [];
+                                      for (var element in value) {
+                                        _consultants.add(consultants[element]);
+                                      }
+                                    },
                                     doneButton:
                                         MaterialLocalizations.of(context)
                                             .saveButtonLabel,
                                     closeButton:
                                         MaterialLocalizations.of(context)
                                             .closeButtonLabel,
-                                    items: const <DropdownMenuItem<String>>[
-                                      DropdownMenuItem(
-                                        value: '1',
-                                        child: ListTile(
-                                          leading: CircleAvatar(),
-                                          title: Text('Consultant'),
-                                          subtitle: Text('Consultant'),
-                                        ),
-                                      ),
-                                      DropdownMenuItem(
-                                        value: '2',
-                                        child: ListTile(
-                                          leading: CircleAvatar(),
-                                          title: Text('Consultant'),
-                                          subtitle: Text('Consultant'),
-                                        ),
-                                      ),
-                                    ],
+                                    items: consultants
+                                        .map(
+                                          (e) => DropdownMenuItem<int>(
+                                            value: e.id,
+                                            child:
+                                                _ConsultantItem(consultant: e),
+                                          ),
+                                        )
+                                        .toList(),
                                   ),
                                 ),
-                                //TODO: Implement consultant search
                               ),
                               10.emptyHeight,
                               _Item(
@@ -335,16 +331,17 @@ class _SearchScreenState extends State<SearchScreen>
                 final filter = ConsultationsFilter(
                   mainMajorId: _mainMajorId,
                   subMajorId: _subMajorId,
+                  consultants: _consultants,
+                  dateRange: _dateRange,
+                  isPaid: _payment[0] == _payment[1] ? null : _payment[0],
                   status: _status
                       .where((element) => element.isSelected)
                       .map((e) => e.status)
                       .toList(),
-                  dateRange: _dateRange,
                   responseTypes: _responseTypes
                       .where((element) => element.isSelected)
                       .map((e) => e.type)
                       .toList(),
-                  isPaid: _payment[0] == _payment[1] ? null : _payment[0],
                 );
                 Navigator.pushNamed(
                   context,
@@ -728,6 +725,59 @@ class _SearchScreenState extends State<SearchScreen>
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ConsultantItem extends StatelessWidget {
+  const _ConsultantItem({required this.consultant});
+
+  final Consultant consultant;
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+
+    return ListTile(
+      tileColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: const BorderSide(
+          color: BrandColors.gray,
+        ),
+      ),
+      leading: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.grey.shade600),
+        ),
+        child: Container(
+          width: 76.width,
+          height: 76.height,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width: 2.0),
+            image: DecorationImage(
+              fit: BoxFit.contain,
+              image: consultant.image.isNotEmpty
+                  ? NetworkImage(consultant.image)
+                  : 'royake'.png.image,
+            ),
+          ),
+        ),
+      ),
+      title: Row(
+        children: [
+          Text(consultant.previewName ?? appLocalizations.none),
+          6.emptyWidth,
+          if (consultant.major != null && consultant.major!.isVerified)
+            SizedBox.square(
+              dimension: 16.width,
+              child: 'verified'.png,
+            ),
+        ],
+      ),
+      subtitle: Text(consultant.previewName ?? appLocalizations.none),
     );
   }
 }
