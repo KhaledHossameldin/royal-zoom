@@ -225,212 +225,222 @@ class _ConsultationItem extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
 
     return Card(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 12.height,
-          horizontal: 18.width,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10.0),
+        onTap: () => Navigator.pushNamed(
+          context,
+          Routes.consultationDetails,
+          arguments: consultation.id,
         ),
-        child: Builder(builder: (context) {
-          if (consultation.isHideNameFromConsultants) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 12.height,
+            horizontal: 18.width,
+          ),
+          child: Builder(builder: (context) {
+            if (consultation.isHideNameFromConsultants) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${appLocalizations.consultationNumber}${consultation.id}',
+                    style: const TextStyle(
+                      fontSize: 11.0,
+                      color: BrandColors.black,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  Text(
+                    appLocalizations.getConsultationStatus(
+                      consultation.status,
+                      consultation.isHideNameFromConsultants,
+                    ),
+                    style: const TextStyle(
+                      fontSize: 11.0,
+                      color: BrandColors.gray,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              );
+            }
+            return Column(
               children: [
-                Text(
-                  '${appLocalizations.consultationNumber}${consultation.id}',
-                  style: const TextStyle(
-                    fontSize: 11.0,
-                    color: BrandColors.black,
-                    fontWeight: FontWeight.normal,
+                ListTile(
+                  isThreeLine: true,
+                  leading: Builder(builder: (context) {
+                    final consultant = consultation.consultant;
+                    return Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: BrandColors.orange),
+                      ),
+                      child: Container(
+                        width: 60.width,
+                        height: 60.height,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2.0),
+                          image: DecorationImage(
+                            fit: BoxFit.contain,
+                            image: consultant != null &&
+                                    consultant.image.isNotEmpty
+                                ? NetworkImage(consultant.image)
+                                : 'royake'.png.image,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                  title: Builder(builder: (context) {
+                    final consultant = consultation.consultant;
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          consultant != null && consultant.previewName != null
+                              ? consultant.previewName!
+                              : appLocalizations.none,
+                          style: const TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                            color: BrandColors.darkGray,
+                          ),
+                        ),
+                        Icon(consultation.isFavourite
+                            ? Icons.favorite
+                            : Icons.favorite_outline),
+                      ],
+                    );
+                  }),
+                  subtitle: Column(
+                    children: [
+                      Builder(builder: (context) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Wrap(
+                            spacing: 8.width,
+                            alignment: WrapAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                consultation.appointmentDate != null
+                                    ? DateFormat('d/MM/y')
+                                        .add_jm()
+                                        .format(consultation.appointmentDate!)
+                                    : appLocalizations.none,
+                                style: const TextStyle(
+                                  fontSize: 11.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                appLocalizations.getConsultationStatus(
+                                  consultation.status,
+                                  consultation.isHideNameFromConsultants,
+                                ),
+                                style: TextStyle(
+                                  fontSize: 11.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: consultation.status.color,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                      Builder(builder: (context) {
+                        const textStyle = TextStyle(fontSize: 11.0);
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Wrap(
+                            spacing: 8.width,
+                            alignment: WrapAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${appLocalizations.consultationNumber}${consultation.id}',
+                                style: textStyle,
+                              ),
+                              Text(
+                                appLocalizations.getConsultationPaymentStatus(
+                                    consultation.maximumPrice,
+                                    consultation.isPaid),
+                                style: textStyle,
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ],
                   ),
                 ),
-                Text(
-                  appLocalizations.getConsultationStatus(
-                    consultation.status,
-                    consultation.isHideNameFromConsultants,
+                const Divider(),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    vertical: 11.height,
+                    horizontal: 14.width,
                   ),
-                  style: const TextStyle(
-                    fontSize: 11.0,
-                    color: BrandColors.gray,
-                    fontWeight: FontWeight.bold,
+                  decoration: BoxDecoration(
+                    color: BrandColors.snowWhite,
+                    borderRadius: BorderRadius.circular(
+                        consultation.contentType == ConsultationContentType.text
+                            ? 10.0
+                            : 50.0),
+                  ),
+                  child: Builder(
+                    builder: (context) {
+                      if (consultation.contentType ==
+                          ConsultationContentType.text) {
+                        return Text(consultation.content);
+                      }
+                      return Row(
+                        children: [
+                          Text(
+                            consultation.audioPlayer!.duration!.audioTime,
+                            style: const TextStyle(
+                              fontSize: 9.0,
+                              color: BrandColors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          8.emptyWidth,
+                          Expanded(
+                            child: StreamBuilder(
+                              stream: consultation.audioPlayer!.positionStream,
+                              builder: (context, snapshot) => Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: LinearProgressIndicator(
+                                  color: BrandColors.darkGreen,
+                                  backgroundColor: Colors.grey,
+                                  value: (snapshot.data ?? Duration.zero)
+                                          .inSeconds /
+                                      consultation
+                                          .audioPlayer!.duration!.inSeconds,
+                                ),
+                              ),
+                            ),
+                          ),
+                          8.emptyWidth,
+                          FloatingActionButton.small(
+                            elevation: 0.0,
+                            backgroundColor: BrandColors.darkGreen,
+                            heroTag: 'id-${consultation.id}',
+                            child: const Icon(Icons.play_arrow_rounded),
+                            onPressed: () async {
+                              await consultation.audioPlayer!
+                                  .seek(Duration.zero);
+                              consultation.audioPlayer!.play();
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ],
             );
-          }
-          return Column(
-            children: [
-              ListTile(
-                isThreeLine: true,
-                leading: Builder(builder: (context) {
-                  final consultant = consultation.consultant;
-                  return Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: BrandColors.orange),
-                    ),
-                    child: Container(
-                      width: 60.width,
-                      height: 60.height,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2.0),
-                        image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image:
-                              consultant != null && consultant.image.isNotEmpty
-                                  ? NetworkImage(consultant.image)
-                                  : 'royake'.png.image,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-                title: Builder(builder: (context) {
-                  final consultant = consultation.consultant;
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        consultant != null && consultant.previewName != null
-                            ? consultant.previewName!
-                            : appLocalizations.none,
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          color: BrandColors.darkGray,
-                        ),
-                      ),
-                      Icon(consultation.isFavourite
-                          ? Icons.favorite
-                          : Icons.favorite_outline),
-                    ],
-                  );
-                }),
-                subtitle: Column(
-                  children: [
-                    Builder(builder: (context) {
-                      return SizedBox(
-                        width: double.infinity,
-                        child: Wrap(
-                          spacing: 8.width,
-                          alignment: WrapAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              consultation.appointmentDate != null
-                                  ? DateFormat('d/MM/y')
-                                      .add_jm()
-                                      .format(consultation.appointmentDate!)
-                                  : appLocalizations.none,
-                              style: const TextStyle(
-                                fontSize: 11.0,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Text(
-                              appLocalizations.getConsultationStatus(
-                                consultation.status,
-                                consultation.isHideNameFromConsultants,
-                              ),
-                              style: TextStyle(
-                                fontSize: 11.0,
-                                fontWeight: FontWeight.bold,
-                                color: consultation.status.color,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                    Builder(builder: (context) {
-                      const textStyle = TextStyle(fontSize: 11.0);
-                      return SizedBox(
-                        width: double.infinity,
-                        child: Wrap(
-                          spacing: 8.width,
-                          alignment: WrapAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${appLocalizations.consultationNumber}${consultation.id}',
-                              style: textStyle,
-                            ),
-                            Text(
-                              appLocalizations.getConsultationPaymentStatus(
-                                  consultation.maximumPrice,
-                                  consultation.isPaid),
-                              style: textStyle,
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-              ),
-              const Divider(),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                  vertical: 11.height,
-                  horizontal: 14.width,
-                ),
-                decoration: BoxDecoration(
-                  color: BrandColors.snowWhite,
-                  borderRadius: BorderRadius.circular(
-                      consultation.contentType == ConsultationContentType.text
-                          ? 10.0
-                          : 50.0),
-                ),
-                child: Builder(
-                  builder: (context) {
-                    if (consultation.contentType ==
-                        ConsultationContentType.text) {
-                      return Text(consultation.content);
-                    }
-                    return Row(
-                      children: [
-                        Text(
-                          consultation.audioPlayer!.duration!.audioTime,
-                          style: const TextStyle(
-                            fontSize: 9.0,
-                            color: BrandColors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        8.emptyWidth,
-                        Expanded(
-                          child: StreamBuilder(
-                            stream: consultation.audioPlayer!.positionStream,
-                            builder: (context, snapshot) => Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: LinearProgressIndicator(
-                                color: BrandColors.orange,
-                                backgroundColor: Colors.grey,
-                                value:
-                                    (snapshot.data ?? Duration.zero).inSeconds /
-                                        consultation
-                                            .audioPlayer!.duration!.inSeconds,
-                              ),
-                            ),
-                          ),
-                        ),
-                        8.emptyWidth,
-                        FloatingActionButton.small(
-                          elevation: 0.0,
-                          heroTag: 'id-${consultation.id}',
-                          child: const Icon(Icons.play_arrow_rounded),
-                          onPressed: () async {
-                            await consultation.audioPlayer!.seek(Duration.zero);
-                            consultation.audioPlayer!.play();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        }),
+          }),
+        ),
       ),
     );
   }

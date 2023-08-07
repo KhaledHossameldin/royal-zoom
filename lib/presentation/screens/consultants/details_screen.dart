@@ -630,40 +630,41 @@ class _Header extends StatelessWidget {
                   ),
                 ),
               ),
-              Column(
-                children: consultant.majors
-                    .map((e) => RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '${e.terms} :',
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: BrandColors.black,
-                                  fontFamily: Fonts.main,
+              if (consultant.major != null && consultant.majors != null)
+                Column(
+                  children: consultant.majors!
+                      .map((e) => RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '${e.terms} :',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: BrandColors.black,
+                                    fontFamily: Fonts.main,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: ' ${e.pricePerHour.round()} ',
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  color: BrandColors.orange,
-                                  fontFamily: Fonts.main,
+                                TextSpan(
+                                  text: ' ${e.pricePerHour.round()} ',
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    color: BrandColors.orange,
+                                    fontFamily: Fonts.main,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: appLocalizations.sarH,
-                                style: const TextStyle(
-                                  fontSize: 10.0,
-                                  color: BrandColors.black,
-                                  fontFamily: Fonts.main,
+                                TextSpan(
+                                  text: appLocalizations.sarH,
+                                  style: const TextStyle(
+                                    fontSize: 10.0,
+                                    color: BrandColors.black,
+                                    fontFamily: Fonts.main,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ))
-                    .toList(),
-              ),
+                              ],
+                            ),
+                          ))
+                      .toList(),
+                ),
             ],
           );
           return AnimatedCrossFade(

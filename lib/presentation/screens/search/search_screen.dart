@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -122,7 +124,6 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
-    final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
 
     return Scaffold(
       appBar: AppBar(
@@ -146,6 +147,7 @@ class _SearchScreenState extends State<SearchScreen>
               state as SearchLoaded;
               final majors = state.majors;
               final consultants = state.consultants;
+              log(consultants.toString());
               return Column(
                 children: [
                   Padding(

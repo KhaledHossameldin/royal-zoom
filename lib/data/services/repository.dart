@@ -4,6 +4,8 @@ import 'package:geocoding/geocoding.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
+import '../models/consultants/available_time.dart';
+import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
 import '../models/major.dart';
 import 'audio_handler.dart';
@@ -27,6 +29,25 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<int> changeAppointmentDate(
+    BuildContext context, {
+    required int id,
+    required String date,
+  }) async =>
+      _network.changeAppointmentDate(context, id: id, date: date);
+
+  Future<ConsultationDetails> showConsultation(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _network.showConsultation(context, id: id);
+
+  Future<Map<String, List<ConsultantAvailableTime>>> consultantTimes(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _network.consultantTimes(context, id: id);
 
   Future<Map<String, Object>> consultations(
     BuildContext context, {

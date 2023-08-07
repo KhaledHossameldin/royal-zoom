@@ -227,8 +227,9 @@ class _ChooseConsultantScreenState extends State<ChooseConsultantScreen> {
               Routes.sendConsultationFilter,
               arguments: {
                 'cubit': context.read<ConsultantsCubit>(),
-                'maxPrice':
-                    consultants.map((e) => e.major.pricePerHour).reduce(max),
+                'maxPrice': consultants
+                    .map((e) => e.major?.pricePerHour ?? 100.0)
+                    .reduce(max),
               },
             );
           },
@@ -412,7 +413,7 @@ class _ConsultantItem extends StatelessWidget {
         children: [
           Text(consultant.previewName ?? appLocalizations.none),
           6.emptyWidth,
-          if (consultant.major.isVerified)
+          if (consultant.major != null && consultant.major!.isVerified)
             SizedBox.square(
               dimension: 16.width,
               child: 'verified'.png,

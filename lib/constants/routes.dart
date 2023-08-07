@@ -31,4 +31,7 @@ class Routes {
   static const consultationsFilter = 'consultations-filter-screen';
   static const search = 'search-screen';
   static const consultationsResults = 'consultations-results-screen';
+  static const consultationDetails = 'consultation-details-screen';
+  static const editTimeChoose = 'edit-time-choose-screen';
+  static const editTimeChooseSuccess = 'edit-time-choose-success-screen';
 }

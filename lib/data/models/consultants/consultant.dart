@@ -11,13 +11,13 @@ import '../../enums/user_type.dart';
 import '../authentication/country.dart';
 import '../authentication/nationality.dart';
 import '../authentication/settings.dart';
-import '../person.dart';
+import '../account.dart';
 import 'default_major.dart';
 
 class Consultant extends Account {
   final bool isFavourite;
-  final DefaultMajor major;
-  final List<DefaultMajor> majors;
+  final DefaultMajor? major;
+  final List<DefaultMajor>? majors;
 
   Consultant({
     required super.id,
@@ -48,9 +48,9 @@ class Consultant extends Account {
     super.country,
     super.nationality,
     super.settings,
+    this.major,
+    this.majors,
     required this.isFavourite,
-    required this.major,
-    required this.majors,
   });
 
   Consultant copyWith({
@@ -121,6 +121,7 @@ class Consultant extends Account {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     final contract = _ConsultantContract();
 
@@ -154,8 +155,8 @@ class Consultant extends Account {
       contract.emailVerifiedAt: emailVerifiedAt?.toIso8601String(),
       contract.phoneVerifiedAt: phoneVerifiedAt?.toIso8601String(),
       contract.isFavourite: isFavourite,
-      contract.major: major.toMap(),
-      contract.majors: majors.map((x) => x.toMap()).toList(),
+      contract.major: major?.toMap(),
+      contract.majors: majors?.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -205,12 +206,17 @@ class Consultant extends Account {
           ? DateTime.parse(map[contract.phoneVerifiedAt])
           : null,
       isFavourite: map[contract.isFavourite] ?? false,
-      major: DefaultMajor.fromMap(map[contract.major]),
-      majors: List<DefaultMajor>.from(
-          map[contract.majors]?.map((x) => DefaultMajor.fromMap(x))),
+      major: map[contract.major] != null
+          ? DefaultMajor.fromMap(map[contract.major])
+          : null,
+      majors: map[contract.majors] != null
+          ? List<DefaultMajor>.from(
+              map[contract.majors]?.map((x) => DefaultMajor.fromMap(x)))
+          : null,
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
   factory Consultant.fromJson(String source) =>
@@ -293,7 +299,7 @@ class Consultant extends Account {
       majors.hashCode;
 }
 
-class _ConsultantContract extends PersonContract {
+class _ConsultantContract extends AccountContract {
   final isFavourite = 'is_favourite';
   final major = 'default_major';
   final majors = 'majors';

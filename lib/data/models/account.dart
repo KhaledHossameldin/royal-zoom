@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
+import '../../utilities/extensions.dart';
 import '../enums/gender.dart';
 import '../enums/perview_status.dart';
 import '../enums/user_status.dart';
@@ -8,7 +11,7 @@ import 'authentication/country.dart';
 import 'authentication/nationality.dart';
 import 'authentication/settings.dart';
 
-abstract class Account {
+class Account {
   final int id;
   final String uuid;
   final String image;
@@ -140,9 +143,94 @@ abstract class Account {
         nationality.hashCode ^
         settings.hashCode;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'uuid': uuid,
+      'image': image,
+      'walletBalance': walletBalance,
+      'gender': gender.toMap(),
+      'color': color.value,
+      'previewStatus': previewStatus.toMap(),
+      'status': status.toMap(),
+      'type': type.toMap(),
+      'createdAt': createdAt.millisecondsSinceEpoch,
+      'countryId': countryId,
+      'nationalityId': nationalityId,
+      'cityId': cityId,
+      'countryTimeZoneId': countryTimeZoneId,
+      'languageId': languageId,
+      'currencyId': currencyId,
+      'firstName': firstName,
+      'middleName': middleName,
+      'lastName': lastName,
+      'previewName': previewName,
+      'email': email,
+      'phone': phone,
+      'lastLoginAt': lastLoginAt?.millisecondsSinceEpoch,
+      'emailVerifiedAt': emailVerifiedAt?.millisecondsSinceEpoch,
+      'phoneVerifiedAt': phoneVerifiedAt?.millisecondsSinceEpoch,
+      'country': country?.toMap(),
+      'nationality': nationality?.toMap(),
+      'settings': settings?.toMap(),
+    };
+  }
+
+  factory Account.fromMap(Map<String, dynamic> map) {
+    final contract = AccountContract();
+    return Account(
+      id: map[contract.id]?.toInt() ?? 0,
+      uuid: map[contract.uuid] ?? '',
+      image: map[contract.image] ?? '',
+      walletBalance: num.tryParse(map[contract.walletBalance] as String) ?? 0,
+      gender: (map[contract.gender] as int).genderFromMap(),
+      color: (map[contract.color] as String).color,
+      previewStatus:
+          (map[contract.previewStatus] as int).previewStatusFromMap(),
+      status: (map[contract.status] as int).userStatusFromMap(),
+      type: (map[contract.type] as int).userTypeFromMap(),
+      createdAt: DateTime.parse(map[contract.createdAt]),
+      countryId: map[contract.countryId]?.toInt(),
+      nationalityId: map[contract.nationalityId]?.toInt(),
+      cityId: map[contract.cityId]?.toInt(),
+      countryTimeZoneId: map[contract.countryTimeZoneId]?.toInt(),
+      languageId: map[contract.languageId]?.toInt(),
+      currencyId: map[contract.currencyId]?.toInt(),
+      firstName: map[contract.firstName],
+      middleName: map[contract.middleName],
+      lastName: map[contract.lastName],
+      previewName: map[contract.previewName],
+      email: map[contract.email],
+      phone: map[contract.phone],
+      lastLoginAt: map[contract.lastLoginAt] != null
+          ? DateTime.parse(map[contract.lastLoginAt])
+          : null,
+      emailVerifiedAt: map[contract.emailVerifiedAt] != null
+          ? DateTime.parse(map[contract.emailVerifiedAt])
+          : null,
+      phoneVerifiedAt: map[contract.phoneVerifiedAt] != null
+          ? DateTime.parse(map[contract.phoneVerifiedAt])
+          : null,
+      country: map[contract.country] != null
+          ? Country.fromMap(map[contract.country])
+          : null,
+      nationality: map[contract.nationality] != null
+          ? Nationality.fromMap(map[contract.nationality])
+          : null,
+      settings: map[contract.settings] != null
+          ? Settings.fromMap(map[contract.settings])
+          : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Account.fromJson(String source) =>
+      Account.fromMap(json.decode(source));
 }
 
-abstract class PersonContract {
+class AccountContract {
   final id = 'id';
   final uuid = 'uuid';
   final image = 'image';

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../../utilities/extensions.dart';
@@ -7,71 +8,59 @@ import '../../enums/consultant_response_type.dart';
 import '../../enums/consultation_content_type.dart';
 import '../../enums/consultation_status.dart';
 import '../../enums/consultation_visibility_status.dart';
+import '../account.dart';
 import '../consultants/consultant.dart';
+import '../consultation_request.dart';
 import '../major.dart';
+import 'consultation.dart';
 
-class Consultation {
-  final int id;
-  final String uuid;
-  final int majorId;
-  final int userId;
-  final ConsultationContentType contentType;
-  final String content;
-  final ConsultantResponseType responseType;
-  final num maximumPrice;
-  final bool isAcceptingOffersFromAll;
-  final bool isHelpRequested;
-  final bool isHideNameFromConsultants;
-  final bool isAcceptMinimumOfferByDefault;
-  final int attendeeNumber;
-  final ConsultationStatus status;
-  final bool isPaid;
-  final bool isUnscheduled;
-  final ConsultationVisibilityStatus visibilityStatus;
-  final DateTime publishedAt;
-  final DateTime createdAt;
-  final bool isFavourite;
-  final bool isFastConsultation;
-  final Major major;
-  final int? consultantId;
-  final DateTime? appointmentDate;
-  final DateTime? maxTimeToReceiveOffers;
-  final String? address;
-  final Consultant? consultant;
-  final AudioPlayer? audioPlayer;
+class ConsultationDetails extends Consultation {
+  //TODO: attachments
+  final Account user;
+  //TODO: replies
+  final List<ConsultationRequest> requests;
+  final ConsultationRequest? assignedRequest;
+  //TODO: invoice
+  //TODO: chat
+  final List<Consultant> selectedConsultants;
 
-  Consultation({
-    required this.id,
-    required this.uuid,
-    required this.majorId,
-    required this.userId,
-    required this.contentType,
-    required this.content,
-    required this.responseType,
-    required this.maximumPrice,
-    required this.isAcceptingOffersFromAll,
-    required this.isHelpRequested,
-    required this.isHideNameFromConsultants,
-    required this.isAcceptMinimumOfferByDefault,
-    required this.attendeeNumber,
-    required this.status,
-    required this.isPaid,
-    required this.isUnscheduled,
-    required this.visibilityStatus,
-    required this.publishedAt,
-    required this.createdAt,
-    required this.isFavourite,
-    required this.isFastConsultation,
-    required this.major,
-    this.consultantId,
-    this.appointmentDate,
-    this.maxTimeToReceiveOffers,
-    this.address,
-    this.consultant,
-    this.audioPlayer,
+  ConsultationDetails({
+    required super.id,
+    required super.uuid,
+    required super.majorId,
+    required super.userId,
+    required super.contentType,
+    required super.content,
+    required super.responseType,
+    required super.maximumPrice,
+    required super.isAcceptingOffersFromAll,
+    required super.isHelpRequested,
+    required super.isHideNameFromConsultants,
+    required super.isAcceptMinimumOfferByDefault,
+    required super.attendeeNumber,
+    required super.status,
+    required super.isPaid,
+    required super.isUnscheduled,
+    required super.visibilityStatus,
+    required super.publishedAt,
+    required super.createdAt,
+    required super.isFavourite,
+    required super.isFastConsultation,
+    required super.major,
+    super.consultantId,
+    super.appointmentDate,
+    super.maxTimeToReceiveOffers,
+    super.address,
+    super.consultant,
+    super.audioPlayer,
+    required this.user,
+    required this.requests,
+    required this.assignedRequest,
+    required this.selectedConsultants,
   });
 
-  Consultation copyWith({
+  @override
+  ConsultationDetails copyWith({
     int? id,
     String? uuid,
     int? majorId,
@@ -100,8 +89,12 @@ class Consultation {
     String? address,
     Consultant? consultant,
     AudioPlayer? audioPlayer,
+    Account? user,
+    List<ConsultationRequest>? requests,
+    ConsultationRequest? assignedRequest,
+    List<Consultant>? selectedConsultants,
   }) {
-    return Consultation(
+    return ConsultationDetails(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
       majorId: majorId ?? this.majorId,
@@ -134,12 +127,16 @@ class Consultation {
       address: address ?? this.address,
       consultant: consultant ?? this.consultant,
       audioPlayer: audioPlayer ?? this.audioPlayer,
+      user: user ?? this.user,
+      requests: requests ?? this.requests,
+      assignedRequest: assignedRequest ?? this.assignedRequest,
+      selectedConsultants: selectedConsultants ?? this.selectedConsultants,
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
-    final contract = ConsultationContract();
-
+    final contract = _ConsultationDetailsContract();
     return {
       contract.id: id,
       contract.uuid: uuid,
@@ -170,13 +167,18 @@ class Consultation {
           maxTimeToReceiveOffers?.toIso8601String(),
       contract.address: address,
       contract.consultant: consultant?.toMap(),
+      contract.user: user.toMap(),
+      contract.requests: requests.map((x) => x.toMap()).toList(),
+      contract.assignedRequest: assignedRequest?.toMap(),
+      contract.selectedConsultants:
+          selectedConsultants.map((x) => x.toMap()).toList(),
     };
   }
 
-  factory Consultation.fromMap(Map<String, dynamic> map) {
-    final contract = ConsultationContract();
-
-    return Consultation(
+  @override
+  factory ConsultationDetails.fromMap(Map<String, dynamic> map) {
+    final contract = _ConsultationDetailsContract();
+    return ConsultationDetails(
       id: map[contract.id]?.toInt() ?? 0,
       uuid: map[contract.uuid] ?? '',
       majorId: map[contract.majorId]?.toInt() ?? 0,
@@ -216,24 +218,34 @@ class Consultation {
       consultant: map[contract.consultant] != null
           ? Consultant.fromMap(map[contract.consultant])
           : null,
+      user: Account.fromMap(map[contract.user]),
+      requests: List<ConsultationRequest>.from(
+          map[contract.requests]?.map((x) => ConsultationRequest.fromMap(x))),
+      assignedRequest: map[contract.assignedRequest] != null
+          ? ConsultationRequest.fromMap(map[contract.assignedRequest])
+          : null,
+      selectedConsultants: List<Consultant>.from(
+          map[contract.selectedConsultants]?.map((x) => Consultant.fromMap(x))),
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
-  factory Consultation.fromJson(String source) =>
-      Consultation.fromMap(json.decode(source));
+  @override
+  factory ConsultationDetails.fromJson(String source) =>
+      ConsultationDetails.fromMap(json.decode(source)['data']);
 
   @override
   String toString() {
-    return 'Consultation(id: $id, uuid: $uuid, majorId: $majorId, userId: $userId, contentType: $contentType, content: $content, responseType: $responseType, maximumPrice: $maximumPrice, isAcceptingOffersFromAll: $isAcceptingOffersFromAll, isHelpRequested: $isHelpRequested, isHideNameFromConsultants: $isHideNameFromConsultants, isAcceptMinimumOfferByDefault: $isAcceptMinimumOfferByDefault, attendeeNumber: $attendeeNumber, status: $status, isPaid: $isPaid, isUnscheduled: $isUnscheduled, visibilityStatus: $visibilityStatus, publishedAt: $publishedAt, createdAt: $createdAt, isFavourite: $isFavourite, isFastConsultation: $isFastConsultation, major: $major, consultantId: $consultantId, appointmentDate: $appointmentDate, maxTimeToReceiveOffers: $maxTimeToReceiveOffers, address: $address, consultant: $consultant, audioPlayer: $audioPlayer)';
+    return 'ConsultationDetails(id: $id, uuid: $uuid, majorId: $majorId, userId: $userId, contentType: $contentType, content: $content, responseType: $responseType, maximumPrice: $maximumPrice, isAcceptingOffersFromAll: $isAcceptingOffersFromAll, isHelpRequested: $isHelpRequested, isHideNameFromConsultants: $isHideNameFromConsultants, isAcceptMinimumOfferByDefault: $isAcceptMinimumOfferByDefault, attendeeNumber: $attendeeNumber, status: $status, isPaid: $isPaid, isUnscheduled: $isUnscheduled, visibilityStatus: $visibilityStatus, publishedAt: $publishedAt, createdAt: $createdAt, isFavourite: $isFavourite, isFastConsultation: $isFastConsultation, major: $major, consultantId: $consultantId, appointmentDate: $appointmentDate, maxTimeToReceiveOffers: $maxTimeToReceiveOffers, address: $address, consultant: $consultant, audioPlayer: $audioPlayer, user: $user, requests: $requests, assignedRequest: $assignedRequest, selectedConsultants: $selectedConsultants)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Consultation &&
+    return other is ConsultationDetails &&
         other.id == id &&
         other.uuid == uuid &&
         other.majorId == majorId &&
@@ -261,7 +273,11 @@ class Consultation {
         other.maxTimeToReceiveOffers == maxTimeToReceiveOffers &&
         other.consultant == consultant &&
         other.address == address &&
-        other.audioPlayer == audioPlayer;
+        other.audioPlayer == audioPlayer &&
+        other.user == user &&
+        listEquals(other.requests, requests) &&
+        other.assignedRequest == assignedRequest &&
+        listEquals(other.selectedConsultants, selectedConsultants);
   }
 
   @override
@@ -293,36 +309,17 @@ class Consultation {
         maxTimeToReceiveOffers.hashCode ^
         consultant.hashCode ^
         address.hashCode ^
-        audioPlayer.hashCode;
+        audioPlayer.hashCode ^
+        user.hashCode ^
+        requests.hashCode ^
+        assignedRequest.hashCode ^
+        selectedConsultants.hashCode;
   }
 }
 
-class ConsultationContract {
-  final id = 'id';
-  final uuid = 'uuid';
-  final majorId = 'major_id';
-  final consultantId = 'consultant_id';
-  final userId = 'user_id';
-  final contentType = 'content_type';
-  final content = 'content';
-  final responseType = 'consultant_response_type';
-  final appointmentDate = 'appointment_date';
-  final maxTimeToReceiveOffers = 'max_time_to_receive_offers';
-  final maximumPrice = 'maximum_price';
-  final isAcceptingOffersFromAll = 'is_accepting_offers_from_all';
-  final isHelpRequested = 'is_help_requested';
-  final isHideNameFromConsultants = 'hide_name_from_consultants';
-  final isAcceptMinimumOfferByDefault = 'accept_minimum_offer_by_default';
-  final attendeeNumber = 'attendee_number';
-  final status = 'status';
-  final isPaid = 'is_paid';
-  final isUnscheduled = 'is_unscheduled';
-  final visibilityStatus = 'visibility_status';
-  final publishedAt = 'published_at';
-  final createdAt = 'created_at';
-  final isFavourite = 'is_favourite';
-  final isFastConsultation = 'is_fast_consultation';
-  final major = 'major';
-  final consultant = 'consultant';
-  final address = 'address';
+class _ConsultationDetailsContract extends ConsultationContract {
+  final user = 'user';
+  final requests = 'requests';
+  final assignedRequest = 'assigned_request';
+  final selectedConsultants = 'selected_consultants';
 }

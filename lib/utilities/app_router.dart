@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../constants/routes.dart';
+import '../cubits/change_appointment_date/change_appointment_date_cubit.dart';
 import '../cubits/consultants/consultants_cubit.dart';
+import '../cubits/consultants_available_times/consultants_available_times_cubit.dart';
 import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
 import '../cubits/search/search_cubit.dart';
+import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../data/models/consultants/consultant.dart';
+import '../data/models/consultations/details.dart';
 import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
 import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
@@ -26,6 +30,9 @@ import '../presentation/screens/consultants/filter_screen.dart';
 import '../presentation/screens/consultants/report/report_screen.dart';
 import '../presentation/screens/consultants/report/success_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/home_screen.dart';
+import '../presentation/screens/consultations/change_time/choose_time_screen.dart';
+import '../presentation/screens/consultations/change_time/success_screen.dart';
+import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
 import '../presentation/screens/notifications_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
@@ -254,6 +261,36 @@ class AppRouter {
             create: (context) => ConsultationsCubit(),
             child: const ConsultationsResultsScreen(),
           ),
+        );
+
+      case Routes.consultationDetails:
+        final id = settings.arguments as int;
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: Routes.consultationDetails),
+          builder: (context) => BlocProvider(
+            create: (context) => ShowConsultationCubit(),
+            child: ConsultationDetailsScreen(id: id),
+          ),
+        );
+
+      case Routes.editTimeChoose:
+        final consultation = settings.arguments as ConsultationDetails;
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ChangeAppointmentDateCubit()),
+              BlocProvider(
+                create: (context) => ConsultantsAvailableTimesCubit(),
+              ),
+            ],
+            child: EditTimeChooseScreen(consultation: consultation),
+          ),
+        );
+
+      case Routes.editTimeChooseSuccess:
+        final id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => ChangeConsultationTimeSuccess(id: id),
         );
 
       default:

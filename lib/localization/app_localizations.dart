@@ -449,6 +449,85 @@ class AppLocalizations {
 
   String get searchResults => _translate('search_results');
 
+  String get consultationDetails => _translate('consultation_details');
+
+  String get scheduledWithDate => _translate('scheduled_with_date');
+
+  String get responseTime => _translate('response_time');
+
+  String get responseAfterChangeTime =>
+      _translate('response_after_change_time');
+
+  String get requestChangeTimeTo => _translate('request_change_time_to');
+
+  String get acceptDateChange => _translate('accept_date_change');
+
+  String get edit => _translate('edit');
+
+  String get changeTime => _translate('change_time');
+
+  String get currentTime => _translate('current_time');
+
+  String get decline => _translate('decline');
+
+  String get cancelConsultation => _translate('cancel_consultation');
+
+  String get editConsultation => _translate('edit_consultation');
+
+  String get requestChangeConsultationContent =>
+      _translate('request_change_consultation_content');
+
+  String get editResponseType => _translate('edit_response_type');
+
+  String get responseTypeChoiceTitle =>
+      _translate('response_type_choice_title');
+
+  String get textSubtitle => _translate('text_subtitle');
+
+  String get onlineMeetingSubtitle => _translate('online_meeting_subtitle');
+
+  String get availableTimes => _translate('available_times');
+
+  String get addToCalendar => _translate('add_to_calendar');
+
+  String get editConsultationTime => _translate('edit_consultation_time');
+
+  String get noConsultant => _translate('no_consultant');
+
+  String get availableTimesEmpty => _translate('available_times_empty');
+
+  String get orderUnlistedAppointment =>
+      _translate('order_unlisted_appointment');
+
+  String get dateEditedTitle => _translate('date_edited_title');
+
+  String get backToConsultation => _translate('back_to_consultation');
+
+  String getConsultationResponseTypeSubtitle(ConsultantResponseType type) {
+    if (type == ConsultantResponseType.text) {
+      return _translate('text_subtitle');
+    }
+    if (type == ConsultantResponseType.voice) {
+      return _translate('voice_subtitle');
+    }
+    if (type == ConsultantResponseType.video) {
+      return _translate('video_subtitle');
+    }
+    if (type == ConsultantResponseType.onlineMeeting) {
+      return _translate('connect_now_subtitle');
+    }
+    if (type == ConsultantResponseType.appropriateForConsultant) {
+      return _translate('appropriate_for_consultant_subtitle');
+    }
+    if (type == ConsultantResponseType.fieldConsultation) {
+      return _translate('field_consultation_subtitle');
+    }
+    if (type == ConsultantResponseType.appCall) {
+      return _translate('app_call');
+    }
+    return _translate('frequent_consultation_subtitle');
+  }
+
   String getConsultantResponseType(ConsultantResponseType type) {
     if (type == ConsultantResponseType.text) {
       return _translate('text');

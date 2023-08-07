@@ -18,4 +18,9 @@ class Network {
       '$_apiPath/user/consultations/fast-consultation';
   static const upload = '$_apiPath/upload';
   static const consultations = '$_apiPath/user/consultations';
+  static const consultationAppointmentRequests =
+      '$_apiPath/user/consultation-appointment-requests';
+
+  static String getConsultantimes(int id) =>
+      '$_apiPath/consultants/$id/available-times';
 }

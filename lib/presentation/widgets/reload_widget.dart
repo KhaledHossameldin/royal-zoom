@@ -7,11 +7,13 @@ class ReloadWidget extends StatelessWidget {
     required this.title,
     required this.buttonText,
     required this.onPressed,
+    this.widthFactor = 0.6,
   });
 
   final String title;
   final String buttonText;
   final VoidCallback onPressed;
+  final double widthFactor;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class ReloadWidget extends StatelessWidget {
           ),
           24.emptyHeight,
           FractionallySizedBox(
-            widthFactor: 0.6,
+            widthFactor: widthFactor,
             child: ElevatedButton(
               onPressed: onPressed,
               child: Text(

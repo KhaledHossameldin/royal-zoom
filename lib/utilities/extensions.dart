@@ -9,6 +9,12 @@ import '../constants/brand_colors.dart';
 import '../constants/fonts.dart';
 import '../data/enums/consultation_status.dart';
 
+extension TimeOfDayFormat on TimeOfDay {
+  String toMap() {
+    return '$hour:$minute:00';
+  }
+}
+
 extension BooleanExtension on bool {
   int get toInt => this ? 1 : 0;
 }
@@ -63,6 +69,11 @@ extension NullableStringExtension on String? {
 }
 
 extension StringExtension on String {
+  TimeOfDay get time {
+    final times = split(':');
+    return TimeOfDay(hour: int.parse(times[0]), minute: int.parse(times[1]));
+  }
+
   SvgPicture get svg => SvgPicture.asset('assets/svgs/$this.svg');
 
   Image get png => Image.asset('assets/images/$this.png');
@@ -91,9 +102,13 @@ extension StringExtension on String {
     return Duration(hours: int.parse(time[0]), minutes: int.parse(time[1]));
   }
 
-  SvgPicture buildSVG({required Color color}) => SvgPicture.asset(
+  SvgPicture buildSVG({
+    required Color color,
+    BlendMode blendMode = BlendMode.modulate,
+  }) =>
+      SvgPicture.asset(
         'assets/svgs/$this.svg',
-        colorFilter: ColorFilter.mode(color, BlendMode.modulate),
+        colorFilter: ColorFilter.mode(color, blendMode),
       );
 
   ImageIcon buidImageIcon({

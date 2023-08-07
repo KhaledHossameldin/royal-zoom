@@ -7,7 +7,7 @@ import '../../enums/gender.dart';
 import '../../enums/perview_status.dart';
 import '../../enums/user_status.dart';
 import '../../enums/user_type.dart';
-import '../person.dart';
+import '../account.dart';
 import 'city.dart';
 import 'country.dart';
 import 'currency.dart';
@@ -127,6 +127,7 @@ class UserData extends Account {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     final contract = _UserDataContract();
 
@@ -226,6 +227,7 @@ class UserData extends Account {
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
   factory UserData.fromJson(String source) =>
@@ -311,7 +313,7 @@ class UserData extends Account {
       currency.hashCode;
 }
 
-class _UserDataContract extends PersonContract {
+class _UserDataContract extends AccountContract {
   final city = 'city';
   final language = 'language';
   final timezone = 'timezone';

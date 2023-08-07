@@ -309,7 +309,8 @@ class _ConsultantItem extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        if (consultant.major.isVerified)
+                        if (consultant.major != null &&
+                            consultant.major!.isVerified)
                           Row(
                             children: [
                               5.emptyWidth,
@@ -319,7 +320,8 @@ class _ConsultantItem extends StatelessWidget {
                               ),
                             ],
                           ),
-                        if (consultant.major.isActive)
+                        if (consultant.major != null &&
+                            consultant.major!.isActive)
                           Row(
                             children: [
                               5.emptyWidth,
@@ -361,7 +363,8 @@ class _ConsultantItem extends StatelessWidget {
                         Text.rich(
                           TextSpan(children: [
                             TextSpan(
-                              text: '${consultant.major.pricePerHour.round()} ',
+                              text:
+                                  '${consultant.major != null ? consultant.major!.pricePerHour.round() : appLocalizations.none} ',
                               style: const TextStyle(color: BrandColors.orange),
                             ),
                             TextSpan(text: appLocalizations.sarH),

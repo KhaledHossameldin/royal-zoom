@@ -12,8 +12,10 @@ import '../enums/consultation_content_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
+import '../models/consultants/available_time.dart';
 import '../models/consultants/consultant.dart';
 import '../models/consultations/consultation.dart';
+import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
 import '../models/major.dart';
 import 'app_exception.dart';
@@ -23,6 +25,50 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<int> changeAppointmentDate(
+    BuildContext context, {
+    required int id,
+    required String date,
+  }) async {
+    final response = await _post(
+      context,
+      Network.consultationAppointmentRequests,
+      {'consultation_request_id': id.toString(), 'appointment_date': date},
+    );
+
+    return json.decode(response)['data']['consultation_request_id'];
+  }
+
+  Future<ConsultationDetails> showConsultation(
+    BuildContext context, {
+    required int id,
+  }) async {
+    final response = await _get(context, '${Network.consultations}/$id');
+    return ConsultationDetails.fromJson(response);
+  }
+
+  Future<Map<String, List<ConsultantAvailableTime>>> consultantTimes(
+    BuildContext context, {
+    required int id,
+  }) async {
+    id = 2; //TODO: change
+    final response = await _get(context, Network.getConsultantimes(id));
+    final jsonResponse = json.decode(response);
+    if (context.mounted && jsonResponse['data'] is List) {
+      throw AppLocalizations.of(context).availableTimesEmpty;
+    }
+    final Map<String, List<ConsultantAvailableTime>> map = {};
+    for (var element
+        in (jsonResponse['data'] as Map<String, dynamic>).entries) {
+      map.putIfAbsent(
+          element.key,
+          () => (element.value as List<dynamic>)
+              .map((e) => ConsultantAvailableTime.fromMap(e))
+              .toList());
+    }
+    return map;
+  }
 
   Future<Map<String, Object>> consultations(
     BuildContext context, {
@@ -63,7 +109,7 @@ class NetworkServices {
     final response = await _post(
       context,
       Network.fastConsultation,
-      body: consultation.toMap(attachments: files) as Map<String, Object>,
+      consultation.toMap(attachments: files) as Map<String, Object>,
     );
     return json.decode(response)['data']['id'];
   }
@@ -114,7 +160,7 @@ class NetworkServices {
     required String username,
     required String code,
   }) async {
-    final response = await _post(context, Network.activate, body: {
+    final response = await _post(context, Network.activate, {
       'username': username,
       'code': code,
     });
@@ -127,7 +173,7 @@ class NetworkServices {
     required String password,
     required String confirm,
   }) async {
-    await _post(context, Network.register, body: {
+    await _post(context, Network.register, {
       'username': username,
       'password': password,
       'password_confirmation': confirm,
@@ -141,7 +187,7 @@ class NetworkServices {
     required String newPassword,
     required String confirmPassword,
   }) async {
-    await _post(context, Network.reset, body: {
+    await _post(context, Network.reset, {
       'username': username,
       'code': code,
       'password': newPassword,
@@ -153,7 +199,7 @@ class NetworkServices {
     BuildContext context, {
     required String username,
   }) async {
-    await _post(context, Network.resend, body: {'username': username});
+    await _post(context, Network.resend, {'username': username});
   }
 
   Future<void> checkOTP(
@@ -161,7 +207,7 @@ class NetworkServices {
     required String username,
     required String code,
   }) async {
-    await _post(context, Network.checkOTP, body: {
+    await _post(context, Network.checkOTP, {
       'username': username,
       'code': code,
     });
@@ -171,7 +217,7 @@ class NetworkServices {
     BuildContext context, {
     required String username,
   }) async {
-    await _post(context, Network.forget, body: {'username': username});
+    await _post(context, Network.forget, {'username': username});
   }
 
   Future<User> login(
@@ -179,7 +225,7 @@ class NetworkServices {
     required String username,
     required String password,
   }) async {
-    final response = await _post(context, Network.login, body: {
+    final response = await _post(context, Network.login, {
       'username': username,
       'password': password,
     });
@@ -225,9 +271,9 @@ class NetworkServices {
 
   Future<String> _post(
     BuildContext context,
-    String url, {
-    Map<String, Object>? body,
-  }) async {
+    String url,
+    Map<String, Object> body,
+  ) async {
     try {
       final response = await http
           .post(
