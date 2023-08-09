@@ -34,4 +34,5 @@ class Routes {
   static const consultationDetails = 'consultation-details-screen';
   static const editTimeChoose = 'edit-time-choose-screen';
   static const editTimeChooseSuccess = 'edit-time-choose-success-screen';
+  static const notificationDetails = 'notifications-details-screen';
 }

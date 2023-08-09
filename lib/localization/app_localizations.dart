@@ -503,6 +503,12 @@ class AppLocalizations {
 
   String get backToConsultation => _translate('back_to_consultation');
 
+  String get goToChat => _translate('go_to_chat');
+
+  String get markAllRead => _translate('mark_all_read');
+
+  String get markAllUnread => _translate('mark_all_unread');
+
   String getConsultationResponseTypeSubtitle(ConsultantResponseType type) {
     if (type == ConsultantResponseType.text) {
       return _translate('text_subtitle');

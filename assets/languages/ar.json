@@ -277,5 +277,8 @@
     "available_times_empty": "لا يوجد مواعيد متاحة",
     "order_unlisted_appointment": "طلب موعد غير مدرج",
     "date_edited_title": "تم تعديل استشارتك رقم",
-    "back_to_consultation": "عودة إلى الاستشارة"
+    "back_to_consultation": "عودة إلى الاستشارة",
+    "go_to_chat": "الذهاب الى المحادثة",
+    "mark_all_read": "تعيين جميع الاشعارات كمقروءة",
+    "mark_all_unread": "تعيين جميع الاشعارات كغير مقروءة"
 }

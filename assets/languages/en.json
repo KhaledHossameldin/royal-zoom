@@ -275,5 +275,8 @@
     "available_times_empty": "There are no available times",
     "order_unlisted_appointment": "Order unlisted appointment",
     "date_edited_title": "Your consultation has been edited with number",
-    "back_to_consultation": "Back to consultation"
+    "back_to_consultation": "Back to consultation",
+    "go_to_chat": "Go to chat",
+    "mark_all_read": "Mark all notificatiions as read",
+    "mark_all_unread": "Mark all notificatiions as unread"
 }

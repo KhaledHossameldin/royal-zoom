@@ -34,7 +34,8 @@ import '../presentation/screens/consultations/change_time/choose_time_screen.dar
 import '../presentation/screens/consultations/change_time/success_screen.dart';
 import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
-import '../presentation/screens/notifications_screen.dart';
+import '../presentation/screens/notifications/details_screen.dart';
+import '../presentation/screens/notifications/notifications_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
@@ -291,6 +292,11 @@ class AppRouter {
         final id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (context) => ChangeConsultationTimeSuccess(id: id),
+        );
+
+      case Routes.notificationDetails:
+        return MaterialPageRoute(
+          builder: (context) => const NotificationDetailsScreen(),
         );
 
       default:

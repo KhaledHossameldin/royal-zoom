@@ -1,0 +1,1 @@
+enum NotificationsReadStatus { markAsRead, markAsUnread }
