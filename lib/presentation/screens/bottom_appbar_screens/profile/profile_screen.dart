@@ -46,6 +46,13 @@ class ProfileScreen extends StatelessWidget {
                 title: appLocalizations.search,
                 onTap: () => Navigator.pushNamed(context, Routes.search),
               ),
+            if (user != null)
+              _Item(
+                icon: 'contact-us',
+                color: BrandColors.purple,
+                title: appLocalizations.payments,
+                onTap: () => Navigator.pushNamed(context, Routes.payments),
+              ),
             _Item(
               icon: 'about-application',
               color: Colors.black,

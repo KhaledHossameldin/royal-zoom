@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 
+import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
+import '../models/invoices/invoice.dart';
 import '../models/major.dart';
 import 'audio_handler.dart';
 import 'location_services.dart';
@@ -29,6 +31,16 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<int> statistics(BuildContext context) async =>
+      _network.statistics(context);
+
+  Future<List<Invoice>> invoices(
+    BuildContext context, {
+    required InvoiceType type,
+    required Map<String, Object> params,
+  }) async =>
+      _network.invoices(context, type: type, params: params);
 
   Future<int> changeAppointmentDate(
     BuildContext context, {

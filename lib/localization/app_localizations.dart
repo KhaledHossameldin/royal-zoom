@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../data/enums/consultant_response_type.dart';
 import '../data/enums/consultation_status.dart';
+import '../data/enums/payment_method.dart';
 import 'app_localizations_delegate.dart';
 
 class AppLocalizations {
@@ -508,6 +509,58 @@ class AppLocalizations {
   String get markAllRead => _translate('mark_all_read');
 
   String get markAllUnread => _translate('mark_all_unread');
+
+  String get payments => _translate('payments');
+
+  String get consultationPayments => _translate('consultation_payments');
+
+  String get walletBalance => _translate('wallet_balance');
+
+  String get refundRequest => _translate('refund_request');
+
+  String get addCredit => _translate('add_credit');
+
+  String get transferCredit => _translate('transfer_credit');
+
+  String get totalPayments => _translate('total_payments');
+
+  String get cancelled => _translate('cancelled');
+
+  String get refunded => _translate('refunded');
+
+  String get completed => _translate('completed');
+
+  String get hold => _translate('hold');
+
+  String get transferDate => _translate('transfer_date');
+
+  String get invoiceNumber => _translate('invoice_number');
+
+  String get paymentMethod => _translate('payment_method');
+
+  String get refund => _translate('refund');
+
+  String get transferReceipt => _translate('transfer_receipt');
+
+  String get invoicesEmpty => _translate('invoices_empty');
+
+  String get price => _translate('price');
+
+  String get sortBy => _translate('sort_by');
+
+  String get descendingOrder => _translate('descending_order');
+
+  String get ascendingOrder => _translate('ascending_order');
+
+  String getPaymentMethod(PaymentMethod paymentMethod) {
+    if (paymentMethod == PaymentMethod.wallet) {
+      return _translate('bank_transfer');
+    }
+    if (paymentMethod == PaymentMethod.visa) {
+      return 'Visa';
+    }
+    return 'MasterCard';
+  }
 
   String getConsultationResponseTypeSubtitle(ConsultantResponseType type) {
     if (type == ConsultantResponseType.text) {

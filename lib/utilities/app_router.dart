@@ -9,6 +9,7 @@ import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
+import '../cubits/invoice/invoice_cubit.dart';
 import '../cubits/search/search_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../data/models/consultants/consultant.dart';
@@ -36,6 +37,8 @@ import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
 import '../presentation/screens/notifications/details_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
+import '../presentation/screens/payments/filter_screen.dart';
+import '../presentation/screens/payments/payments_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
@@ -297,6 +300,19 @@ class AppRouter {
       case Routes.notificationDetails:
         return MaterialPageRoute(
           builder: (context) => const NotificationDetailsScreen(),
+        );
+
+      case Routes.payments:
+        return MaterialPageRoute(builder: (context) => const PaymentsScreen());
+
+      case Routes.paymentsFilter:
+        final arguments = settings.arguments as Map;
+        return MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => BlocProvider<InvoiceCubit>.value(
+            value: arguments['cubit'],
+            child: PaymentsFilterScreen(maxPrice: arguments['price']),
+          ),
         );
 
       default:

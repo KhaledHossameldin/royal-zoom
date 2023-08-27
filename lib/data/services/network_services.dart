@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -9,6 +11,7 @@ import 'package:just_audio/just_audio.dart';
 import '../../constants/network.dart';
 import '../../localization/app_localizations.dart';
 import '../enums/consultation_content_type.dart';
+import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
@@ -17,6 +20,7 @@ import '../models/consultants/consultant.dart';
 import '../models/consultations/consultation.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
+import '../models/invoices/invoice.dart';
 import '../models/major.dart';
 import 'app_exception.dart';
 import 'shared_preferences_handler.dart';
@@ -25,6 +29,26 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<int> statistics(BuildContext context) async {
+    final response = await _get(context, Network.statistics);
+    final jsonMap = json.decode(response)['data'];
+    final totalPaidInvoices =
+        double.parse(jsonMap['total_paid_invoices'] as String);
+    final totalInvoices = double.parse(jsonMap['total_invoices'] as String);
+    return (totalPaidInvoices / totalInvoices * 100).round();
+  }
+
+  Future<List<Invoice>> invoices(
+    BuildContext context, {
+    required InvoiceType type,
+    required Map<String, Object> params,
+  }) async {
+    final response = await _get(context, Network.invoices, params: params);
+    return (json.decode(response)['data'] as List)
+        .map((item) => Invoice.fromMap(item, type: type))
+        .toList();
+  }
 
   Future<int> changeAppointmentDate(
     BuildContext context, {
@@ -52,7 +76,6 @@ class NetworkServices {
     BuildContext context, {
     required int id,
   }) async {
-    id = 2; //TODO: change
     final response = await _get(context, Network.getConsultantimes(id));
     final jsonResponse = json.decode(response);
     if (context.mounted && jsonResponse['data'] is List) {
@@ -105,7 +128,6 @@ class NetworkServices {
       consultation = consultation.copyWith(content: files[0]);
       files.removeAt(0);
     }
-    // ignore: use_build_context_synchronously
     final response = await _post(
       context,
       Network.fastConsultation,
@@ -239,7 +261,6 @@ class NetworkServices {
     try {
       final request = http.MultipartRequest(
           'POST', Uri.https(Network.domain, Network.upload))
-        // ignore: use_build_context_synchronously
         ..headers.addAll(await _getHeaders(context))
         ..files.add(await http.MultipartFile.fromPath('file', path));
 

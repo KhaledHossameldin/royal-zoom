@@ -14,6 +14,8 @@ class Network {
   static const majors = '$_apiPath/majors';
   static const countries = '$_apiPath/countries';
   static const cities = '$_apiPath/cities';
+  static const invoices = '$_apiPath/user/invoices';
+  static const statistics = '$_apiPath/user/invoices/statistics';
   static const fastConsultation =
       '$_apiPath/user/consultations/fast-consultation';
   static const upload = '$_apiPath/upload';

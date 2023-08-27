@@ -35,4 +35,6 @@ class Routes {
   static const editTimeChoose = 'edit-time-choose-screen';
   static const editTimeChooseSuccess = 'edit-time-choose-success-screen';
   static const notificationDetails = 'notifications-details-screen';
+  static const payments = 'payments-screen';
+  static const paymentsFilter = 'payments-filter-screen';
 }
