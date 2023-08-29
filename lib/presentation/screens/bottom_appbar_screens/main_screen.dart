@@ -1,0 +1,498 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' show DateFormat;
+
+import '../../../blocs/authentication/authentication_bloc.dart';
+import '../../../constants/brand_colors.dart';
+import '../../../constants/routes.dart';
+import '../../../cubits/home/home_cubit.dart';
+import '../../../data/enums/consultation_content_type.dart';
+import '../../../data/models/consultations/consultation.dart';
+import '../../../data/models/home_statistics.dart';
+import '../../../localization/app_localizations.dart';
+import '../../../utilities/extensions.dart';
+import '../../widgets/notifications_button.dart';
+import '../../widgets/reload_widget.dart';
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key, required this.index});
+
+  final ValueNotifier<int> index;
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    context.read<HomeCubit>().fetch(context);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = context.read<AuthenticationBloc>().user!.data;
+    final appLocalizations = AppLocalizations.of(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: ListTile(
+          leading: CircleAvatar(
+              backgroundColor: BrandColors.snowWhite,
+              backgroundImage: user.image.isNotEmpty
+                  ? NetworkImage(user.image)
+                  : 'royake'.png.image),
+          title: Text(
+            user.previewName ?? appLocalizations.none,
+            style: const TextStyle(fontSize: 12.0),
+          ),
+          subtitle: GestureDetector(
+            onTap: () {},
+            child: Text(
+              appLocalizations.dataCompletion,
+              style: const TextStyle(
+                fontSize: 8.0,
+                color: BrandColors.orange,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ),
+        actions: const [
+          NotificationsButton(),
+        ],
+      ),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case HomeLoading:
+              return const Center(child: CircularProgressIndicator());
+
+            case HomeLoaded:
+              final statistics = (state as HomeLoaded).statistics;
+              final consultations = state.consultations;
+              return CustomScrollView(
+                shrinkWrap: true,
+                slivers: [
+                  _GridView(appLocalizations, statistics: statistics),
+                  _LatestConsultationsHeader(index: widget.index),
+                  SliverToBoxAdapter(child: 24.emptyHeight),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 250.height,
+                      child: ListView.separated(
+                        clipBehavior: Clip.none,
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.symmetric(horizontal: 27.width),
+                        itemCount: consultations.length,
+                        separatorBuilder: (context, index) => 16.emptyWidth,
+                        itemBuilder: (context, index) => _ConsultationItem(
+                            consultation: consultations[index]),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+
+            case HomeError:
+              return ReloadWidget(
+                title: (state as HomeError).message,
+                buttonText: appLocalizations.getReload(''),
+                onPressed: () => context.read<HomeCubit>().fetch(context),
+              );
+
+            default:
+              return const Material();
+          }
+        },
+      ),
+    );
+  }
+}
+
+class _ConsultationItem extends StatelessWidget {
+  const _ConsultationItem({required this.consultation});
+
+  final Consultation consultation;
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+
+    return SizedBox(
+      width: 330.width,
+      child: Card(
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10.0),
+          onTap: () => Navigator.pushNamed(
+            context,
+            Routes.consultationDetails,
+            arguments: {
+              'id': consultation.id,
+              'player': consultation.audioPlayer,
+            },
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 12.height,
+              horizontal: 18.width,
+            ),
+            child: Builder(builder: (context) {
+              if (consultation.isHideNameFromConsultants) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${appLocalizations.consultationNumber}${consultation.id}',
+                      style: const TextStyle(
+                        fontSize: 11.0,
+                        color: BrandColors.black,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    Text(
+                      appLocalizations.getConsultationStatus(
+                        consultation.status,
+                        consultation.isHideNameFromConsultants,
+                      ),
+                      style: const TextStyle(
+                        fontSize: 11.0,
+                        color: BrandColors.gray,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ListTile(
+                    isThreeLine: true,
+                    leading: Builder(builder: (context) {
+                      final consultant = consultation.consultant;
+                      return Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: BrandColors.orange),
+                        ),
+                        child: Container(
+                          width: 60.width,
+                          height: 60.height,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2.0),
+                            image: DecorationImage(
+                              fit: BoxFit.contain,
+                              image: consultant != null &&
+                                      consultant.image.isNotEmpty
+                                  ? NetworkImage(consultant.image)
+                                  : 'royake'.png.image,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                    title: Builder(builder: (context) {
+                      final consultant = consultation.consultant;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            consultant != null && consultant.previewName != null
+                                ? consultant.previewName!
+                                : appLocalizations.none,
+                            style: const TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: BrandColors.darkGray,
+                            ),
+                          ),
+                          Icon(consultation.isFavourite
+                              ? Icons.favorite
+                              : Icons.favorite_outline),
+                        ],
+                      );
+                    }),
+                    subtitle: Column(
+                      children: [
+                        Builder(builder: (context) {
+                          return SizedBox(
+                            width: double.infinity,
+                            child: Wrap(
+                              spacing: 8.width,
+                              alignment: WrapAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  consultation.appointmentDate != null
+                                      ? DateFormat('d/MM/y')
+                                          .add_jm()
+                                          .format(consultation.appointmentDate!)
+                                      : appLocalizations.none,
+                                  style: const TextStyle(
+                                    fontSize: 11.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Text(
+                                  appLocalizations.getConsultationStatus(
+                                    consultation.status,
+                                    consultation.isHideNameFromConsultants,
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: 11.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: consultation.status.color,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                        Builder(builder: (context) {
+                          const textStyle = TextStyle(fontSize: 11.0);
+                          return SizedBox(
+                            width: double.infinity,
+                            child: Wrap(
+                              spacing: 8.width,
+                              alignment: WrapAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${appLocalizations.consultationNumber}${consultation.id}',
+                                  style: textStyle,
+                                ),
+                                Text(
+                                  appLocalizations.getConsultationPaymentStatus(
+                                      consultation.maximumPrice,
+                                      consultation.isPaid),
+                                  style: textStyle,
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+                  const Divider(),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 11.height,
+                      horizontal: 14.width,
+                    ),
+                    decoration: BoxDecoration(
+                      color: BrandColors.snowWhite,
+                      borderRadius: BorderRadius.circular(
+                          consultation.contentType ==
+                                  ConsultationContentType.text
+                              ? 10.0
+                              : 50.0),
+                    ),
+                    child: Builder(
+                      builder: (context) {
+                        if (consultation.contentType ==
+                            ConsultationContentType.text) {
+                          return Text(consultation.content);
+                        }
+                        return Row(
+                          children: [
+                            Text(
+                              consultation.audioPlayer!.duration!.audioTime,
+                              style: const TextStyle(
+                                fontSize: 9.0,
+                                color: BrandColors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            8.emptyWidth,
+                            Expanded(
+                              child: StreamBuilder(
+                                stream:
+                                    consultation.audioPlayer!.positionStream,
+                                builder: (context, snapshot) => Directionality(
+                                  textDirection: TextDirection.ltr,
+                                  child: LinearProgressIndicator(
+                                    color: BrandColors.darkGreen,
+                                    backgroundColor: Colors.grey,
+                                    value: (snapshot.data ?? Duration.zero)
+                                            .inSeconds /
+                                        consultation
+                                            .audioPlayer!.duration!.inSeconds,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            8.emptyWidth,
+                            FloatingActionButton.small(
+                              elevation: 0.0,
+                              backgroundColor: BrandColors.darkGreen,
+                              heroTag: 'id-${consultation.id}',
+                              child: const Icon(Icons.play_arrow_rounded),
+                              onPressed: () async {
+                                await consultation.audioPlayer!
+                                    .seek(Duration.zero);
+                                consultation.audioPlayer!.play();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _LatestConsultationsHeader extends StatelessWidget {
+  const _LatestConsultationsHeader({required this.index});
+
+  final ValueNotifier<int> index;
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: 27.width),
+      sliver: SliverToBoxAdapter(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              appLocalizations.latestConsultations,
+              style: const TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+                color: BrandColors.darkBlackGreen,
+              ),
+            ),
+            TextButton(
+              onPressed: () => index.value = 1,
+              child: Row(
+                children: [
+                  Text(appLocalizations.viewAll),
+                  const Icon(Icons.keyboard_double_arrow_left_rounded),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _GridView extends StatelessWidget {
+  const _GridView(this.appLocalizations, {required this.statistics});
+
+  final AppLocalizations appLocalizations;
+  final HomeStatistics statistics;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(
+        vertical: 34.height,
+        horizontal: 27.width,
+      ),
+      sliver: SliverGrid.count(
+        crossAxisCount: 2,
+        childAspectRatio: 2.25,
+        mainAxisSpacing: 16.height,
+        crossAxisSpacing: 16.width,
+        children: [
+          _buildItem(
+            image: 'consultation',
+            title: statistics.all.toString(),
+            subtitle: appLocalizations.allConsultations,
+          ),
+          _buildItem(
+            image: 'consultation',
+            title: statistics.underReview.toString(),
+            subtitle: appLocalizations.underReviewConsultations,
+          ),
+          _buildItem(
+            image: 'consultation',
+            title: statistics.scheduled.toString(),
+            subtitle: appLocalizations.scheduledConsultations,
+          ),
+          _buildItem(
+            image: 'consultation',
+            title: statistics.upcoming.toString(),
+            subtitle: appLocalizations.pendingConsultations,
+          ),
+          _buildItem(
+            image: 'consultation',
+            title: statistics.upcoming.toString(),
+            subtitle: appLocalizations.upcomingConsultations,
+          ),
+          _buildItem(
+            image: 'consultation',
+            title: statistics.pendingPayment.toString(),
+            subtitle: appLocalizations.pendingPaymentConsultations,
+          ),
+          _buildItem(
+            image: 'consultation',
+            title: statistics.requiredAmount.toString(),
+            subtitle: appLocalizations.requiredAmountConsultations,
+            isCurrency: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Card _buildItem({
+    required String image,
+    required String title,
+    required String subtitle,
+    bool isCurrency = false,
+  }) =>
+      Card(
+        child: Center(
+          child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: AspectRatio(
+              aspectRatio: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: BrandColors.orange.withOpacity(0.2),
+                ),
+                padding: EdgeInsets.all(12.width),
+                margin: EdgeInsets.all(8.width),
+                child: image.svg,
+              ),
+            ),
+            title: Builder(builder: (context) {
+              if (isCurrency) {
+                return Text.rich(
+                  TextSpan(children: [
+                    TextSpan(text: title),
+                    TextSpan(
+                      text: ' ${appLocalizations.sar}',
+                      style: const TextStyle(fontSize: 11.0),
+                    ),
+                  ]),
+                  style: const TextStyle(fontSize: 23.0),
+                );
+              }
+              return Text(title, style: const TextStyle(fontSize: 23.0));
+            }),
+            subtitle: Text(
+              subtitle,
+              maxLines: 2,
+              style: const TextStyle(fontSize: 8.0),
+            ),
+          ),
+        ),
+      );
+}

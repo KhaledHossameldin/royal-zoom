@@ -16,10 +16,12 @@ class Network {
   static const cities = '$_apiPath/cities';
   static const invoices = '$_apiPath/user/invoices';
   static const statistics = '$_apiPath/user/invoices/statistics';
-  static const fastConsultation =
-      '$_apiPath/user/consultations/fast-consultation';
   static const upload = '$_apiPath/upload';
   static const consultations = '$_apiPath/user/consultations';
+  static const homeStatistics = '$_apiPath/user/statistics';
+  static const lastConsultations = '$_apiPath/user/home/last-consultations';
+  static const fastConsultation =
+      '$_apiPath/user/consultations/fast-consultation';
   static const consultationAppointmentRequests =
       '$_apiPath/user/consultation-appointment-requests';
 

@@ -302,5 +302,15 @@
     "bank_transfer": "تحويل بنكي",
     "sort_by": "ترتيب حسب",
     "descending_order": "من الأحدث إلى الأقدم",
-    "ascending_order": "من الأقدم إلى الأحدث"
+    "ascending_order": "من الأقدم إلى الأحدث",
+    "data_completion": "استكمال بيانات",
+    "latest_consultations": "آخر الاستشارات",
+    "view_all": "عرض الكل",
+    "all_consultations": "كل الاستشارات",
+    "under_review_consultations": "الاستشارات تحت اطلاع المستشارين",
+    "scheduled_consultations": "الاستشارات المجدولة",
+    "upcoming_consultations": "الاستشارات بمواعيد قادمة",
+    "pending_payment_consultations": "استشارات بانتظار الدفع",
+    "required_amount_consultations": "المبالغ المطلوبة",
+    "pending_consultations": "الإستشارات المعلقة"
 }

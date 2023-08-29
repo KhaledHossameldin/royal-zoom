@@ -552,6 +552,29 @@ class AppLocalizations {
 
   String get ascendingOrder => _translate('ascending_order');
 
+  String get dataCompletion => _translate('data_completion');
+
+  String get latestConsultations => _translate('latest_consultations');
+
+  String get viewAll => _translate('view_all');
+
+  String get allConsultations => _translate('all_consultations');
+
+  String get underReviewConsultations =>
+      _translate('under_review_consultations');
+
+  String get scheduledConsultations => _translate('scheduled_consultations');
+
+  String get upcomingConsultations => _translate('upcoming_consultations');
+
+  String get pendingPaymentConsultations =>
+      _translate('pending_payment_consultations');
+
+  String get requiredAmountConsultations =>
+      _translate('required_amount_consultations');
+
+  String get pendingConsultations => _translate('pending_consultations');
+
   String getPaymentMethod(PaymentMethod paymentMethod) {
     if (paymentMethod == PaymentMethod.wallet) {
       return _translate('bank_transfer');

@@ -16,9 +16,14 @@ import '../../widgets/brand_back_button.dart';
 import '../../widgets/reload_widget.dart';
 
 class ConsultationDetailsScreen extends StatefulWidget {
-  const ConsultationDetailsScreen({super.key, required this.id});
+  const ConsultationDetailsScreen({
+    super.key,
+    required this.id,
+    required this.player,
+  });
 
   final int id;
+  final AudioPlayer? player;
 
   @override
   State<ConsultationDetailsScreen> createState() =>
@@ -29,7 +34,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
   @override
   void initState() {
     BlocProvider.of<ShowConsultationCubit>(context)
-        .fetch(context, id: widget.id);
+        .fetch(context, id: widget.id, player: widget.player);
     super.initState();
   }
 
@@ -168,7 +173,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                   ),
                   onPressed: () => context
                       .read<ShowConsultationCubit>()
-                      .fetch(context, id: widget.id),
+                      .fetch(context, id: widget.id, player: widget.player),
                 );
 
               default:

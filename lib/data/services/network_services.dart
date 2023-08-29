@@ -20,6 +20,7 @@ import '../models/consultants/consultant.dart';
 import '../models/consultations/consultation.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
+import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
 import 'app_exception.dart';
@@ -29,6 +30,28 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<HomeStatistics> homeStatistics(BuildContext context) async {
+    final response = await _get(context, Network.homeStatistics);
+    return HomeStatistics.fromJson(response);
+  }
+
+  Future<List<Consultation>> lastConsultations(BuildContext context) async {
+    final response = await _get(context, Network.lastConsultations);
+    final jsonMap = json.decode(response);
+    final consultations =
+        await Future.wait((jsonMap['data'] as List).map((item) async {
+      final consultation = Consultation.fromMap(item);
+      if (consultation.contentType == ConsultationContentType.voice) {
+        final player = AudioPlayer();
+        await player.setUrl(consultation.content);
+        await player.pause();
+        return consultation.copyWith(audioPlayer: player);
+      }
+      return consultation;
+    }).toList());
+    return consultations;
+  }
 
   Future<int> statistics(BuildContext context) async {
     final response = await _get(context, Network.statistics);
@@ -67,9 +90,13 @@ class NetworkServices {
   Future<ConsultationDetails> showConsultation(
     BuildContext context, {
     required int id,
+    required AudioPlayer? player,
   }) async {
     final response = await _get(context, '${Network.consultations}/$id');
-    return ConsultationDetails.fromJson(response);
+    ConsultationDetails consultationDetails =
+        ConsultationDetails.fromJson(response);
+
+    return consultationDetails.copyWith(audioPlayer: player);
   }
 
   Future<Map<String, List<ConsultantAvailableTime>>> consultantTimes(

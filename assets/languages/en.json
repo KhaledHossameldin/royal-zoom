@@ -300,5 +300,15 @@
     "bank_transfer": "Bank transfer",
     "sort_by": "Sort by",
     "descending_order": "Descending",
-    "ascending_order": "Ascending"
+    "ascending_order": "Ascending",
+    "data_completion": "Data completion",
+    "latest_consultations": "Latest consultations",
+    "view_all": "View all",
+    "all_consultations": "All consultations",
+    "under_review_consultations": "Under review consultations",
+    "scheduled_consultations": "Scheduled consultations",
+    "upcoming_consultations": "Upcoming consultations",
+    "pending_payment_consultations": "Pending payment consultation",
+    "required_amount_consultations": "Required amount",
+    "pending_consultations": "Pending consultations"
 }

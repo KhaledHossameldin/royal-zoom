@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
 import '../models/consultants/available_time.dart';
+import '../models/consultations/consultation.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
+import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
 import 'audio_handler.dart';
@@ -32,6 +35,12 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<HomeStatistics> homeStatistics(BuildContext context) async =>
+      _network.homeStatistics(context);
+
+  Future<List<Consultation>> lastConsultations(BuildContext context) async =>
+      _network.lastConsultations(context);
+
   Future<int> statistics(BuildContext context) async =>
       _network.statistics(context);
 
@@ -52,8 +61,9 @@ class Repository {
   Future<ConsultationDetails> showConsultation(
     BuildContext context, {
     required int id,
+    required AudioPlayer? player,
   }) async =>
-      _network.showConsultation(context, id: id);
+      _network.showConsultation(context, id: id, player: player);
 
   Future<Map<String, List<ConsultantAvailableTime>>> consultantTimes(
     BuildContext context, {

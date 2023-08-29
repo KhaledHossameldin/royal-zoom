@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../constants/routes.dart';
 import '../cubits/change_appointment_date/change_appointment_date_cubit.dart';
@@ -9,6 +10,7 @@ import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
+import '../cubits/home/home_cubit.dart';
 import '../cubits/invoice/invoice_cubit.dart';
 import '../cubits/search/search_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
@@ -112,6 +114,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
+              BlocProvider(create: (context) => HomeCubit()),
               BlocProvider(create: (context) => ConsultantsCubit()),
               BlocProvider(create: (context) => ConsultationsCubit()),
             ],
@@ -268,12 +271,15 @@ class AppRouter {
         );
 
       case Routes.consultationDetails:
-        final id = settings.arguments as int;
+        final arguments = settings.arguments as Map;
         return MaterialPageRoute(
           settings: const RouteSettings(name: Routes.consultationDetails),
           builder: (context) => BlocProvider(
             create: (context) => ShowConsultationCubit(),
-            child: ConsultationDetailsScreen(id: id),
+            child: ConsultationDetailsScreen(
+              id: arguments['id'] as int,
+              player: arguments['player'] as AudioPlayer?,
+            ),
           ),
         );
 

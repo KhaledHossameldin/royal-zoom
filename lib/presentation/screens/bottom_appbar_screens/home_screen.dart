@@ -10,6 +10,7 @@ import '../../../constants/routes.dart';
 import '../consultations/consultations_screen.dart';
 import 'chat_screen.dart';
 import '../consultants/consultants_screen.dart';
+import 'main_screen.dart';
 import 'profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,23 +21,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _index = 0;
+  final _index = ValueNotifier(0);
 
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthenticationBloc>().user;
 
     return Scaffold(
-      body: Builder(
-        builder: (context) {
-          if (_index == 0) {
+      body: ValueListenableBuilder(
+        valueListenable: _index,
+        builder: (context, value, child) {
+          if (_index.value == 0) {
             if (user == null) {
               return const ConsultantsScreen();
             }
-            return const Center(child: Text('Home'));
-          } else if (_index == 1) {
+            return MainScreen(index: _index);
+          } else if (_index.value == 1) {
             return const ConsultationsScreen();
-          } else if (_index == 3) {
+          } else if (_index.value == 3) {
             return const ChatScreen();
           } else {
             return const ProfileScreen();
@@ -58,42 +60,47 @@ class _HomeScreenState extends State<HomeScreen> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      child: BottomNavigationBar(
-        currentIndex: _index,
-        onTap: (value) {
-          if (value == 2) {
-            return;
-          }
-          setState(() => _index = value);
-        },
-        items: [
-          'home'.buildBottomAppBarIcon(
-            user != null ? appLocalizations.main : appLocalizations.consultants,
-          ),
-          'consultations'.buildBottomAppBarIcon(
-            appLocalizations.consultations,
-          ),
-          BottomNavigationBarItem(
-            icon: FloatingActionButton(
-              onPressed: () {
-                if (user == null) {
-                  Navigator.pushReplacementNamed(context, Routes.login);
-                  return;
-                }
-                showModal(
-                  context: context,
-                  builder: (context) => const _ConsultationDialog(),
-                );
-              },
-              elevation: 0,
-              backgroundColor: BrandColors.orange,
-              child: 'send_consultation'.svg,
+      child: ValueListenableBuilder(
+        valueListenable: _index,
+        builder: (context, value, child) => BottomNavigationBar(
+          currentIndex: value,
+          onTap: (value) {
+            if (value == 2) {
+              return;
+            }
+            _index.value = value;
+          },
+          items: [
+            'home'.buildBottomAppBarIcon(
+              user != null
+                  ? appLocalizations.main
+                  : appLocalizations.consultants,
             ),
-            label: appLocalizations.consult,
-          ),
-          'chat'.buildBottomAppBarIcon(appLocalizations.chat),
-          'profile'.buildBottomAppBarIcon(appLocalizations.profile),
-        ],
+            'consultations'.buildBottomAppBarIcon(
+              appLocalizations.consultations,
+            ),
+            BottomNavigationBarItem(
+              icon: FloatingActionButton(
+                onPressed: () {
+                  if (user == null) {
+                    Navigator.pushReplacementNamed(context, Routes.login);
+                    return;
+                  }
+                  showModal(
+                    context: context,
+                    builder: (context) => const _ConsultationDialog(),
+                  );
+                },
+                elevation: 0,
+                backgroundColor: BrandColors.orange,
+                child: 'send_consultation'.svg,
+              ),
+              label: appLocalizations.consult,
+            ),
+            'chat'.buildBottomAppBarIcon(appLocalizations.chat),
+            'profile'.buildBottomAppBarIcon(appLocalizations.profile),
+          ],
+        ),
       ),
     );
   }

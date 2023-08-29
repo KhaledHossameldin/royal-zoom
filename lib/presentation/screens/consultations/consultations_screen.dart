@@ -230,7 +230,10 @@ class _ConsultationItem extends StatelessWidget {
         onTap: () => Navigator.pushNamed(
           context,
           Routes.consultationDetails,
-          arguments: consultation.id,
+          arguments: {
+            'id': consultation.id,
+            'player': consultation.audioPlayer,
+          },
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(
