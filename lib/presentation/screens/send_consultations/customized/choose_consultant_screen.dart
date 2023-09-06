@@ -8,38 +8,49 @@ import '../../../../constants/brand_colors.dart';
 import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
 import '../../../../cubits/consultants/consultants_cubit.dart';
-import '../../../../cubits/fast_consultation/fast_consultation_cubit.dart';
+import '../../../../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../../../../data/models/consultants/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../widgets/border_painter.dart';
 import '../../../widgets/reload_widget.dart';
 
-class ChooseFastConsultantScreen extends StatefulWidget {
-  const ChooseFastConsultantScreen({super.key});
+class ChooseCustomizedConsultantScreen extends StatefulWidget {
+  const ChooseCustomizedConsultantScreen({
+    super.key,
+    required this.mainMajorId,
+    required this.subMajorId,
+  });
+
+  final int mainMajorId;
+  final int? subMajorId;
 
   @override
-  State<ChooseFastConsultantScreen> createState() =>
-      _ChooseFastConsultantScreenState();
+  State<ChooseCustomizedConsultantScreen> createState() =>
+      _ChooseCustomizedConsultantScreenState();
 }
 
-class _ChooseFastConsultantScreenState
-    extends State<ChooseFastConsultantScreen> {
+class _ChooseCustomizedConsultantScreenState
+    extends State<ChooseCustomizedConsultantScreen> {
+  final _consultantIds = ValueNotifier<List<int>>([]);
   final _controller = TextEditingController();
   final _showBottom = ValueNotifier<bool>(false);
-  final _consultantId = ValueNotifier<int>(-1);
   bool _isHideName = false;
-  int? majorId;
+  bool _isAutoAccept = false;
 
   @override
   void initState() {
+    final cubit = context.read<ConsultantsCubit>();
+    cubit.applyFilter(majorId: widget.mainMajorId);
     context.read<ConsultantsCubit>().fetch(context);
     super.initState();
   }
 
   @override
   void dispose() {
+    _consultantIds.dispose();
     _controller.dispose();
+    _showBottom.dispose();
     super.dispose();
   }
 
@@ -54,11 +65,9 @@ class _ChooseFastConsultantScreenState
         centerTitle: true,
         title: Column(
           children: [
+            Text(appLocalizations.customizedConsultation),
             Text(
-              '${appLocalizations.send} ${appLocalizations.normalConsultation}',
-            ),
-            Text(
-              '1 - ${appLocalizations.chooseConsultant}',
+              '2 - ${appLocalizations.chooseConsultant}',
               style: const TextStyle(color: BrandColors.gray),
             ),
           ],
@@ -70,7 +79,7 @@ class _ChooseFastConsultantScreenState
               painter: BorderPainter(
                 stroke: 3.0,
                 padding: 8.width,
-                progress: 1 / 3,
+                progress: 2 / 6,
               ),
               child: Transform.translate(
                 offset: const Offset(0, 2),
@@ -79,10 +88,10 @@ class _ChooseFastConsultantScreenState
                     style: TextStyle(color: BrandColors.gray),
                     TextSpan(children: [
                       TextSpan(
-                        text: '1',
+                        text: '2',
                         style: TextStyle(color: BrandColors.orange),
                       ),
-                      TextSpan(text: '/3'),
+                      TextSpan(text: '/6'),
                     ]),
                   ),
                 ),
@@ -104,34 +113,8 @@ class _ChooseFastConsultantScreenState
             case ConsultantsLoading:
               return const Center(child: CircularProgressIndicator());
 
-            case ConsultantsEmpty:
-              return Padding(
-                padding: EdgeInsets.only(
-                  left: 27.width,
-                  right: 27.width,
-                  top: 10.height,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildSearchTextField([]),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          'consultants_empty'.svg,
-                          16.emptyHeight,
-                          Text(appLocalizations.searchEmpty),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-
             case ConsultantsLoaded:
               final consultants = (state as ConsultantsLoaded).consultants;
-
               return Scrollbar(
                 notificationPredicate: (notification) {
                   if (!state.canFetchMore || state.hasEndedScrolling) {
@@ -159,7 +142,7 @@ class _ChooseFastConsultantScreenState
                     ),
                     _SliverListView(
                       consultants: consultants,
-                      selected: _consultantId,
+                      selected: _consultantIds,
                     ),
                     if (state.canFetchMore)
                       SliverPadding(
@@ -172,12 +155,18 @@ class _ChooseFastConsultantScreenState
                 ),
               );
 
+            case ConsultantsEmpty:
+              return ReloadWidget(
+                title: appLocalizations.consultantsEmpty,
+                buttonText: appLocalizations.getReload(''),
+                onPressed: () =>
+                    context.read<ConsultantsCubit>().fetch(context),
+              );
+
             case ConsultantsError:
               return ReloadWidget(
                 title: (state as ConsultantsError).message,
-                buttonText: appLocalizations.getReload(
-                  appLocalizations.consultations,
-                ),
+                buttonText: appLocalizations.getReload(''),
                 onPressed: () =>
                     context.read<ConsultantsCubit>().fetch(context),
               );
@@ -188,6 +177,128 @@ class _ChooseFastConsultantScreenState
         },
       ),
       bottomNavigationBar: _buildBottomNavigationBar,
+    );
+  }
+
+  ValueListenableBuilder<bool> get _buildBottomNavigationBar {
+    final appLocalizations = AppLocalizations.of(context);
+
+    return ValueListenableBuilder<bool>(
+      valueListenable: _showBottom,
+      builder: (context, value, child) {
+        if (!value) {
+          return const Material();
+        }
+        return ColoredBox(
+          color: BrandColors.snowWhite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              10.emptyHeight,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 27.width),
+                child: StatefulBuilder(
+                  builder: (context, setState) => Material(
+                    child: CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      dense: true,
+                      value: _isHideName,
+                      title: Text(appLocalizations.hideFromConsultant),
+                      onChanged: (value) =>
+                          setState(() => _isHideName = value!),
+                    ),
+                  ),
+                ),
+              ),
+              10.emptyHeight,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 27.width),
+                child: StatefulBuilder(
+                  builder: (context, setState) => Material(
+                    child: CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      dense: true,
+                      value: _isAutoAccept,
+                      title: Text(
+                        appLocalizations.autoAcceptPrice,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onChanged: (value) =>
+                          setState(() => _isAutoAccept = value!),
+                    ),
+                  ),
+                ),
+              ),
+              10.emptyHeight,
+              Text(
+                appLocalizations.autoAcceptPriceSubtitle,
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  color: BrandColors.gray,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              10.emptyHeight,
+              BottomAppBar(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 27.width,
+                    top: 24.height,
+                    right: 27.width,
+                    bottom: Platform.isAndroid ? 17.height : 0.0,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.grey.shade700,
+                            side: const BorderSide(color: Colors.grey),
+                          ),
+                          child: Text(appLocalizations.previous),
+                        ),
+                      ),
+                      10.emptyWidth,
+                      Expanded(
+                        child: Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: ValueListenableBuilder(
+                            valueListenable: _consultantIds,
+                            builder: (context, value, child) =>
+                                ElevatedButton.icon(
+                              onPressed: value.isEmpty
+                                  ? null
+                                  : () {
+                                      final cubit = context
+                                          .read<CustomizedConsultationCubit>();
+                                      cubit.chooseConsultants(
+                                        _consultantIds.value,
+                                        isAcceptFromAll: _isAutoAccept,
+                                        isHideName: _isHideName,
+                                      );
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.customizedConsultationContent,
+                                        arguments: cubit,
+                                      );
+                                    },
+                              icon: const Icon(
+                                Icons.keyboard_double_arrow_left_outlined,
+                              ),
+                              label: Text(appLocalizations.next),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -223,116 +334,20 @@ class _ChooseFastConsultantScreenState
           highlightElevation: 0.0,
           tooltip: appLocalizations.filter,
           backgroundColor: Colors.white,
-          onPressed: () async {
-            majorId = await Navigator.pushNamed<int>(
-              context,
-              Routes.sendConsultationFilter,
-              arguments: {
-                'cubit': context.read<ConsultantsCubit>(),
-                'maxPrice': consultants
-                    .map((e) => e.major?.pricePerHour ?? 100.0)
-                    .reduce(max),
-              },
-            );
-          },
+          onPressed: () => Navigator.pushNamed(
+            context,
+            Routes.customizedConsultantFilter,
+            arguments: {
+              'cubit': context.read<ConsultantsCubit>(),
+              'majorId': widget.mainMajorId,
+              'maxPrice': consultants
+                  .map((e) => e.major?.pricePerHour ?? 100.0)
+                  .reduce(max),
+            },
+          ),
           child: 'filter'.buildSVG(color: BrandColors.gray),
         ),
       ],
-    );
-  }
-
-  ValueListenableBuilder<bool> get _buildBottomNavigationBar {
-    final appLocalizations = AppLocalizations.of(context);
-
-    return ValueListenableBuilder<bool>(
-      valueListenable: _showBottom,
-      builder: (context, value, child) {
-        if (!value) {
-          return const Material();
-        }
-        return ColoredBox(
-          color: BrandColors.snowWhite,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 10.height,
-                  horizontal: 27.width,
-                ),
-                child: StatefulBuilder(
-                  builder: (context, setState) => Material(
-                    child: CheckboxListTile(
-                      controlAffinity: ListTileControlAffinity.leading,
-                      dense: true,
-                      value: _isHideName,
-                      title: Text(appLocalizations.hideFromConsultant),
-                      onChanged: (value) =>
-                          setState(() => _isHideName = value!),
-                    ),
-                  ),
-                ),
-              ),
-              BottomAppBar(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 27.width,
-                    top: 24.height,
-                    right: 27.width,
-                    bottom: Platform.isAndroid ? 17.height : 0.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () => Navigator.pop(context),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.grey.shade700,
-                            side: const BorderSide(color: Colors.grey),
-                          ),
-                          child: Text(appLocalizations.cancel),
-                        ),
-                      ),
-                      10.emptyWidth,
-                      Expanded(
-                        child: Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: ValueListenableBuilder<int>(
-                            valueListenable: _consultantId,
-                            builder: (context, value, child) =>
-                                ElevatedButton.icon(
-                              onPressed: value <= -1
-                                  ? null
-                                  : () {
-                                      final cubit =
-                                          context.read<FastConsultationCubit>();
-                                      cubit.chooseConsultant(
-                                        _consultantId.value,
-                                        isHideName: _isHideName,
-                                        majorId: majorId,
-                                      );
-                                      Navigator.pushNamed(
-                                        context,
-                                        Routes.fastConsultationContent,
-                                        arguments: cubit,
-                                      );
-                                    },
-                              icon: const Icon(
-                                Icons.keyboard_double_arrow_left_outlined,
-                              ),
-                              label: Text(appLocalizations.next),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
@@ -341,7 +356,7 @@ class _SliverListView extends StatelessWidget {
   const _SliverListView({required this.consultants, required this.selected});
 
   final List<Consultant> consultants;
-  final ValueNotifier<int> selected;
+  final ValueNotifier<List<int>> selected;
 
   @override
   Widget build(BuildContext context) {
@@ -372,7 +387,7 @@ class _ConsultantItem extends StatelessWidget {
   });
 
   final Consultant consultant;
-  final ValueNotifier<int> selected;
+  final ValueNotifier<List<int>> selected;
 
   @override
   Widget build(BuildContext context) {
@@ -384,13 +399,21 @@ class _ConsultantItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
         side: BorderSide(
-          color: selected.value == consultant.id
+          color: selected.value.contains(consultant.id)
               ? BrandColors.green
               : BrandColors.gray,
-          width: selected.value == consultant.id ? 2.0 : 1.0,
+          width: selected.value.contains(consultant.id) ? 2.0 : 1.0,
         ),
       ),
-      onTap: () => selected.value = consultant.id,
+      onTap: () {
+        final tempConsultants = [...selected.value];
+        if (tempConsultants.contains(consultant.id)) {
+          tempConsultants.remove(consultant.id);
+        } else {
+          tempConsultants.add(consultant.id);
+        }
+        selected.value = tempConsultants;
+      },
       leading: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
@@ -479,7 +502,7 @@ class _ConsultantItem extends StatelessWidget {
         ],
       ),
       trailing: CircleAvatar(
-        backgroundColor: selected.value == consultant.id
+        backgroundColor: selected.value.contains(consultant.id)
             ? BrandColors.green
             : Colors.grey.shade400,
         child: const Icon(Icons.done, color: Colors.white),

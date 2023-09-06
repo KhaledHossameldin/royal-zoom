@@ -8,6 +8,7 @@ import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultations/consultation.dart';
+import '../models/consultations/customized.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
 import '../models/home_statistics.dart';
@@ -76,6 +77,12 @@ class Repository {
     required Map<String, Object> params,
   }) async =>
       _network.consultations(context, params: params);
+
+  Future<int> customizedConsultation(
+    BuildContext context, {
+    required CustomizedConsultation consultation,
+  }) async =>
+      _network.customizedConsultation(context, consultation: consultation);
 
   Future<int> fastConsultation(
     BuildContext context, {

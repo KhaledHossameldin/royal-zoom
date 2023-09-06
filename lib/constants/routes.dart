@@ -23,10 +23,10 @@ class Routes {
   static const termsAndConditionsDetails =
       'terms-and-conditions-details-screen';
   static const reviewApp = 'review-app-screen';
-  static const chooseConsultant = 'choose-consultant-screen';
+  static const chooseFastConsultant = 'choose-fast-consultant-screen';
   static const sendConsultationFilter = 'send-consultation-filter-screen';
-  static const consultationContent = 'consultation-content-screen';
-  static const consultantAnswer = 'consultant-answer-screen';
+  static const fastConsultationContent = 'fast-consultation-content-screen';
+  static const fastConsultantAnswer = 'fast-consultant-answer-screen';
   static const consultationSent = 'consultation-sent-screen';
   static const consultationsFilter = 'consultations-filter-screen';
   static const search = 'search-screen';
@@ -37,4 +37,15 @@ class Routes {
   static const notificationDetails = 'notifications-details-screen';
   static const payments = 'payments-screen';
   static const paymentsFilter = 'payments-filter-screen';
+  static const chooseMajor = 'choose-major-screen';
+  static const chooseCustomizedConsultant =
+      'choose-customized-consultant-screen';
+  static const customizedConsultationContent =
+      'customized-consultation-content-screen';
+  static const customizedConsultantAnswer =
+      'customized-consultant-answer-screen';
+  static const customizedChooseTime = 'customized-choose-time-screen';
+  static const customizedChoosePrice = 'customized-choose-price-screen';
+  static const customizedConsultantFilter =
+      'customized-consultant-filter-screen';
 }

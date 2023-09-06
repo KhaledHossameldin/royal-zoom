@@ -18,7 +18,6 @@ class Consultation {
   final ConsultationContentType contentType;
   final String content;
   final ConsultantResponseType responseType;
-  final num maximumPrice;
   final bool isAcceptingOffersFromAll;
   final bool isHelpRequested;
   final bool isHideNameFromConsultants;
@@ -33,6 +32,7 @@ class Consultation {
   final bool isFavourite;
   final bool isFastConsultation;
   final Major major;
+  final num? maximumPrice;
   final int? consultantId;
   final DateTime? appointmentDate;
   final DateTime? maxTimeToReceiveOffers;
@@ -186,7 +186,9 @@ class Consultation {
       content: map[contract.content] ?? '',
       responseType:
           (map[contract.responseType] as int).consultantResponseTypeFromMap(),
-      maximumPrice: num.tryParse(map[contract.maximumPrice]) ?? 0.0,
+      maximumPrice: map[contract.maximumPrice] != null
+          ? num.tryParse(map[contract.maximumPrice] as String) ?? 0.0
+          : null,
       isAcceptingOffersFromAll:
           (map[contract.isAcceptingOffersFromAll] as int) != 0,
       isHelpRequested: (map[contract.isHelpRequested] as int) != 0,

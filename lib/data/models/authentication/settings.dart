@@ -3,6 +3,7 @@ import 'dart:convert';
 import '../../../utilities/extensions.dart';
 
 class Settings {
+  final String? shortBrief;
   final bool? acceptNotificationsViaApp;
   final bool? acceptNotificationsViaSms;
   final bool? acceptNotificationsViaEmail;
@@ -24,6 +25,7 @@ class Settings {
   final bool? receiveNotificationBeforePublishingScheduledConsultation;
 
   Settings({
+    this.shortBrief,
     this.acceptNotificationsViaApp,
     this.acceptNotificationsViaSms,
     this.acceptNotificationsViaEmail,
@@ -46,6 +48,7 @@ class Settings {
   });
 
   Settings copyWith({
+    String? shortBrief,
     bool? acceptNotificationsViaApp,
     bool? acceptNotificationsViaSms,
     bool? acceptNotificationsViaEmail,
@@ -67,6 +70,7 @@ class Settings {
     bool? receiveNotificationBeforePublishingScheduledConsultation,
   }) =>
       Settings(
+        shortBrief: shortBrief ?? this.shortBrief,
         acceptNotificationsViaApp:
             acceptNotificationsViaApp ?? this.acceptNotificationsViaApp,
         acceptNotificationsViaSms:
@@ -122,6 +126,7 @@ class Settings {
     final contract = _SettingsContract();
 
     return {
+      contract.shortBrief: shortBrief,
       contract.acceptNotificationsViaApp: acceptNotificationsViaApp?.toInt,
       contract.acceptNotificationsViaSms: acceptNotificationsViaSms?.toInt,
       contract.acceptNotificationsViaEmail: acceptNotificationsViaEmail?.toInt,
@@ -164,6 +169,7 @@ class Settings {
     final contract = _SettingsContract();
 
     return Settings(
+      shortBrief: map[contract.shortBrief],
       acceptNotificationsViaApp: map[contract.acceptNotificationsViaApp] != 0,
       acceptNotificationsViaSms: map[contract.acceptNotificationsViaSms] != 0,
       acceptNotificationsViaEmail:
@@ -211,13 +217,14 @@ class Settings {
 
   @override
   String toString() =>
-      'Settings(acceptNotificationsViaApp: $acceptNotificationsViaApp, acceptNotificationsViaSms: $acceptNotificationsViaSms, acceptNotificationsViaEmail: $acceptNotificationsViaEmail, acceptNotificationsViaWhatsapp: $acceptNotificationsViaWhatsapp, automaticAcceptForLowestOffers: $automaticAcceptForLowestOffers, receiveNotificationOnPriceOffer: $receiveNotificationOnPriceOffer, activateMultiFactorAuthentication: $activateMultiFactorAuthentication, receiveNotificationOnRefundCredit: $receiveNotificationOnRefundCredit, receiveNotificationForPendingPayment: $receiveNotificationForPendingPayment, receiveNotificationOnAppointmentAccept: $receiveNotificationOnAppointmentAccept, receiveNotificationOnAppointmentReject: $receiveNotificationOnAppointmentReject, receiveNotificationOnConsultantMessage: $receiveNotificationOnConsultantMessage, receiveNotificationOnConsultantReply: $receiveNotificationOnConsultantReply, receiveNotificationOnSuccessfulPayment: $receiveNotificationOnSuccessfulPayment, receiveNotificationOnTwoFactorAuthEnabled: $receiveNotificationOnTwoFactorAuthEnabled, receiveNotificationOnCustomerSupportMessage: $receiveNotificationOnCustomerSupportMessage, receiveNotificationOnAppointmentChangeRequest: $receiveNotificationOnAppointmentChangeRequest, receiveNotificationOnExpiredConsultationAccept: $receiveNotificationOnExpiredConsultationAccept, receiveNotificationBeforePublishingScheduledConsultation: $receiveNotificationBeforePublishingScheduledConsultation)';
+      'Settings(shortBrief: $shortBrief, acceptNotificationsViaApp: $acceptNotificationsViaApp, acceptNotificationsViaSms: $acceptNotificationsViaSms, acceptNotificationsViaEmail: $acceptNotificationsViaEmail, acceptNotificationsViaWhatsapp: $acceptNotificationsViaWhatsapp, automaticAcceptForLowestOffers: $automaticAcceptForLowestOffers, receiveNotificationOnPriceOffer: $receiveNotificationOnPriceOffer, activateMultiFactorAuthentication: $activateMultiFactorAuthentication, receiveNotificationOnRefundCredit: $receiveNotificationOnRefundCredit, receiveNotificationForPendingPayment: $receiveNotificationForPendingPayment, receiveNotificationOnAppointmentAccept: $receiveNotificationOnAppointmentAccept, receiveNotificationOnAppointmentReject: $receiveNotificationOnAppointmentReject, receiveNotificationOnConsultantMessage: $receiveNotificationOnConsultantMessage, receiveNotificationOnConsultantReply: $receiveNotificationOnConsultantReply, receiveNotificationOnSuccessfulPayment: $receiveNotificationOnSuccessfulPayment, receiveNotificationOnTwoFactorAuthEnabled: $receiveNotificationOnTwoFactorAuthEnabled, receiveNotificationOnCustomerSupportMessage: $receiveNotificationOnCustomerSupportMessage, receiveNotificationOnAppointmentChangeRequest: $receiveNotificationOnAppointmentChangeRequest, receiveNotificationOnExpiredConsultationAccept: $receiveNotificationOnExpiredConsultationAccept, receiveNotificationBeforePublishingScheduledConsultation: $receiveNotificationBeforePublishingScheduledConsultation)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is Settings &&
+        other.shortBrief == shortBrief &&
         other.acceptNotificationsViaApp == acceptNotificationsViaApp &&
         other.acceptNotificationsViaSms == acceptNotificationsViaSms &&
         other.acceptNotificationsViaEmail == acceptNotificationsViaEmail &&
@@ -257,6 +264,7 @@ class Settings {
 
   @override
   int get hashCode =>
+      shortBrief.hashCode ^
       acceptNotificationsViaApp.hashCode ^
       acceptNotificationsViaSms.hashCode ^
       acceptNotificationsViaEmail.hashCode ^
@@ -279,6 +287,7 @@ class Settings {
 }
 
 class _SettingsContract {
+  final shortBrief = 'short_brief';
   final acceptNotificationsViaApp = 'accept_notifications_via_app';
   final acceptNotificationsViaSms = 'accept_notifications_via_sms';
   final acceptNotificationsViaEmail = 'accept_notifications_via_email';

@@ -7,25 +7,25 @@ import 'package:intl/intl.dart' show DateFormat;
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
-import '../../../../cubits/change_appointment_date/change_appointment_date_cubit.dart';
 import '../../../../cubits/consultants_available_times/consultants_available_times_cubit.dart';
-import '../../../../data/models/consultations/details.dart';
+import '../../../../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
+import '../../../widgets/border_painter.dart';
 import '../../../widgets/reload_widget.dart';
 
-class EditTimeChooseScreen extends StatefulWidget {
-  const EditTimeChooseScreen({super.key, required this.consultation});
-
-  final ConsultationDetails consultation;
+class ChooseCustomizedTimeScreen extends StatefulWidget {
+  const ChooseCustomizedTimeScreen({super.key});
 
   @override
-  State<EditTimeChooseScreen> createState() => _EditTimeChooseScreenState();
+  State<ChooseCustomizedTimeScreen> createState() =>
+      _ChooseCustomizedTimeScreenState();
 }
 
-class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
+class _ChooseCustomizedTimeScreenState
+    extends State<ChooseCustomizedTimeScreen> {
   final _controller = ScrollController();
-  final ValueNotifier<bool> _canSend = ValueNotifier(false);
+  final ValueNotifier<bool> _canGoNext = ValueNotifier(false);
 
   int _index = -1;
   bool _addToCalendar = false;
@@ -45,9 +45,8 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
     );
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.jumpTo((DateTime.now().day - 1) * 72.width);
-      context
-          .read<ConsultantsAvailableTimesCubit>()
-          .fetch(context, id: widget.consultation.consultant?.id);
+      context.read<ConsultantsAvailableTimesCubit>().fetch(context,
+          id: context.read<CustomizedConsultationCubit>().consultantId);
     });
     super.initState();
   }
@@ -65,7 +64,46 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(appLocalizations.editConsultationTime),
+        toolbarHeight: kToolbarHeight * 1.5,
+        centerTitle: true,
+        title: Column(
+          children: [
+            Text(
+              appLocalizations.customizedConsultation,
+            ),
+            Text(
+              '5 - ${appLocalizations.appointments}',
+              style: const TextStyle(color: BrandColors.gray),
+            ),
+          ],
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsetsDirectional.only(end: 27.width),
+            child: CustomPaint(
+              painter: BorderPainter(
+                stroke: 3.0,
+                padding: 8.width,
+                progress: 5 / 6,
+              ),
+              child: Transform.translate(
+                offset: const Offset(0, 2),
+                child: const Center(
+                  child: Text.rich(
+                    style: TextStyle(color: BrandColors.gray),
+                    TextSpan(children: [
+                      TextSpan(
+                        text: '5',
+                        style: TextStyle(color: BrandColors.orange),
+                      ),
+                      TextSpan(text: '/6'),
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 20.height),
@@ -124,10 +162,7 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
                     foregroundColor: Colors.grey.shade700,
                     side: const BorderSide(color: Colors.grey),
                   ),
-                  child: Text(
-                    appLocalizations.cancel,
-                    style: const TextStyle(fontSize: 16.0),
-                  ),
+                  child: Text(appLocalizations.previous),
                 ),
               ),
               10.emptyWidth,
@@ -135,51 +170,21 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
                 child: Directionality(
                   textDirection: TextDirection.ltr,
                   child: ValueListenableBuilder(
-                    valueListenable: _canSend,
-                    builder: (context, value, child) => BlocConsumer<
-                        ChangeAppointmentDateCubit, ChangeAppointmentDateState>(
-                      listener: (context, state) {
-                        if (state is ChangeAppointmentDateError) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              content: Text(state.message),
-                            ),
-                          );
-                        } else if (state is ChangeAppointmentDateLoaded) {
-                          Navigator.pushNamed(
-                            context,
-                            Routes.editTimeChooseSuccess,
-                            arguments: state.id,
-                          );
-                        }
-                      },
-                      builder: (context, state) {
-                        return ElevatedButton.icon(
-                          onPressed: value
-                              ? () => context
-                                  .read<ChangeAppointmentDateCubit>()
-                                  .change(
-                                    context,
-                                    id: 0,
-                                    date:
-                                        '${current.value.year}-${current.value.month.twoDigits}-${current.value.day.twoDigits} ${_time!.hour.twoDigits}:${_time!.minute.twoDigits}:00',
-                                  )
-                              : null,
-                          icon: const Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: Icon(Icons.send),
-                          ),
-                          label: state is ChangeAppointmentDateLoading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  appLocalizations.send,
-                                  style: const TextStyle(fontSize: 16.0),
-                                ),
-                        );
-                      },
+                    valueListenable: _canGoNext,
+                    builder: (context, value, child) => ElevatedButton.icon(
+                      onPressed: value
+                          ? () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.customizedChoosePrice,
+                                arguments:
+                                    context.read<CustomizedConsultationCubit>(),
+                              );
+                            }
+                          : null,
+                      icon:
+                          const Icon(Icons.keyboard_double_arrow_left_outlined),
+                      label: Text(appLocalizations.next),
                     ),
                   ),
                 ),
@@ -256,7 +261,10 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
                     appLocalizations.getReload(appLocalizations.availableTimes),
                 onPressed: () => context
                     .read<ConsultantsAvailableTimesCubit>()
-                    .fetch(context, id: widget.consultation.consultant?.id),
+                    .fetch(context,
+                        id: context
+                            .read<CustomizedConsultationCubit>()
+                            .consultantId),
               );
 
             case ConsultantsAvailableTimesLoaded:
@@ -294,7 +302,7 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
                                     ),
                                   ),
                                   onSelected: (value) {
-                                    _canSend.value = true;
+                                    _canGoNext.value = true;
                                     setState(() {
                                       _index = today.indexOf(e);
                                       _time = today[_index].time;
@@ -317,7 +325,10 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
                     appLocalizations.getReload(appLocalizations.availableTimes),
                 onPressed: () => context
                     .read<ConsultantsAvailableTimesCubit>()
-                    .fetch(context, id: widget.consultation.consultant?.id),
+                    .fetch(context,
+                        id: context
+                            .read<CustomizedConsultationCubit>()
+                            .consultantId),
               );
 
             default:
@@ -326,6 +337,22 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
         },
       ),
     );
+  }
+
+  int _getDays() {
+    if (current.value.month == 1 ||
+        current.value.month == 3 ||
+        current.value.month == 5 ||
+        current.value.month == 7 ||
+        current.value.month == 8 ||
+        current.value.month == 10 ||
+        current.value.month == 12) {
+      return 31;
+    } else if (current.value.month != 2) {
+      return 30;
+    } else {
+      return current.value.year % 4 == 0 ? 29 : 28;
+    }
   }
 
   StatefulBuilder _buildDaysChooseWidget() {
@@ -360,7 +387,7 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          _canSend.value = false;
+                          _canGoNext.value = false;
                           _index = -1;
                           current.value = current.value
                               .copyWith(month: current.value.month + 1);
@@ -406,7 +433,7 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
                               current.value.month == DateTime.now().month) {
                             return;
                           }
-                          _canSend.value = false;
+                          _canGoNext.value = false;
                           _index = -1;
                           current.value = current.value
                               .copyWith(month: current.value.month - 1);
@@ -518,21 +545,5 @@ class _EditTimeChooseScreenState extends State<EditTimeChooseScreen> {
         ),
       ),
     );
-  }
-
-  int _getDays() {
-    if (current.value.month == 1 ||
-        current.value.month == 3 ||
-        current.value.month == 5 ||
-        current.value.month == 7 ||
-        current.value.month == 8 ||
-        current.value.month == 10 ||
-        current.value.month == 12) {
-      return 31;
-    } else if (current.value.month != 2) {
-      return 30;
-    } else {
-      return current.value.year % 4 == 0 ? 29 : 28;
-    }
   }
 }

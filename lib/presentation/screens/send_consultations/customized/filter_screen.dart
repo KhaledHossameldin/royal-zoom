@@ -13,23 +13,28 @@ import '../../../../utilities/countries.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../widgets/reload_widget.dart';
 
-class SendFastConsultantionFilterScreen extends StatefulWidget {
-  const SendFastConsultantionFilterScreen({super.key, required this.maxPrice});
+class CustomizedConsultantsFilterScreen extends StatefulWidget {
+  const CustomizedConsultantsFilterScreen({
+    super.key,
+    required this.maxPrice,
+    required this.majorId,
+  });
 
   final num maxPrice;
+  final int majorId;
 
   @override
-  State<SendFastConsultantionFilterScreen> createState() =>
-      _SendFastConsultantionFilterScreenState();
+  State<CustomizedConsultantsFilterScreen> createState() =>
+      _CustomizedConsultantsFilterScreenState();
 }
 
-class _SendFastConsultantionFilterScreenState
-    extends State<SendFastConsultantionFilterScreen> {
+class _CustomizedConsultantsFilterScreenState
+    extends State<CustomizedConsultantsFilterScreen> {
   bool isFavouriteOnly = false;
 
-  int? majorId;
-
   late RangeValues rangeValues = RangeValues(0, widget.maxPrice.toDouble());
+
+  int? majorId;
 
   final _start = TextEditingController(text: '0');
   late final _end =
@@ -67,7 +72,7 @@ class _SendFastConsultantionFilterScreenState
             onPressed: () {
               context.read<ConsultantsCubit>().clearFilter();
               context.read<ConsultantsCubit>().fetch(context);
-              Navigator.pop(context, majorId);
+              Navigator.pop(context, widget.majorId);
             },
             child: Text(appLocalizations.reset),
           ),
@@ -167,8 +172,11 @@ class _SendFastConsultantionFilterScreenState
           15.emptyHeight,
           ElevatedButton(
             onPressed: () {
+              context
+                  .read<ConsultantsCubit>()
+                  .applyFilter(majorId: majorId ?? widget.majorId);
               context.read<ConsultantsCubit>().fetch(context);
-              Navigator.pop(context, majorId);
+              Navigator.pop(context);
             },
             child: Text(appLocalizations.viewResults),
           ),

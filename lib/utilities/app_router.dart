@@ -8,10 +8,12 @@ import '../cubits/consultants/consultants_cubit.dart';
 import '../cubits/consultants_available_times/consultants_available_times_cubit.dart';
 import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
+import '../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
 import '../cubits/home/home_cubit.dart';
 import '../cubits/invoice/invoice_cubit.dart';
+import '../cubits/majors/majors_cubit.dart';
 import '../cubits/search/search_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../data/models/consultants/consultant.dart';
@@ -46,6 +48,13 @@ import '../presentation/screens/permissions/notifications_permission_screen.dart
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
 import '../presentation/screens/search/results_screen.dart';
 import '../presentation/screens/search/search_screen.dart';
+import '../presentation/screens/send_consultations/customized/choose_consultant_screen.dart';
+import '../presentation/screens/send_consultations/customized/choose_major_screen.dart';
+import '../presentation/screens/send_consultations/customized/choose_price_screen.dart';
+import '../presentation/screens/send_consultations/customized/choose_time_screen.dart';
+import '../presentation/screens/send_consultations/customized/consultant_answer_screen.dart';
+import '../presentation/screens/send_consultations/customized/content_screen.dart';
+import '../presentation/screens/send_consultations/customized/filter_screen.dart';
 import '../presentation/screens/send_consultations/fast/choose_consultant_screen.dart';
 import '../presentation/screens/send_consultations/fast/consultant_answer_screen.dart';
 import '../presentation/screens/send_consultations/fast/content_screen.dart';
@@ -190,14 +199,14 @@ class AppRouter {
       case Routes.reviewApp:
         return MaterialPageRoute(builder: (context) => const ReviewAppScreen());
 
-      case Routes.chooseConsultant:
+      case Routes.chooseFastConsultant:
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => ConsultantsCubit()),
               BlocProvider(create: (context) => FastConsultationCubit()),
             ],
-            child: const ChooseConsultantScreen(),
+            child: const ChooseFastConsultantScreen(),
           ),
         );
 
@@ -211,12 +220,12 @@ class AppRouter {
               BlocProvider<ConsultantsCubit>.value(
                   value: arguments['cubit'] as ConsultantsCubit),
             ],
-            child: SendConsultantionFilterScreen(
+            child: SendFastConsultantionFilterScreen(
                 maxPrice: arguments['maxPrice'] as num),
           ),
         );
 
-      case Routes.consultationContent:
+      case Routes.fastConsultationContent:
         final cubit = settings.arguments as FastConsultationCubit;
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
@@ -224,23 +233,23 @@ class AppRouter {
               BlocProvider(create: (context) => ConsultationRecordingCubit()),
               BlocProvider.value(value: cubit),
             ],
-            child: const ConsultationContentScreen(),
+            child: const FastConsultationContentScreen(),
           ),
         );
 
-      case Routes.consultantAnswer:
+      case Routes.fastConsultantAnswer:
         final cubit = settings.arguments as FastConsultationCubit;
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(
             value: cubit,
-            child: const ConsultantAnswerScreen(),
+            child: const FastConsultantAnswerScreen(),
           ),
         );
 
       case Routes.consultationSent:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => const ConsultationSentScreen(),
+          builder: (context) => const FastConsultationSentScreen(),
         );
 
       case Routes.consultationsFilter:
@@ -318,6 +327,92 @@ class AppRouter {
           builder: (context) => BlocProvider<InvoiceCubit>.value(
             value: arguments['cubit'],
             child: PaymentsFilterScreen(maxPrice: arguments['price']),
+          ),
+        );
+
+      case Routes.chooseMajor:
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => MajorsCubit()),
+              BlocProvider(create: (context) => CustomizedConsultationCubit()),
+            ],
+            child: const ChooseCustomizedMajorScreen(),
+          ),
+        );
+
+      case Routes.chooseCustomizedConsultant:
+        final arguments = settings.arguments as Map;
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ConsultantsCubit()),
+              BlocProvider.value(
+                  value: arguments['cubit'] as CustomizedConsultationCubit),
+            ],
+            child: ChooseCustomizedConsultantScreen(
+              mainMajorId: arguments['mainMajorId'] as int,
+              subMajorId: arguments['subMajorId'] as int?,
+            ),
+          ),
+        );
+
+      case Routes.customizedConsultationContent:
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ConsultationRecordingCubit()),
+              BlocProvider.value(
+                value: settings.arguments as CustomizedConsultationCubit,
+              ),
+            ],
+            child: const CustomizedConsultationContentScreen(),
+          ),
+        );
+
+      case Routes.customizedConsultantAnswer:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: settings.arguments as CustomizedConsultationCubit,
+            child: const CustomizedConsultantAnswerScreen(),
+          ),
+        );
+
+      case Routes.customizedChooseTime:
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: settings.arguments as CustomizedConsultationCubit,
+              ),
+              BlocProvider(
+                create: (context) => ConsultantsAvailableTimesCubit(),
+              ),
+            ],
+            child: const ChooseCustomizedTimeScreen(),
+          ),
+        );
+
+      case Routes.customizedChoosePrice:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: settings.arguments as CustomizedConsultationCubit,
+            child: const CustomizedChoosePriceScreen(),
+          ),
+        );
+
+      case Routes.customizedConsultantFilter:
+        final arguments = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: arguments['cubit'] as ConsultantsCubit),
+              BlocProvider(create: (context) => ConsultantsFilterCubit()),
+            ],
+            child: CustomizedConsultantsFilterScreen(
+              maxPrice: arguments['maxPrice'] as num,
+              majorId: arguments['majorId'] as int,
+            ),
           ),
         );
 

@@ -144,7 +144,7 @@ class _ConsultationDialog extends StatelessWidget {
                   appLocalizations,
                   icon: 'normal_consultation',
                   title: appLocalizations.normalConsultation,
-                  route: Routes.chooseConsultant,
+                  route: Routes.chooseFastConsultant,
                 ),
                 13.emptyHeight,
                 _buildItem(
@@ -152,7 +152,7 @@ class _ConsultationDialog extends StatelessWidget {
                   appLocalizations,
                   icon: 'customized_consultation',
                   title: appLocalizations.customizedConsultation,
-                  route: '',
+                  route: Routes.chooseMajor,
                 ),
               ],
             ),

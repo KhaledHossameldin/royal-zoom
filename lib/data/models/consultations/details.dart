@@ -188,7 +188,9 @@ class ConsultationDetails extends Consultation {
       content: map[contract.content] ?? '',
       responseType:
           (map[contract.responseType] as int).consultantResponseTypeFromMap(),
-      maximumPrice: num.tryParse(map[contract.maximumPrice]) ?? 0.0,
+      maximumPrice: map[contract.maximumPrice] != null
+          ? num.tryParse(map[contract.maximumPrice]) ?? 0.0
+          : null,
       isAcceptingOffersFromAll:
           (map[contract.isAcceptingOffersFromAll] as int) != 0,
       isHelpRequested: (map[contract.isHelpRequested] as int) != 0,

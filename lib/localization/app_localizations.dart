@@ -575,6 +575,52 @@ class AppLocalizations {
 
   String get pendingConsultations => _translate('pending_consultations');
 
+  String get chooseMajor => _translate('choose_major');
+
+  String get sendAllConsultants => _translate('send_all_consultants');
+
+  String get consultantAppropriateResponse =>
+      _translate('consultant_appropriate_response');
+
+  String get requestAssistance => _translate('request_assistance');
+
+  String get requestAssistanceFees => _translate('request_assistance_fees');
+
+  String get sendConsultationDuration =>
+      _translate('send_consultation_duration');
+
+  String get chooseConsultantSubtitle =>
+      _translate('choose_consultant_subtitle');
+
+  String get autoAcceptPrice => _translate('auto_accept_price');
+
+  String get autoAcceptPriceSubtitle =>
+      _translate('auto_accept_price_subtitle');
+
+  String get consultationSchedule => _translate('consultation_schedule');
+
+  String get chooseMethod => _translate('choose_method');
+
+  String get setPriceCeiling => _translate('set_price_ceiling');
+
+  String get consultantSetPrice => _translate('consultant_set_price');
+
+  String get saveAsDraft => _translate('save_as_draft');
+
+  String get agreeOn => _translate('agree_on');
+
+  String get consultationsTerms => _translate('consultations_terms');
+
+  String get royakeTerms => _translate('royake_terms');
+
+  String get toSendConsultations => _translate('to_send_consultations');
+
+  String get minimumTwoDollars => _translate('minimum_two_dollars');
+
+  String get maximumReceiveTime => _translate('maximum_receive_time');
+
+  String get hour => _translate('hour');
+
   String getPaymentMethod(PaymentMethod paymentMethod) {
     if (paymentMethod == PaymentMethod.wallet) {
       return _translate('bank_transfer');

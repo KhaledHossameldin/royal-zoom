@@ -263,9 +263,13 @@ class _ConsultationItem extends StatelessWidget {
                                   style: textStyle,
                                 ),
                                 Text(
-                                  appLocalizations.getConsultationPaymentStatus(
-                                      consultation.maximumPrice,
-                                      consultation.isPaid),
+                                  consultation.maximumPrice != null
+                                      ? appLocalizations
+                                          .getConsultationPaymentStatus(
+                                          consultation.maximumPrice!,
+                                          consultation.isPaid,
+                                        )
+                                      : appLocalizations.none,
                                   style: textStyle,
                                 ),
                               ],

@@ -18,6 +18,7 @@ import '../models/authentication/user.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultants/consultant.dart';
 import '../models/consultations/consultation.dart';
+import '../models/consultations/customized.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
 import '../models/home_statistics.dart';
@@ -142,6 +143,25 @@ class NetworkServices {
       'consultations': consultations,
       'per_page': jsonMap['meta']['per_page'],
     };
+  }
+
+  Future<int> customizedConsultation(
+    BuildContext context, {
+    required CustomizedConsultation consultation,
+  }) async {
+    final files = await Future.wait(consultation.paths
+        .map((e) async => await _upload(context, path: e))
+        .toList());
+    if (consultation.isVoice) {
+      consultation = consultation.copyWith(content: files[0]);
+      files.removeAt(0);
+    }
+    final response = await _post(
+      context,
+      Network.consultations,
+      consultation.toMap(attachments: files),
+    );
+    return json.decode(response)['data']['id'];
   }
 
   Future<int> fastConsultation(

@@ -8,22 +8,22 @@ import '../../../../constants/brand_colors.dart';
 import '../../../../constants/numbers.dart';
 import '../../../../constants/routes.dart';
 import '../../../../cubits/consultation_recording/consultation_recording_cubit.dart';
-import '../../../../cubits/fast_consultation/fast_consultation_cubit.dart';
+import '../../../../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../../../../data/enums/consultation_content_type.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../widgets/border_painter.dart';
 
-class FastConsultationContentScreen extends StatefulWidget {
-  const FastConsultationContentScreen({super.key});
+class CustomizedConsultationContentScreen extends StatefulWidget {
+  const CustomizedConsultationContentScreen({super.key});
 
   @override
-  State<FastConsultationContentScreen> createState() =>
-      _FastConsultationContentScreenState();
+  State<CustomizedConsultationContentScreen> createState() =>
+      _CustomizedConsultationContentScreenState();
 }
 
-class _FastConsultationContentScreenState
-    extends State<FastConsultationContentScreen>
+class _CustomizedConsultationContentScreenState
+    extends State<CustomizedConsultationContentScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _controller;
   final _contentController = TextEditingController();
@@ -64,11 +64,9 @@ class _FastConsultationContentScreenState
         centerTitle: true,
         title: Column(
           children: [
+            Text(appLocalizations.customizedConsultation),
             Text(
-              '${appLocalizations.send} ${appLocalizations.normalConsultation}',
-            ),
-            Text(
-              '2 - ${appLocalizations.consultationContent}',
+              '3 - ${appLocalizations.consultationContent}',
               style: const TextStyle(color: BrandColors.gray),
             ),
           ],
@@ -80,7 +78,7 @@ class _FastConsultationContentScreenState
               painter: BorderPainter(
                 stroke: 3.0,
                 padding: 8.width,
-                progress: 2 / 3,
+                progress: 3 / 6,
               ),
               child: Transform.translate(
                 offset: const Offset(0, 2),
@@ -89,10 +87,10 @@ class _FastConsultationContentScreenState
                     style: TextStyle(color: BrandColors.gray),
                     TextSpan(children: [
                       TextSpan(
-                        text: '2',
+                        text: '3',
                         style: TextStyle(color: BrandColors.orange),
                       ),
-                      TextSpan(text: '/3'),
+                      TextSpan(text: '/6'),
                     ]),
                   ),
                 ),
@@ -315,7 +313,7 @@ class _FastConsultationContentScreenState
                       onPressed: value
                           ? () {
                               final cubit =
-                                  context.read<FastConsultationCubit>();
+                                  context.read<CustomizedConsultationCubit>();
                               cubit.setContent(
                                 type: _type.value,
                                 files: _files.value,
@@ -328,7 +326,7 @@ class _FastConsultationContentScreenState
                               );
                               Navigator.pushNamed(
                                 context,
-                                Routes.fastConsultantAnswer,
+                                Routes.customizedConsultantAnswer,
                                 arguments: cubit,
                               );
                             }

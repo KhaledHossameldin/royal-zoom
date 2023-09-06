@@ -12,14 +12,16 @@ import '../../../../utilities/extensions.dart';
 import '../../../widgets/border_painter.dart';
 
 // ignore: must_be_immutable
-class ConsultantAnswerScreen extends StatefulWidget {
-  const ConsultantAnswerScreen({super.key});
+class FastConsultantAnswerScreen extends StatefulWidget {
+  const FastConsultantAnswerScreen({super.key});
 
   @override
-  State<ConsultantAnswerScreen> createState() => _ConsultantAnswerScreenState();
+  State<FastConsultantAnswerScreen> createState() =>
+      _FastConsultantAnswerScreenState();
 }
 
-class _ConsultantAnswerScreenState extends State<ConsultantAnswerScreen> {
+class _FastConsultantAnswerScreenState
+    extends State<FastConsultantAnswerScreen> {
   ValueNotifier<ConsultantResponseType> type =
       ValueNotifier(ConsultantResponseType.none);
 
@@ -61,7 +63,7 @@ class _ConsultantAnswerScreenState extends State<ConsultantAnswerScreen> {
               painter: BorderPainter(
                 stroke: 3.0,
                 padding: 8.width,
-                progress: 1.0,
+                progress: 3 / 3,
               ),
               child: Transform.translate(
                 offset: const Offset(0, 2),

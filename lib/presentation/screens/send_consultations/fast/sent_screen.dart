@@ -5,8 +5,8 @@ import '../../../../constants/fonts.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 
-class ConsultationSentScreen extends StatelessWidget {
-  const ConsultationSentScreen({super.key});
+class FastConsultationSentScreen extends StatelessWidget {
+  const FastConsultationSentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
