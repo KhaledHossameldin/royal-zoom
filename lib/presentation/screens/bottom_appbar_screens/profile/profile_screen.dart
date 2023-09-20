@@ -48,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             if (user != null)
               _Item(
-                icon: 'contact-us',
+                icon: 'wallet',
                 color: BrandColors.purple,
                 title: appLocalizations.payments,
                 onTap: () => Navigator.pushNamed(context, Routes.payments),
@@ -208,85 +208,86 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final appLocalizations = AppLocalizations.of(context);
+    final user = context.read<AuthenticationBloc>().user;
 
     return Card(
-      child: InkWell(
-        onTap: () {
-          final user = context.read<AuthenticationBloc>().user;
-          if (user == null) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              Routes.login,
-              (route) => false,
-            );
-            return;
-          }
-        },
-        borderRadius: BorderRadius.circular(10.0),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 13.height,
-            horizontal: 17.width,
-          ),
-          child: Row(
-            children: [
-              Container(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: 13.height,
+          horizontal: 17.width,
+        ),
+        child: Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey.shade600),
+              ),
+              child: Container(
+                width: 87.width,
+                height: 87.height,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey.shade600),
-                ),
-                child: Container(
-                  width: 87.width,
-                  height: 87.height,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 5.0),
-                    image: DecorationImage(
-                      fit: BoxFit.contain,
-                      image: 'guest'.png.image,
-                    ),
+                  border: Border.all(color: Colors.white, width: 5.0),
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: user == null
+                        ? 'guest'.png.image
+                        : user.data.image.isEmpty
+                            ? 'royake'.png.image
+                            : NetworkImage(user.data.image),
                   ),
                 ),
               ),
-              14.emptyWidth,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(appLocalizations.guest),
-                    TextButton(
-                      onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        Routes.login,
-                        (route) => false,
-                      ),
-                      style: theme.textButtonTheme.style!.copyWith(
-                        alignment: AlignmentDirectional.centerStart,
-                        foregroundColor: MaterialStateProperty.resolveWith(
-                          (states) => BrandColors.orange,
+            ),
+            14.emptyWidth,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user == null
+                      ? appLocalizations.guest
+                      : user.data.previewName ?? appLocalizations.none),
+                  user == null
+                      ? TextButton(
+                          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            Routes.login,
+                            (route) => false,
+                          ),
+                          style: theme.textButtonTheme.style!.copyWith(
+                            alignment: AlignmentDirectional.centerStart,
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                              (states) => BrandColors.orange,
+                            ),
+                          ),
+                          child: Text(
+                            appLocalizations.login,
+                            style: const TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        )
+                      : Text(
+                          user.data.email ??
+                              user.data.phone ??
+                              appLocalizations.none,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      child: Text(
-                        appLocalizations.login,
-                        style: const TextStyle(
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
-              CustomPaint(
-                painter: BorderPainter(
-                  stroke: 4.width,
-                  padding: 12.width,
-                  progress: 0.6,
-                ),
-                child: Text(NumberFormat.percentPattern().format(0.6)),
+            ),
+            CustomPaint(
+              painter: BorderPainter(
+                stroke: 4.width,
+                padding: 12.width,
+                progress: user != null ? user.data.progress : 0,
               ),
-              12.emptyWidth,
-            ],
-          ),
+              child: Text(NumberFormat.percentPattern()
+                  .format(user != null ? user.data.progress : 0)),
+            ),
+            12.emptyWidth,
+          ],
         ),
       ),
     );

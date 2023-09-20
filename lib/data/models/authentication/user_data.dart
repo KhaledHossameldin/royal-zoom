@@ -22,6 +22,42 @@ class UserData extends Account {
   Timezone? timezone;
   Currency? currency;
 
+  double get progress {
+    int total = 0;
+    if (!firstName.isNullOrEmpty) {
+      total++;
+    }
+    if (!middleName.isNullOrEmpty) {
+      total++;
+    }
+    if (!lastName.isNullOrEmpty) {
+      total++;
+    }
+    if (!previewName.isNullOrEmpty) {
+      total++;
+    }
+    if (!email.isNullOrEmpty) {
+      total++;
+    }
+    if (!phone.isNullOrEmpty) {
+      total++;
+    }
+    if (!image.isNullOrEmpty) {
+      total++;
+    }
+    total++;
+    if (countryId != null) {
+      total++;
+    }
+    if (cityId != null) {
+      total++;
+    }
+    if (nationalityId != null) {
+      total++;
+    }
+    return total / 11;
+  }
+
   UserData({
     required super.id,
     required super.uuid,
