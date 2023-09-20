@@ -4,6 +4,7 @@ class Network {
   static const _apiPath = 'api';
   static const domain = 'api.royake.wide-techno.com';
   static const login = '$_apiPath/login';
+  static const logout = '$_apiPath/logout';
   static const forget = '$_apiPath/forget';
   static const checkOTP = '$_apiPath/check-reset-code';
   static const reset = '$_apiPath/reset';

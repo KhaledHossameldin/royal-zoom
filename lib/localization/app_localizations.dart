@@ -623,6 +623,8 @@ class AppLocalizations {
 
   String get chatsEmpty => _translate('chats_empty');
 
+  String get logout => _translate('logout');
+
   String getPaymentMethod(PaymentMethod paymentMethod) {
     if (paymentMethod == PaymentMethod.wallet) {
       return _translate('bank_transfer');

@@ -62,7 +62,7 @@ class SharedPreferencesHandler {
 
   Future<void> setUser(User user) async {
     final preferences = await SharedPreferences.getInstance();
-    preferences.setString(PreferencesKeys.user, user.toJson());
+    await preferences.setString(PreferencesKeys.user, user.toJson());
   }
 
   Future<User?> getUser() async {

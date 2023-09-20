@@ -6,6 +6,10 @@ abstract class AuthenticationEvent {
   const AuthenticationEvent(this.context);
 }
 
+class AuthenticationLogout extends AuthenticationEvent {
+  const AuthenticationLogout(super.context);
+}
+
 class AuthenticationLogin extends AuthenticationEvent {
   final String username;
   final String password;
@@ -46,8 +50,4 @@ class AuthenticationActivate extends AuthenticationEvent {
     required this.username,
     required this.code,
   });
-}
-
-class AuthenticationRemember extends AuthenticationEvent {
-  const AuthenticationRemember(super.context);
 }

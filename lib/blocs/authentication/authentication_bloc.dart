@@ -18,9 +18,16 @@ class AuthenticationBloc
     return (state as AuthenticationLoaded).user;
   }
 
-  AuthenticationBloc() : super(const AuthenticationInitial(0)) {
+  AuthenticationBloc(User? user)
+      : super(user == null
+            ? const AuthenticationInitial(0)
+            : AuthenticationLoaded(0, user: user)) {
     on<AuthenticationEvent>((event, emit) async {
       switch (event.runtimeType) {
+        case AuthenticationLogout:
+          await _logout(emit, event: event as AuthenticationLogout);
+          break;
+
         case AuthenticationLogin:
           await _login(emit, event: event as AuthenticationLogin);
           break;
@@ -36,20 +43,21 @@ class AuthenticationBloc
         case AuthenticationActivate:
           await _activate(emit, event: event as AuthenticationActivate);
           break;
-
-        case AuthenticationRemember:
-          _remember(emit, event: event as AuthenticationRemember);
-          break;
       }
     });
   }
 
-  Future<void> _remember(
+  Future<void> _logout(
     Emitter<AuthenticationState> emit, {
-    required AuthenticationRemember event,
+    required AuthenticationLogout event,
   }) async {
-    final user = await repository.getUser();
-    emit(AuthenticationLoaded(3, user: user));
+    try {
+      emit(const AuthenticationLoading(4));
+      await repository.logout(event.context!);
+      emit(const AuthenticationLoaded(4, user: null));
+    } catch (e) {
+      emit(AuthenticationError('$e', 4));
+    }
   }
 
   Future<void> _activate(

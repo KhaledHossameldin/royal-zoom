@@ -36,12 +36,15 @@ class NetworkServices {
 
   NetworkServices._();
 
+  Future<void> logout(BuildContext context) async =>
+      await _post(context, Network.logout);
+
   Future<Chat> startChat(
     BuildContext context, {
     required int id,
     required ChatResourceType type,
   }) async {
-    final response = await _post(context, Network.chats, {
+    final response = await _post(context, Network.chats, body: {
       'resource_id': id.toString(),
       'resource_type': type.toMap().toString(),
     });
@@ -58,7 +61,7 @@ class NetworkServices {
     if (type == ChatContentType.voice || type == ChatContentType.attachment) {
       path = await _upload(context, path: content);
     }
-    final message = await _post(context, Network.chatsMessages, {
+    final message = await _post(context, Network.chatsMessages, body: {
       'chat_id': chatId.toString(),
       'content': path ?? content,
       'content_type': type.toMap().toString(),
@@ -148,7 +151,10 @@ class NetworkServices {
     final response = await _post(
       context,
       Network.consultationAppointmentRequests,
-      {'consultation_request_id': id.toString(), 'appointment_date': date},
+      body: {
+        'consultation_request_id': id.toString(),
+        'appointment_date': date,
+      },
     );
 
     return json.decode(response)['data']['consultation_request_id'];
@@ -225,7 +231,7 @@ class NetworkServices {
     final response = await _post(
       context,
       Network.consultations,
-      consultation.toMap(attachments: files),
+      body: consultation.toMap(attachments: files),
     );
     return json.decode(response)['data']['id'];
   }
@@ -244,7 +250,7 @@ class NetworkServices {
     final response = await _post(
       context,
       Network.fastConsultation,
-      consultation.toMap(attachments: files) as Map<String, Object>,
+      body: consultation.toMap(attachments: files) as Map<String, Object>,
     );
     return json.decode(response)['data']['id'];
   }
@@ -295,7 +301,7 @@ class NetworkServices {
     required String username,
     required String code,
   }) async {
-    final response = await _post(context, Network.activate, {
+    final response = await _post(context, Network.activate, body: {
       'username': username,
       'code': code,
     });
@@ -308,7 +314,7 @@ class NetworkServices {
     required String password,
     required String confirm,
   }) async {
-    await _post(context, Network.register, {
+    await _post(context, Network.register, body: {
       'username': username,
       'password': password,
       'password_confirmation': confirm,
@@ -322,7 +328,7 @@ class NetworkServices {
     required String newPassword,
     required String confirmPassword,
   }) async {
-    await _post(context, Network.reset, {
+    await _post(context, Network.reset, body: {
       'username': username,
       'code': code,
       'password': newPassword,
@@ -334,7 +340,7 @@ class NetworkServices {
     BuildContext context, {
     required String username,
   }) async {
-    await _post(context, Network.resend, {'username': username});
+    await _post(context, Network.resend, body: {'username': username});
   }
 
   Future<void> checkOTP(
@@ -342,7 +348,7 @@ class NetworkServices {
     required String username,
     required String code,
   }) async {
-    await _post(context, Network.checkOTP, {
+    await _post(context, Network.checkOTP, body: {
       'username': username,
       'code': code,
     });
@@ -352,7 +358,7 @@ class NetworkServices {
     BuildContext context, {
     required String username,
   }) async {
-    await _post(context, Network.forget, {'username': username});
+    await _post(context, Network.forget, body: {'username': username});
   }
 
   Future<User> login(
@@ -360,7 +366,7 @@ class NetworkServices {
     required String username,
     required String password,
   }) async {
-    final response = await _post(context, Network.login, {
+    final response = await _post(context, Network.login, body: {
       'username': username,
       'password': password,
     });
@@ -404,9 +410,9 @@ class NetworkServices {
 
   Future<String> _post(
     BuildContext context,
-    String url,
-    Map<String, Object> body,
-  ) async {
+    String url, {
+    Map<String, Object>? body,
+  }) async {
     try {
       final response = await http
           .post(

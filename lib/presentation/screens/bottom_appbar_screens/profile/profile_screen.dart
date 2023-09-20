@@ -101,6 +101,54 @@ class ProfileScreen extends StatelessWidget {
               title: appLocalizations.reviewApplication,
               onTap: () => Navigator.pushNamed(context, Routes.reviewApp),
             ),
+            if (user != null)
+              BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                listener: (context, state) {
+                  if (state is AuthenticationLoaded) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Routes.login,
+                      (route) => false,
+                    );
+                  }
+                },
+                builder: (context, state) => Card(
+                  child: ListTile(
+                    splashColor: BrandColors.red.withOpacity(0.3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    leading: Container(
+                      width: 50.width,
+                      height: 50.height,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 14.height,
+                        horizontal: 14.width,
+                      ),
+                      decoration: ShapeDecoration(
+                        color: BrandColors.red.withOpacity(0.15),
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(35.0),
+                        ),
+                      ),
+                      child: 'logout'.buildSVG(
+                          color: BrandColors.red, blendMode: BlendMode.srcATop),
+                    ),
+                    title: state is AuthenticationLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                                color: BrandColors.red),
+                          )
+                        : Text(
+                            appLocalizations.logout,
+                            style: const TextStyle(fontSize: 15.0),
+                          ),
+                    onTap: () => context
+                        .read<AuthenticationBloc>()
+                        .add(AuthenticationLogout(context)),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -141,7 +189,7 @@ class _Item extends StatelessWidget {
                 borderRadius: BorderRadius.circular(35.0),
               ),
             ),
-            child: icon.svg,
+            child: icon.buildSVG(color: color, blendMode: BlendMode.srcATop),
           ),
           title: Text(
             title,

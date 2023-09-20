@@ -9,11 +9,12 @@ import 'constants/brand_colors.dart';
 import 'constants/fonts.dart';
 import 'constants/routes.dart';
 import 'cubits/locale_cubit.dart';
+import 'data/models/authentication/user.dart';
 import 'data/services/repository.dart';
 import 'localization/app_localizations_setup.dart';
 import 'utilities/app_router.dart';
 
-Future<List<String>> _getStartValues() async {
+Future<List<dynamic>> _getStartValues() async {
   final repository = Repository.instance;
   final values = await Future.wait([
     repository.getLocalePreferences(),
@@ -35,7 +36,7 @@ Future<List<String>> _getStartValues() async {
   } else if (isNotification) {
     initialRoute = Routes.locationPermssion;
   }
-  return [initialRoute, savedLocale];
+  return [initialRoute, savedLocale, user];
 }
 
 void main() async {
@@ -46,27 +47,31 @@ void main() async {
   ]);
   await Repository.instance.initializePusher();
   final values = await _getStartValues();
-  runApp(MyApp(initialRoute: values[0], savedLocale: values[1]));
+  runApp(MyApp(
+    initialRoute: values[0],
+    savedLocale: values[1],
+    user: values[2],
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({
     required this.initialRoute,
     required this.savedLocale,
+    required this.user,
     super.key,
   });
 
   final String initialRoute;
   final String savedLocale;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => LocaleCubit(Locale(savedLocale))),
-        BlocProvider(
-            create: (context) =>
-                AuthenticationBloc()..add(AuthenticationRemember(context))),
+        BlocProvider(create: (context) => AuthenticationBloc(user)),
         BlocProvider(create: (context) => ResetPasswordBloc()),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(

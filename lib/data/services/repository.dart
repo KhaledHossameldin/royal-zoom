@@ -49,6 +49,11 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<void> logout(BuildContext context) async {
+    await _network.logout(context);
+    await _sharedPreferences.removeUser();
+  }
+
   Future<Chat> startChat(BuildContext context,
           {required int id, required ChatResourceType type}) async =>
       _network.startChat(context, id: id, type: type);
@@ -216,8 +221,6 @@ class Repository {
     }
     return user;
   }
-
-  Future<void> removeUser() async => await _sharedPreferences.removeUser();
 
   Future<User?> getUser() async => await _sharedPreferences.getUser();
 
