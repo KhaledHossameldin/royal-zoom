@@ -11,6 +11,7 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		1514B14D2A4EBD8300A123F7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1514B14F2A4EBD8300A123F7 /* InfoPlist.strings */; };
 		1514B1552A4EBFD200A123F7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1514B14F2A4EBD8300A123F7 /* InfoPlist.strings */; };
+		15CDE2CB2ABAD8E5006C1D61 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 15CDE2CA2ABAD8D6006C1D61 /* libsqlite3.tbd */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		4EAE3823671149D12D88B348 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FE46A959EE0FE6EBDEF9AC /* Pods_Runner.framework */; };
@@ -49,6 +50,7 @@
 		1514B14E2A4EBD8300A123F7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1514B1502A4EBD8E00A123F7 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		154C3EF92A4EC008009BCA19 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		15CDE2CA2ABAD8D6006C1D61 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		15DA45492A4DC1BE008B1DBE /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		1E0D743ADD8D2BCBFA75E9E5 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15CDE2CB2ABAD8E5006C1D61 /* libsqlite3.tbd in Frameworks */,
 				4EAE3823671149D12D88B348 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,6 +119,7 @@
 		6F199A3ECF5899B08DD0E1E1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				15CDE2CA2ABAD8D6006C1D61 /* libsqlite3.tbd */,
 				50FE46A959EE0FE6EBDEF9AC /* Pods_Runner.framework */,
 				DF187A44E26B297513E2BCB1 /* Pods_RunnerTests.framework */,
 			);

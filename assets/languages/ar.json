@@ -333,5 +333,6 @@
     "to_send_consultations": "لإرسال الإستشارات",
     "minimum_two_dollars": "يجب ألا يقل السعر عن ٢ دولار",
     "maximum_receive_time": "أقصي وقت لاستقبال عروض الأسعار",
-    "hour": "ساعة"
+    "hour": "ساعة",
+    "chats_empty": "لم يتم إرسال رسائل بعد"
 }

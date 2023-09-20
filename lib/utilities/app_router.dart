@@ -4,6 +4,9 @@ import 'package:just_audio/just_audio.dart';
 
 import '../constants/routes.dart';
 import '../cubits/change_appointment_date/change_appointment_date_cubit.dart';
+import '../cubits/chat_messages/chat_messages_cubit.dart';
+import '../cubits/chat_recording/chat_recording_cubit.dart';
+import '../cubits/chats/chats_cubit.dart';
 import '../cubits/consultants/consultants_cubit.dart';
 import '../cubits/consultants_available_times/consultants_available_times_cubit.dart';
 import '../cubits/consultation_recording/consultation_recording_cubit.dart';
@@ -30,6 +33,7 @@ import '../presentation/screens/authentication/reset_password/reset_screen.dart'
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/contact_us_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/review_app_screen.dart';
+import '../presentation/screens/chat_details_screen.dart';
 import '../presentation/screens/consultants/details_screen.dart';
 import '../presentation/screens/consultants/filter_screen.dart';
 import '../presentation/screens/consultants/report/report_screen.dart';
@@ -126,6 +130,7 @@ class AppRouter {
               BlocProvider(create: (context) => HomeCubit()),
               BlocProvider(create: (context) => ConsultantsCubit()),
               BlocProvider(create: (context) => ConsultationsCubit()),
+              BlocProvider(create: (context) => ChatsCubit()),
             ],
             child: const HomeScreen(),
           ),
@@ -412,6 +417,22 @@ class AppRouter {
             child: CustomizedConsultantsFilterScreen(
               maxPrice: arguments['maxPrice'] as num,
               majorId: arguments['majorId'] as int,
+            ),
+          ),
+        );
+
+      case Routes.chatDetails:
+        final arguments = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ChatMessagesCubit()),
+              BlocProvider(create: (context) => ChatRecordingCubit()),
+            ],
+            child: ChatDetailsScreen(
+              id: arguments['id'],
+              type: arguments['type'],
+              account: arguments['account'],
             ),
           ),
         );

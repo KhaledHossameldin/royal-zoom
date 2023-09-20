@@ -621,6 +621,8 @@ class AppLocalizations {
 
   String get hour => _translate('hour');
 
+  String get chatsEmpty => _translate('chats_empty');
+
   String getPaymentMethod(PaymentMethod paymentMethod) {
     if (paymentMethod == PaymentMethod.wallet) {
       return _translate('bank_transfer');

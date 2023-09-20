@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -92,6 +94,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                   ),
+                  SliverToBoxAdapter(child: 24.emptyHeight),
                 ],
               );
 
@@ -298,7 +301,10 @@ class _ConsultationItem extends StatelessWidget {
                       builder: (context) {
                         if (consultation.contentType ==
                             ConsultationContentType.text) {
-                          return Text(consultation.content);
+                          return Text(
+                            consultation.content,
+                            maxLines: 2,
+                          );
                         }
                         return Row(
                           children: [
@@ -322,8 +328,10 @@ class _ConsultationItem extends StatelessWidget {
                                     backgroundColor: Colors.grey,
                                     value: (snapshot.data ?? Duration.zero)
                                             .inSeconds /
-                                        consultation
-                                            .audioPlayer!.duration!.inSeconds,
+                                        max(
+                                            consultation.audioPlayer!.duration!
+                                                .inSeconds,
+                                            1),
                                   ),
                                 ),
                               ),

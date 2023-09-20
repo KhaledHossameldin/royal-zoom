@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../enums/chat_content_type.dart';
+import '../enums/chat_resource_type.dart';
 import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
+import '../models/chat/chat.dart';
+import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultations/consultation.dart';
 import '../models/consultations/customized.dart';
@@ -17,6 +21,7 @@ import '../models/major.dart';
 import 'audio_handler.dart';
 import 'location_services.dart';
 import 'network_services.dart';
+import 'pusher_handler.dart';
 import 'shared_preferences_handler.dart';
 
 class Repository {
@@ -27,6 +32,14 @@ class Repository {
   final _sharedPreferences = SharedPreferencesHandler.instance;
   final _location = LocationServices.instance;
   final _audio = AudioHandler.instance;
+  final _pusher = PusherHandler.instance;
+
+  Future<void> initializePusher() async => await _pusher.init();
+
+  Future<void> connect(int id, dynamic onEvent) async =>
+      _pusher.connect(id, onEvent);
+
+  void disconnect(int id) => _pusher.disconnect(id);
 
   Future<void> playAudio() async => await _audio.play();
 
@@ -35,6 +48,30 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<Chat> startChat(BuildContext context,
+          {required int id, required ChatResourceType type}) async =>
+      _network.startChat(context, id: id, type: type);
+
+  Future<ChatMessage> sendMessage(
+    BuildContext context, {
+    required int chatId,
+    required String content,
+    required ChatContentType type,
+  }) async =>
+      _network.sendMessage(
+        context,
+        chatId: chatId,
+        content: content,
+        type: type,
+      );
+
+  Future<List<ChatMessage>> chatMessages(BuildContext context,
+          {required int id}) async =>
+      _network.chatMessages(context, id: id);
+
+  Future<List<Chat>> chats(BuildContext context) async =>
+      _network.chats(context);
 
   Future<HomeStatistics> homeStatistics(BuildContext context) async =>
       _network.homeStatistics(context);

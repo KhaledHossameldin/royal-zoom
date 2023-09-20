@@ -48,4 +48,5 @@ class Routes {
   static const customizedChoosePrice = 'customized-choose-price-screen';
   static const customizedConsultantFilter =
       'customized-consultant-filter-screen';
+  static const chatDetails = 'chat-details-screen';
 }

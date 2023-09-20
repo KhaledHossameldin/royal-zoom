@@ -20,6 +20,8 @@ class Network {
   static const consultations = '$_apiPath/user/consultations';
   static const homeStatistics = '$_apiPath/user/statistics';
   static const lastConsultations = '$_apiPath/user/home/last-consultations';
+  static const chats = '$_apiPath/user/chats';
+  static const chatsMessages = '$_apiPath/user/chats-messages';
   static const fastConsultation =
       '$_apiPath/user/consultations/fast-consultation';
   static const consultationAppointmentRequests =
@@ -27,4 +29,7 @@ class Network {
 
   static String getConsultantimes(int id) =>
       '$_apiPath/consultants/$id/available-times';
+
+  static String getChatMessages(int id) =>
+      '$_apiPath/user/chats-messages/$id/messages';
 }

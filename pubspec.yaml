@@ -38,7 +38,7 @@ dependencies:
   flutter_svg: ^2.0.4
   shared_preferences: ^2.0.18
   flutter_bloc: ^8.1.2
-  permission_handler: ^10.2.0
+  permission_handler: ^11.0.0
   flutter_localizations:
     sdk: flutter
   http: ^1.1.0
@@ -58,6 +58,8 @@ dependencies:
   just_audio: ^0.9.34
   search_choices: ^2.2.5
   fl_chart: ^0.63.0
+  pusher_channels_flutter: ^2.2.0
+  flutter_slidable: ^3.0.0
 
 dev_dependencies:
   flutter_test:

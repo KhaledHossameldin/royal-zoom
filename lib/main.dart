@@ -44,6 +44,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  await Repository.instance.initializePusher();
   final values = await _getStartValues();
   runApp(MyApp(initialRoute: values[0], savedLocale: values[1]));
 }

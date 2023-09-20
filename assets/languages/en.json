@@ -331,5 +331,6 @@
     "to_send_consultations": "to send consultations",
     "minimum_two_dollars": "The price must not be less than 2 dollars",
     "maximum_receive_time": "The maximum time to receive quotations",
-    "hour": "Hour"
+    "hour": "Hour",
+    "chats_empty": "No messages have been sent yet"
 }

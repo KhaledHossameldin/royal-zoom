@@ -10,11 +10,15 @@ import 'package:just_audio/just_audio.dart';
 
 import '../../constants/network.dart';
 import '../../localization/app_localizations.dart';
+import '../enums/chat_content_type.dart';
+import '../enums/chat_resource_type.dart';
 import '../enums/consultation_content_type.dart';
 import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
+import '../models/chat/chat.dart';
+import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultants/consultant.dart';
 import '../models/consultations/consultation.dart';
@@ -31,6 +35,68 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<Chat> startChat(
+    BuildContext context, {
+    required int id,
+    required ChatResourceType type,
+  }) async {
+    final response = await _post(context, Network.chats, {
+      'resource_id': id.toString(),
+      'resource_type': type.toMap().toString(),
+    });
+    return Chat.fromMap(json.decode(response)['data']);
+  }
+
+  Future<ChatMessage> sendMessage(
+    BuildContext context, {
+    required int chatId,
+    required String content,
+    required ChatContentType type,
+  }) async {
+    String? path;
+    if (type == ChatContentType.voice || type == ChatContentType.attachment) {
+      path = await _upload(context, path: content);
+    }
+    final message = await _post(context, Network.chatsMessages, {
+      'chat_id': chatId.toString(),
+      'content': path ?? content,
+      'content_type': type.toMap().toString(),
+    });
+    final chatMessage = ChatMessage.fromSentMap(json.decode(message)['data']);
+    if (chatMessage.contentType == ChatContentType.voice) {
+      final player = AudioPlayer();
+      await player.setUrl(chatMessage.content);
+      await player.pause();
+      return chatMessage.copyWith(player: player);
+    }
+    return chatMessage;
+  }
+
+  Future<List<ChatMessage>> chatMessages(
+    BuildContext context, {
+    required int id,
+  }) async {
+    final response = await _get(context, Network.getChatMessages(id));
+    return await Future.wait(
+        (json.decode(response)['data'] as List).map((item) async {
+      final chatMessage = ChatMessage.fromMap(item);
+      if (chatMessage.contentType == ChatContentType.voice) {
+        final player = AudioPlayer();
+        await player.setUrl(chatMessage.content);
+        await player.pause();
+        return chatMessage.copyWith(player: player);
+      }
+      return chatMessage;
+    }));
+  }
+
+  Future<List<Chat>> chats(BuildContext context) async {
+    final response = await _get(context, Network.chats);
+    return (json.decode(response)['data'] as List)
+        .map((item) => Chat.fromMap(item))
+        .toList();
+  }
 
   Future<HomeStatistics> homeStatistics(BuildContext context) async {
     final response = await _get(context, Network.homeStatistics);
@@ -310,7 +376,6 @@ class NetworkServices {
           'POST', Uri.https(Network.domain, Network.upload))
         ..headers.addAll(await _getHeaders(context))
         ..files.add(await http.MultipartFile.fromPath('file', path));
-
       final response = await request.send();
       final result = await response.stream.bytesToString();
       return json.decode(result)['path'];

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -7,6 +9,7 @@ import '../../../constants/brand_colors.dart';
 import '../../../constants/fonts.dart';
 import '../../../constants/routes.dart';
 import '../../../cubits/show_consultation/show_consultation_cubit.dart';
+import '../../../data/enums/chat_resource_type.dart';
 import '../../../data/enums/consultation_content_type.dart';
 import '../../../data/models/consultations/consultation.dart';
 import '../../../data/models/consultations/details.dart';
@@ -151,6 +154,18 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                                     ),
                                   ),
                                 ],
+                              ),
+                              trailing: IconButton(
+                                onPressed: () => Navigator.pushNamed(
+                                  context,
+                                  Routes.chatDetails,
+                                  arguments: {
+                                    'id': consultation.id,
+                                    'type': ChatResourceType.consultation,
+                                    'account': consultant,
+                                  },
+                                ),
+                                icon: 'chat'.svg,
                               ),
                             ),
                           );
@@ -356,7 +371,7 @@ class _Content extends StatelessWidget {
                         color: BrandColors.darkGreen,
                         backgroundColor: Colors.grey,
                         value: (snapshot.data ?? Duration.zero).inSeconds /
-                            player!.duration!.inSeconds,
+                            max(player!.duration!.inSeconds, 1),
                       ),
                     ),
                   ),
