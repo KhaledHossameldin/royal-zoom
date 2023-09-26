@@ -213,7 +213,7 @@ class UserData extends Account {
       image: map[contract.image] ?? '',
       walletBalance: num.tryParse(map[contract.walletBalance]) ?? 0,
       gender: (map[contract.gender] as int).genderFromMap(),
-      color: (map[contract.color] as String).color,
+      color: (map[contract.color].toString()).color,
       previewStatus:
           (map[contract.previewStatus] as int).previewStatusFromMap(),
       status: (map[contract.status] as int).userStatusFromMap(),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
@@ -44,21 +46,24 @@ class _AboutScreenState extends State<AboutScreen>
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
+    final user = context.read<AuthenticationBloc>().user;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(appLocalizations.aboutApplication),
-        actions: [
-          TextButton.icon(
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context,
-              Routes.login,
-              (route) => false,
-            ),
-            icon: 'profile'.svg,
-            label: Text(appLocalizations.register),
-          ),
-        ],
+        actions: user == null
+            ? [
+                TextButton.icon(
+                  onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.login,
+                    (route) => false,
+                  ),
+                  icon: 'profile'.svg,
+                  label: Text(appLocalizations.register),
+                ),
+              ]
+            : null,
       ),
       body: ListView(
         children: [

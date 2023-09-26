@@ -248,6 +248,7 @@ class _LoginScreenState extends State<LoginScreen>
               maxLength: _country.maxLength,
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.next,
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
               validator: (value) => Validators.phone(
                 context,
                 phone: value!,
@@ -384,6 +385,7 @@ class _EmailTextField extends StatelessWidget {
         TextFormField(
           key: _key,
           controller: _email,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.emailAddress,
           validator: (value) => Validators.email(context, email: value!),
@@ -429,6 +431,7 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
             controller: widget._password,
             obscuringCharacter: '*',
             keyboardType: TextInputType.visiblePassword,
+            onTapOutside: (event) => FocusScope.of(context).unfocus(),
             validator: (value) =>
                 Validators.password(context, password: value!),
             decoration: InputDecoration(

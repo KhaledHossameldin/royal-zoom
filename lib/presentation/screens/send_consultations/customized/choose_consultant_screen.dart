@@ -312,6 +312,7 @@ class _ChooseCustomizedConsultantScreenState
             child: TextField(
           controller: _controller,
           textInputAction: TextInputAction.search,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           decoration: InputDecoration(
             fillColor: Colors.white,
             isDense: true,

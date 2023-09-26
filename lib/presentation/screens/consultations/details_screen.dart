@@ -11,6 +11,7 @@ import '../../../constants/routes.dart';
 import '../../../cubits/show_consultation/show_consultation_cubit.dart';
 import '../../../data/enums/chat_resource_type.dart';
 import '../../../data/enums/consultation_content_type.dart';
+import '../../../data/enums/consultation_status.dart';
 import '../../../data/models/consultations/consultation.dart';
 import '../../../data/models/consultations/details.dart';
 import '../../../localization/app_localizations.dart';
@@ -103,7 +104,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                               onTap: () => Navigator.pushNamed(
                                 context,
                                 Routes.consultantDetails,
-                                arguments: consultant,
+                                arguments: consultant.id,
                               ),
                               leading: Container(
                                 decoration: BoxDecoration(
@@ -172,10 +173,12 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                         },
                       ),
                       8.emptyHeight,
-                      _Item(
-                        title: appLocalizations.responseAfterChangeTime,
-                        child: _ChangeDateSection(consultation: consultation),
-                      ),
+                      if (consultation.status ==
+                          ConsultationStatus.requestToChangetime)
+                        _Item(
+                          title: appLocalizations.responseAfterChangeTime,
+                          child: _ChangeDateSection(consultation: consultation),
+                        ),
                     ],
                   ),
                 );
@@ -341,6 +344,9 @@ class _Content extends StatelessWidget {
         builder: (context) {
           if (type == ConsultationContentType.text) {
             return Text(content);
+          }
+          if (player == null) {
+            return const Text('لا يمكن تشغيل الصوت');
           }
           return Container(
             padding: EdgeInsets.symmetric(

@@ -170,6 +170,7 @@ class _SearchTextField extends StatelessWidget {
         Expanded(
             child: TextField(
           controller: _controller,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           textInputAction: TextInputAction.search,
           decoration: InputDecoration(
             hintText: appLocalizations.searchConsultants,
@@ -278,7 +279,7 @@ class _ConsultantItem extends StatelessWidget {
               onTap: () => Navigator.pushNamed(
                 context,
                 Routes.consultantDetails,
-                arguments: consultant,
+                arguments: consultant.id,
               ),
             ),
           ),
@@ -303,7 +304,7 @@ class _ConsultantItem extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          consultant.previewName ?? appLocalizations.none,
+                          consultant.consultantPreviewName,
                           overflow: TextOverflow.ellipsis,
                           style: textTheme.bodySmall!.copyWith(
                             color: Colors.white,
@@ -335,7 +336,10 @@ class _ConsultantItem extends StatelessWidget {
                     ),
                     2.emptyHeight,
                     Text(
-                      consultant.previewName ?? appLocalizations.none,
+                      consultant.settings != null
+                          ? consultant.settings!.shortBrief ??
+                              appLocalizations.none
+                          : appLocalizations.none,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.bodySmall!.copyWith(
                         color: Colors.white,

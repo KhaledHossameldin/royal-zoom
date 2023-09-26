@@ -306,6 +306,9 @@ class _ConsultationItem extends StatelessWidget {
                             maxLines: 2,
                           );
                         }
+                        if (consultation.audioPlayer == null) {
+                          return const Text('لا يمكن تشغيل الصوت');
+                        }
                         return Row(
                           children: [
                             Text(

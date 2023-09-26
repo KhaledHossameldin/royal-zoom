@@ -141,6 +141,7 @@ class _CustomizedConsultationContentScreenState
                 firstChild: TextField(
                   controller: _contentController,
                   maxLines: 5,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   decoration: InputDecoration(
                     hintText: appLocalizations.enterConsultation,
                     hintStyle: const TextStyle(

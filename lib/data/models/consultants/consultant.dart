@@ -15,6 +15,7 @@ import '../account.dart';
 import 'default_major.dart';
 
 class Consultant extends Account {
+  final String consultantPreviewName;
   final bool isFavourite;
   final DefaultMajor? major;
   final List<DefaultMajor>? majors;
@@ -30,6 +31,7 @@ class Consultant extends Account {
     required super.status,
     required super.type,
     required super.createdAt,
+    required this.consultantPreviewName,
     super.countryId,
     super.nationalityId,
     super.cityId,
@@ -74,6 +76,7 @@ class Consultant extends Account {
     String? middleName,
     String? lastName,
     String? previewName,
+    String? consultantPreviewName,
     String? email,
     String? phone,
     DateTime? lastLoginAt,
@@ -107,6 +110,8 @@ class Consultant extends Account {
       middleName: middleName ?? super.middleName,
       lastName: lastName ?? super.lastName,
       previewName: previewName ?? super.previewName,
+      consultantPreviewName:
+          consultantPreviewName ?? this.consultantPreviewName,
       email: email ?? super.email,
       phone: phone ?? super.phone,
       lastLoginAt: lastLoginAt ?? super.lastLoginAt,
@@ -123,7 +128,7 @@ class Consultant extends Account {
 
   @override
   Map<String, dynamic> toMap() {
-    final contract = _ConsultantContract();
+    final contract = ConsultantContract();
 
     return {
       contract.id: id,
@@ -147,6 +152,7 @@ class Consultant extends Account {
       contract.middleName: middleName,
       contract.lastName: lastName,
       contract.previewName: previewName,
+      contract.consultantPreviewName: consultantPreviewName,
       contract.phone: phone,
       contract.lastLoginAt: lastLoginAt?.toIso8601String(),
       contract.country: country?.toMap(),
@@ -161,7 +167,7 @@ class Consultant extends Account {
   }
 
   factory Consultant.fromMap(Map<String, dynamic> map) {
-    final contract = _ConsultantContract();
+    final contract = ConsultantContract();
 
     return Consultant(
       id: map[contract.id]?.toInt() ?? 0,
@@ -169,7 +175,7 @@ class Consultant extends Account {
       image: map[contract.image] ?? '',
       walletBalance: num.tryParse(map[contract.walletBalance]) ?? 0,
       gender: (map[contract.gender] as int).genderFromMap(),
-      color: (map[contract.color] as String).color,
+      color: (map[contract.color].toString()).color,
       previewStatus:
           (map[contract.previewStatus] as int).previewStatusFromMap(),
       status: (map[contract.status] as int).userStatusFromMap(),
@@ -186,6 +192,7 @@ class Consultant extends Account {
       middleName: map[contract.middleName],
       lastName: map[contract.lastName],
       previewName: map[contract.previewName],
+      consultantPreviewName: map[contract.consultantPreviewName],
       phone: map[contract.phone],
       lastLoginAt: map[contract.lastLoginAt] != null
           ? DateTime.parse(map[contract.lastLoginAt])
@@ -224,7 +231,7 @@ class Consultant extends Account {
 
   @override
   String toString() =>
-      'Consultant(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, email: $email, phone: $phone, lastLoginAt: $lastLoginAt, emailVerifiedAt: $emailVerifiedAt, phoneVerifiedAt: $phoneVerifiedAt, country: $country, nationality: $nationality, settings: $settings, isFavourite: $isFavourite, major: $major, majors: $majors)';
+      'Consultant(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, consultantPreviewName: $consultantPreviewName, email: $email, phone: $phone, lastLoginAt: $lastLoginAt, emailVerifiedAt: $emailVerifiedAt, phoneVerifiedAt: $phoneVerifiedAt, country: $country, nationality: $nationality, settings: $settings, isFavourite: $isFavourite, major: $major, majors: $majors)';
 
   @override
   bool operator ==(Object other) {
@@ -251,6 +258,7 @@ class Consultant extends Account {
         other.middleName == middleName &&
         other.lastName == lastName &&
         other.previewName == previewName &&
+        other.consultantPreviewName == consultantPreviewName &&
         other.email == email &&
         other.phone == phone &&
         other.lastLoginAt == lastLoginAt &&
@@ -286,6 +294,7 @@ class Consultant extends Account {
       middleName.hashCode ^
       lastName.hashCode ^
       previewName.hashCode ^
+      consultantPreviewName.hashCode ^
       email.hashCode ^
       phone.hashCode ^
       lastLoginAt.hashCode ^
@@ -299,7 +308,8 @@ class Consultant extends Account {
       majors.hashCode;
 }
 
-class _ConsultantContract extends AccountContract {
+class ConsultantContract extends AccountContract {
+  final consultantPreviewName = 'consultant_preview_name';
   final isFavourite = 'is_favourite';
   final major = 'default_major';
   final majors = 'majors';

@@ -100,6 +100,7 @@ class _DateRangeTextField extends StatelessWidget {
         readOnly: true,
         controller: _dateController,
         enableInteractiveSelection: false,
+        onTapOutside: (event) => FocusScope.of(context).unfocus(),
         decoration: const InputDecoration(
           isDense: true,
           prefixIcon: Icon(Icons.calendar_month_rounded),

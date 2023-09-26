@@ -135,10 +135,10 @@ class Invoice {
       referenceNumber: map[contract.referenceNumber] ?? '',
       paymentMethod:
           (map[contract.paymentMethod] as int).paymentMethodFromMap(),
-      amount: num.tryParse(map[contract.amount] as String) ?? 0,
-      discount: num.tryParse(map[contract.discount] as String) ?? 0,
-      tax: num.tryParse(map[contract.tax] as String) ?? 0,
-      total: num.tryParse(map[contract.total] as String) ?? 0,
+      amount: num.tryParse(map[contract.amount].toString()) ?? 0,
+      discount: num.tryParse(map[contract.discount].toString()) ?? 0,
+      tax: num.tryParse(map[contract.tax].toString()) ?? 0,
+      total: num.tryParse(map[contract.total].toString()) ?? 0,
       createdAt: DateTime.parse(map[contract.createdAt]),
       invoiceable: type == InvoiceType.consultation
           ? ConsultationInvoiceable.fromMap(map[contract.invoiceable])

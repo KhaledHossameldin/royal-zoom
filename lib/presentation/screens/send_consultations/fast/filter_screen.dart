@@ -228,6 +228,7 @@ class _SendFastConsultantionFilterScreenState
                         LimitRange(0, widget.maxPrice.toInt()),
                       ],
                       controller: _start,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         isDense: true,
@@ -267,6 +268,7 @@ class _SendFastConsultantionFilterScreenState
                         LimitRange(0, widget.maxPrice.toInt()),
                       ],
                       controller: _end,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         isDense: true,

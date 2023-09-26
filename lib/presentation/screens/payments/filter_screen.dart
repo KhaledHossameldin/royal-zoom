@@ -96,6 +96,7 @@ class _PaymentsFilterScreenState extends State<PaymentsFilterScreen> {
             readOnly: true,
             controller: _dateRangeController,
             enableInteractiveSelection: false,
+            onTapOutside: (event) => FocusScope.of(context).unfocus(),
             decoration: const InputDecoration(
               isDense: true,
               prefixIcon: Icon(Icons.calendar_month_rounded),
@@ -160,6 +161,7 @@ class _PaymentsFilterScreenState extends State<PaymentsFilterScreen> {
                         LimitRange(0, widget.maxPrice.toInt()),
                       ],
                       controller: _start,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         isDense: true,
@@ -199,6 +201,7 @@ class _PaymentsFilterScreenState extends State<PaymentsFilterScreen> {
                         LimitRange(0, widget.maxPrice.toInt()),
                       ],
                       controller: _end,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         isDense: true,

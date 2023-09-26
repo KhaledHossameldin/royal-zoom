@@ -147,6 +147,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         TextFormField(
           controller: _message,
           keyboardType: TextInputType.multiline,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           validator: (value) => Validators.message(context, message: value!),
           maxLines: 4,
           decoration: InputDecoration(
@@ -180,6 +181,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           controller: _topic,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.next,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           validator: (value) => Validators.topic(context, topic: value!),
           decoration: InputDecoration(
             hintText: appLocalizations.topic,
@@ -213,6 +215,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           controller: _fullName,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.next,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           validator: (value) => Validators.name(context, name: value!),
           decoration: InputDecoration(
             hintText: appLocalizations.fullName,
@@ -246,6 +249,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           controller: _email,
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.emailAddress,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           validator: (value) => Validators.email(context, email: value!),
           onFieldSubmitted: (value) => _phoneFocus.requestFocus(),
           decoration: InputDecoration(
@@ -279,6 +283,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               maxLength: _country.maxLength,
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.next,
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
               validator: (value) => Validators.phone(
                 context,
                 phone: value!,

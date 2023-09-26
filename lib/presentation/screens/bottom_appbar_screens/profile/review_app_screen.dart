@@ -103,6 +103,8 @@ class _ReviewAppScreenState extends State<ReviewAppScreen> {
                         maxLines: 3,
                         style: const TextStyle(fontSize: 16.0),
                         textInputAction: TextInputAction.newline,
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
                         decoration: InputDecoration(
                           hintText: appLocalizations.writeComment,
                           hintStyle: TextStyle(

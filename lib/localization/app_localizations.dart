@@ -625,6 +625,38 @@ class AppLocalizations {
 
   String get logout => _translate('logout');
 
+  String get qualifications => _translate('qualifications');
+
+  String get experiences => _translate('experiences');
+
+  String get courses => _translate('courses');
+
+  String get skills => _translate('skills');
+
+  String get projects => _translate('projects');
+
+  String get researches => _translate('researches');
+
+  String get patents => _translate('patents');
+
+  String get volunteering => _translate('volunteering');
+
+  String get certificates => _translate('certificates');
+
+  String get languages => _translate('languages');
+
+  String get activities => _translate('activities');
+
+  String getLevel(int level) {
+    if (level == 1) {
+      return _translate('beginner');
+    }
+    if (level == 2) {
+      return _translate('intermediate');
+    }
+    return _translate('professional');
+  }
+
   String getPaymentMethod(PaymentMethod paymentMethod) {
     if (paymentMethod == PaymentMethod.wallet) {
       return _translate('bank_transfer');

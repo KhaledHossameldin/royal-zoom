@@ -66,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
               onTap: () => Navigator.pushNamed(
                 context,
                 Routes.termsAndConditions,
-                arguments: true,
+                arguments: user == null,
               ),
             ),
             _Item(

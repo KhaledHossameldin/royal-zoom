@@ -182,6 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         StatefulBuilder(
           builder: (context, setState) => TextFormField(
             controller: _username,
+            onTapOutside: (event) => FocusScope.of(context).unfocus(),
             validator: (value) => Validators.phoneEmail(
               context,
               emailPhone: _emailPhone,
@@ -416,6 +417,7 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
             controller: widget._password,
             obscuringCharacter: '*',
             keyboardType: TextInputType.visiblePassword,
+            onTapOutside: (event) => FocusScope.of(context).unfocus(),
             validator: (value) =>
                 Validators.password(context, password: value!),
             decoration: InputDecoration(

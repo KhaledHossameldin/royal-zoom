@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:share_plus/share_plus.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/numbers.dart';
 import '../../../../constants/routes.dart';
+import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/fonts.dart';
-import '../../../data/models/consultants/consultant.dart';
+import '../../../cubits/show_consultant/show_consultant_cubit.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/countries.dart';
 import '../../../../utilities/extensions.dart';
+import '../../../data/models/consultants/details.dart';
+import '../../../data/models/consultations/consultation.dart';
 import '../../widgets/brand_back_button.dart';
+import '../../widgets/reload_widget.dart';
 
 class ConsultantDetailsScreen extends StatefulWidget {
-  const ConsultantDetailsScreen({super.key, required this.consultant});
+  const ConsultantDetailsScreen({super.key, required this.id});
 
-  final Consultant consultant;
+  final int id;
 
   @override
   State<ConsultantDetailsScreen> createState() =>
@@ -26,114 +31,234 @@ class ConsultantDetailsScreen extends StatefulWidget {
 class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _controller;
+  VideoPlayerController? _videoController;
+
+  final _consultantAppBar = ValueNotifier<Map<String, Object>?>(null);
 
   @override
   void initState() {
     _controller = TabController(length: 2, vsync: this);
+    context.read<ShowConsultantCubit>().fetch(context, id: widget.id);
     super.initState();
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    _consultantAppBar.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final user = context.read<AuthenticationBloc>().user;
     final appLocalizations = AppLocalizations.of(context);
     final bottomViewPadding = MediaQuery.of(context).viewPadding.bottom;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: const BrandBackButton(),
-        title: Text(appLocalizations.consultantDetails),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: 'heart'.svg,
-            tooltip: appLocalizations.like,
-          ),
-          IconButton(
-            onPressed: () => Share.share(
-              widget.consultant.previewName ?? appLocalizations.none,
-            ),
-            icon: 'share'.svg,
-            tooltip: appLocalizations.share,
-          ),
-          IconButton(
-            onPressed: () => Navigator.pushNamed(
-              context,
-              Routes.consultantReport,
-            ),
-            icon: 'report'.svg,
-            tooltip: appLocalizations.report,
-          ),
-        ],
-      ),
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(
-              27.width,
-              81.height,
-              27.width,
-              bottomViewPadding,
-            ),
-            sliver: SliverToBoxAdapter(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Column(
-                    children: [
-                      _Header(consultant: widget.consultant),
-                      8.emptyHeight,
-                      const _SocialRow(),
-                      const _StatusRow(),
-                      MaterialButton(
-                        onPressed: () {},
-                        minWidth: double.infinity,
-                        textColor: Colors.white,
-                        shape: const StadiumBorder(),
-                        color: BrandColors.orange,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            'consultant_times'.svg,
-                            5.emptyWidth,
-                            Text(appLocalizations.consultantTimes),
-                          ],
-                        ),
-                      ),
-                      MaterialButton(
-                        onPressed: () {},
-                        minWidth: double.infinity,
-                        textColor: Colors.white,
-                        shape: const StadiumBorder(),
-                        color: BrandColors.darkGreen,
-                        child: Text(appLocalizations.consult),
-                      ),
-                      16.emptyHeight,
-                      Placeholder(fallbackHeight: 163.height),
-                      19.emptyHeight,
-                      const _AbstractRow(),
-                    ],
+      appBar: PreferredSize(
+        preferredSize: const Size(double.infinity, kTextTabBarHeight),
+        child: ValueListenableBuilder(
+          valueListenable: _consultantAppBar,
+          builder: (context, value, child) {
+            if (value == null) {
+              return AppBar(leading: const BrandBackButton());
+            }
+            return AppBar(
+              leading: const BrandBackButton(),
+              title: Text(value['name'].toString()),
+              actions: [
+                if (user != null)
+                  IconButton(
+                    onPressed: () {},
+                    icon: 'heart'.svg,
+                    tooltip: appLocalizations.like,
                   ),
-                  _HeaderImage(consultant: widget.consultant),
-                ],
-              ),
-            ),
-          ),
-          SliverOverlapAbsorber(
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-            sliver: SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 27.width),
-              sliver: SliverPersistentHeader(
-                pinned: true,
-                floating: true,
-                delegate: _StickyTabBar(appLocalizations, _controller),
-              ),
-            ),
-          ),
-        ],
-        body: TabBarView(
-          controller: _controller,
-          children: const [_BiographyTab(), _PublishedConsultations()],
+                IconButton(
+                  onPressed: () => Share.share(
+                    'https://royake.wide-techno.com/consultants/${value['id']}',
+                  ),
+                  icon: 'share'.svg,
+                  tooltip: appLocalizations.share,
+                ),
+                if (user != null)
+                  IconButton(
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      Routes.consultantReport,
+                    ),
+                    icon: 'report'.svg,
+                    tooltip: appLocalizations.report,
+                  ),
+              ],
+            );
+          },
         ),
+      ),
+      body: BlocConsumer<ShowConsultantCubit, ShowConsultantState>(
+        listener: (context, state) {
+          if (state is ShowConsultantLoaded) {
+            _consultantAppBar.value = {
+              'id': state.consultant.id,
+              'name': state.consultant.previewName ?? appLocalizations.none,
+            };
+            if (state.consultant.video != null) {
+              try {
+                _videoController =
+                    VideoPlayerController.network(state.consultant.video!.video)
+                      ..initialize().then((value) => setState(() {}))
+                      ..setVolume(0.0)
+                      ..play();
+              } catch (e) {
+                _videoController = null;
+              }
+            }
+          }
+        },
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case ShowConsultantLoading:
+              return const Center(child: CircularProgressIndicator());
+
+            case ShowConsultantLoaded:
+              final consultant = (state as ShowConsultantLoaded).consultant;
+              return NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      27.width,
+                      81.height,
+                      27.width,
+                      bottomViewPadding,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Column(
+                            children: [
+                              _Header(consultant: consultant),
+                              8.emptyHeight,
+                              // const _SocialRow(),
+                              // const _StatusRow(),
+                              MaterialButton(
+                                onPressed: () {},
+                                minWidth: double.infinity,
+                                textColor: Colors.white,
+                                shape: const StadiumBorder(),
+                                color: BrandColors.orange,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    'consultant_times'.svg,
+                                    5.emptyWidth,
+                                    Text(appLocalizations.consultantTimes),
+                                  ],
+                                ),
+                              ),
+                              MaterialButton(
+                                onPressed: () {},
+                                minWidth: double.infinity,
+                                textColor: Colors.white,
+                                shape: const StadiumBorder(),
+                                color: BrandColors.darkGreen,
+                                child: Text(appLocalizations.consult),
+                              ),
+                              16.emptyHeight,
+                              if (state.consultant.video != null &&
+                                  _videoController != null)
+                                StatefulBuilder(
+                                  builder: (context, setState) =>
+                                      GestureDetector(
+                                    onTap: () {
+                                      if (_videoController!.value.isPlaying) {
+                                        _videoController!.pause();
+                                      } else {
+                                        _videoController!.play();
+                                      }
+                                      setState(() {});
+                                    },
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: 163.height,
+                                      child: Stack(
+                                        children: [
+                                          VideoPlayer(_videoController!),
+                                          if (!_videoController!
+                                              .value.isPlaying)
+                                            Center(
+                                              child: FloatingActionButton(
+                                                onPressed: null,
+                                                elevation: 0,
+                                                heroTag: 'play-video-tag',
+                                                backgroundColor: Colors.black
+                                                    .withOpacity(0.5),
+                                                child: const Icon(
+                                                    Icons.play_arrow_rounded),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (consultant.settings != null &&
+                                  consultant.settings!.shortBrief != null)
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      19.emptyHeight,
+                                      _AbstractRow(
+                                        consultant.settings!.shortBrief!,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                          _HeaderImage(consultant: consultant),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: 27.width),
+                      sliver: SliverPersistentHeader(
+                        pinned: true,
+                        floating: true,
+                        delegate: _StickyTabBar(appLocalizations, _controller),
+                      ),
+                    ),
+                  ),
+                ],
+                body: TabBarView(
+                  controller: _controller,
+                  children: [
+                    _BiographyTab(consultant),
+                    _PublishedConsultations(consultant.consultations),
+                  ],
+                ),
+              );
+
+            case ShowConsultantError:
+              return ReloadWidget(
+                title: (state as ShowConsultantError).message,
+                buttonText: appLocalizations.getReload(''),
+                onPressed: () => context
+                    .read<ShowConsultantCubit>()
+                    .fetch(context, id: widget.id),
+              );
+
+            default:
+              return const Material();
+          }
+        },
       ),
     );
   }
@@ -179,7 +304,9 @@ class _SocialRow extends StatelessWidget {
 }
 
 class _PublishedConsultations extends StatelessWidget {
-  const _PublishedConsultations();
+  const _PublishedConsultations(this.consultations);
+
+  final List<Consultation> consultations;
 
   @override
   Widget build(BuildContext context) {
@@ -205,60 +332,67 @@ class _PublishedConsultations extends StatelessWidget {
                 backgroundColor: BrandColors.darkGreen,
                 backgroundImage: 'royake'.png.image,
               ),
-              title: const Text('قانون'),
+              title: Text(consultations[index].major.name),
               subtitle: RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(
-                      text: 'جنايات',
-                      style: textTheme.labelSmall!.copyWith(
-                        color: BrandColors.orange,
+                    // TextSpan(
+                    //   text: 'جنايات',
+                    //   style: textTheme.labelSmall!.copyWith(
+                    //     color: BrandColors.orange,
+                    //   ),
+                    // ),
+                    if (consultations[index].appointmentDate != null)
+                      TextSpan(
+                        text:
+                            ' | ${DateFormat('dd/MM/yyyy').add_jms().format(consultations[index].appointmentDate!)}',
+                        style: textTheme.labelSmall!.copyWith(
+                          color: BrandColors.mediumGray,
+                        ),
                       ),
-                    ),
-                    TextSpan(
-                      text:
-                          ' | ${DateFormat('dd/MM/yyyy').add_jms().format(DateTime.now())}',
-                      style: textTheme.labelSmall!.copyWith(
-                        color: BrandColors.mediumGray,
-                      ),
-                    ),
                   ],
                 ),
               ),
-              trailing: RatingBar(
-                itemSize: 15.0,
-                initialRating: 4,
-                ignoreGestures: true,
-                ratingWidget: RatingWidget(
-                  half: const Material(),
-                  full: const Icon(Icons.star, color: Colors.amber),
-                  empty: const Icon(Icons.star, color: Colors.grey),
-                ),
-                onRatingUpdate: (value) {},
-              ),
+              // trailing: RatingBar(
+              //   itemSize: 15.0,
+              //   initialRating: 4,
+              //   ignoreGestures: true,
+              //   ratingWidget: RatingWidget(
+              //     half: const Material(),
+              //     full: const Icon(Icons.star, color: Colors.amber),
+              //     empty: const Icon(Icons.star, color: Colors.grey),
+              //   ),
+              //   onRatingUpdate: (value) {},
+              // ),
             ),
             const Divider(),
-            Text(
-              'و سأعرض مثال حي لهذا، من منا لم يتحمل جهد بدني شاق إلا من أجل الحصول على ميزة أو فائدة؟ ولكن من لديه الحق أن ينتقد شخص ما أراد أن يشعر بالسعادة التي لا تشوبها عواقب أليمة أو آخر أراد أن يتجنب الألم الذي ربما تنجم عنه بعض المتعة ؟ علي الجانب الآخر نشجب ونستنكر هؤلاء الرجال المفتونون بنشوة اللحظة الهائمون في رغباتهم فلا يدركون ما يعقبها من الألم والأسي المحتم، واللوم كذلك يشمل هؤلاء الذين أخفقوا في واجباتهم نتيجة لضعف إرادتهم فيتساوي مع هؤلاء الذين يتجنبون وينأون عن تحمل الكدح والألم.',
-              style: textTheme.bodySmall!.copyWith(
-                color: BrandColors.darkGray,
-                fontWeight: FontWeight.normal,
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                consultations[index].content,
+                style: textTheme.bodySmall!.copyWith(
+                  color: BrandColors.darkGray,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
             ),
           ],
         ),
       ),
       separatorBuilder: (context, index) => 10.emptyHeight,
-      itemCount: 5,
+      itemCount: consultations.length,
     );
   }
 }
 
 class _BiographyTab extends StatelessWidget {
-  const _BiographyTab();
+  const _BiographyTab(this.consultant);
+
+  final ConsultantDetails consultant;
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final bottomViewPadding = MediaQuery.of(context).viewPadding.bottom;
 
@@ -270,109 +404,341 @@ class _BiographyTab extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _BiographyItem(
-            title: 'المؤهلات',
-            subtitle: 'بكالوريوس إدارة الأعمال',
-            text: 'جامعة الملك فهد',
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: '2016 - ',
-                    style: textTheme.labelSmall!.copyWith(
-                      color: BrandColors.darkGray,
-                    ),
+          if (consultant.qualifications.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.qualifications,
+                  child: Column(
+                      children: consultant.qualifications
+                          .map((e) => SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.name,
+                                      style: textTheme.bodySmall!.copyWith(
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    Text(
+                                      e.organization,
+                                      style: textTheme.labelSmall!.copyWith(
+                                        color: BrandColors.mediumGray,
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: '${e.year} - ',
+                                            style:
+                                                textTheme.labelSmall!.copyWith(
+                                              color: BrandColors.darkGray,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '${e.degree}%',
+                                            style:
+                                                textTheme.labelSmall!.copyWith(
+                                              color: BrandColors.orange,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                          .toList()),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.experiences.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.experiences,
+                  child: Column(
+                    children: consultant.experiences
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    e.name,
+                                    style: textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  Text(
+                                    e.organization,
+                                    style: textTheme.labelSmall!.copyWith(
+                                      color: BrandColors.mediumGray,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${DateFormat('MM/yyyy').format(e.startDate)} - ${DateFormat('MM/yyyy').format(e.endDate)}',
+                                    style: textTheme.labelSmall!.copyWith(
+                                      color: BrandColors.orange,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ))
+                        .toList(),
                   ),
-                  TextSpan(
-                    text: '85%',
-                    style: textTheme.labelSmall!.copyWith(
-                      color: BrandColors.orange,
-                    ),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.courses.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.courses,
+                  child: Column(
+                    children: consultant.courses
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  12.emptyHeight,
+                                  Text(
+                                    e.name,
+                                    style: textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  Text(
+                                    e.organization,
+                                    style: textTheme.labelSmall!.copyWith(
+                                      color: BrandColors.mediumGray,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${e.hours} ${appLocalizations.hour}',
+                                    style: textTheme.labelSmall!.copyWith(
+                                      color: BrandColors.orange,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ))
+                        .toList(),
                   ),
-                ],
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.skills.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.skills,
+                  child: Column(
+                    children: consultant.skills
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    e.name,
+                                    style: textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  Text(
+                                    appLocalizations.getLevel(e.level),
+                                    style: textTheme.labelSmall!.copyWith(
+                                      color: BrandColors.mediumGray,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.projects.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.projects,
+                  child: Column(
+                    children: consultant.projects
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    e.name,
+                                    style: textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  Text(
+                                    e.organization,
+                                    style: textTheme.labelSmall!.copyWith(
+                                      color: BrandColors.mediumGray,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.researches.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.researches,
+                  child: Column(
+                    children: consultant.researches
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                e.name,
+                                style: textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.patents.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.patents,
+                  child: Column(
+                    children: consultant.patents
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                e.name,
+                                style: textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.languages.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.languages,
+                  child: Column(
+                    children: consultant.languages
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    e.name,
+                                    style: textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                  Text(
+                                    appLocalizations.getLevel(e.level),
+                                    style: textTheme.labelSmall!.copyWith(
+                                      color: BrandColors.mediumGray,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.activities.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.activities,
+                  child: Column(
+                    children: consultant.activities
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                e.name,
+                                style: textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.certificates.isNotEmpty)
+            Column(
+              children: [
+                _BiographyItem(
+                  title: appLocalizations.certificates,
+                  child: Column(
+                    children: consultant.certificates
+                        .map((e) => SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                e.name,
+                                style: textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                const Divider(),
+              ],
+            ),
+          if (consultant.volunteering.isNotEmpty)
+            _BiographyItem(
+              title: appLocalizations.volunteering,
+              child: Column(
+                children: consultant.volunteering
+                    .map((e) => SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            e.name,
+                            style: textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ))
+                    .toList(),
               ),
             ),
-          ),
-          const Divider(),
-          _BiographyItem(
-            title: 'الخبرات',
-            subtitle: 'المدير المالي',
-            text: 'بيبسيكو للمواد الغذائية',
-            child: Text(
-              '02/2022 - 09/2020',
-              style: textTheme.labelSmall!.copyWith(
-                color: BrandColors.orange,
-              ),
-            ),
-          ),
-          const Divider(),
-          _BiographyItem(
-            title: 'الدورات التي حصلت عليها',
-            subtitle: 'إدارة المشاريع',
-            text: 'Google',
-            child: Text(
-              '٣٥ ساعة',
-              style: textTheme.labelSmall!.copyWith(
-                color: BrandColors.orange,
-              ),
-            ),
-          ),
-          const Divider(),
-          _BiographyItem(
-            title: 'المهارات',
-            subtitle: 'Microsoft Office',
-            child: Text(
-              'متقدم',
-              style: textTheme.labelSmall!.copyWith(
-                color: Colors.green,
-              ),
-            ),
-          ),
-          const Divider(),
-          _BiographyItem(
-            title: 'المشاريع',
-            subtitle: 'مشروع إنشاء مركز حسابات',
-            text: 'مؤسسة رؤياك',
-            child: Text(
-              '٣٥ ساعة',
-              style: textTheme.labelSmall!.copyWith(
-                color: BrandColors.orange,
-              ),
-            ),
-          ),
-          const Divider(),
-          const _BiographyItem(
-            title: 'المؤلفات والبحوث',
-            subtitle: 'اسم المؤلف أو البحث',
-          ),
-          const Divider(),
-          const _BiographyItem(
-            title: 'براءات الاختراع',
-            subtitle: 'اسم براءة الاختراع',
-          ),
-          const Divider(),
-          const _BiographyItem(
-            title: 'المشاركات',
-            subtitle: 'اسم المشاركة',
-          ),
-          const Divider(),
-          _BiographyItem(
-            title: 'دورات قدمها',
-            subtitle: 'اسم الدورة',
-            child: Text(
-              '٥٦ ساعة',
-              style: textTheme.labelSmall!.copyWith(
-                color: BrandColors.orange,
-              ),
-            ),
-          ),
-          const Divider(),
-          const _BiographyItem(
-            title: 'شهادات الشكر والتقدير',
-            subtitle: 'اسم شهادات الشكر والتقدير',
-          ),
-          const Divider(),
-          const _BiographyItem(title: 'التطوع', subtitle: 'اسم التطوع'),
         ],
       ),
     );
@@ -380,16 +746,9 @@ class _BiographyTab extends StatelessWidget {
 }
 
 class _BiographyItem extends StatelessWidget {
-  const _BiographyItem({
-    required this.title,
-    required this.subtitle,
-    this.text,
-    this.child,
-  });
+  const _BiographyItem({required this.title, this.child});
 
   final String title;
-  final String subtitle;
-  final String? text;
   final Widget? child;
 
   @override
@@ -412,19 +771,6 @@ class _BiographyItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  subtitle,
-                  style: textTheme.bodySmall!.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                if (text != null)
-                  Text(
-                    text!,
-                    style: textTheme.labelSmall!.copyWith(
-                      color: BrandColors.mediumGray,
-                    ),
-                  ),
                 if (child != null) child!,
               ],
             ),
@@ -436,7 +782,9 @@ class _BiographyItem extends StatelessWidget {
 }
 
 class _AbstractRow extends StatelessWidget {
-  const _AbstractRow();
+  const _AbstractRow(this.shortBirief);
+
+  final String shortBirief;
 
   @override
   Widget build(BuildContext context) {
@@ -463,7 +811,7 @@ class _AbstractRow extends StatelessWidget {
         ),
         10.emptyHeight,
         Text(
-          'و سأعرض مثال حي لهذا، من منا لم يتحمل جهد بدني شاق إلا من أجل الحصول على ميزة أو فائدة؟ ولكن من لديه الحق أن ينتقد شخص ما أراد أن يشعر بالسعادة التي لا تشوبها عواقب أليمة أو آخر أراد أن يتجنب الألم الذي ربما تنجم عنه بعض المتعة ؟ علي الجانب الآخر نشجب ونستنكر هؤلاء الرجال المفتونون بنشوة اللحظة الهائمون في رغباتهم فلا يدركون ما يعقبها من الألم والأسي المحتم، واللوم كذلك يشمل هؤلاء الذين أخفقوا في واجباتهم نتيجة لضعف إرادتهم فيتساوي مع هؤلاء الذين يتجنبون وينأون عن تحمل الكدح والألم . من المفترض أن نفرق بين هذه الحالات بكل سهولة ومرونة. في ذاك الوقت عندما تكون قدرتنا علي الاختيار غير مقيدة بشرط وعندما لا نجد ما يمنعنا أن نفعل الأفضل فها نحن نرحب بالسرور والسعادة ونتجنب كل ما يبعث إلينا الألم. في بعض الأحيان ونظراً للالتزامات التي يفرضها علينا الواجب والعمل سنتنازل غالباً ونرفض الشعور بالسرور ونقبل ما يجلبه إلينا الأسى. الإنسان الحكيم عليه أن يمسك زمام الأمور ويختار إما أن يرفض مصادر السعادة من أجل ما هو أكثر أهمية أو يتحمل الألم من أجل ألا يتحمل ما هو أسوأ.',
+          shortBirief,
           style: textTheme.labelSmall!.copyWith(
             color: Colors.grey.shade800,
           ),
@@ -517,7 +865,7 @@ class _StatusRow extends StatelessWidget {
 class _HeaderImage extends StatelessWidget {
   const _HeaderImage({required this.consultant});
 
-  final Consultant consultant;
+  final ConsultantDetails consultant;
 
   @override
   Widget build(BuildContext context) => Positioned(
@@ -544,7 +892,7 @@ class _HeaderImage extends StatelessWidget {
 class _Header extends StatelessWidget {
   _Header({required this.consultant});
 
-  final Consultant consultant;
+  final ConsultantDetails consultant;
   bool _isShowPrices = false;
 
   @override
@@ -703,26 +1051,37 @@ class _Header extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: '${appLocalizations.experienceYears} :',
-                  style: textTheme.bodySmall!.copyWith(
-                    color: Colors.grey.shade700,
-                    fontWeight: FontWeight.normal,
+          Builder(builder: (context) {
+            int sum = 0;
+            return RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${appLocalizations.experienceYears} :',
+                    style: textTheme.bodySmall!.copyWith(
+                      color: Colors.grey.shade700,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
-                ),
-                WidgetSpan(child: SizedBox(width: 15.width)),
-                TextSpan(
-                  text: ' ٥',
-                  style: textTheme.bodySmall!.copyWith(
-                    color: Colors.black,
+                  WidgetSpan(child: SizedBox(width: 15.width)),
+                  TextSpan(
+                    // text: ' ٥',
+                    text: consultant.experiences
+                        .fold(
+                            sum,
+                            (previousValue, element) => sum += element.endDate
+                                    .difference(element.startDate)
+                                    .inDays ~/
+                                365)
+                        .toString(),
+                    style: textTheme.bodySmall!.copyWith(
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              ),
+            );
+          }),
         ],
       );
 
@@ -784,14 +1143,20 @@ class _Header extends StatelessWidget {
                 fontFamily: Fonts.main,
               ),
               children: [
-                TextSpan(text: (0.78 * 10).toStringAsFixed(1)),
+                TextSpan(
+                  text: (consultant.ratingAverage * 10).toStringAsFixed(1),
+                ),
                 WidgetSpan(
                     alignment: PlaceholderAlignment.top,
                     child: ShaderMask(
                       blendMode: BlendMode.srcATop,
                       shaderCallback: (bounds) {
                         return LinearGradient(
-                          stops: const [0, 0.78, 0.78],
+                          stops: [
+                            0,
+                            consultant.ratingAverage.toDouble(),
+                            consultant.ratingAverage.toDouble(),
+                          ],
                           colors: [
                             Colors.amber,
                             Colors.amber,
@@ -809,7 +1174,7 @@ class _Header extends StatelessWidget {
                         ),
                       ),
                     )),
-                TextSpan(text: '465 ${appLocalizations.review}'),
+                // TextSpan(text: '465 ${appLocalizations.review}'),
               ],
             ),
           ),

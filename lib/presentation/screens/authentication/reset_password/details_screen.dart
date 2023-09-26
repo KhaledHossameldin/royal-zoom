@@ -153,6 +153,7 @@ class _ResetPasswordDetailsScreenState
         builder: (context, setState) => TextFormField(
           key: _textFieldKey,
           controller: _username,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           validator: (value) => Validators.phoneEmail(
             context,
             emailPhone: _emailPhone,

@@ -46,7 +46,7 @@ class ConsultantAvailableTime {
     return ConsultantAvailableTime(
       userId: map[contract.userId]?.toInt() ?? 0,
       day: map[contract.day] ?? '',
-      time: (map[contract.time] as String).time,
+      time: (map[contract.time].toString()).time,
       isPrimary: map[contract.isPrimary] != 0,
     );
   }

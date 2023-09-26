@@ -157,6 +157,10 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen>
                                     }
                                     if (messages[index].contentType ==
                                         ChatContentType.voice) {
+                                      if (messages[index].player == null) {
+                                        return const Text(
+                                            'لا يمكن تشغيل الصوت');
+                                      }
                                       return Row(
                                         children: [
                                           Text(
@@ -272,6 +276,8 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen>
                                       )
                                     : TextField(
                                         controller: _messageController,
+                                        onTapOutside: (event) =>
+                                            FocusScope.of(context).unfocus(),
                                         decoration: InputDecoration(
                                           isDense: true,
                                           hintText:

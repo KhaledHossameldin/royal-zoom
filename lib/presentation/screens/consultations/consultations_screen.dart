@@ -139,6 +139,7 @@ class _SearchTextField extends StatelessWidget {
             child: TextField(
           controller: _controller,
           textInputAction: TextInputAction.search,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           decoration: InputDecoration(
             hintText: appLocalizations.searchConsultations,
             hintStyle: textTheme.bodyLarge!.copyWith(
@@ -398,6 +399,9 @@ class _ConsultationItem extends StatelessWidget {
                       if (consultation.contentType ==
                           ConsultationContentType.text) {
                         return Text(consultation.content);
+                      }
+                      if (consultation.audioPlayer == null) {
+                        return const Text('لا يمكن تشغيل الصوت');
                       }
                       return Row(
                         children: [

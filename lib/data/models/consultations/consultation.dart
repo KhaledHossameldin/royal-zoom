@@ -187,7 +187,7 @@ class Consultation {
       responseType:
           (map[contract.responseType] as int).consultantResponseTypeFromMap(),
       maximumPrice: map[contract.maximumPrice] != null
-          ? num.tryParse(map[contract.maximumPrice] as String) ?? 0.0
+          ? num.tryParse(map[contract.maximumPrice].toString()) ?? 0.0
           : null,
       isAcceptingOffersFromAll:
           (map[contract.isAcceptingOffersFromAll] as int) != 0,

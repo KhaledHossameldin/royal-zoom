@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
 
   final String initialRoute;
   final String savedLocale;
-  final User user;
+  final User? user;
 
   @override
   Widget build(BuildContext context) {

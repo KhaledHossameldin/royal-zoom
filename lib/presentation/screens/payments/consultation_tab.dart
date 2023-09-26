@@ -60,6 +60,8 @@ class _ConsultationTabState extends State<ConsultationTab> {
                       Expanded(
                         child: TextField(
                           controller: _controller,
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
                           decoration: InputDecoration(
                             isDense: true,
                             suffixIcon: 'search'.imageIcon,

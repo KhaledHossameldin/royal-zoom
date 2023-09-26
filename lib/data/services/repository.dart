@@ -11,6 +11,7 @@ import '../models/authentication/user.dart';
 import '../models/chat/chat.dart';
 import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
+import '../models/consultants/details.dart';
 import '../models/consultations/consultation.dart';
 import '../models/consultations/customized.dart';
 import '../models/consultations/details.dart';
@@ -48,6 +49,10 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<ConsultantDetails> showConsultant(BuildContext context,
+          {required int id}) async =>
+      _network.showConsultant(context, id: id);
 
   Future<void> logout(BuildContext context) async {
     await _network.logout(context);

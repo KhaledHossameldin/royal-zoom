@@ -18,8 +18,8 @@ import '../cubits/home/home_cubit.dart';
 import '../cubits/invoice/invoice_cubit.dart';
 import '../cubits/majors/majors_cubit.dart';
 import '../cubits/search/search_cubit.dart';
+import '../cubits/show_consultant/show_consultant_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
-import '../data/models/consultants/consultant.dart';
 import '../data/models/consultations/details.dart';
 import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
@@ -97,7 +97,7 @@ class AppRouter {
         final arguments = settings.arguments as Map<String, Object>;
         return MaterialPageRoute(
           builder: (context) => OTPScreen(
-            username: arguments['username'] as String,
+            username: arguments['username'].toString(),
             isRegister: arguments['isRegister'] as bool,
           ),
           settings: settings,
@@ -162,9 +162,12 @@ class AppRouter {
         );
 
       case Routes.consultantDetails:
-        final consultant = settings.arguments as Consultant;
+        final id = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (context) => ConsultantDetailsScreen(consultant: consultant),
+          builder: (context) => BlocProvider(
+            create: (context) => ShowConsultantCubit(),
+            child: ConsultantDetailsScreen(id: id),
+          ),
         );
 
       case Routes.consultantReport:

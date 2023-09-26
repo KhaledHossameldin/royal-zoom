@@ -164,6 +164,7 @@ class _CustomizedChoosePriceScreenState
                     TextField(
                       controller: _priceController,
                       keyboardType: TextInputType.number,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       decoration: InputDecoration(
                         hintText: '0.00',
                         suffixIcon: Center(
@@ -211,6 +212,7 @@ class _CustomizedChoosePriceScreenState
             TextField(
               controller: _hoursController,
               keyboardType: TextInputType.number,
+              onTapOutside: (event) => FocusScope.of(context).unfocus(),
               decoration: InputDecoration(
                 hintText: '0.00',
                 suffixIcon: Center(

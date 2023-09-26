@@ -333,5 +333,19 @@
     "maximum_receive_time": "The maximum time to receive quotations",
     "hour": "Hour",
     "chats_empty": "No messages have been sent yet",
-    "logout": "Logout"
+    "logout": "Logout",
+    "qualifications": "Qualifications",
+    "experiences": "Experiences",
+    "courses": "Courses",
+    "skills": "Skills",
+    "projects": "Projects",
+    "researches": "Researches",
+    "patents": "Patents",
+    "volunteering": "Voluntreering",
+    "certificates": "Certificates",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "professional": "Professional",
+    "languages": "Languages",
+    "activities": "Activities"
 }

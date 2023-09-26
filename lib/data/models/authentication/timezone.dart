@@ -57,7 +57,7 @@ class Timezone {
       uuid: map[contract.uuid] ?? '',
       countryId: map[contract.countryId]?.toInt() ?? 0,
       timezone: map[contract.timezone] ?? '',
-      offset: (map[contract.offset] as String).timezoneOffset,
+      offset: (map[contract.offset].toString()).timezoneOffset,
       createdAt: DateTime.parse(map[contract.createdAt]),
     );
   }

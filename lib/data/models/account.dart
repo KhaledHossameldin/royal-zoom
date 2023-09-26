@@ -184,9 +184,9 @@ class Account {
       id: map[contract.id]?.toInt() ?? 0,
       uuid: map[contract.uuid] ?? '',
       image: map[contract.image] ?? '',
-      walletBalance: num.tryParse(map[contract.walletBalance] as String) ?? 0,
+      walletBalance: num.tryParse(map[contract.walletBalance].toString()) ?? 0,
       gender: (map[contract.gender] as int).genderFromMap(),
-      color: (map[contract.color] as String).color,
+      color: (map[contract.color].toString()).color,
       previewStatus:
           (map[contract.previewStatus] as int).previewStatusFromMap(),
       status: (map[contract.status] as int).userStatusFromMap(),

@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,6 +22,7 @@ import '../models/chat/chat.dart';
 import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultants/consultant.dart';
+import '../models/consultants/details.dart';
 import '../models/consultations/consultation.dart';
 import '../models/consultations/customized.dart';
 import '../models/consultations/details.dart';
@@ -35,6 +37,14 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<ConsultantDetails> showConsultant(
+    BuildContext context, {
+    required int id,
+  }) async {
+    final response = await _get(context, '${Network.consultants}/$id');
+    return ConsultantDetails.fromMap(json.decode(response)['data']);
+  }
 
   Future<void> logout(BuildContext context) async =>
       await _post(context, Network.logout);
@@ -68,6 +78,16 @@ class NetworkServices {
     });
     final chatMessage = ChatMessage.fromSentMap(json.decode(message)['data']);
     if (chatMessage.contentType == ChatContentType.voice) {
+      if (Platform.isIOS &&
+          !chatMessage.content.toLowerCase().endsWith('.aac') &&
+          !chatMessage.content.toLowerCase().endsWith('.aiff') &&
+          !chatMessage.content.toLowerCase().endsWith('.caf') &&
+          !chatMessage.content.toLowerCase().endsWith('.mp3') &&
+          !chatMessage.content.toLowerCase().endsWith('.mp4') &&
+          !chatMessage.content.toLowerCase().endsWith('.m4p') &&
+          !chatMessage.content.toLowerCase().endsWith('.wav')) {
+        return chatMessage;
+      }
       final player = AudioPlayer();
       await player.setUrl(chatMessage.content);
       await player.pause();
@@ -85,6 +105,16 @@ class NetworkServices {
         (json.decode(response)['data'] as List).map((item) async {
       final chatMessage = ChatMessage.fromMap(item);
       if (chatMessage.contentType == ChatContentType.voice) {
+        if (Platform.isIOS &&
+            !chatMessage.content.toLowerCase().endsWith('.aac') &&
+            !chatMessage.content.toLowerCase().endsWith('.aiff') &&
+            !chatMessage.content.toLowerCase().endsWith('.caf') &&
+            !chatMessage.content.toLowerCase().endsWith('.mp3') &&
+            !chatMessage.content.toLowerCase().endsWith('.mp4') &&
+            !chatMessage.content.toLowerCase().endsWith('.m4p') &&
+            !chatMessage.content.toLowerCase().endsWith('.wav')) {
+          return chatMessage;
+        }
         final player = AudioPlayer();
         await player.setUrl(chatMessage.content);
         await player.pause();
@@ -113,6 +143,16 @@ class NetworkServices {
         await Future.wait((jsonMap['data'] as List).map((item) async {
       final consultation = Consultation.fromMap(item);
       if (consultation.contentType == ConsultationContentType.voice) {
+        if (Platform.isIOS &&
+            !consultation.content.toLowerCase().endsWith('.aac') &&
+            !consultation.content.toLowerCase().endsWith('.aiff') &&
+            !consultation.content.toLowerCase().endsWith('.caf') &&
+            !consultation.content.toLowerCase().endsWith('.mp3') &&
+            !consultation.content.toLowerCase().endsWith('.mp4') &&
+            !consultation.content.toLowerCase().endsWith('.m4p') &&
+            !consultation.content.toLowerCase().endsWith('.wav')) {
+          return consultation;
+        }
         final player = AudioPlayer();
         await player.setUrl(consultation.content);
         await player.pause();
@@ -127,9 +167,9 @@ class NetworkServices {
     final response = await _get(context, Network.statistics);
     final jsonMap = json.decode(response)['data'];
     final totalPaidInvoices =
-        double.parse(jsonMap['total_paid_invoices'] as String);
-    final totalInvoices = double.parse(jsonMap['total_invoices'] as String);
-    return (totalPaidInvoices / totalInvoices * 100).round();
+        double.parse(jsonMap['total_paid_invoices'].toString());
+    final totalInvoices = double.parse(jsonMap['total_invoices'].toString());
+    return (totalPaidInvoices / max(totalInvoices, 1) * 100).round();
   }
 
   Future<List<Invoice>> invoices(
@@ -204,6 +244,16 @@ class NetworkServices {
         await Future.wait((jsonMap['data'] as List).map((item) async {
       final consultation = Consultation.fromMap(item);
       if (consultation.contentType == ConsultationContentType.voice) {
+        if (Platform.isIOS &&
+            !consultation.content.toLowerCase().endsWith('.aac') &&
+            !consultation.content.toLowerCase().endsWith('.aiff') &&
+            !consultation.content.toLowerCase().endsWith('.caf') &&
+            !consultation.content.toLowerCase().endsWith('.mp3') &&
+            !consultation.content.toLowerCase().endsWith('.mp4') &&
+            !consultation.content.toLowerCase().endsWith('.m4p') &&
+            !consultation.content.toLowerCase().endsWith('.wav')) {
+          return consultation;
+        }
         final player = AudioPlayer();
         await player.setUrl(consultation.content);
         await player.pause();

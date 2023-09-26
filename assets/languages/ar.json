@@ -335,5 +335,19 @@
     "maximum_receive_time": "أقصي وقت لاستقبال عروض الأسعار",
     "hour": "ساعة",
     "chats_empty": "لم يتم إرسال رسائل بعد",
-    "logout": "تسجيل خروج"
+    "logout": "تسجيل خروج",
+    "qualifications": "المؤهلات",
+    "experiences": "الخبرات",
+    "courses": "الدورات",
+    "skills": "المهارات",
+    "projects": "المشاريع",
+    "researches": "البحوث",
+    "patents": "براءات الاختراع",
+    "volunteering": "المشاركات",
+    "certificates": "شهادات",
+    "beginner": "مبتدئ",
+    "intermediate": "متوسط",
+    "professional": "متقدم",
+    "languages": "اللغات",
+    "activities": "النشاطات"
 }

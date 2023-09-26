@@ -98,7 +98,7 @@ class ConsultationRequest {
       isAcceptingOffersFromAll:
           (map[contract.isAcceptingOffersFromAll] as int) != 0,
       isFree: (map[contract.isFree] as int) != 0,
-      price: num.tryParse((map[contract.price] as String)) ?? 0.0,
+      price: num.tryParse((map[contract.price].toString())) ?? 0.0,
       comment: map[contract.comment] ?? '',
       responseDuration: map[contract.responseDuration]?.toInt() ?? 0,
       responseDurationType: map[contract.responseDurationType] ?? '',

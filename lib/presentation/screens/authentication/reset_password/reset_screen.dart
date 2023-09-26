@@ -167,6 +167,7 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
             controller: widget.controller,
             obscuringCharacter: '*',
             keyboardType: TextInputType.visiblePassword,
+            onTapOutside: (event) => FocusScope.of(context).unfocus(),
             validator: (value) => Validators.password(
               context,
               password: value!,

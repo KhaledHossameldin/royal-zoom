@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/brand_colors.dart';
 import '../../../constants/routes.dart';
 import '../../../cubits/invoice/invoice_cubit.dart';
@@ -494,6 +495,7 @@ class _HeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.read<AuthenticationBloc>().user!;
     final appLocalizations = AppLocalizations.of(context);
 
     return SliverToBoxAdapter(
@@ -535,7 +537,8 @@ class _HeaderCard extends StatelessWidget {
               ],
             ),
             Text(
-              NumberFormat.currency(name: appLocalizations.sar).format(2150),
+              NumberFormat.currency(name: appLocalizations.sar)
+                  .format(user.data.walletBalance),
               style: const TextStyle(
                 fontSize: 24.0,
                 color: BrandColors.orange,

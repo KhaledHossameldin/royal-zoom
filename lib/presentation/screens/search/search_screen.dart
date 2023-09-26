@@ -286,6 +286,8 @@ class _SearchScreenState extends State<SearchScreen>
                             title: appLocalizations.consultationNumberTitle,
                             child: TextField(
                               controller: _numberController,
+                              onTapOutside: (event) =>
+                                  FocusScope.of(context).unfocus(),
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 isDense: true,
@@ -464,6 +466,7 @@ class _SearchScreenState extends State<SearchScreen>
                         LimitRange(0, maxPrice.toInt()),
                       ],
                       controller: _startPrice,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         isDense: true,
@@ -503,6 +506,7 @@ class _SearchScreenState extends State<SearchScreen>
                         LimitRange(0, maxPrice.toInt()),
                       ],
                       controller: _endPrice,
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         isDense: true,
@@ -653,6 +657,7 @@ class _SearchScreenState extends State<SearchScreen>
           readOnly: true,
           controller: _dateRangeController,
           enableInteractiveSelection: false,
+          onTapOutside: (event) => FocusScope.of(context).unfocus(),
           decoration: const InputDecoration(
             isDense: true,
             prefixIcon: Icon(Icons.calendar_month_rounded),

@@ -55,7 +55,7 @@ class WalletChargeInvoiceable extends Invoiceable {
       userId: map[contract.userId]?.toInt() ?? 0,
       isPaid: (map[contract.isPaid] as int) != 0,
       createdAt: DateTime.parse(map[contract.createdAt]),
-      amount: num.tryParse(map[contract.amount] as String) ?? 0,
+      amount: num.tryParse(map[contract.amount].toString()) ?? 0,
     );
   }
 
