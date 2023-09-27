@@ -17,6 +17,7 @@ import '../cubits/filter/filter_cubit.dart';
 import '../cubits/home/home_cubit.dart';
 import '../cubits/invoice/invoice_cubit.dart';
 import '../cubits/majors/majors_cubit.dart';
+import '../cubits/notifications/notifications_cubit.dart';
 import '../cubits/search/search_cubit.dart';
 import '../cubits/show_consultant/show_consultant_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
@@ -184,7 +185,10 @@ class AppRouter {
 
       case Routes.notifications:
         return MaterialPageRoute(
-          builder: (context) => const NotificationsScreen(),
+          builder: (context) => BlocProvider(
+            create: (context) => NotificationsCubit(),
+            child: const NotificationsScreen(),
+          ),
         );
 
       case Routes.about:

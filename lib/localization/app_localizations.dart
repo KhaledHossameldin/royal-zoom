@@ -647,6 +647,8 @@ class AppLocalizations {
 
   String get activities => _translate('activities');
 
+  String get active => _translate('active');
+
   String getLevel(int level) {
     if (level == 1) {
       return _translate('beginner');

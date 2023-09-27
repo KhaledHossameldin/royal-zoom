@@ -69,6 +69,11 @@ extension NullableStringExtension on String? {
 }
 
 extension StringExtension on String {
+  DateTime get date {
+    final date = split('-');
+    return DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]));
+  }
+
   TimeOfDay get time {
     final times = split(':');
     return TimeOfDay(hour: int.parse(times[0]), minute: int.parse(times[1]));

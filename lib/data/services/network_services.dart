@@ -30,6 +30,7 @@ import '../models/consultations/fast.dart';
 import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
+import '../models/notifications/user_notification.dart';
 import 'app_exception.dart';
 import 'shared_preferences_handler.dart';
 
@@ -37,6 +38,20 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<Map<String, Object>> notifications(BuildContext context,
+      {required int page}) async {
+    final response = await _get(context, Network.notifications,
+        params: {'page': page.toString()});
+    final jsonMap = json.decode(response);
+    final notifications = (jsonMap['data'] as List)
+        .map((item) => UserNotification.fromMap(item))
+        .toList();
+    return {
+      'notifications': notifications,
+      'per_page': jsonMap['meta']['per_page'],
+    };
+  }
 
   Future<ConsultantDetails> showConsultant(
     BuildContext context, {

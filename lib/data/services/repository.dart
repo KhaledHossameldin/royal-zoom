@@ -50,6 +50,10 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<Map<String, Object>> notifications(BuildContext context,
+          {required int page}) async =>
+      _network.notifications(context, page: page);
+
   Future<ConsultantDetails> showConsultant(BuildContext context,
           {required int id}) async =>
       _network.showConsultant(context, id: id);

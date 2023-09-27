@@ -23,6 +23,7 @@ class Network {
   static const lastConsultations = '$_apiPath/user/home/last-consultations';
   static const chats = '$_apiPath/user/chats';
   static const chatsMessages = '$_apiPath/user/chats-messages';
+  static const notifications = '$_apiPath/user/notifications';
   static const fastConsultation =
       '$_apiPath/user/consultations/fast-consultation';
   static const consultationAppointmentRequests =
