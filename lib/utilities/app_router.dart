@@ -22,6 +22,7 @@ import '../cubits/search/search_cubit.dart';
 import '../cubits/show_consultant/show_consultant_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
+import '../data/models/notifications/user_notification.dart';
 import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
 import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
@@ -325,8 +326,11 @@ class AppRouter {
         );
 
       case Routes.notificationDetails:
+        final notification = settings.arguments as UserNotification;
         return MaterialPageRoute(
-          builder: (context) => const NotificationDetailsScreen(),
+          builder: (context) => NotificationDetailsScreen(
+            notification: notification,
+          ),
         );
 
       case Routes.payments:

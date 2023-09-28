@@ -109,6 +109,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               onTap: () => Navigator.pushNamed(
                                 context,
                                 Routes.notificationDetails,
+                                arguments: notifications[index],
                               ),
                               borderRadius: BorderRadius.circular(10.0),
                               child: Padding(
