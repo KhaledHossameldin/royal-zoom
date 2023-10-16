@@ -1,12 +1,18 @@
 import 'dart:convert';
 
+import '../../services/repository.dart';
 import 'user_data.dart';
 
 class User {
-  final UserData data;
+  UserData data;
   final String token;
 
   User({required this.data, required this.token});
+
+  void updateData(UserData data) {
+    this.data = data;
+    Repository.instance.setUser(this);
+  }
 
   User copyWith({UserData? data, String? token}) =>
       User(data: data ?? this.data, token: token ?? this.token);

@@ -18,6 +18,7 @@ import '../cubits/home/home_cubit.dart';
 import '../cubits/invoice/invoice_cubit.dart';
 import '../cubits/majors/majors_cubit.dart';
 import '../cubits/notifications/notifications_cubit.dart';
+import '../cubits/profile/profile_cubit.dart';
 import '../cubits/search/search_cubit.dart';
 import '../cubits/show_consultant/show_consultant_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
@@ -52,6 +53,7 @@ import '../presentation/screens/payments/payments_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
+import '../presentation/screens/profile/profile_details_screen.dart';
 import '../presentation/screens/search/results_screen.dart';
 import '../presentation/screens/search/search_screen.dart';
 import '../presentation/screens/send_consultations/customized/choose_consultant_screen.dart';
@@ -445,6 +447,14 @@ class AppRouter {
               type: arguments['type'],
               account: arguments['account'],
             ),
+          ),
+        );
+
+      case Routes.profile:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => ProfileCubit(),
+            child: const ProfileDetailsScreen(),
           ),
         );
 

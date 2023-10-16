@@ -27,10 +27,14 @@ class LocationServices {
       return;
     }
     final position = await Geolocator.getCurrentPosition();
-    final placemark = await placemarkFromCoordinates(
-      position.latitude,
-      position.longitude,
-    );
-    _current = placemark[0];
+    try {
+      final placemark = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      _current = placemark[0];
+    } catch (e) {
+      return;
+    }
   }
 }

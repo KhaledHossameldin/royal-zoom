@@ -49,4 +49,5 @@ class Routes {
   static const customizedConsultantFilter =
       'customized-consultant-filter-screen';
   static const chatDetails = 'chat-details-screen';
+  static const profile = 'profile-screen';
 }

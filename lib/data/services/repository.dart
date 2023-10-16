@@ -8,6 +8,7 @@ import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/user.dart';
+import '../models/authentication/user_data.dart';
 import '../models/chat/chat.dart';
 import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
@@ -49,6 +50,12 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<UserData> updateProfile(
+    BuildContext context, {
+    required Map<String, Object> body,
+  }) async =>
+      _network.updateProfile(context, body: body);
 
   Future<Map<String, Object>> notifications(BuildContext context,
           {required int page}) async =>
@@ -226,10 +233,13 @@ class Repository {
     );
     await _sharedPreferences.setToken(user.token);
     if (isRemember) {
-      await _sharedPreferences.setUser(user);
+      await setUser(user);
     }
     return user;
   }
+
+  Future<void> setUser(User user) async =>
+      await _sharedPreferences.setUser(user);
 
   Future<User?> getUser() async => await _sharedPreferences.getUser();
 

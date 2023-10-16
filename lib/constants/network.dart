@@ -24,6 +24,8 @@ class Network {
   static const chats = '$_apiPath/user/chats';
   static const chatsMessages = '$_apiPath/user/chats-messages';
   static const notifications = '$_apiPath/user/notifications';
+  static const updateProfile = '$_apiPath/user/update-profile';
+  static const timezones = '$_apiPath/timezones';
   static const fastConsultation =
       '$_apiPath/user/consultations/fast-consultation';
   static const consultationAppointmentRequests =

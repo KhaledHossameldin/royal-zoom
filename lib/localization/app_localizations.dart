@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../data/enums/consultant_response_type.dart';
 import '../data/enums/consultation_status.dart';
 import '../data/enums/payment_method.dart';
+import '../data/enums/perview_status.dart';
 import 'app_localizations_delegate.dart';
 
 class AppLocalizations {
@@ -648,6 +649,48 @@ class AppLocalizations {
   String get activities => _translate('activities');
 
   String get active => _translate('active');
+
+  String get data => _translate('data');
+
+  String get settings => _translate('settings');
+
+  String get saveChanges => _translate('save_changes');
+
+  String get profileImageFormat => _translate('profile_image_format');
+
+  String get firstName => _translate('first_name');
+
+  String get middleName => _translate('middle_name');
+
+  String get lastName => _translate('last_name');
+
+  String get previewName => _translate('preview_name');
+
+  String get previewNameDescription => _translate('preview_name_description');
+
+  String get male => _translate('male');
+
+  String get female => _translate('female');
+
+  String get gender => _translate('gender');
+
+  String get previewStatus => _translate('preview_status');
+
+  String get save => _translate('save');
+
+  String get profileUpdateValidation => _translate('profile_update_validation');
+
+  String get previewNameValidation => _translate('preview_name_validation');
+
+  String getPreviewStatus(PreviewStatus status) {
+    if (status == PreviewStatus.busy) {
+      return _translate('busy');
+    }
+    if (status == PreviewStatus.visible) {
+      return _translate('visible');
+    }
+    return _translate('hidden');
+  }
 
   String getLevel(int level) {
     if (level == 1) {

@@ -17,7 +17,9 @@ import '../enums/consultation_content_type.dart';
 import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
+import '../models/authentication/timezone.dart';
 import '../models/authentication/user.dart';
+import '../models/authentication/user_data.dart';
 import '../models/chat/chat.dart';
 import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
@@ -38,6 +40,21 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<List<Timezone>> timezones(BuildContext context) async {
+    final response = await _get(context, Network.timezones);
+    return (json.decode(response) as List)
+        .map((timezone) => Timezone.fromMap(timezone))
+        .toList();
+  }
+
+  Future<UserData> updateProfile(
+    BuildContext context, {
+    required Map<String, Object> body,
+  }) async {
+    final response = await _put(context, Network.updateProfile, body: body);
+    return UserData.fromMap(json.decode(response)['data']);
+  }
 
   Future<Map<String, Object>> notifications(BuildContext context,
       {required int page}) async {
@@ -481,6 +498,25 @@ class NetworkServices {
     try {
       final response = await http
           .post(
+            Uri.https(Network.domain, url),
+            headers: await _getHeaders(context),
+            body: json.encode(body),
+          )
+          .timeout(const Duration(minutes: 1));
+      return _processResponse(response);
+    } catch (e) {
+      throw _getExceptionString(context, error: e as Exception);
+    }
+  }
+
+  Future<String> _put(
+    BuildContext context,
+    String url, {
+    Map<String, Object>? body,
+  }) async {
+    try {
+      final response = await http
+          .put(
             Uri.https(Network.domain, url),
             headers: await _getHeaders(context),
             body: json.encode(body),
