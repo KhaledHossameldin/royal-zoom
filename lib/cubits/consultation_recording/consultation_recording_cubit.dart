@@ -13,7 +13,7 @@ class ConsultationRecordingCubit extends Cubit<ConsultationRecordingState> {
   ConsultationRecordingCubit() : super(const ConsultationRecordingInitial());
 
   Timer? timer;
-  final record = Record();
+  final record = AudioRecorder();
   String? recordPath;
   final repository = Repository.instance;
 
@@ -21,7 +21,7 @@ class ConsultationRecordingCubit extends Cubit<ConsultationRecordingState> {
     final path = await getTemporaryDirectory();
     recordPath = '${path.path}/record.mp4';
     if (await record.hasPermission()) {
-      record.start(path: recordPath);
+      record.start(const RecordConfig(), path: recordPath!);
     }
     emit(ConsultationRecordingWorking(vsync: vsync));
     final currentState = state as ConsultationRecordingWorking;

@@ -1,7 +1,7 @@
-import '../../utilities/extensions.dart';
-import '../enums/gender.dart';
-import '../enums/perview_status.dart';
-import 'authentication/user_data.dart';
+import '../../../utilities/extensions.dart';
+import '../../enums/gender.dart';
+import '../../enums/perview_status.dart';
+import '../authentication/user_data.dart';
 
 class ProfileUpdate {
   String? firstName;

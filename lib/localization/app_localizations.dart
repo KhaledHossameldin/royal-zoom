@@ -682,6 +682,65 @@ class AppLocalizations {
 
   String get previewNameValidation => _translate('preview_name_validation');
 
+  String get language => _translate('language');
+
+  String get timezone => _translate('timezone');
+
+  String get currency => _translate('currency');
+
+  String get twoFactorTitle => _translate('two_factor_title');
+
+  String get twoFactorSubtitle => _translate('two_factor_subtitle');
+
+  String get emailSubtitle => _translate('email_subtitle');
+
+  String get smsTitle1 => _translate('sms_title_1');
+
+  String get smsTitle2 => _translate('sms_title_2');
+
+  String get smsSubtitle => _translate('sms_subtitle');
+
+  String get completePayment => _translate('complete_payment');
+
+  String get appTitle => _translate('app_title');
+
+  String get appSubtitle => _translate('app_subtitle');
+
+  String get whatsappSubtitle => _translate('whatsapp_subtitle');
+
+  String get activate => _translate('activate');
+
+  String get consultationReply => _translate('consultation_reply');
+
+  String get appointmentAccept => _translate('appointment_accept');
+
+  String get changeRequest => _translate('change_request');
+
+  String get appointmentReject => _translate('appointment_reject');
+
+  String get receivePendingPayment => _translate('receive_pending_payment');
+
+  String get consultantMessage => _translate('consultant_message');
+
+  String get receiveScheduledConsultation =>
+      _translate('receive_scheduled_consultation');
+
+  String get customerSupport => _translate('customer_support');
+
+  String get refundCredit => _translate('refund_credit');
+
+  String get advancedSettings => _translate('advanced_settings');
+
+  String get expiredConsultation => _translate('expired_consultation');
+
+  String get successfulPayment => _translate('successful_payment');
+
+  String get twoFactorAuth => _translate('two_factor_auth');
+
+  String get priceOffer => _translate('price_offer');
+
+  String get successMessage => _translate('success_message');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

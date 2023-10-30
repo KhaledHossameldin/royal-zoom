@@ -102,6 +102,9 @@ extension StringExtension on String {
   Color get color => Color(int.parse('0xFF${substring(1)}'));
 
   Duration get timezoneOffset {
+    if (endsWith('UTC')) {
+      return const Duration();
+    }
     final timezone = substring(length - 6);
     final time = timezone.split(':');
     return Duration(hours: int.parse(time[0]), minutes: int.parse(time[1]));

@@ -17,6 +17,8 @@ import '../enums/consultation_content_type.dart';
 import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
+import '../models/authentication/currency.dart';
+import '../models/authentication/language.dart';
 import '../models/authentication/timezone.dart';
 import '../models/authentication/user.dart';
 import '../models/authentication/user_data.dart';
@@ -41,11 +43,45 @@ class NetworkServices {
 
   NetworkServices._();
 
+  Future<UserData> updateNotifications(
+    BuildContext context, {
+    required Map<String, Object> body,
+  }) async {
+    final response = await _put(
+      context,
+      Network.updateNotifications,
+      body: body,
+    );
+    return UserData.fromMap(json.decode(response)['data']);
+  }
+
+  Future<List<Language>> languages(BuildContext context) async {
+    final response = await _get(context, Network.languages);
+    return (json.decode(response)['data'] as List)
+        .map((timezone) => Language.fromMap(timezone))
+        .toList();
+  }
+
+  Future<List<Currency>> currencies(BuildContext context) async {
+    final response = await _get(context, Network.currencies);
+    return (json.decode(response)['data'] as List)
+        .map((timezone) => Currency.fromMap(timezone))
+        .toList();
+  }
+
   Future<List<Timezone>> timezones(BuildContext context) async {
     final response = await _get(context, Network.timezones);
-    return (json.decode(response) as List)
+    return (json.decode(response)['data'] as List)
         .map((timezone) => Timezone.fromMap(timezone))
         .toList();
+  }
+
+  Future<UserData> updateSettings(
+    BuildContext context, {
+    required Map<String, Object> body,
+  }) async {
+    final response = await _put(context, Network.updateSettings, body: body);
+    return UserData.fromMap(json.decode(response)['data']);
   }
 
   Future<UserData> updateProfile(

@@ -9,6 +9,11 @@ class LocaleCubit extends Cubit<Locale> {
 
   final Locale currentLocale;
 
+  void switchLanguage(String symbol) {
+    emit(Locale(symbol));
+    Repository.instance.setLocalePreferences(symbol);
+  }
+
   void toEnglish() {
     var en = AppLocalizationsSetup.supportedLocales.first;
     emit(en);

@@ -7,6 +7,9 @@ import '../enums/chat_resource_type.dart';
 import '../enums/invoice_type.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
+import '../models/authentication/currency.dart';
+import '../models/authentication/language.dart';
+import '../models/authentication/timezone.dart';
 import '../models/authentication/user.dart';
 import '../models/authentication/user_data.dart';
 import '../models/chat/chat.dart';
@@ -51,10 +54,27 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
-  Future<UserData> updateProfile(
+  Future<UserData> updateNotifications(
     BuildContext context, {
     required Map<String, Object> body,
   }) async =>
+      _network.updateNotifications(context, body: body);
+
+  Future<List<Language>> languages(BuildContext context) async =>
+      _network.languages(context);
+
+  Future<List<Currency>> currencies(BuildContext context) async =>
+      _network.currencies(context);
+
+  Future<List<Timezone>> timezones(BuildContext context) async =>
+      _network.timezones(context);
+
+  Future<UserData> updateSettings(BuildContext context,
+          {required Map<String, Object> body}) async =>
+      _network.updateSettings(context, body: body);
+
+  Future<UserData> updateProfile(BuildContext context,
+          {required Map<String, Object> body}) async =>
       _network.updateProfile(context, body: body);
 
   Future<Map<String, Object>> notifications(BuildContext context,

@@ -52,12 +52,12 @@ dependencies:
   url_launcher: ^6.1.10
   geolocator: ^10.0.0
   geocoding: ^2.1.0
-  file_picker: ^5.3.2
-  record: ^4.4.4
+  file_picker: ^6.0.0
+  record: ^5.0.1
   path_provider: ^2.0.15
   just_audio: ^0.9.34
   search_choices: ^2.2.5
-  fl_chart: ^0.63.0
+  fl_chart: ^0.64.0
   pusher_channels_flutter: ^2.2.0
   flutter_slidable: ^3.0.0
   image_picker: ^1.0.4
@@ -71,7 +71,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
