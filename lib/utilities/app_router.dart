@@ -34,6 +34,7 @@ import '../presentation/screens/authentication/register/terms_and_conditions_scr
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/profile/consultants_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/contact_us_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/review_app_screen.dart';
 import '../presentation/screens/chat_details_screen.dart';
@@ -455,6 +456,14 @@ class AppRouter {
           builder: (context) => BlocProvider(
             create: (context) => ProfileCubit(),
             child: const ProfileDetailsScreen(),
+          ),
+        );
+
+      case Routes.consultantsProfile:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => ConsultantsCubit(),
+            child: const ConsultantsProfileScreen(),
           ),
         );
 

@@ -21,6 +21,19 @@ class ConsultationsCubit extends Cubit<ConsultationsState> {
   ConsultationStatus? get firstStatus => _filter.status?[0];
   DateTimeRange? get dateRange => _filter.dateRange;
 
+  void toggleFavorite(int id) {
+    final currentState = (state as ConsultationsLoaded);
+    final currentConsultations = currentState.consultations;
+    int index = currentConsultations.indexWhere((element) => element.id == id);
+    currentConsultations[index] = currentConsultations[index]
+        .copyWith(isFavourite: !currentConsultations[index].isFavourite);
+    emit(ConsultationsLoaded(
+      currentConsultations,
+      canFetchMore: currentState.canFetchMore,
+      hasEndedScrolling: currentState.hasEndedScrolling,
+    ));
+  }
+
   void clearFilters() => _filter.clear();
 
   void applyFilters({

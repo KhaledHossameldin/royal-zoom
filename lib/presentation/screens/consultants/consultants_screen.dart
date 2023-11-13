@@ -5,9 +5,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
 import '../../../../cubits/consultants/consultants_cubit.dart';
+import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../data/models/consultants/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
+import '../../../data/services/repository.dart';
 import '../../widgets/app_bar_logo.dart';
 import '../../widgets/reload_widget.dart';
 import '../../widgets/notifications_button.dart';
@@ -21,6 +23,7 @@ class ConsultantsScreen extends StatefulWidget {
 
 class _ConsultantsScreenState extends State<ConsultantsScreen> {
   final _controller = TextEditingController();
+  final _favoriteConsultantId = ValueNotifier<int?>(null);
 
   @override
   void initState() {
@@ -31,19 +34,23 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _favoriteConsultantId.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
+    final user = BlocProvider.of<AuthenticationBloc>(context).user;
 
     return Scaffold(
-      appBar: AppBar(
-        leadingWidth: 100.0,
-        leading: const AppBarLogo(),
-        actions: const [NotificationsButton()],
-      ),
+      appBar: user == null
+          ? AppBar(
+              leadingWidth: 100.0,
+              leading: const AppBarLogo(),
+              actions: const [NotificationsButton()],
+            )
+          : null,
       body: BlocBuilder<ConsultantsCubit, ConsultantsState>(
         builder: (context, state) {
           switch (state.runtimeType) {
@@ -93,7 +100,10 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   slivers: [
                     _SliverSearchTextField(controller: _controller),
-                    _ConsultantsGridView(consultants: consultants),
+                    _ConsultantsGridView(
+                      consultants: consultants,
+                      favoriteConsultantId: _favoriteConsultantId,
+                    ),
                     if (state.canFetchMore)
                       SliverPadding(
                         padding: EdgeInsets.symmetric(vertical: 16.height),
@@ -127,9 +137,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
 class _ConsultantsGridView extends StatelessWidget {
   const _ConsultantsGridView({
     required this.consultants,
+    required this.favoriteConsultantId,
   });
 
   final List<Consultant> consultants;
+  final ValueNotifier<int?> favoriteConsultantId;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +160,7 @@ class _ConsultantsGridView extends StatelessWidget {
         ),
         itemBuilder: (context, index) => _ConsultantItem(
           consultant: consultants[index],
+          favoriteConsultantId: favoriteConsultantId,
         ),
       ),
     );
@@ -224,9 +237,13 @@ class _SliverSearchTextField extends StatelessWidget {
 }
 
 class _ConsultantItem extends StatelessWidget {
-  const _ConsultantItem({required this.consultant});
+  const _ConsultantItem({
+    required this.consultant,
+    required this.favoriteConsultantId,
+  });
 
   final Consultant consultant;
+  final ValueNotifier<int?> favoriteConsultantId;
 
   @override
   Widget build(BuildContext context) {
@@ -234,22 +251,87 @@ class _ConsultantItem extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
 
     return GridTile(
-      footer: MaterialButton(
-        elevation: 0.0,
-        height: 28.height,
-        highlightElevation: 0.0,
-        color: BrandColors.darkGreen,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(10.0),
+      footer: Row(
+        children: [
+          Expanded(
+            child: MaterialButton(
+              elevation: 0.0,
+              height: 28.height,
+              highlightElevation: 0.0,
+              color: BrandColors.darkGreen,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadiusDirectional.only(
+                  bottomStart: Radius.circular(10.0),
+                ),
+              ),
+              onPressed: () {},
+              child: Text(
+                appLocalizations.consult,
+                style: textTheme.labelSmall!.copyWith(color: Colors.white),
+              ),
+            ),
           ),
-        ),
-        onPressed: () {},
-        child: Text(
-          appLocalizations.consult,
-          style: textTheme.labelSmall!.copyWith(color: Colors.white),
-        ),
+          Expanded(
+            child: ValueListenableBuilder(
+              valueListenable: favoriteConsultantId,
+              builder: (context, value, child) => MaterialButton(
+                elevation: 0.0,
+                height: 28.height,
+                highlightElevation: 0.0,
+                color: BrandColors.gray,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadiusDirectional.only(
+                    bottomEnd: Radius.circular(10.0),
+                  ),
+                ),
+                onPressed: () async {
+                  favoriteConsultantId.value = consultant.id;
+                  try {
+                    await Repository.instance
+                        .favoriteConsultant(context, id: consultant.id);
+                    if (!context.mounted) return;
+                    BlocProvider.of<ConsultantsCubit>(context)
+                        .toggleFavorite(consultant.id);
+                    favoriteConsultantId.value = null;
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    '$e'.showSnackbar(context, color: BrandColors.red);
+                    favoriteConsultantId.value = null;
+                  }
+                },
+                child: value != consultant.id
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            consultant.isFavourite
+                                ? Icons.favorite
+                                : Icons.favorite_outline,
+                            size: 11.0,
+                          ),
+                          3.emptyWidth,
+                          Text(
+                            appLocalizations.favorite,
+                            style: textTheme.labelSmall!.copyWith(
+                              color: BrandColors.darkGreen,
+                            ),
+                          ),
+                        ],
+                      )
+                    : SizedBox(
+                        height: 16.height,
+                        width: 16.width,
+                        child: const CircularProgressIndicator(
+                          color: BrandColors.darkGreen,
+                          strokeWidth: 2.0,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ],
       ),
       child: Stack(
         children: [

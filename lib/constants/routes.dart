@@ -50,4 +50,5 @@ class Routes {
       'customized-consultant-filter-screen';
   static const chatDetails = 'chat-details-screen';
   static const profile = 'profile-screen';
+  static const consultantsProfile = 'consultants-profile-screen';
 }

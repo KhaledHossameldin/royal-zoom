@@ -54,6 +54,18 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<void> favoriteConsultation(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      await _network.favoriteConsultation(context, id: id);
+
+  Future<void> favoriteConsultant(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      await _network.favoriteConsultant(context, id: id);
+
   Future<UserData> updateNotifications(
     BuildContext context, {
     required Map<String, Object> body,

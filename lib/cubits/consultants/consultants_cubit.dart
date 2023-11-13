@@ -20,6 +20,19 @@ class ConsultantsCubit extends Cubit<ConsultantsState> {
   int? get cityId => _filter.cityId;
   bool get verifiedOnly => _filter.verifiedOnly;
 
+  void toggleFavorite(int id) {
+    final currentState = (state as ConsultantsLoaded);
+    final currentConsultants = currentState.consultants;
+    int index = currentConsultants.indexWhere((element) => element.id == id);
+    currentConsultants[index] = currentConsultants[index]
+        .copyWith(isFavourite: !currentConsultants[index].isFavourite);
+    emit(ConsultantsLoaded(
+      currentConsultants,
+      canFetchMore: currentState.canFetchMore,
+      hasEndedScrolling: currentState.hasEndedScrolling,
+    ));
+  }
+
   void clearFilter() => _filter = _filter.clear();
 
   void toggleSelection(int index) {

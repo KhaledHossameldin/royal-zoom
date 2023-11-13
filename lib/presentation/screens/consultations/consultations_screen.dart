@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -7,6 +9,7 @@ import '../../../constants/routes.dart';
 import '../../../cubits/consultations/consultations_cubit.dart';
 import '../../../data/enums/consultation_content_type.dart';
 import '../../../data/models/consultations/consultation.dart';
+import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/reload_widget.dart';
@@ -20,6 +23,7 @@ class ConsultationsScreen extends StatefulWidget {
 
 class _ConsultationsScreenState extends State<ConsultationsScreen> {
   final _controller = TextEditingController();
+  final _favoriteConsultantId = ValueNotifier<int?>(null);
 
   @override
   void initState() {
@@ -30,6 +34,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _favoriteConsultantId.dispose();
     super.dispose();
   }
 
@@ -91,7 +96,10 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   slivers: [
                     _SliverSearchTextField(controller: _controller),
-                    _ConsultationsListView(consultations: consultations),
+                    _ConsultationsListView(
+                      consultations: consultations,
+                      favoriteConsultantId: _favoriteConsultantId,
+                    ),
                     if (state.canFetchMore)
                       SliverPadding(
                         padding: EdgeInsets.symmetric(vertical: 16.height),
@@ -195,9 +203,11 @@ class _SliverSearchTextField extends StatelessWidget {
 class _ConsultationsListView extends StatelessWidget {
   const _ConsultationsListView({
     required this.consultations,
+    required this.favoriteConsultantId,
   });
 
   final List<Consultation> consultations;
+  final ValueNotifier<int?> favoriteConsultantId;
 
   @override
   Widget build(BuildContext context) {
@@ -209,17 +219,23 @@ class _ConsultationsListView extends StatelessWidget {
       sliver: SliverList.separated(
         itemCount: consultations.length,
         separatorBuilder: (context, index) => 16.emptyHeight,
-        itemBuilder: (context, index) =>
-            _ConsultationItem(consultation: consultations[index]),
+        itemBuilder: (context, index) => _ConsultationItem(
+          consultation: consultations[index],
+          favoriteConsultationId: favoriteConsultantId,
+        ),
       ),
     );
   }
 }
 
 class _ConsultationItem extends StatelessWidget {
-  const _ConsultationItem({required this.consultation});
+  const _ConsultationItem({
+    required this.consultation,
+    required this.favoriteConsultationId,
+  });
 
   final Consultation consultation;
+  final ValueNotifier<int?> favoriteConsultationId;
 
   @override
   Widget build(BuildContext context) {
@@ -311,9 +327,47 @@ class _ConsultationItem extends StatelessWidget {
                             color: BrandColors.darkGray,
                           ),
                         ),
-                        Icon(consultation.isFavourite
-                            ? Icons.favorite
-                            : Icons.favorite_outline),
+                        ValueListenableBuilder(
+                          valueListenable: favoriteConsultationId,
+                          builder: (context, value, child) {
+                            if (value == consultation.id) {
+                              return SizedBox(
+                                width: 16.width,
+                                height: 16.height,
+                                child: const CircularProgressIndicator(
+                                  color: BrandColors.gray,
+                                  strokeWidth: 2.0,
+                                ),
+                              );
+                            }
+                            return GestureDetector(
+                              onTap: () async {
+                                favoriteConsultationId.value = consultation.id;
+                                try {
+                                  await Repository.instance
+                                      .favoriteConsultation(
+                                    context,
+                                    id: consultation.id,
+                                  );
+                                  if (!context.mounted) return;
+                                  BlocProvider.of<ConsultationsCubit>(context)
+                                      .toggleFavorite(consultation.id);
+                                  favoriteConsultationId.value = null;
+                                } catch (e) {
+                                  if (!context.mounted) return;
+                                  '$e'.showSnackbar(
+                                    context,
+                                    color: BrandColors.red,
+                                  );
+                                  favoriteConsultationId.value = null;
+                                }
+                              },
+                              child: Icon(consultation.isFavourite
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline),
+                            );
+                          },
+                        ),
                       ],
                     );
                   }),

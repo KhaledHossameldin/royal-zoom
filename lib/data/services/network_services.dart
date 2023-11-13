@@ -43,6 +43,18 @@ class NetworkServices {
 
   NetworkServices._();
 
+  Future<void> favoriteConsultation(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      await _post(context, Network.favoriteConsultation(id));
+
+  Future<void> favoriteConsultant(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      await _post(context, Network.favoriteConsultant(id));
+
   Future<UserData> updateNotifications(
     BuildContext context, {
     required Map<String, Object> body,
