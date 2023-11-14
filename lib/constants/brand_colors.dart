@@ -5,6 +5,7 @@ class BrandColors {
 
   static const orange = Color(0xFFF2A431);
   static const red = Color(0xFFFD6F3D);
+  static const fuschia = Color(0xFFD93481);
   static const purple = Color(0xFFA096FF);
   static const snowWhite = Color(0xFFF8F8F8);
   static const mediumGreen = Color(0xFF5D6864);

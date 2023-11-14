@@ -31,6 +31,7 @@ import '../models/consultations/consultation.dart';
 import '../models/consultations/customized.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
+import '../models/consultations/favorite.dart';
 import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
@@ -42,6 +43,40 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<List<FavoriteConsultation>> getFavoriteConsultations(
+    BuildContext context,
+  ) async {
+    final response = await _get(context, Network.favoriteConsultations);
+    final jsonMap = json.decode(response);
+    final consultations =
+        await Future.wait((jsonMap['data'] as List).map((item) async {
+      final consultation = FavoriteConsultation.fromMap(item);
+      if (consultation.consultation.contentType ==
+          ConsultationContentType.voice) {
+        if (Platform.isIOS &&
+            !consultation.consultation.content.toLowerCase().endsWith('.aac') &&
+            !consultation.consultation.content
+                .toLowerCase()
+                .endsWith('.aiff') &&
+            !consultation.consultation.content.toLowerCase().endsWith('.caf') &&
+            !consultation.consultation.content.toLowerCase().endsWith('.mp3') &&
+            !consultation.consultation.content.toLowerCase().endsWith('.mp4') &&
+            !consultation.consultation.content.toLowerCase().endsWith('.m4p') &&
+            !consultation.consultation.content.toLowerCase().endsWith('.wav')) {
+          return consultation;
+        }
+        final player = AudioPlayer();
+        await player.setUrl(consultation.consultation.content);
+        await player.pause();
+        consultation.consultation =
+            consultation.consultation.copyWith(audioPlayer: player);
+        return consultation;
+      }
+      return consultation;
+    }).toList());
+    return consultations;
+  }
 
   Future<void> favoriteConsultation(
     BuildContext context, {

@@ -51,4 +51,5 @@ class Routes {
   static const chatDetails = 'chat-details-screen';
   static const profile = 'profile-screen';
   static const consultantsProfile = 'consultants-profile-screen';
+  static const favorites = 'favorites-screen';
 }

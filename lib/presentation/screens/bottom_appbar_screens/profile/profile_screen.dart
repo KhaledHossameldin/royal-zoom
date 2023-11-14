@@ -65,6 +65,13 @@ class ProfileScreen extends StatelessWidget {
               ),
             if (user != null)
               _Item(
+                icon: 'heart-profile',
+                title: appLocalizations.favorite,
+                color: BrandColors.fuschia,
+                onTap: () => Navigator.pushNamed(context, Routes.favorites),
+              ),
+            if (user != null)
+              _Item(
                 icon: 'wallet',
                 color: BrandColors.purple,
                 title: appLocalizations.payments,
@@ -206,7 +213,10 @@ class _Item extends StatelessWidget {
                 borderRadius: BorderRadius.circular(35.0),
               ),
             ),
-            child: icon.buildSVG(color: color, blendMode: BlendMode.srcATop),
+            child: icon.buildSVG(
+              color: color,
+              blendMode: BlendMode.srcATop,
+            ),
           ),
           title: Text(
             title,

@@ -13,6 +13,7 @@ import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
 import '../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
+import '../cubits/favorite_consultations/favorite_consultations_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
 import '../cubits/home/home_cubit.dart';
 import '../cubits/invoice/invoice_cubit.dart';
@@ -36,6 +37,7 @@ import '../presentation/screens/authentication/reset_password/reset_screen.dart'
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/consultants_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/contact_us_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/profile/favorites_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/review_app_screen.dart';
 import '../presentation/screens/chat_details_screen.dart';
 import '../presentation/screens/consultants/details_screen.dart';
@@ -464,6 +466,16 @@ class AppRouter {
           builder: (context) => BlocProvider(
             create: (context) => ConsultantsCubit(),
             child: const ConsultantsProfileScreen(),
+          ),
+        );
+
+      case Routes.favorites:
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => FavoriteConsultationsCubit()),
+            ],
+            child: const FavoritesScreen(),
           ),
         );
 

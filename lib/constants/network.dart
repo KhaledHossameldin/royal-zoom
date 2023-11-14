@@ -35,6 +35,10 @@ class Network {
       '$_apiPath/user/consultations/fast-consultation';
   static const consultationAppointmentRequests =
       '$_apiPath/user/consultation-appointment-requests';
+  static const favoriteConsultations =
+      '$_apiPath/user/consultations/list-favorites';
+  static const favoriteConsultants =
+      '$_apiPath/user/consultants/list-favorites';
 
   static String getConsultantimes(int id) =>
       '$_apiPath/consultants/$id/available-times';

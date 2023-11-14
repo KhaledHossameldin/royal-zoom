@@ -8,6 +8,7 @@ import 'blocs/reset_password/reset_password_bloc.dart';
 import 'constants/brand_colors.dart';
 import 'constants/fonts.dart';
 import 'constants/routes.dart';
+import 'cubits/consultations/consultations_cubit.dart';
 import 'cubits/locale_cubit.dart';
 import 'data/models/authentication/user.dart';
 import 'data/services/repository.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => LocaleCubit(Locale(savedLocale))),
         BlocProvider(create: (context) => AuthenticationBloc(user)),
         BlocProvider(create: (context) => ResetPasswordBloc()),
+        BlocProvider(create: (context) => ConsultationsCubit()),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         buildWhen: (previous, current) => previous != current,

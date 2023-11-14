@@ -20,6 +20,7 @@ import '../models/consultations/consultation.dart';
 import '../models/consultations/customized.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
+import '../models/consultations/favorite.dart';
 import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
@@ -53,6 +54,11 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<List<FavoriteConsultation>> getFavoriteConsultations(
+    BuildContext context,
+  ) async =>
+      _network.getFavoriteConsultations(context);
 
   Future<void> favoriteConsultation(
     BuildContext context, {
