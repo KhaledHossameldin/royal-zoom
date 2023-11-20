@@ -397,5 +397,11 @@
   "successful_payment": "استلام إشعار بنجاح دفعة",
   "two_factor_auth": "استلام إشعار عند تفعيل التحقق الثنائي أو الغاء التفعيل",
   "price_offer": "استلام إشعار عند عرض سعر مستشار",
-  "success_message": "تمت العملية بنجاح"
+  "success_message": "تمت العملية بنجاح",
+  "add": "إضافة",
+  "favorite_name": "اسم المفضلة",
+  "add_favorite": "إضافة تصنيف جديد",
+  "no_category_consultation": "استشارات غير مصنفة",
+  "no_category_consultant": "مستشارين غير مصنفة",
+  "add_classification": "اضافة الي تصنيف"
 }

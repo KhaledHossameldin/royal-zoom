@@ -12,6 +12,18 @@ class HomeCubit extends Cubit<HomeState> {
 
   final repository = Repository.instance;
 
+  void toggleFavorite(int id) {
+    final currentState = (state as HomeLoaded);
+    final consultations = currentState.consultations;
+    int index = consultations.indexWhere((element) => element.id == id);
+    consultations[index] = consultations[index]
+        .copyWith(isFavourite: !consultations[index].isFavourite);
+    emit(HomeLoaded(
+      statistics: currentState.statistics,
+      consultations: consultations,
+    ));
+  }
+
   Future<void> fetch(BuildContext context) async {
     try {
       emit(const HomeLoading());

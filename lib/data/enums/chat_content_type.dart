@@ -1,12 +1,3 @@
-// resource type
-// 1 consultation
-// 2 support ticket
-
-// chat content type
-// 1 text
-// 2 voice
-// 3 attachment
-
 enum ChatContentType { text, voice, attachment }
 
 extension ChatContentTypeExtension on ChatContentType {

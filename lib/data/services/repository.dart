@@ -16,11 +16,13 @@ import '../models/chat/chat.dart';
 import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultants/details.dart';
+import '../models/consultants/favorite.dart';
 import '../models/consultations/consultation.dart';
 import '../models/consultations/customized.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
 import '../models/consultations/favorite.dart';
+import '../models/favorite_category.dart';
 import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
@@ -55,6 +57,24 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<List<FavoriteCategory>> favoriteCategories(
+    BuildContext context, {
+    required String type,
+  }) async =>
+      _network.favoriteCategories(context, type: type);
+
+  Future<FavoriteCategory> addFavoriteCategory(
+    BuildContext context, {
+    required String name,
+    required String type,
+  }) async =>
+      _network.addFavoriteCategory(context, name: name, type: type);
+
+  Future<List<FavoriteConsultant>> getFavoriteConsultants(
+    BuildContext context,
+  ) async =>
+      _network.getFavoriteConsultants(context);
+
   Future<List<FavoriteConsultation>> getFavoriteConsultations(
     BuildContext context,
   ) async =>
@@ -63,14 +83,16 @@ class Repository {
   Future<void> favoriteConsultation(
     BuildContext context, {
     required int id,
+    int? category,
   }) async =>
-      await _network.favoriteConsultation(context, id: id);
+      await _network.favoriteConsultation(context, id: id, category: category);
 
   Future<void> favoriteConsultant(
     BuildContext context, {
     required int id,
+    int? category,
   }) async =>
-      await _network.favoriteConsultant(context, id: id);
+      await _network.favoriteConsultant(context, id: id, category: category);
 
   Future<UserData> updateNotifications(
     BuildContext context, {

@@ -14,6 +14,7 @@ import '../../../data/enums/consultation_content_type.dart';
 import '../../../data/enums/consultation_status.dart';
 import '../../../data/models/consultations/consultation.dart';
 import '../../../data/models/consultations/details.dart';
+import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/brand_back_button.dart';
@@ -35,11 +36,19 @@ class ConsultationDetailsScreen extends StatefulWidget {
 }
 
 class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
+  final _favoriteConsultationId = ValueNotifier<int?>(null);
+
   @override
   void initState() {
     BlocProvider.of<ShowConsultationCubit>(context)
         .fetch(context, id: widget.id, player: widget.player);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _favoriteConsultationId.dispose();
+    super.dispose();
   }
 
   @override
@@ -68,9 +77,11 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                   child: Column(
                     children: [
                       _Header(
+                        id: consultation.id,
                         majorName: consultation.major.name,
                         date: consultation.appointmentDate,
                         isFavourite: consultation.isFavourite,
+                        favoriteConsultationId: _favoriteConsultationId,
                       ),
                       _Item(
                         title: appLocalizations.consultationDetails,
@@ -529,14 +540,18 @@ class _Item extends StatelessWidget {
 
 class _Header extends StatelessWidget {
   const _Header({
+    required this.id,
     required this.majorName,
     required this.isFavourite,
     required this.date,
+    required this.favoriteConsultationId,
   });
 
+  final int id;
   final String majorName;
   final bool isFavourite;
   final DateTime? date;
+  final ValueNotifier<int?> favoriteConsultationId;
 
   @override
   Widget build(BuildContext context) {
@@ -568,17 +583,54 @@ class _Header extends StatelessWidget {
                   : appLocalizations.none),
         ],
       )),
-      trailing: TextButton.icon(
-        onPressed: () {},
-        icon: Icon(
-          isFavourite ? Icons.favorite : Icons.favorite_outline,
-          size: 15.0,
-        ),
-        label: Text(
-          appLocalizations.favorite,
-          style: const TextStyle(fontSize: 10.0),
+      trailing: ValueListenableBuilder(
+        valueListenable: favoriteConsultationId,
+        builder: (context, value, child) => TextButton.icon(
+          onPressed: () async {
+            favoriteConsultationId.value = id;
+            try {
+              await Repository.instance.favoriteConsultation(context, id: id);
+              if (!context.mounted) return;
+              BlocProvider.of<ShowConsultationCubit>(context).toggleFavorite();
+              favoriteConsultationId.value = null;
+            } catch (e) {
+              if (!context.mounted) return;
+              '$e'.showSnackbar(
+                context,
+                color: BrandColors.red,
+              );
+              favoriteConsultationId.value = null;
+            }
+          },
+          icon: value == id
+              ? SizedBox.square(
+                  dimension: 16.width,
+                  child: const CircularProgressIndicator(
+                    color: BrandColors.gray,
+                    strokeWidth: 2.0,
+                  ),
+                )
+              : Icon(
+                  size: 15.0,
+                  isFavourite ? Icons.favorite : Icons.favorite_outline,
+                ),
+          label: Text(
+            appLocalizations.favorite,
+            style: const TextStyle(fontSize: 10.0),
+          ),
         ),
       ),
+      // trailing: TextButton.icon(
+      //   onPressed: () {},
+      //   icon: Icon(
+      //     isFavourite ? Icons.favorite : Icons.favorite_outline,
+      //     size: 15.0,
+      //   ),
+      //   label: Text(
+      //     appLocalizations.favorite,
+      //     style: const TextStyle(fontSize: 10.0),
+      //   ),
+      // ),
     );
   }
 }

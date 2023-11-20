@@ -11,6 +11,7 @@ import '../../../cubits/home/home_cubit.dart';
 import '../../../data/enums/consultation_content_type.dart';
 import '../../../data/models/consultations/consultation.dart';
 import '../../../data/models/home_statistics.dart';
+import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/notifications_button.dart';
@@ -26,10 +27,18 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final _favoriteConsultationId = ValueNotifier<int?>(null);
+
   @override
   void initState() {
     context.read<HomeCubit>().fetch(context);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _favoriteConsultationId.dispose();
+    super.dispose();
   }
 
   @override
@@ -90,7 +99,9 @@ class _MainScreenState extends State<MainScreen> {
                         itemCount: consultations.length,
                         separatorBuilder: (context, index) => 16.emptyWidth,
                         itemBuilder: (context, index) => _ConsultationItem(
-                            consultation: consultations[index]),
+                          consultation: consultations[index],
+                          favoriteConsultationId: _favoriteConsultationId,
+                        ),
                       ),
                     ),
                   ),
@@ -115,9 +126,13 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 class _ConsultationItem extends StatelessWidget {
-  const _ConsultationItem({required this.consultation});
+  const _ConsultationItem({
+    required this.consultation,
+    required this.favoriteConsultationId,
+  });
 
   final Consultation consultation;
+  final ValueNotifier<int?> favoriteConsultationId;
 
   @override
   Widget build(BuildContext context) {
@@ -212,9 +227,48 @@ class _ConsultationItem extends StatelessWidget {
                               color: BrandColors.darkGray,
                             ),
                           ),
-                          Icon(consultation.isFavourite
-                              ? Icons.favorite
-                              : Icons.favorite_outline),
+                          ValueListenableBuilder(
+                            valueListenable: favoriteConsultationId,
+                            builder: (context, value, child) {
+                              if (value == consultation.id) {
+                                return SizedBox(
+                                  width: 16.width,
+                                  height: 16.height,
+                                  child: const CircularProgressIndicator(
+                                    color: BrandColors.gray,
+                                    strokeWidth: 2.0,
+                                  ),
+                                );
+                              }
+                              return GestureDetector(
+                                onTap: () async {
+                                  favoriteConsultationId.value =
+                                      consultation.id;
+                                  try {
+                                    await Repository.instance
+                                        .favoriteConsultation(
+                                      context,
+                                      id: consultation.id,
+                                    );
+                                    if (!context.mounted) return;
+                                    BlocProvider.of<HomeCubit>(context)
+                                        .toggleFavorite(consultation.id);
+                                    favoriteConsultationId.value = null;
+                                  } catch (e) {
+                                    if (!context.mounted) return;
+                                    '$e'.showSnackbar(
+                                      context,
+                                      color: BrandColors.red,
+                                    );
+                                    favoriteConsultationId.value = null;
+                                  }
+                                },
+                                child: Icon(consultation.isFavourite
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline),
+                              );
+                            },
+                          ),
                         ],
                       );
                     }),

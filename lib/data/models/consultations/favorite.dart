@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../favorite_category.dart';
 import 'consultation.dart';
 
 class FavoriteConsultation {
@@ -7,13 +8,14 @@ class FavoriteConsultation {
   final int consultationId;
   final int? favoriteCategoryId;
   Consultation consultation;
-  // TODO: favoriteCategory
+  final FavoriteCategory? favoriteCategory;
 
   FavoriteConsultation({
     required this.id,
     required this.consultationId,
     this.favoriteCategoryId,
     required this.consultation,
+    this.favoriteCategory,
   });
 
   FavoriteConsultation copyWith({
@@ -21,12 +23,14 @@ class FavoriteConsultation {
     int? consultationId,
     int? favoriteCategoryId,
     Consultation? consultation,
+    FavoriteCategory? favoriteCategory,
   }) {
     return FavoriteConsultation(
       id: id ?? this.id,
       consultationId: consultationId ?? this.consultationId,
       favoriteCategoryId: favoriteCategoryId ?? this.favoriteCategoryId,
       consultation: consultation ?? this.consultation,
+      favoriteCategory: favoriteCategory ?? this.favoriteCategory,
     );
   }
 
@@ -37,6 +41,7 @@ class FavoriteConsultation {
       contract.consultationId: consultationId,
       contract.favoriteCategoryId: favoriteCategoryId,
       contract.consultation: consultation.toMap(),
+      contract.favouriteCategory: favoriteCategory?.toMap(),
     };
   }
 
@@ -47,6 +52,9 @@ class FavoriteConsultation {
       consultationId: map[contract.consultationId]?.toInt() ?? 0,
       favoriteCategoryId: map[contract.favoriteCategoryId]?.toInt(),
       consultation: Consultation.fromMap(map[contract.consultation]),
+      favoriteCategory: map[contract.favouriteCategory] != null
+          ? FavoriteCategory.fromMap(map[contract.favouriteCategory])
+          : null,
     );
   }
 
@@ -57,7 +65,7 @@ class FavoriteConsultation {
 
   @override
   String toString() {
-    return 'FavoriteConsultation(id: $id, consultationId: $consultationId, favoriteCategoryId: $favoriteCategoryId, consultation: $consultation)';
+    return 'FavoriteConsultation(id: $id, consultationId: $consultationId, favoriteCategoryId: $favoriteCategoryId, consultation: $consultation, favoriteCategory: $favoriteCategory)';
   }
 
   @override
@@ -68,7 +76,8 @@ class FavoriteConsultation {
         other.id == id &&
         other.consultationId == consultationId &&
         other.favoriteCategoryId == favoriteCategoryId &&
-        other.consultation == consultation;
+        other.consultation == consultation &&
+        other.favoriteCategory == favoriteCategory;
   }
 
   @override
@@ -76,7 +85,8 @@ class FavoriteConsultation {
     return id.hashCode ^
         consultationId.hashCode ^
         favoriteCategoryId.hashCode ^
-        consultation.hashCode;
+        consultation.hashCode ^
+        favoriteCategory.hashCode;
   }
 }
 

@@ -1,7 +1,7 @@
 part of 'favorite_consultations_cubit.dart';
 
 @immutable
-class FavoriteConsultationsState {
+abstract class FavoriteConsultationsState {
   const FavoriteConsultationsState();
 }
 
@@ -15,7 +15,8 @@ class FavoriteConsultationsLoading extends FavoriteConsultationsState {
 
 class FavoriteConsultationsLoaded extends FavoriteConsultationsState {
   final List<FavoriteConsultation> consultations;
-  const FavoriteConsultationsLoaded(this.consultations);
+  final List<FavoriteCategory> categories;
+  const FavoriteConsultationsLoaded(this.consultations, this.categories);
 }
 
 class FavoriteConsultationsError extends FavoriteConsultationsState {

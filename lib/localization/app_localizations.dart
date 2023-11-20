@@ -741,6 +741,18 @@ class AppLocalizations {
 
   String get successMessage => _translate('success_message');
 
+  String get add => _translate('add');
+
+  String get favoriteName => _translate('favorite_name');
+
+  String get addFavorite => _translate('add_favorite');
+
+  String get noCategoryConsultation => _translate('no_category_consultation');
+
+  String get noCategoryConsultant => _translate('no_category_consultant');
+
+  String get addClassification => _translate('add_classification');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

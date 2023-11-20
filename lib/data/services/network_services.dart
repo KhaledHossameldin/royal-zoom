@@ -27,11 +27,13 @@ import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultants/consultant.dart';
 import '../models/consultants/details.dart';
+import '../models/consultants/favorite.dart';
 import '../models/consultations/consultation.dart';
 import '../models/consultations/customized.dart';
 import '../models/consultations/details.dart';
 import '../models/consultations/fast.dart';
 import '../models/consultations/favorite.dart';
+import '../models/favorite_category.dart';
 import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
@@ -43,6 +45,39 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<List<FavoriteCategory>> favoriteCategories(
+    BuildContext context, {
+    required String type,
+  }) async {
+    final response = await _get(context, Network.favoriteCategories, params: {
+      'type': type,
+    });
+    return (json.decode(response)['data'] as List)
+        .map((item) => FavoriteCategory.fromMap(item))
+        .toList();
+  }
+
+  Future<FavoriteCategory> addFavoriteCategory(
+    BuildContext context, {
+    required String name,
+    required String type,
+  }) async {
+    final response = await _post(context, Network.favoriteCategories, body: {
+      'name': name,
+      'type': type,
+    });
+    return FavoriteCategory.fromMap(json.decode(response)['data']);
+  }
+
+  Future<List<FavoriteConsultant>> getFavoriteConsultants(
+    BuildContext context,
+  ) async {
+    final response = await _get(context, Network.favoriteConsultants);
+    return (json.decode(response)['data'] as List)
+        .map((item) => FavoriteConsultant.fromMap(item))
+        .toList();
+  }
 
   Future<List<FavoriteConsultation>> getFavoriteConsultations(
     BuildContext context,
@@ -81,14 +116,24 @@ class NetworkServices {
   Future<void> favoriteConsultation(
     BuildContext context, {
     required int id,
+    int? category,
   }) async =>
-      await _post(context, Network.favoriteConsultation(id));
+      await _post(
+        context,
+        Network.favoriteConsultation(id),
+        body: category != null ? {'favourite_category_id': category} : null,
+      );
 
   Future<void> favoriteConsultant(
     BuildContext context, {
     required int id,
+    int? category,
   }) async =>
-      await _post(context, Network.favoriteConsultant(id));
+      await _post(
+        context,
+        Network.favoriteConsultant(id),
+        body: category != null ? {'favourite_category_id': category} : null,
+      );
 
   Future<UserData> updateNotifications(
     BuildContext context, {

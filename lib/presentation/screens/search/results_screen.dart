@@ -7,6 +7,7 @@ import '../../../cubits/consultations/consultations_cubit.dart';
 import '../../../data/enums/consultation_content_type.dart';
 import '../../../data/models/consultations/consultation.dart';
 import '../../../data/models/consultations/consultations_filter.dart';
+import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/reload_widget.dart';
@@ -21,6 +22,8 @@ class ConsultationsResultsScreen extends StatefulWidget {
 
 class _ConsultationsResultsScreenState
     extends State<ConsultationsResultsScreen> {
+  final _favoriteConsultantId = ValueNotifier<int?>(null);
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -31,6 +34,12 @@ class _ConsultationsResultsScreenState
       cubit.fetch(context);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _favoriteConsultantId.dispose();
+    super.dispose();
   }
 
   @override
@@ -72,7 +81,9 @@ class _ConsultationsResultsScreenState
                         itemCount: consultations.length,
                         separatorBuilder: (context, index) => 16.emptyHeight,
                         itemBuilder: (context, index) => _ConsultationItem(
-                            consultation: consultations[index]),
+                          consultation: consultations[index],
+                          favoriteConsultationId: _favoriteConsultantId,
+                        ),
                       ),
                     ),
                     if (state.canFetchMore)
@@ -109,9 +120,13 @@ class _ConsultationsResultsScreenState
 }
 
 class _ConsultationItem extends StatelessWidget {
-  const _ConsultationItem({required this.consultation});
+  const _ConsultationItem({
+    required this.consultation,
+    required this.favoriteConsultationId,
+  });
 
   final Consultation consultation;
+  final ValueNotifier<int?> favoriteConsultationId;
 
   @override
   Widget build(BuildContext context) {
@@ -193,9 +208,46 @@ class _ConsultationItem extends StatelessWidget {
                           color: BrandColors.darkGray,
                         ),
                       ),
-                      Icon(consultation.isFavourite
-                          ? Icons.favorite
-                          : Icons.favorite_outline),
+                      ValueListenableBuilder(
+                        valueListenable: favoriteConsultationId,
+                        builder: (context, value, child) {
+                          if (value == consultation.id) {
+                            return SizedBox(
+                              width: 16.width,
+                              height: 16.height,
+                              child: const CircularProgressIndicator(
+                                color: BrandColors.gray,
+                                strokeWidth: 2.0,
+                              ),
+                            );
+                          }
+                          return GestureDetector(
+                            onTap: () async {
+                              favoriteConsultationId.value = consultation.id;
+                              try {
+                                await Repository.instance.favoriteConsultation(
+                                  context,
+                                  id: consultation.id,
+                                );
+                                if (!context.mounted) return;
+                                BlocProvider.of<ConsultationsCubit>(context)
+                                    .toggleFavorite(consultation.id);
+                                favoriteConsultationId.value = null;
+                              } catch (e) {
+                                if (!context.mounted) return;
+                                '$e'.showSnackbar(
+                                  context,
+                                  color: BrandColors.red,
+                                );
+                                favoriteConsultationId.value = null;
+                              }
+                            },
+                            child: Icon(consultation.isFavourite
+                                ? Icons.favorite
+                                : Icons.favorite_outline),
+                          );
+                        },
+                      ),
                     ],
                   );
                 }),

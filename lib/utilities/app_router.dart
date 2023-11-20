@@ -13,6 +13,7 @@ import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
 import '../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
+import '../cubits/favorite_consultants/favorite_consultants_cubit.dart';
 import '../cubits/favorite_consultations/favorite_consultations_cubit.dart';
 import '../cubits/filter/filter_cubit.dart';
 import '../cubits/home/home_cubit.dart';
@@ -474,6 +475,7 @@ class AppRouter {
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => FavoriteConsultationsCubit()),
+              BlocProvider(create: (context) => FavoriteConsultantsCubit()),
             ],
             child: const FavoritesScreen(),
           ),

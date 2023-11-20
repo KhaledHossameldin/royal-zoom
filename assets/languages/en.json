@@ -396,5 +396,11 @@
   "successful_payment": "Receive notification of successful payment",
   "two_factor_auth": "Receive a notification when two-factor verification is activated or deactivated",
   "price_offer": "Receive notification when the consultant price is offered",
-  "success_message": "operation completed successfully"
+  "success_message": "operation completed successfully",
+  "add": "Add",
+  "favorite_name": "Favorite name",
+  "add_favorite": "Add new favorite",
+  "no_category_consultation": "Not categorized consultations",
+  "no_category_consultant": "Not categorized consultants",
+  "add_classification": "Add to classification"
 }

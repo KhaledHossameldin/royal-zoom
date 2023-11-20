@@ -12,6 +12,13 @@ class ShowConsultationCubit extends Cubit<ShowConsultationState> {
 
   final repository = Repository.instance;
 
+  void toggleFavorite() {
+    final consultation = (state as ShowConsultationLoaded).consultation;
+    emit(ShowConsultationLoaded(consultation.copyWith(
+      isFavourite: !consultation.isFavourite,
+    )));
+  }
+
   Future<void> fetch(
     BuildContext context, {
     required int id,

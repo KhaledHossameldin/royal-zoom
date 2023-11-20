@@ -21,7 +21,7 @@ class ConsultationsScreen extends StatefulWidget {
 
 class _ConsultationsScreenState extends State<ConsultationsScreen> {
   final _controller = TextEditingController();
-  final _favoriteConsultantId = ValueNotifier<int?>(null);
+  final _favoriteConsultationId = ValueNotifier<int?>(null);
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    _favoriteConsultantId.dispose();
+    _favoriteConsultationId.dispose();
     super.dispose();
   }
 
@@ -96,7 +96,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                     _SliverSearchTextField(controller: _controller),
                     _ConsultationsListView(
                       consultations: consultations,
-                      favoriteConsultantId: _favoriteConsultantId,
+                      favoriteConsultantId: _favoriteConsultationId,
                     ),
                     if (state.canFetchMore)
                       SliverPadding(
