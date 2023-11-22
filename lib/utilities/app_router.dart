@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../constants/routes.dart';
+import '../cubits/appointments/appointments_cubit.dart';
 import '../cubits/change_appointment_date/change_appointment_date_cubit.dart';
 import '../cubits/chat_messages/chat_messages_cubit.dart';
 import '../cubits/chat_recording/chat_recording_cubit.dart';
@@ -36,6 +37,7 @@ import '../presentation/screens/authentication/register/terms_and_conditions_scr
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/profile/appointments_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/consultants_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/contact_us_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/favorites_screen.dart';
@@ -478,6 +480,14 @@ class AppRouter {
               BlocProvider(create: (context) => FavoriteConsultantsCubit()),
             ],
             child: const FavoritesScreen(),
+          ),
+        );
+
+      case Routes.appointments:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => AppointmentsCubit(),
+            child: const AppointmentsScreen(),
           ),
         );
 

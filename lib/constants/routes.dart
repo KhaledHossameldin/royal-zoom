@@ -52,4 +52,5 @@ class Routes {
   static const profile = 'profile-screen';
   static const consultantsProfile = 'consultants-profile-screen';
   static const favorites = 'favorites-screen';
+  static const appointments = 'appointments-screen';
 }

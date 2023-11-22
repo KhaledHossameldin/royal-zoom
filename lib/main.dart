@@ -93,6 +93,7 @@ class MyApp extends StatelessWidget {
   }
 
   ThemeData get _setTheme => ThemeData(
+        useMaterial3: false,
         fontFamily: Fonts.main,
         shadowColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,

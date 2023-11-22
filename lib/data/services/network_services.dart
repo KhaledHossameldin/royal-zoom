@@ -15,6 +15,7 @@ import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
 import '../enums/consultation_content_type.dart';
 import '../enums/invoice_type.dart';
+import '../models/appointment.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/currency.dart';
@@ -45,6 +46,13 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<List<Appointment>> appointments(BuildContext context) async {
+    final response = await _get(context, Network.appointments);
+    return (json.decode(response)['data'] as List)
+        .map((item) => Appointment.fromMap(item))
+        .toList();
+  }
 
   Future<List<FavoriteCategory>> favoriteCategories(
     BuildContext context, {

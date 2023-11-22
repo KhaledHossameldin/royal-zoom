@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
 import '../enums/invoice_type.dart';
+import '../models/appointment.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/currency.dart';
@@ -56,6 +57,9 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<List<Appointment>> appointments(BuildContext context) async =>
+      _network.appointments(context);
 
   Future<List<FavoriteCategory>> favoriteCategories(
     BuildContext context, {
