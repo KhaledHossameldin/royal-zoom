@@ -15,7 +15,7 @@ import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
 import '../enums/consultation_content_type.dart';
 import '../enums/invoice_type.dart';
-import '../models/appointment.dart';
+import '../models/appointments/appointment.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/currency.dart';
@@ -47,8 +47,11 @@ class NetworkServices {
 
   NetworkServices._();
 
-  Future<List<Appointment>> appointments(BuildContext context) async {
-    final response = await _get(context, Network.appointments);
+  Future<List<Appointment>> appointments(
+    BuildContext context, {
+    Map<String, Object>? params,
+  }) async {
+    final response = await _get(context, Network.appointments, params: params);
     return (json.decode(response)['data'] as List)
         .map((item) => Appointment.fromMap(item))
         .toList();
@@ -401,6 +404,31 @@ class NetworkServices {
     return map;
   }
 
+  Future<List<Consultation>> allConsultations(BuildContext context) async {
+    final response = await _get(context, Network.consultations);
+    return await Future.wait(
+        (json.decode(response)['data'] as List).map((item) async {
+      final consultation = Consultation.fromMap(item);
+      if (consultation.contentType == ConsultationContentType.voice) {
+        if (Platform.isIOS &&
+            !consultation.content.toLowerCase().endsWith('.aac') &&
+            !consultation.content.toLowerCase().endsWith('.aiff') &&
+            !consultation.content.toLowerCase().endsWith('.caf') &&
+            !consultation.content.toLowerCase().endsWith('.mp3') &&
+            !consultation.content.toLowerCase().endsWith('.mp4') &&
+            !consultation.content.toLowerCase().endsWith('.m4p') &&
+            !consultation.content.toLowerCase().endsWith('.wav')) {
+          return consultation;
+        }
+        final player = AudioPlayer();
+        await player.setUrl(consultation.content);
+        await player.pause();
+        return consultation.copyWith(audioPlayer: player);
+      }
+      return consultation;
+    }).toList());
+  }
+
   Future<Map<String, Object>> consultations(
     BuildContext context, {
     required Map<String, Object> params,
@@ -496,6 +524,13 @@ class NetworkServices {
     final response = await _get(context, Network.majors);
     return (json.decode(response)['data'] as List)
         .map((item) => Major.fromMap(item))
+        .toList();
+  }
+
+  Future<List<Consultant>> allConsultants(BuildContext context) async {
+    final response = await _get(context, Network.consultants);
+    return (json.decode(response)['data'] as List)
+        .map((item) => Consultant.fromMap(item))
         .toList();
   }
 

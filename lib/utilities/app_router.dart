@@ -12,6 +12,7 @@ import '../cubits/consultants/consultants_cubit.dart';
 import '../cubits/consultants_available_times/consultants_available_times_cubit.dart';
 import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
+import '../cubits/cubit/appointments_filter_cubit.dart';
 import '../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/favorite_consultants/favorite_consultants_cubit.dart';
@@ -37,7 +38,8 @@ import '../presentation/screens/authentication/register/terms_and_conditions_scr
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
-import '../presentation/screens/bottom_appbar_screens/profile/appointments_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/profile/appointments/appointments_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/profile/appointments/filter_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/consultants_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/contact_us_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/favorites_screen.dart';
@@ -488,6 +490,19 @@ class AppRouter {
           builder: (context) => BlocProvider(
             create: (context) => AppointmentsCubit(),
             child: const AppointmentsScreen(),
+          ),
+        );
+
+      case Routes.appointmentsFilter:
+        final arguments = settings.arguments as AppointmentsCubit;
+        return MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: arguments),
+              BlocProvider(create: (context) => AppointmentsFilterCubit()),
+            ],
+            child: const AppointmentsFilterScreen(),
           ),
         );
 

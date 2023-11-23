@@ -403,5 +403,8 @@
   "add_favorite": "إضافة تصنيف جديد",
   "no_category_consultation": "استشارات غير مصنفة",
   "no_category_consultant": "مستشارين غير مصنفة",
-  "add_classification": "اضافة الي تصنيف"
+  "add_classification": "اضافة الي تصنيف",
+  "appointment_status": "حالة الموعد",
+  "appointment_upcoming": "قادمة",
+  "appointment_ended": "منتهية"
 }

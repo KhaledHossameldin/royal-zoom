@@ -753,6 +753,12 @@ class AppLocalizations {
 
   String get addClassification => _translate('add_classification');
 
+  String get appointmentStatus => _translate('appointment_status');
+
+  String get appointmentUpcoming => _translate('appointment_upcoming');
+
+  String get appointmentEnded => _translate('appointment_ended');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

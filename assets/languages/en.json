@@ -402,5 +402,8 @@
   "add_favorite": "Add new favorite",
   "no_category_consultation": "Not categorized consultations",
   "no_category_consultant": "Not categorized consultants",
-  "add_classification": "Add to classification"
+  "add_classification": "Add to classification",
+  "appointment_status": "Appointment Stauts",
+  "appointment_upcoming": "Upcoming",
+  "appointment_ended": "Ended"
 }

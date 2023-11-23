@@ -5,7 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
 import '../enums/invoice_type.dart';
-import '../models/appointment.dart';
+import '../models/appointments/appointment.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
 import '../models/authentication/currency.dart';
@@ -16,6 +16,7 @@ import '../models/authentication/user_data.dart';
 import '../models/chat/chat.dart';
 import '../models/chat/message.dart';
 import '../models/consultants/available_time.dart';
+import '../models/consultants/consultant.dart';
 import '../models/consultants/details.dart';
 import '../models/consultants/favorite.dart';
 import '../models/consultations/consultation.dart';
@@ -58,8 +59,17 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
-  Future<List<Appointment>> appointments(BuildContext context) async =>
-      _network.appointments(context);
+  Future<List<Consultant>> allConsultants(BuildContext context) async =>
+      _network.allConsultants(context);
+
+  Future<List<Consultation>> allConsultations(BuildContext context) async =>
+      _network.allConsultations(context);
+
+  Future<List<Appointment>> appointments(
+    BuildContext context, {
+    Map<String, Object>? params,
+  }) async =>
+      _network.appointments(context, params: params);
 
   Future<List<FavoriteCategory>> favoriteCategories(
     BuildContext context, {

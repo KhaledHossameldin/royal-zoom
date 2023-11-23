@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import '../../utilities/extensions.dart';
-import '../enums/consultant_response_type.dart';
-import '../enums/consultation_content_type.dart';
-import '../enums/consultation_status.dart';
-import '../enums/consultation_visibility_status.dart';
-import 'account.dart';
-import 'consultants/consultant.dart';
-import 'major.dart';
+import '../../../utilities/extensions.dart';
+import '../../enums/consultant_response_type.dart';
+import '../../enums/consultation_content_type.dart';
+import '../../enums/consultation_status.dart';
+import '../../enums/consultation_visibility_status.dart';
+import '../account.dart';
+import '../consultants/consultant.dart';
+import '../major.dart';
 
 class Appointment {
   final int id;
