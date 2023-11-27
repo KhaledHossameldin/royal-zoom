@@ -59,6 +59,12 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<void> cancelConsultation(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _network.cancelConsultation(context, id: id);
+
   Future<List<Consultant>> allConsultants(BuildContext context) async =>
       _network.allConsultants(context);
 

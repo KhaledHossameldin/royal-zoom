@@ -8,6 +8,7 @@ import 'package:just_audio/just_audio.dart';
 import '../../../constants/brand_colors.dart';
 import '../../../constants/fonts.dart';
 import '../../../constants/routes.dart';
+import '../../../cubits/cancel_consultation/cancel_consultation_cubit.dart';
 import '../../../cubits/show_consultation/show_consultation_cubit.dart';
 import '../../../data/enums/chat_resource_type.dart';
 import '../../../data/enums/consultation_content_type.dart';
@@ -56,160 +57,160 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
     final appLocalizations = AppLocalizations.of(context);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(appLocalizations.consultationDetails),
-          leading: const BrandBackButton(),
-        ),
-        body: BlocBuilder<ShowConsultationCubit, ShowConsultationState>(
-          builder: (context, state) {
-            switch (state.runtimeType) {
-              case ShowConsultationLoading:
-                return const Center(child: CircularProgressIndicator());
+      appBar: AppBar(
+        title: Text(appLocalizations.consultationDetails),
+        leading: const BrandBackButton(),
+      ),
+      body: BlocBuilder<ShowConsultationCubit, ShowConsultationState>(
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case ShowConsultationLoading:
+              return const Center(child: CircularProgressIndicator());
 
-              case ShowConsultationLoaded:
-                final consultation =
-                    (state as ShowConsultationLoaded).consultation;
-                return SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 21.height,
-                    horizontal: 27.width,
-                  ),
-                  child: Column(
-                    children: [
-                      _Header(
-                        id: consultation.id,
-                        majorName: consultation.major.name,
-                        date: consultation.appointmentDate,
-                        isFavourite: consultation.isFavourite,
-                        favoriteConsultationId: _favoriteConsultationId,
+            case ShowConsultationLoaded:
+              final consultation =
+                  (state as ShowConsultationLoaded).consultation;
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  vertical: 21.height,
+                  horizontal: 27.width,
+                ),
+                child: Column(
+                  children: [
+                    _Header(
+                      id: consultation.id,
+                      majorName: consultation.major.name,
+                      date: consultation.appointmentDate,
+                      isFavourite: consultation.isFavourite,
+                      favoriteConsultationId: _favoriteConsultationId,
+                    ),
+                    _Item(
+                      title: appLocalizations.consultationDetails,
+                      child: _Details(consultation: consultation),
+                    ),
+                    8.emptyHeight,
+                    _Item(
+                      title: appLocalizations.consultation,
+                      child: _Content(
+                        type: consultation.contentType,
+                        content: consultation.content,
+                        player: consultation.audioPlayer,
                       ),
-                      _Item(
-                        title: appLocalizations.consultationDetails,
-                        child: _Details(consultation: consultation),
-                      ),
-                      8.emptyHeight,
-                      _Item(
-                        title: appLocalizations.consultation,
-                        child: _Content(
-                          type: consultation.contentType,
-                          content: consultation.content,
-                          player: consultation.audioPlayer,
-                        ),
-                      ),
-                      Builder(
-                        builder: (context) {
-                          if (consultation.consultant == null) {
-                            return const Material();
-                          }
-                          final consultant = consultation.consultant!;
-                          return _Item(
-                            title: appLocalizations.consultant,
-                            child: ListTile(
-                              isThreeLine: true,
-                              dense: true,
-                              tileColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                side: const BorderSide(color: BrandColors.gray),
+                    ),
+                    Builder(
+                      builder: (context) {
+                        if (consultation.consultant == null) {
+                          return const Material();
+                        }
+                        final consultant = consultation.consultant!;
+                        return _Item(
+                          title: appLocalizations.consultant,
+                          child: ListTile(
+                            isThreeLine: true,
+                            dense: true,
+                            tileColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: const BorderSide(color: BrandColors.gray),
+                            ),
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              Routes.consultantDetails,
+                              arguments: consultant.id,
+                            ),
+                            leading: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.grey.shade600),
                               ),
-                              onTap: () => Navigator.pushNamed(
-                                context,
-                                Routes.consultantDetails,
-                                arguments: consultant.id,
-                              ),
-                              leading: Container(
+                              child: Container(
+                                width: 76.width,
+                                height: 76.height,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade600),
-                                ),
-                                child: Container(
-                                  width: 76.width,
-                                  height: 76.height,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Colors.white, width: 2.0),
-                                    image: DecorationImage(
-                                      fit: BoxFit.contain,
-                                      image: consultant.image.isNotEmpty
-                                          ? NetworkImage(consultant.image)
-                                          : 'royake'.png.image,
-                                    ),
+                                  border: Border.all(
+                                      color: Colors.white, width: 2.0),
+                                  image: DecorationImage(
+                                    fit: BoxFit.contain,
+                                    image: consultant.image.isNotEmpty
+                                        ? NetworkImage(consultant.image)
+                                        : 'royake'.png.image,
                                   ),
                                 ),
-                              ),
-                              title: Row(
-                                children: [
-                                  Text(consultant.previewName ??
-                                      appLocalizations.none),
-                                  6.emptyWidth,
-                                  if (consultant.major != null &&
-                                      consultant.major!.isVerified)
-                                    SizedBox.square(
-                                      dimension: 16.width,
-                                      child: 'verified'.png,
-                                    ),
-                                ],
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(consultant.previewName ??
-                                      appLocalizations.none),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Text(
-                                      appLocalizations.termsOfUse,
-                                      style: const TextStyle(
-                                          color: BrandColors.orange),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              trailing: IconButton(
-                                onPressed: () => Navigator.pushNamed(
-                                  context,
-                                  Routes.chatDetails,
-                                  arguments: {
-                                    'id': consultation.id,
-                                    'type': ChatResourceType.consultation,
-                                    'account': consultant,
-                                  },
-                                ),
-                                icon: 'chat'.svg,
                               ),
                             ),
-                          );
-                        },
+                            title: Row(
+                              children: [
+                                Text(consultant.previewName ??
+                                    appLocalizations.none),
+                                6.emptyWidth,
+                                if (consultant.major != null &&
+                                    consultant.major!.isVerified)
+                                  SizedBox.square(
+                                    dimension: 16.width,
+                                    child: 'verified'.png,
+                                  ),
+                              ],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(consultant.previewName ??
+                                    appLocalizations.none),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Text(
+                                    appLocalizations.termsOfUse,
+                                    style: const TextStyle(
+                                        color: BrandColors.orange),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: IconButton(
+                              onPressed: () => Navigator.pushNamed(
+                                context,
+                                Routes.chatDetails,
+                                arguments: {
+                                  'id': consultation.id,
+                                  'type': ChatResourceType.consultation,
+                                  'account': consultant,
+                                },
+                              ),
+                              icon: 'chat'.svg,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    8.emptyHeight,
+                    if (consultation.status ==
+                        ConsultationStatus.requestToChangetime)
+                      _Item(
+                        title: appLocalizations.responseAfterChangeTime,
+                        child: _ChangeDateSection(consultation: consultation),
                       ),
-                      8.emptyHeight,
-                      if (consultation.status ==
-                          ConsultationStatus.requestToChangetime)
-                        _Item(
-                          title: appLocalizations.responseAfterChangeTime,
-                          child: _ChangeDateSection(consultation: consultation),
-                        ),
-                    ],
-                  ),
-                );
+                  ],
+                ),
+              );
 
-              case ShowConsultationError:
-                return ReloadWidget(
-                  title: (state as ShowConsultationError).message,
-                  buttonText: appLocalizations.getReload(
-                    appLocalizations.consultation,
-                  ),
-                  onPressed: () => context
-                      .read<ShowConsultationCubit>()
-                      .fetch(context, id: widget.id, player: widget.player),
-                );
+            case ShowConsultationError:
+              return ReloadWidget(
+                title: (state as ShowConsultationError).message,
+                buttonText: appLocalizations.getReload(
+                  appLocalizations.consultation,
+                ),
+                onPressed: () => context
+                    .read<ShowConsultationCubit>()
+                    .fetch(context, id: widget.id, player: widget.player),
+              );
 
-              default:
-                return const Material();
-            }
-          },
-        ));
+            default:
+              return const Material();
+          }
+        },
+      ),
+    );
   }
 }
 
@@ -226,7 +227,7 @@ class _ChangeDateSection extends StatelessWidget {
       children: [
         SizedBox(
           width: 150.width,
-          child: 'date_change'.lottieOneTime,
+          child: 'date_change'.lottie,
         ),
         Container(
           padding: EdgeInsets.symmetric(
@@ -313,19 +314,45 @@ class _ChangeDateSection extends StatelessWidget {
             ),
             12.emptyWidth,
             Expanded(
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.red,
-                  side: const BorderSide(color: Colors.red),
-                ),
-                onPressed: () {},
-                child: Text(
-                  appLocalizations.cancelConsultation,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              child: BlocConsumer<CancelConsultationCubit,
+                  CancelConsultationState>(
+                listener: (context, state) {
+                  if (state is CancelConsultationCanceled) {
+                    Navigator.pop(context);
+                    return;
+                  }
+                  if (state is CancelConsultationError) {
+                    state.message.showSnackbar(
+                      context,
+                      color: BrandColors.red,
+                    );
+                    return;
+                  }
+                },
+                builder: (context, state) {
+                  return OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                    ),
+                    onPressed: state is CancelConsultationCancelling
+                        ? null
+                        : () {
+                            context
+                                .read<CancelConsultationCubit>()
+                                .cancel(context, id: consultation.id);
+                          },
+                    child: state is CancelConsultationCancelling
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            appLocalizations.cancelConsultation,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  );
+                },
               ),
             ),
           ],

@@ -54,4 +54,7 @@ class Network {
 
   static String favoriteConsultation(int id) =>
       '$_apiPath/user/consultations/$id/favorite';
+
+  static String cancelCnsultation(int id) =>
+      '$_apiPath/user/consultations/$id/cancel';
 }

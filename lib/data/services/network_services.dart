@@ -47,6 +47,12 @@ class NetworkServices {
 
   NetworkServices._();
 
+  Future<void> cancelConsultation(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      await _post(context, Network.cancelCnsultation(id));
+
   Future<List<Appointment>> appointments(
     BuildContext context, {
     Map<String, Object>? params,

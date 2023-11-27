@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants/brand_colors.dart';
+import '../../../../../cubits/appointment_filter/appointments_filter_cubit.dart';
 import '../../../../../cubits/appointments/appointments_cubit.dart';
-import '../../../../../cubits/cubit/appointments_filter_cubit.dart';
 import '../../../../../data/enums/appointment_status.dart';
 import '../../../../../localization/app_localizations.dart';
 import '../../../../../utilities/extensions.dart';
