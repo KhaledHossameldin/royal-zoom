@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:just_audio/just_audio.dart';
 
@@ -9,6 +10,8 @@ import '../../../constants/brand_colors.dart';
 import '../../../constants/fonts.dart';
 import '../../../constants/routes.dart';
 import '../../../cubits/cancel_consultation/cancel_consultation_cubit.dart';
+import '../../../cubits/accept_date_change/accept_date_change_cubit.dart';
+import '../../../cubits/send_comment/send_comment_cubit.dart';
 import '../../../cubits/show_consultation/show_consultation_cubit.dart';
 import '../../../data/enums/chat_resource_type.dart';
 import '../../../data/enums/consultation_content_type.dart';
@@ -39,6 +42,11 @@ class ConsultationDetailsScreen extends StatefulWidget {
 class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
   final _favoriteConsultationId = ValueNotifier<int?>(null);
 
+  final _commentController = TextEditingController();
+
+  late int rating;
+  bool isVisible = false;
+
   @override
   void initState() {
     BlocProvider.of<ShowConsultationCubit>(context)
@@ -49,6 +57,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
   @override
   void dispose() {
     _favoriteConsultationId.dispose();
+    _commentController.dispose();
     super.dispose();
   }
 
@@ -61,7 +70,12 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
         title: Text(appLocalizations.consultationDetails),
         leading: const BrandBackButton(),
       ),
-      body: BlocBuilder<ShowConsultationCubit, ShowConsultationState>(
+      body: BlocConsumer<ShowConsultationCubit, ShowConsultationState>(
+        listener: (context, state) {
+          if (state is ShowConsultationLoaded) {
+            rating = state.consultation.ratingAverage.toInt();
+          }
+        },
         builder: (context, state) {
           switch (state.runtimeType) {
             case ShowConsultationLoading:
@@ -184,12 +198,158 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                       },
                     ),
                     8.emptyHeight,
-                    if (consultation.status ==
-                        ConsultationStatus.requestToChangetime)
-                      _Item(
-                        title: appLocalizations.responseAfterChangeTime,
-                        child: _ChangeDateSection(consultation: consultation),
-                      ),
+                    Builder(
+                      builder: (context) {
+                        if (consultation.status ==
+                            ConsultationStatus.requestToChangetime) {
+                          return _Item(
+                            title: appLocalizations.responseAfterChangeTime,
+                            child:
+                                _ChangeDateSection(consultation: consultation),
+                          );
+                        }
+                        if (consultation.status == ConsultationStatus.pending) {
+                          return _CancelButton(consultationId: consultation.id);
+                        }
+                        if (consultation.status ==
+                                ConsultationStatus.answeredByConsultant ||
+                            consultation.status == ConsultationStatus.ended) {
+                          return Column(
+                            children: [
+                              _Item(
+                                title: appLocalizations.consultationReview,
+                                child: StatefulBuilder(
+                                  builder: (context, setState) => Column(
+                                    children: [
+                                      RatingBar(
+                                        initialRating: consultation
+                                            .ratingAverage
+                                            .toDouble(),
+                                        glow: false,
+                                        tapOnlyMode: true,
+                                        ratingWidget: RatingWidget(
+                                          full: const Icon(
+                                            Icons.star_rounded,
+                                            color: Colors.amber,
+                                          ),
+                                          half: const Material(),
+                                          empty: const Icon(
+                                            Icons.star_rounded,
+                                            color: BrandColors.gray,
+                                          ),
+                                        ),
+                                        onRatingUpdate: (value) async {
+                                          try {
+                                            await Repository.instance
+                                                .rateConsultation(
+                                              context,
+                                              id: consultation.id,
+                                              rate: value.toInt(),
+                                            );
+                                            setState(() {
+                                              rating = value.toInt();
+                                            });
+                                          } catch (e) {
+                                            if (!context.mounted) {
+                                              return;
+                                            }
+                                            '$e'.showSnackbar(
+                                              context,
+                                              color: BrandColors.red,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      Text(
+                                        '($rating/5)',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      StatefulBuilder(
+                                        builder: (context, setState) =>
+                                            CheckboxListTile(
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          enabled: !isVisible,
+                                          title: Text(
+                                            appLocalizations
+                                                .visibilityConsultationTitle,
+                                            style:
+                                                const TextStyle(fontSize: 14.0),
+                                          ),
+                                          subtitle: Text(
+                                            appLocalizations
+                                                .visibilityConsultationSubtitle,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 12.0,
+                                            ),
+                                          ),
+                                          value: isVisible,
+                                          onChanged: (value) => setState(
+                                              () => isVisible = value!),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              _Item(
+                                title: appLocalizations.comments,
+                                child: Column(children: [
+                                  8.emptyHeight,
+                                  TextField(
+                                    controller: _commentController,
+                                    maxLines: 3,
+                                    decoration: InputDecoration(
+                                      hintText: appLocalizations.typeComment,
+                                    ),
+                                  ),
+                                  16.emptyHeight,
+                                  BlocConsumer<SendCommentCubit,
+                                      SendCommentState>(
+                                    listener: (context, state) {
+                                      if (state is SendCommentLoaded) {
+                                        appLocalizations.commentSuccess
+                                            .showSnackbar(
+                                          context,
+                                          color: BrandColors.green,
+                                        );
+                                        return;
+                                      }
+                                      if (state is SendCommentError) {
+                                        state.message.showSnackbar(
+                                          context,
+                                          color: BrandColors.red,
+                                        );
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      return ElevatedButton(
+                                        onPressed: () => context
+                                            .read<SendCommentCubit>()
+                                            .send(
+                                              context,
+                                              id: consultation.id,
+                                              comment: _commentController.text,
+                                            ),
+                                        child: state is SendCommentLoading
+                                            ? const CircularProgressIndicator(
+                                                color: Colors.white)
+                                            : Text(
+                                                appLocalizations.sendComment),
+                                      );
+                                    },
+                                  )
+                                ]),
+                              ),
+                            ],
+                          );
+                        }
+                        return const Material();
+                      },
+                    ),
                   ],
                 ),
               );
@@ -252,15 +412,35 @@ class _ChangeDateSection extends StatelessWidget {
               12.emptyHeight,
             ],
           ),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text(
-            appLocalizations.acceptDateChange,
-            style: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+        BlocConsumer<DateChangeCubit, DateChangeState>(
+          listenWhen: (prev, current) => prev is DateChangeAccepting,
+          listener: (context, state) {
+            if (state is DateChangeAccepted) {
+              Navigator.pop(context);
+              return;
+            }
+            if (state is DateChangeError) {
+              state.message.showSnackbar(context, color: BrandColors.red);
+              return;
+            }
+          },
+          builder: (context, state) {
+            return ElevatedButton(
+              onPressed: () {
+                final id = consultation.assignedRequest!.id;
+                context.read<DateChangeCubit>().accept(context, id: id);
+              },
+              child: state is DateChangeAccepting
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : Text(
+                      appLocalizations.acceptDateChange,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+            );
+          },
         ),
         12.emptyHeight,
         Row(
@@ -294,34 +474,14 @@ class _ChangeDateSection extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: BrandColors.darkGreen,
-                  backgroundColor: BrandColors.darkGreen.withOpacity(0.1),
-                  side: const BorderSide(
-                    color: BrandColors.darkGreen,
-                  ),
-                ),
-                onPressed: () {},
-                child: Text(
-                  appLocalizations.decline,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            12.emptyWidth,
-            Expanded(
-              child: BlocConsumer<CancelConsultationCubit,
-                  CancelConsultationState>(
+              child: BlocConsumer<DateChangeCubit, DateChangeState>(
+                listenWhen: (prev, current) => prev is DateChangeRejecting,
                 listener: (context, state) {
-                  if (state is CancelConsultationCanceled) {
+                  if (state is DateChangeRejected) {
                     Navigator.pop(context);
                     return;
                   }
-                  if (state is CancelConsultationError) {
+                  if (state is DateChangeError) {
                     state.message.showSnackbar(
                       context,
                       color: BrandColors.red,
@@ -332,20 +492,20 @@ class _ChangeDateSection extends StatelessWidget {
                 builder: (context, state) {
                   return OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.red,
-                      side: const BorderSide(color: Colors.red),
+                      foregroundColor: BrandColors.darkGreen,
+                      backgroundColor: BrandColors.darkGreen.withOpacity(0.1),
+                      side: const BorderSide(
+                        color: BrandColors.darkGreen,
+                      ),
                     ),
-                    onPressed: state is CancelConsultationCancelling
-                        ? null
-                        : () {
-                            context
-                                .read<CancelConsultationCubit>()
-                                .cancel(context, id: consultation.id);
-                          },
-                    child: state is CancelConsultationCancelling
+                    onPressed: () {
+                      final id = consultation.assignedRequest!.id;
+                      context.read<DateChangeCubit>().reject(context, id: id);
+                    },
+                    child: state is DateChangeRejecting
                         ? const CircularProgressIndicator()
                         : Text(
-                            appLocalizations.cancelConsultation,
+                            appLocalizations.decline,
                             style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
@@ -355,9 +515,63 @@ class _ChangeDateSection extends StatelessWidget {
                 },
               ),
             ),
+            12.emptyWidth,
+            Expanded(
+              child: _CancelButton(consultationId: consultation.id),
+            ),
           ],
         ),
       ],
+    );
+  }
+}
+
+class _CancelButton extends StatelessWidget {
+  const _CancelButton({required this.consultationId});
+
+  final int consultationId;
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+    return BlocConsumer<CancelConsultationCubit, CancelConsultationState>(
+      listener: (context, state) {
+        if (state is CancelConsultationCanceled) {
+          Navigator.pop(context);
+          return;
+        }
+        if (state is CancelConsultationError) {
+          state.message.showSnackbar(
+            context,
+            color: BrandColors.red,
+          );
+          return;
+        }
+      },
+      builder: (context, state) {
+        return OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: Colors.red,
+            side: const BorderSide(color: Colors.red),
+          ),
+          onPressed: state is CancelConsultationCancelling
+              ? null
+              : () {
+                  context
+                      .read<CancelConsultationCubit>()
+                      .cancel(context, id: consultationId);
+                },
+          child: state is CancelConsultationCancelling
+              ? const CircularProgressIndicator()
+              : Text(
+                  appLocalizations.cancelConsultation,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+        );
+      },
     );
   }
 }

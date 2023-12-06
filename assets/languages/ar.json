@@ -406,5 +406,12 @@
   "add_classification": "اضافة الي تصنيف",
   "appointment_status": "حالة الموعد",
   "appointment_upcoming": "قادمة",
-  "appointment_ended": "منتهية"
+  "appointment_ended": "منتهية",
+  "consultation_review": "تقييم الاستشارة",
+  "visibility_consultation_title": "السماح للمستخدمين بالإطلاع على جواب الاستشارة",
+  "visibility_consultation_subtitle": "يشترط إتاحة الاستشارة للعامة موافقة كل من المرسل والمستشار دون أن يظهر إسم المرسل\nستحصل على مكافئة عند السماح للمستخدمين بالإطلاع على جواب الاستشارة",
+  "send_comment": "إرسال التعليق",
+  "type_comment": "اكتب تعليقا...",
+  "comments": "التعليقات",
+  "comment_success": "تم إرسال التعليق بنجاح"
 }

@@ -42,6 +42,7 @@ class Network {
   static const favoriteCategories = '$_apiPath/user/favourite-categories';
   static const appointments =
       '$_apiPath/user/consultation-appointment-requests';
+  static const rateConsultation = '$_apiPath/user/ratings';
 
   static String getConsultantimes(int id) =>
       '$_apiPath/consultants/$id/available-times';
@@ -55,6 +56,15 @@ class Network {
   static String favoriteConsultation(int id) =>
       '$_apiPath/user/consultations/$id/favorite';
 
-  static String cancelCnsultation(int id) =>
+  static String cancelConsultation(int id) =>
       '$_apiPath/user/consultations/$id/cancel';
+
+  static String acceptChangeTimeRequest(int id) =>
+      '$_apiPath/user/consultation-appointment-requests/$id/accept';
+
+  static String rejectChangeTimeRequest(int id) =>
+      '$_apiPath/user/consultation-appointment-requests/$id/reject';
+
+  static String consultationComments(int id) =>
+      '$_apiPath/user/consultations/$id/consultation-comments';
 }

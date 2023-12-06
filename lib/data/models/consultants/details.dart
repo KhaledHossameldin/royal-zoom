@@ -16,6 +16,7 @@ import '../authentication/nationality.dart';
 import '../authentication/settings.dart';
 import '../authentication/timezone.dart';
 import '../consultations/consultation.dart';
+import '../rating.dart';
 import 'activity.dart';
 import 'bank_account.dart';
 import 'certificate.dart';
@@ -47,7 +48,7 @@ class ConsultantDetails extends Consultant {
   final List<Research> researches;
   final List<Qualification> qualifications;
   final List<Consultation> consultations;
-  // TODO: ratings list
+  final List<Rating> ratings;
   final Video? video;
   final City? city;
   final Language? language;
@@ -56,6 +57,7 @@ class ConsultantDetails extends Consultant {
 
   ConsultantDetails({
     required super.isFavourite,
+    required this.ratings,
     required this.video,
     required this.skills,
     required this.certificates,
@@ -143,6 +145,7 @@ class ConsultantDetails extends Consultant {
     DefaultMajor? major,
     List<DefaultMajor>? majors,
     BankAccount? bankAccount,
+    List<Rating>? ratings,
     Video? video,
     List<Skill>? skills,
     List<Certificate>? certificates,
@@ -197,6 +200,7 @@ class ConsultantDetails extends Consultant {
       major: major ?? this.major,
       majors: majors ?? this.majors,
       bankAccount: bankAccount ?? this.bankAccount,
+      ratings: ratings ?? this.ratings,
       video: video ?? this.video,
       skills: skills ?? this.skills,
       certificates: certificates ?? this.certificates,
@@ -255,6 +259,7 @@ class ConsultantDetails extends Consultant {
       contract.major: major?.toMap(),
       contract.majors: majors?.map((x) => x.toMap()).toList(),
       contract.bankAccount: bankAccount?.toMap(),
+      contract.ratings: ratings.map((x) => x.toMap()).toList(),
       contract.video: video?.toMap(),
       contract.skills: skills.map((x) => x.toMap()).toList(),
       contract.certificates: certificates.map((x) => x.toMap()).toList(),
@@ -333,6 +338,8 @@ class ConsultantDetails extends Consultant {
       bankAccount: map[contract.bankAccount] != null
           ? BankAccount.fromMap(map[contract.bankAccount])
           : null,
+      ratings: List<Rating>.from(
+          map[contract.ratings]?.map((x) => Rating.fromMap(x))),
       video: map[contract.video] != null
           ? Video.fromMap(map[contract.video])
           : null,
@@ -382,7 +389,7 @@ class ConsultantDetails extends Consultant {
 
   @override
   String toString() {
-    return 'ConsultantDetails(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, consultantPreviewName: $consultantPreviewName, email: $email, phone: $phone, lastLoginAt: $lastLoginAt, emailVerifiedAt: $emailVerifiedAt, phoneVerifiedAt: $phoneVerifiedAt, country: $country, nationality: $nationality, settings: $settings, isFavourite: $isFavourite, major: $major, majors: $majors, bankAccount: $bankAccount, video: $video, skills: $skills, certificates: $certificates, activities: $activities, courses: $courses, experiences: $experiences, languages: $languages, patents: $patents, projects: $projects, volunteering: $volunteering, researches: $researches, qualifications: $qualifications, consultations: $consultations, city: $city, language: $language, timezone: $timezone, currency: $currency, ratingAverage: $ratingAverage)';
+    return 'ConsultantDetails(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, consultantPreviewName: $consultantPreviewName, email: $email, phone: $phone, lastLoginAt: $lastLoginAt, emailVerifiedAt: $emailVerifiedAt, phoneVerifiedAt: $phoneVerifiedAt, country: $country, nationality: $nationality, settings: $settings, isFavourite: $isFavourite, major: $major, majors: $majors, bankAccount: $bankAccount, ratings: $ratings, video: $video, skills: $skills, certificates: $certificates, activities: $activities, courses: $courses, experiences: $experiences, languages: $languages, patents: $patents, projects: $projects, volunteering: $volunteering, researches: $researches, qualifications: $qualifications, consultations: $consultations, city: $city, language: $language, timezone: $timezone, currency: $currency, ratingAverage: $ratingAverage)';
   }
 
   @override
@@ -423,6 +430,7 @@ class ConsultantDetails extends Consultant {
         other.major == major &&
         listEquals(other.majors, majors) &&
         other.bankAccount == bankAccount &&
+        listEquals(other.ratings, ratings) &&
         other.video == video &&
         listEquals(other.skills, skills) &&
         listEquals(other.certificates, certificates) &&
@@ -478,6 +486,7 @@ class ConsultantDetails extends Consultant {
         major.hashCode ^
         majors.hashCode ^
         bankAccount.hashCode ^
+        ratings.hashCode ^
         video.hashCode ^
         skills.hashCode ^
         certificates.hashCode ^
@@ -505,6 +514,7 @@ class _ConsultatnDetails extends ConsultantContract {
   final timezone = 'timezone';
   final currency = 'currency';
   final bankAccount = 'bank_account';
+  final ratings = 'ratings';
   final video = 'video';
   final skills = 'skills';
   final certificates = 'certificates';

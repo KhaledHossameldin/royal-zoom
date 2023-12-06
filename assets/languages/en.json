@@ -405,5 +405,12 @@
   "add_classification": "Add to classification",
   "appointment_status": "Appointment Stauts",
   "appointment_upcoming": "Upcoming",
-  "appointment_ended": "Ended"
+  "appointment_ended": "Ended",
+  "consultation_review": "Consultation review",
+  "visibility_consultation_title": "Allow users to view the answer to the consultation",
+  "visibility_consultation_subtitle": "Making the consultation available to the public requires the approval of both the sender and the consultant, without the name of the sender appearing.\nYou will receive a reward when you allow users to view the answer to the consultation.",
+  "send_comment": "Send comment",
+  "type_comment": "Type comment...",
+  "comments": "Comments",
+  "comment_success": "Comment has been sent successfully"
 }

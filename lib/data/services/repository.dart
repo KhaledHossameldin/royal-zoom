@@ -59,6 +59,29 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<void> addConsultationComment(BuildContext context,
+          {required int id, required String comment}) async =>
+      _network.addConsultationComment(context, id: id, comment: comment);
+
+  Future<void> rateConsultation(
+    BuildContext context, {
+    required int id,
+    required int rate,
+  }) async =>
+      _network.rateConsultation(context, id: id, rate: rate);
+
+  Future<void> rejectChangeTimeRequest(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _network.rejectChangeTimeRequest(context, id: id);
+
+  Future<void> acceptChangeTimeRequest(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _network.acceptChangeTimeRequest(context, id: id);
+
   Future<void> cancelConsultation(
     BuildContext context, {
     required int id,

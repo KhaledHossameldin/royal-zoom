@@ -47,11 +47,43 @@ class NetworkServices {
 
   NetworkServices._();
 
+  Future<void> addConsultationComment(BuildContext context,
+          {required int id, required String comment}) async =>
+      await _post(context, Network.consultationComments(id),
+          body: {'comment': comment});
+
+  Future<void> rateConsultation(
+    BuildContext context, {
+    required int id,
+    required int rate,
+  }) async =>
+      _post(
+        context,
+        Network.rateConsultation,
+        body: {
+          'resource_type': '1',
+          'resource_id': id.toString(),
+          'rating_value': rate.toString(),
+        },
+      );
+
+  Future<void> rejectChangeTimeRequest(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _post(context, Network.rejectChangeTimeRequest(id));
+
+  Future<void> acceptChangeTimeRequest(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _post(context, Network.acceptChangeTimeRequest(id));
+
   Future<void> cancelConsultation(
     BuildContext context, {
     required int id,
   }) async =>
-      await _post(context, Network.cancelCnsultation(id));
+      await _post(context, Network.cancelConsultation(id));
 
   Future<List<Appointment>> appointments(
     BuildContext context, {
@@ -385,7 +417,6 @@ class NetworkServices {
     final response = await _get(context, '${Network.consultations}/$id');
     ConsultationDetails consultationDetails =
         ConsultationDetails.fromJson(response);
-
     return consultationDetails.copyWith(audioPlayer: player);
   }
 

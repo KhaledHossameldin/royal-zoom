@@ -759,6 +759,22 @@ class AppLocalizations {
 
   String get appointmentEnded => _translate('appointment_ended');
 
+  String get consultationReview => _translate('consultation_review');
+
+  String get sendComment => _translate('send_comment');
+
+  String get typeComment => _translate('type_comment');
+
+  String get comments => _translate('comments');
+
+  String get commentSuccess => _translate('comment_success');
+
+  String get visibilityConsultationTitle =>
+      _translate('visibility_consultation_title');
+
+  String get visibilityConsultationSubtitle =>
+      _translate('visibility_consultation_subtitle');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');
