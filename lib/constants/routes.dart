@@ -1,8 +1,8 @@
 class Routes {
   Routes._();
 
-  static const notificationsPermssion = 'notifications-permission-screen';
-  static const locationPermssion = 'location-permission-screen';
+  static const notificationsPermission = 'notifications-permission-screen';
+  static const locationPermission = 'location-permission-screen';
   static const login = 'login-screen';
   static const register = 'register-screen';
   static const home = 'home-screen';
@@ -54,4 +54,6 @@ class Routes {
   static const favorites = 'favorites-screen';
   static const appointments = 'appointments-screen';
   static const appointmentsFilter = 'appointments-filter-screen';
+  static const editConsultationContent = 'edit-consultation-content-screen';
+  static const editConsultantResponse = 'edit-consultant-response-screen';
 }

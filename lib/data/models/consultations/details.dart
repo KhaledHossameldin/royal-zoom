@@ -12,6 +12,7 @@ import '../account.dart';
 import '../consultants/consultant.dart';
 import '../consultation_request.dart';
 import '../major.dart';
+import '../rating.dart';
 import 'consultation.dart';
 
 class ConsultationDetails extends Consultation {
@@ -23,6 +24,8 @@ class ConsultationDetails extends Consultation {
   //TODO: invoice
   //TODO: chat
   final List<Consultant> selectedConsultants;
+  final num ratingAverage;
+  final List<Rating> ratings;
 
   ConsultationDetails({
     required super.id,
@@ -57,6 +60,8 @@ class ConsultationDetails extends Consultation {
     required this.requests,
     required this.assignedRequest,
     required this.selectedConsultants,
+    required this.ratingAverage,
+    required this.ratings,
   });
 
   @override
@@ -93,6 +98,8 @@ class ConsultationDetails extends Consultation {
     List<ConsultationRequest>? requests,
     ConsultationRequest? assignedRequest,
     List<Consultant>? selectedConsultants,
+    double? ratingAverage,
+    List<Rating>? ratings,
   }) {
     return ConsultationDetails(
       id: id ?? this.id,
@@ -131,6 +138,8 @@ class ConsultationDetails extends Consultation {
       requests: requests ?? this.requests,
       assignedRequest: assignedRequest ?? this.assignedRequest,
       selectedConsultants: selectedConsultants ?? this.selectedConsultants,
+      ratingAverage: ratingAverage ?? this.ratingAverage,
+      ratings: ratings ?? this.ratings,
     );
   }
 
@@ -172,6 +181,8 @@ class ConsultationDetails extends Consultation {
       contract.assignedRequest: assignedRequest?.toMap(),
       contract.selectedConsultants:
           selectedConsultants.map((x) => x.toMap()).toList(),
+      contract.ratingAverage: ratingAverage.toString(),
+      contract.ratings: ratings.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -228,6 +239,9 @@ class ConsultationDetails extends Consultation {
           : null,
       selectedConsultants: List<Consultant>.from(
           map[contract.selectedConsultants]?.map((x) => Consultant.fromMap(x))),
+      ratingAverage: num.tryParse(map[contract.ratingAverage]) ?? 0,
+      ratings: List<Rating>.from(
+          map[contract.ratings]?.map((x) => Rating.fromMap(x))),
     );
   }
 
@@ -240,7 +254,7 @@ class ConsultationDetails extends Consultation {
 
   @override
   String toString() {
-    return 'ConsultationDetails(id: $id, uuid: $uuid, majorId: $majorId, userId: $userId, contentType: $contentType, content: $content, responseType: $responseType, maximumPrice: $maximumPrice, isAcceptingOffersFromAll: $isAcceptingOffersFromAll, isHelpRequested: $isHelpRequested, isHideNameFromConsultants: $isHideNameFromConsultants, isAcceptMinimumOfferByDefault: $isAcceptMinimumOfferByDefault, attendeeNumber: $attendeeNumber, status: $status, isPaid: $isPaid, isUnscheduled: $isUnscheduled, visibilityStatus: $visibilityStatus, publishedAt: $publishedAt, createdAt: $createdAt, isFavourite: $isFavourite, isFastConsultation: $isFastConsultation, major: $major, consultantId: $consultantId, appointmentDate: $appointmentDate, maxTimeToReceiveOffers: $maxTimeToReceiveOffers, address: $address, consultant: $consultant, audioPlayer: $audioPlayer, user: $user, requests: $requests, assignedRequest: $assignedRequest, selectedConsultants: $selectedConsultants)';
+    return 'ConsultationDetails(id: $id, uuid: $uuid, majorId: $majorId, userId: $userId, contentType: $contentType, content: $content, responseType: $responseType, maximumPrice: $maximumPrice, isAcceptingOffersFromAll: $isAcceptingOffersFromAll, isHelpRequested: $isHelpRequested, isHideNameFromConsultants: $isHideNameFromConsultants, isAcceptMinimumOfferByDefault: $isAcceptMinimumOfferByDefault, attendeeNumber: $attendeeNumber, status: $status, isPaid: $isPaid, isUnscheduled: $isUnscheduled, visibilityStatus: $visibilityStatus, publishedAt: $publishedAt, createdAt: $createdAt, isFavourite: $isFavourite, isFastConsultation: $isFastConsultation, major: $major, consultantId: $consultantId, appointmentDate: $appointmentDate, maxTimeToReceiveOffers: $maxTimeToReceiveOffers, address: $address, consultant: $consultant, audioPlayer: $audioPlayer, user: $user, requests: $requests, assignedRequest: $assignedRequest, selectedConsultants: $selectedConsultants, ratingAverage: $ratingAverage, ratings: $ratings)';
   }
 
   @override
@@ -279,7 +293,9 @@ class ConsultationDetails extends Consultation {
         other.user == user &&
         listEquals(other.requests, requests) &&
         other.assignedRequest == assignedRequest &&
-        listEquals(other.selectedConsultants, selectedConsultants);
+        listEquals(other.selectedConsultants, selectedConsultants) &&
+        other.ratingAverage == ratingAverage &&
+        listEquals(other.ratings, ratings);
   }
 
   @override
@@ -315,7 +331,9 @@ class ConsultationDetails extends Consultation {
         user.hashCode ^
         requests.hashCode ^
         assignedRequest.hashCode ^
-        selectedConsultants.hashCode;
+        selectedConsultants.hashCode ^
+        ratingAverage.hashCode ^
+        ratings.hashCode;
   }
 }
 
@@ -324,4 +342,6 @@ class _ConsultationDetailsContract extends ConsultationContract {
   final requests = 'requests';
   final assignedRequest = 'assigned_request';
   final selectedConsultants = 'selected_consultants';
+  final ratingAverage = 'rating_average';
+  final ratings = 'ratings';
 }

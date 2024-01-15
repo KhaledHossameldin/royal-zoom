@@ -13,6 +13,7 @@ import '../../constants/network.dart';
 import '../../localization/app_localizations.dart';
 import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
+import '../enums/consultant_response_type.dart';
 import '../enums/consultation_content_type.dart';
 import '../enums/invoice_type.dart';
 import '../models/appointments/appointment.dart';
@@ -46,6 +47,52 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<void> updateConsultation(
+    BuildContext context, {
+    required int id,
+    required ConsultantResponseType responseType,
+  }) async =>
+      await _put(context, '${Network.consultations}/$id',
+          body: {'consultant_response_type': responseType.toMap()});
+
+  Future<void> addConsultationComment(BuildContext context,
+          {required int id, required String comment}) async =>
+      await _post(context, Network.consultationComments(id),
+          body: {'comment': comment});
+
+  Future<void> rateConsultation(
+    BuildContext context, {
+    required int id,
+    required int rate,
+  }) async =>
+      _post(
+        context,
+        Network.rateConsultation,
+        body: {
+          'resource_type': '1',
+          'resource_id': id.toString(),
+          'rating_value': rate.toString(),
+        },
+      );
+
+  Future<void> rejectChangeTimeRequest(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _post(context, Network.rejectChangeTimeRequest(id));
+
+  Future<void> acceptChangeTimeRequest(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _post(context, Network.acceptChangeTimeRequest(id));
+
+  Future<void> cancelConsultation(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      await _post(context, Network.cancelConsultation(id));
 
   Future<List<Appointment>> appointments(
     BuildContext context, {
@@ -379,7 +426,6 @@ class NetworkServices {
     final response = await _get(context, '${Network.consultations}/$id');
     ConsultationDetails consultationDetails =
         ConsultationDetails.fromJson(response);
-
     return consultationDetails.copyWith(audioPlayer: player);
   }
 

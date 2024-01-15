@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../constants/routes.dart';
+import '../cubits/appointment_filter/appointments_filter_cubit.dart';
 import '../cubits/appointments/appointments_cubit.dart';
+import '../cubits/cancel_consultation/cancel_consultation_cubit.dart';
 import '../cubits/change_appointment_date/change_appointment_date_cubit.dart';
 import '../cubits/chat_messages/chat_messages_cubit.dart';
 import '../cubits/chat_recording/chat_recording_cubit.dart';
@@ -12,7 +14,7 @@ import '../cubits/consultants/consultants_cubit.dart';
 import '../cubits/consultants_available_times/consultants_available_times_cubit.dart';
 import '../cubits/consultation_recording/consultation_recording_cubit.dart';
 import '../cubits/consultations/consultations_cubit.dart';
-import '../cubits/cubit/appointments_filter_cubit.dart';
+import '../cubits/accept_date_change/accept_date_change_cubit.dart';
 import '../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
 import '../cubits/favorite_consultants/favorite_consultants_cubit.dart';
@@ -24,8 +26,10 @@ import '../cubits/majors/majors_cubit.dart';
 import '../cubits/notifications/notifications_cubit.dart';
 import '../cubits/profile/profile_cubit.dart';
 import '../cubits/search/search_cubit.dart';
+import '../cubits/send_comment/send_comment_cubit.dart';
 import '../cubits/show_consultant/show_consultant_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
+import '../cubits/update_consultation/update_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
 import '../data/models/notifications/user_notification.dart';
 import '../presentation/screens/authentication/login_screen.dart';
@@ -54,6 +58,8 @@ import '../presentation/screens/consultations/change_time/choose_time_screen.dar
 import '../presentation/screens/consultations/change_time/success_screen.dart';
 import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
+import '../presentation/screens/edit_consultation/edit_content.dart';
+import '../presentation/screens/edit_consultation/edit_response_type.dart';
 import '../presentation/screens/notifications/details_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
 import '../presentation/screens/payments/filter_screen.dart';
@@ -84,12 +90,12 @@ class AppRouter {
 
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case Routes.notificationsPermssion:
+      case Routes.notificationsPermission:
         return MaterialPageRoute(
           builder: (context) => const NotificationsPermissionScreen(),
         );
 
-      case Routes.locationPermssion:
+      case Routes.locationPermission:
         return MaterialPageRoute(
           builder: (context) => LocationPermissionScreen(),
         );
@@ -306,8 +312,13 @@ class AppRouter {
         final arguments = settings.arguments as Map;
         return MaterialPageRoute(
           settings: const RouteSettings(name: Routes.consultationDetails),
-          builder: (context) => BlocProvider(
-            create: (context) => ShowConsultationCubit(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ShowConsultationCubit()),
+              BlocProvider(create: (context) => CancelConsultationCubit()),
+              BlocProvider(create: (context) => DateChangeCubit()),
+              BlocProvider(create: (context) => SendCommentCubit()),
+            ],
             child: ConsultationDetailsScreen(
               id: arguments['id'] as int,
               player: arguments['player'] as AudioPlayer?,
@@ -503,6 +514,21 @@ class AppRouter {
               BlocProvider(create: (context) => AppointmentsFilterCubit()),
             ],
             child: const AppointmentsFilterScreen(),
+          ),
+        );
+
+      case Routes.editConsultationContent:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => const EditConsultationContent(),
+        );
+
+      case Routes.editConsultantResponse:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (context) => UpdateConsultationCubit(),
+            child: const EditConsultantResponseType(),
           ),
         );
 

@@ -77,7 +77,7 @@ class NotificationsPermissionScreen extends StatelessWidget {
     Repository.instance.setNotificationsPreferences();
     Navigator.pushReplacementNamed(
       context,
-      Routes.locationPermssion,
+      Routes.locationPermission,
     );
   }
 }

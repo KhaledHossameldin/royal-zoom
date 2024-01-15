@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart';
 
 import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
+import '../enums/consultant_response_type.dart';
 import '../enums/invoice_type.dart';
 import '../models/appointments/appointment.dart';
 import '../models/authentication/city.dart';
@@ -58,6 +59,40 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<void> updateConsultation(BuildContext context,
+          {required int id,
+          required ConsultantResponseType responseType}) async =>
+      _network.updateConsultation(context, id: id, responseType: responseType);
+
+  Future<void> addConsultationComment(BuildContext context,
+          {required int id, required String comment}) async =>
+      _network.addConsultationComment(context, id: id, comment: comment);
+
+  Future<void> rateConsultation(
+    BuildContext context, {
+    required int id,
+    required int rate,
+  }) async =>
+      _network.rateConsultation(context, id: id, rate: rate);
+
+  Future<void> rejectChangeTimeRequest(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _network.rejectChangeTimeRequest(context, id: id);
+
+  Future<void> acceptChangeTimeRequest(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _network.acceptChangeTimeRequest(context, id: id);
+
+  Future<void> cancelConsultation(
+    BuildContext context, {
+    required int id,
+  }) async =>
+      _network.cancelConsultation(context, id: id);
 
   Future<List<Consultant>> allConsultants(BuildContext context) async =>
       _network.allConsultants(context);
