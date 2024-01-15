@@ -775,6 +775,10 @@ class AppLocalizations {
   String get visibilityConsultationSubtitle =>
       _translate('visibility_consultation_subtitle');
 
+  String get cannotPlayAudio => _translate('cannot_play_audio');
+
+  String get changeContentRequest => _translate('change_content_request');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

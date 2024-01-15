@@ -675,7 +675,7 @@ class _ConsultationItem extends StatelessWidget {
                         return Text(consultation.content);
                       }
                       if (consultation.audioPlayer == null) {
-                        return const Text('لا يمكن تشغيل الصوت');
+                        return Text(appLocalizations.cannotPlayAudio);
                       }
                       return Row(
                         children: [

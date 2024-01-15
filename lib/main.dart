@@ -23,7 +23,7 @@ Future<List<dynamic>> _getStartValues() async {
     repository.getLocationPreferences(),
     repository.setCurrentLocation(isFromMain: true),
   ]);
-  String initialRoute = Routes.notificationsPermssion;
+  String initialRoute = Routes.notificationsPermission;
   final savedLocale = values[0] as String;
   final isNotification = (values[1] as bool);
   final isLocation = (values[2] as bool);
@@ -35,7 +35,7 @@ Future<List<dynamic>> _getStartValues() async {
       initialRoute = Routes.login;
     }
   } else if (isNotification) {
-    initialRoute = Routes.locationPermssion;
+    initialRoute = Routes.locationPermission;
   }
   return [initialRoute, savedLocale, user];
 }

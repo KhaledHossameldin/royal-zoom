@@ -158,8 +158,8 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen>
                                     if (messages[index].contentType ==
                                         ChatContentType.voice) {
                                       if (messages[index].player == null) {
-                                        return const Text(
-                                            'لا يمكن تشغيل الصوت');
+                                        return Text(
+                                            appLocalizations.cannotPlayAudio);
                                       }
                                       return Row(
                                         children: [

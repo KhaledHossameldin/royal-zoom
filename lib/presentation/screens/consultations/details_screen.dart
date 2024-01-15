@@ -208,141 +208,36 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                                 _ChangeDateSection(consultation: consultation),
                           );
                         }
-                        if (consultation.status == ConsultationStatus.pending) {
+                        if (consultation.status == ConsultationStatus.pending ||
+                            consultation.status ==
+                                ConsultationStatus.scehduled) {
                           return _CancelButton(consultationId: consultation.id);
                         }
                         if (consultation.status ==
                                 ConsultationStatus.answeredByConsultant ||
                             consultation.status == ConsultationStatus.ended) {
+                          return _buildEndedSection(consultation);
+                        }
+                        if (consultation.status == ConsultationStatus.draft) {
                           return Column(
                             children: [
-                              _Item(
-                                title: appLocalizations.consultationReview,
-                                child: StatefulBuilder(
-                                  builder: (context, setState) => Column(
-                                    children: [
-                                      RatingBar(
-                                        initialRating: consultation
-                                            .ratingAverage
-                                            .toDouble(),
-                                        glow: false,
-                                        tapOnlyMode: true,
-                                        ratingWidget: RatingWidget(
-                                          full: const Icon(
-                                            Icons.star_rounded,
-                                            color: Colors.amber,
-                                          ),
-                                          half: const Material(),
-                                          empty: const Icon(
-                                            Icons.star_rounded,
-                                            color: BrandColors.gray,
-                                          ),
-                                        ),
-                                        onRatingUpdate: (value) async {
-                                          try {
-                                            await Repository.instance
-                                                .rateConsultation(
-                                              context,
-                                              id: consultation.id,
-                                              rate: value.toInt(),
-                                            );
-                                            setState(() {
-                                              rating = value.toInt();
-                                            });
-                                          } catch (e) {
-                                            if (!context.mounted) {
-                                              return;
-                                            }
-                                            '$e'.showSnackbar(
-                                              context,
-                                              color: BrandColors.red,
-                                            );
-                                          }
-                                        },
-                                      ),
-                                      Text(
-                                        '($rating/5)',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                      StatefulBuilder(
-                                        builder: (context, setState) =>
-                                            CheckboxListTile(
-                                          controlAffinity:
-                                              ListTileControlAffinity.leading,
-                                          enabled: !isVisible,
-                                          title: Text(
-                                            appLocalizations
-                                                .visibilityConsultationTitle,
-                                            style:
-                                                const TextStyle(fontSize: 14.0),
-                                          ),
-                                          subtitle: Text(
-                                            appLocalizations
-                                                .visibilityConsultationSubtitle,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 12.0,
-                                            ),
-                                          ),
-                                          value: isVisible,
-                                          onChanged: (value) => setState(
-                                              () => isVisible = value!),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                              _CancelButton(consultationId: consultation.id),
+                              16.emptyHeight,
+                              ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      BrandColors.orange.withOpacity(0.2),
+                                  foregroundColor: BrandColors.orange,
+                                  elevation: 0,
+                                  shadowColor: Colors.transparent,
                                 ),
-                              ),
-                              _Item(
-                                title: appLocalizations.comments,
-                                child: Column(children: [
-                                  8.emptyHeight,
-                                  TextField(
-                                    controller: _commentController,
-                                    maxLines: 3,
-                                    decoration: InputDecoration(
-                                      hintText: appLocalizations.typeComment,
-                                    ),
-                                  ),
-                                  16.emptyHeight,
-                                  BlocConsumer<SendCommentCubit,
-                                      SendCommentState>(
-                                    listener: (context, state) {
-                                      if (state is SendCommentLoaded) {
-                                        appLocalizations.commentSuccess
-                                            .showSnackbar(
-                                          context,
-                                          color: BrandColors.green,
-                                        );
-                                        return;
-                                      }
-                                      if (state is SendCommentError) {
-                                        state.message.showSnackbar(
-                                          context,
-                                          color: BrandColors.red,
-                                        );
-                                      }
-                                    },
-                                    builder: (context, state) {
-                                      return ElevatedButton(
-                                        onPressed: () => context
-                                            .read<SendCommentCubit>()
-                                            .send(
-                                              context,
-                                              id: consultation.id,
-                                              comment: _commentController.text,
-                                            ),
-                                        child: state is SendCommentLoading
-                                            ? const CircularProgressIndicator(
-                                                color: Colors.white)
-                                            : Text(
-                                                appLocalizations.sendComment),
-                                      );
-                                    },
-                                  )
-                                ]),
+                                onPressed: () => Navigator.pushNamed(
+                                  context,
+                                  Routes.editConsultationContent,
+                                  arguments: consultation,
+                                ),
+                                icon: const Icon(Icons.edit),
+                                label: Text(appLocalizations.edit),
                               ),
                             ],
                           );
@@ -370,6 +265,127 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
           }
         },
       ),
+    );
+  }
+
+  Column _buildEndedSection(ConsultationDetails consultation) {
+    final appLocalizations = AppLocalizations.of(context);
+    return Column(
+      children: [
+        _Item(
+          title: appLocalizations.consultationReview,
+          child: StatefulBuilder(
+            builder: (context, setState) => Column(
+              children: [
+                RatingBar(
+                  initialRating: consultation.ratingAverage.toDouble(),
+                  glow: false,
+                  tapOnlyMode: true,
+                  ratingWidget: RatingWidget(
+                    full: const Icon(
+                      Icons.star_rounded,
+                      color: Colors.amber,
+                    ),
+                    half: const Material(),
+                    empty: const Icon(
+                      Icons.star_rounded,
+                      color: BrandColors.gray,
+                    ),
+                  ),
+                  onRatingUpdate: (value) async {
+                    try {
+                      await Repository.instance.rateConsultation(
+                        context,
+                        id: consultation.id,
+                        rate: value.toInt(),
+                      );
+                      setState(() {
+                        rating = value.toInt();
+                      });
+                    } catch (e) {
+                      if (!context.mounted) {
+                        return;
+                      }
+                      '$e'.showSnackbar(
+                        context,
+                        color: BrandColors.red,
+                      );
+                    }
+                  },
+                ),
+                Text(
+                  '($rating/5)',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                StatefulBuilder(
+                  builder: (context, setState) => CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    enabled: !isVisible,
+                    title: Text(
+                      appLocalizations.visibilityConsultationTitle,
+                      style: const TextStyle(fontSize: 14.0),
+                    ),
+                    subtitle: Text(
+                      appLocalizations.visibilityConsultationSubtitle,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                    value: isVisible,
+                    onChanged: (value) => setState(() => isVisible = value!),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        _Item(
+          title: appLocalizations.comments,
+          child: Column(children: [
+            8.emptyHeight,
+            TextField(
+              controller: _commentController,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: appLocalizations.typeComment,
+              ),
+            ),
+            16.emptyHeight,
+            BlocConsumer<SendCommentCubit, SendCommentState>(
+              listener: (context, state) {
+                if (state is SendCommentLoaded) {
+                  appLocalizations.commentSuccess.showSnackbar(
+                    context,
+                    color: BrandColors.green,
+                  );
+                  return;
+                }
+                if (state is SendCommentError) {
+                  state.message.showSnackbar(
+                    context,
+                    color: BrandColors.red,
+                  );
+                }
+              },
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: () => context.read<SendCommentCubit>().send(
+                        context,
+                        id: consultation.id,
+                        comment: _commentController.text,
+                      ),
+                  child: state is SendCommentLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(appLocalizations.sendComment),
+                );
+              },
+            )
+          ]),
+        ),
+      ],
     );
   }
 }
@@ -589,6 +605,8 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 16.height),
@@ -598,7 +616,7 @@ class _Content extends StatelessWidget {
             return Text(content);
           }
           if (player == null) {
-            return const Text('لا يمكن تشغيل الصوت');
+            return Text(appLocalizations.cannotPlayAudio);
           }
           return Container(
             padding: EdgeInsets.symmetric(

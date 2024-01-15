@@ -13,6 +13,7 @@ import '../../constants/network.dart';
 import '../../localization/app_localizations.dart';
 import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
+import '../enums/consultant_response_type.dart';
 import '../enums/consultation_content_type.dart';
 import '../enums/invoice_type.dart';
 import '../models/appointments/appointment.dart';
@@ -46,6 +47,14 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<void> updateConsultation(
+    BuildContext context, {
+    required int id,
+    required ConsultantResponseType responseType,
+  }) async =>
+      await _put(context, '${Network.consultations}/$id',
+          body: {'consultant_response_type': responseType.toMap()});
 
   Future<void> addConsultationComment(BuildContext context,
           {required int id, required String comment}) async =>

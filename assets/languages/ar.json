@@ -413,5 +413,7 @@
   "send_comment": "إرسال التعليق",
   "type_comment": "اكتب تعليقا...",
   "comments": "التعليقات",
-  "comment_success": "تم إرسال التعليق بنجاح"
+  "comment_success": "تم إرسال التعليق بنجاح",
+  "cannot_play_audio": "لا يمكن تشغيل الصوت",
+  "change_content_request": "طلب تغيير محتوى الاستشارة"
 }

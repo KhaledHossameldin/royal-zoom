@@ -29,6 +29,7 @@ import '../cubits/search/search_cubit.dart';
 import '../cubits/send_comment/send_comment_cubit.dart';
 import '../cubits/show_consultant/show_consultant_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
+import '../cubits/update_consultation/update_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
 import '../data/models/notifications/user_notification.dart';
 import '../presentation/screens/authentication/login_screen.dart';
@@ -57,6 +58,8 @@ import '../presentation/screens/consultations/change_time/choose_time_screen.dar
 import '../presentation/screens/consultations/change_time/success_screen.dart';
 import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
+import '../presentation/screens/edit_consultation/edit_content.dart';
+import '../presentation/screens/edit_consultation/edit_response_type.dart';
 import '../presentation/screens/notifications/details_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
 import '../presentation/screens/payments/filter_screen.dart';
@@ -87,12 +90,12 @@ class AppRouter {
 
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case Routes.notificationsPermssion:
+      case Routes.notificationsPermission:
         return MaterialPageRoute(
           builder: (context) => const NotificationsPermissionScreen(),
         );
 
-      case Routes.locationPermssion:
+      case Routes.locationPermission:
         return MaterialPageRoute(
           builder: (context) => LocationPermissionScreen(),
         );
@@ -511,6 +514,21 @@ class AppRouter {
               BlocProvider(create: (context) => AppointmentsFilterCubit()),
             ],
             child: const AppointmentsFilterScreen(),
+          ),
+        );
+
+      case Routes.editConsultationContent:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => const EditConsultationContent(),
+        );
+
+      case Routes.editConsultantResponse:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (context) => UpdateConsultationCubit(),
+            child: const EditConsultantResponseType(),
           ),
         );
 
