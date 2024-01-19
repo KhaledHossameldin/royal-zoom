@@ -151,11 +151,11 @@ SPEC CHECKSUMS:
   file_picker: 15fd9539e4eb735dc54bae8c0534a7a9511a03de
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
-  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
-  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  geolocator_apple: 9157311f654584b9bb72686c55fc02a97b73f461
+  image_picker_ios: 99dfe1854b4fa34d0364e74a78448a0151025425
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   NWWebSocket: 05fc4419102f33934f87157d70228837e327064f
-  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   pusher_channels_flutter: 2bc74ab92bacd0ac436e10fa326125408d3c7598
   PusherSwift: 671c49e9c5441e30960d2e0282a879b2f8c80bcb
@@ -163,12 +163,12 @@ SPEC CHECKSUMS:
   SDWebImage: 2aea163b50bfcb569a2726b6a754c54a4506fcf6
   search_choices: b50731e8c425078048f681f39c34375c58d6ce8d
   share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
-  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
+  shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   smart_auth: 4bedbc118723912d0e45a07e8ab34039c19e04f2
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
   TweetNacl: 3abf4d1d2082b0114e7a67410e300892448951e6
-  url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
-  video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
+  url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
+  video_player_avfoundation: 02011213dab73ae3687df27ce441fbbcc82b5579
 
 PODFILE CHECKSUM: cbfabab1f3636e4e579a4d2c8ab8cb4f390f691e
 

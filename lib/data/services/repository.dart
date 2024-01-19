@@ -60,6 +60,27 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<void> addNewMajorRequest(
+    BuildContext context, {
+    required int majorId,
+    required bool isActive,
+    required String yearsOfExperience,
+    required String price,
+    required String terms,
+    required bool isNotificationsEnabled,
+    required String name,
+  }) async =>
+      _network.addNewMajorRequest(
+        context,
+        majorId: majorId,
+        isActive: isActive,
+        yearsOfExperience: yearsOfExperience,
+        price: price,
+        terms: terms,
+        isNotificationsEnabled: isNotificationsEnabled,
+        name: name,
+      );
+
   Future<void> updateConsultation(BuildContext context,
           {required int id,
           required ConsultantResponseType responseType}) async =>

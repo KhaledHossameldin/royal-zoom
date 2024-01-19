@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,7 @@ import 'package:just_audio/just_audio.dart';
 
 import '../../constants/network.dart';
 import '../../localization/app_localizations.dart';
+import '../../utilities/extensions.dart';
 import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
 import '../enums/consultant_response_type.dart';
@@ -47,6 +49,29 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<void> addNewMajorRequest(
+    BuildContext context, {
+    required int majorId,
+    required bool isActive,
+    required String yearsOfExperience,
+    required String price,
+    required String terms,
+    required bool isNotificationsEnabled,
+    required String name,
+  }) async {
+    final response = await _post(context, Network.newMajorRequests, body: {
+      'major_id': majorId.toString(),
+      'is_active': isActive.toInt.toString(),
+      'years_of_experience': yearsOfExperience.toString(),
+      'price_per_hour': price.toString(),
+      'terms': terms,
+      'is_notifications_enabled': isNotificationsEnabled.toInt.toString(),
+      'is_free': 0,
+      'consultant_preview_name': name,
+    });
+    dev.log(response);
+  }
 
   Future<void> updateConsultation(
     BuildContext context, {

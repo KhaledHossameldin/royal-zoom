@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../constants/routes.dart';
+import '../cubits/add_new_major/add_new_major_cubit.dart';
 import '../cubits/appointment_filter/appointments_filter_cubit.dart';
 import '../cubits/appointments/appointments_cubit.dart';
 import '../cubits/cancel_consultation/cancel_consultation_cubit.dart';
@@ -32,6 +33,7 @@ import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../cubits/update_consultation/update_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
 import '../data/models/notifications/user_notification.dart';
+import '../presentation/screens/add_major_screen.dart';
 import '../presentation/screens/authentication/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
 import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
@@ -529,6 +531,17 @@ class AppRouter {
           builder: (context) => BlocProvider(
             create: (context) => UpdateConsultationCubit(),
             child: const EditConsultantResponseType(),
+          ),
+        );
+
+      case Routes.addMajor:
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => MajorsCubit()),
+              BlocProvider(create: (context) => AddNewMajorCubit()),
+            ],
+            child: const AddMajorScreen(),
           ),
         );
 

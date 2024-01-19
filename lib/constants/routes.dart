@@ -56,4 +56,5 @@ class Routes {
   static const appointmentsFilter = 'appointments-filter-screen';
   static const editConsultationContent = 'edit-consultation-content-screen';
   static const editConsultantResponse = 'edit-consultant-response-screen';
+  static const addMajor = 'add-major-screen';
 }

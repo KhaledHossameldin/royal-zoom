@@ -779,6 +779,27 @@ class AppLocalizations {
 
   String get changeContentRequest => _translate('change_content_request');
 
+  String get joinAsConsultant => _translate('join_as_consultant');
+
+  String get accountAsUser => _translate('account_as_user');
+
+  String get accountAsConsultant => _translate('account_as_consultant');
+
+  String get majorAndExperience => _translate('major_and_experience');
+
+  String get consultantPreviewName => _translate('consultant_preview_name');
+
+  String get addNewMajor => _translate('add_new_major');
+
+  String get sendingConsultationRequirements =>
+      _translate('sending_consultation_requirements');
+
+  String get activated => _translate('activated');
+
+  String get mustChoose => _translate('must_choose');
+
+  String get mustEnter => _translate('must_enter');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

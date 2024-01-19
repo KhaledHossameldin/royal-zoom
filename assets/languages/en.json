@@ -414,5 +414,15 @@
   "comments": "Comments",
   "comment_success": "Comment has been sent successfully",
   "cannot_play_audio": "Cannot play audio",
-  "change_content_request": "Request changing consultation content"
+  "change_content_request": "Request changing consultation content",
+  "join_as_consultant": "Join as consultant",
+  "account_as_user": "My account as user",
+  "account_as_consultant": "My account as consultant",
+  "major_and_experience": "Major and Experience",
+  "add_new_major": "Add new major",
+  "consultant_preview_name": "Preview name for consultant account",
+  "sending_consultation_requirements": "Sending consultation requirements",
+  "activated": "Activated",
+  "must_choose": "Must choose",
+  "must_enter": "Must enter"
 }

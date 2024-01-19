@@ -7,6 +7,7 @@ import '../../../../../localization/app_localizations.dart';
 import '../../../../../utilities/extensions.dart';
 import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
+import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
 import '../../../widgets/border_painter.dart';
 
@@ -38,7 +39,30 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             const _Header(),
-            20.emptyHeight,
+            if (user != null)
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(vertical: 20.height),
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    Routes.addMajor,
+                  ),
+                  icon: const Icon(Icons.person_add_alt),
+                  label: Text(appLocalizations.joinAsConsultant),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 45.height),
+                    textStyle: const TextStyle(
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: Fonts.main,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
             if (user != null)
               _Item(
                 icon: 'search',

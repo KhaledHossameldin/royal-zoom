@@ -415,5 +415,15 @@
   "comments": "التعليقات",
   "comment_success": "تم إرسال التعليق بنجاح",
   "cannot_play_audio": "لا يمكن تشغيل الصوت",
-  "change_content_request": "طلب تغيير محتوى الاستشارة"
+  "change_content_request": "طلب تغيير محتوى الاستشارة",
+  "join_as_consultant": "الانضمام كمستشار",
+  "account_as_user": "حسابي كمستشير",
+  "account_as_consultant": "حسابي كمستشار",
+  "major_and_experience": "التخصص و الخبرة",
+  "add_new_major": "إضافة تخصص جديد",
+  "consultant_preview_name": "اسم العرض لحساب المستشار",
+  "sending_consultation_requirements": "شروط إرسال الإستشارة",
+  "activated": "مفعل",
+  "must_choose": "يجب إختيار",
+  "must_enter": "يجب إدخال"
 }
