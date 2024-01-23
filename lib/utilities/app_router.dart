@@ -44,6 +44,7 @@ import '../presentation/screens/authentication/register/terms_and_conditions_scr
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
+import '../presentation/screens/authentication/user_type_choose_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/appointments/appointments_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/appointments/filter_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/consultants_screen.dart';
@@ -543,6 +544,11 @@ class AppRouter {
             ],
             child: const AddMajorScreen(),
           ),
+        );
+
+      case Routes.userTypeChoose:
+        return MaterialPageRoute(
+          builder: (context) => const UserTypeChooseScreen(),
         );
 
       default:

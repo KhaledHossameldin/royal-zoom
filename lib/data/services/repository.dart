@@ -6,6 +6,7 @@ import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
 import '../enums/consultant_response_type.dart';
 import '../enums/invoice_type.dart';
+import '../enums/user_type.dart';
 import '../models/appointments/appointment.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
@@ -59,6 +60,17 @@ class Repository {
   Future<Duration?> setAudioUrl(String url) async => await _audio.setUrl(url);
 
   void disposeAudio() => _audio.dispose();
+
+  Future<UserData> getProfileData(
+    BuildContext context, {
+    required UserType type,
+  }) async {
+    final data = await _network.getProfileData(context, type: type);
+    if (await _sharedPreferences.doesUserExist()) {
+      await _sharedPreferences.setUserData(data, type);
+    }
+    return data;
+  }
 
   Future<void> addNewMajorRequest(
     BuildContext context, {
@@ -199,6 +211,12 @@ class Repository {
     await _network.logout(context);
     await _sharedPreferences.removeUser();
   }
+
+  Future<void> setUserType(UserType type) async =>
+      await _sharedPreferences.setUserType(type);
+
+  Future<UserType> getUserType() async =>
+      await _sharedPreferences.getUserType();
 
   Future<Chat> startChat(BuildContext context,
           {required int id, required ChatResourceType type}) async =>

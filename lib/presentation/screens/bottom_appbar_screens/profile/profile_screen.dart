@@ -9,6 +9,8 @@ import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
+import '../../../../cubits/switch/switch_cubit.dart';
+import '../../../../data/enums/user_type.dart';
 import '../../../widgets/border_painter.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -43,25 +45,86 @@ class ProfileScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 20.height),
-                child: ElevatedButton.icon(
-                  onPressed: () => Navigator.pushNamed(
-                    context,
-                    Routes.addMajor,
-                  ),
-                  icon: const Icon(Icons.person_add_alt),
-                  label: Text(appLocalizations.joinAsConsultant),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 45.height),
-                    textStyle: const TextStyle(
-                      fontSize: 13.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: Fonts.main,
+                child: Builder(builder: (context) {
+                  if (user.data.type == UserType.consultant) {
+                    return BlocConsumer<SwitchCubit, SwitchState>(
+                      listener: (context, state) {
+                        if (state is SwitchError) {
+                          state.message.showSnackbar(
+                            context,
+                            color: BrandColors.red,
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return ElevatedButton(
+                          onPressed: state is SwitchLoading
+                              ? null
+                              : () {
+                                  UserType type = UserType.normal;
+                                  if (state is SwitchError) {
+                                    type = state.type ?? type;
+                                  }
+                                  if (state is SwitchLoaded) {
+                                    type = state.type;
+                                  }
+                                  type = type == UserType.normal
+                                      ? UserType.consultant
+                                      : UserType.normal;
+                                  context
+                                      .read<SwitchCubit>()
+                                      .convert(context, type: type);
+                                },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity, 45.height),
+                            textStyle: const TextStyle(
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: Fonts.main,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Builder(builder: (context) {
+                            if (state is SwitchLoading) {
+                              return const CircularProgressIndicator();
+                            }
+                            if (state is SwitchError) {
+                              return Text((state.type ?? UserType.normal) ==
+                                      UserType.normal
+                                  ? appLocalizations.accountAsConsultant
+                                  : appLocalizations.accountAsUser);
+                            }
+                            state as SwitchLoaded;
+                            return Text(state.type == UserType.normal
+                                ? appLocalizations.accountAsConsultant
+                                : appLocalizations.accountAsUser);
+                          }),
+                        );
+                      },
+                    );
+                  }
+                  return ElevatedButton.icon(
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      Routes.addMajor,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    icon: const Icon(Icons.person_add_alt),
+                    label: Text(appLocalizations.joinAsConsultant),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(double.infinity, 45.height),
+                      textStyle: const TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: Fonts.main,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
               ),
             if (user != null)
               _Item(

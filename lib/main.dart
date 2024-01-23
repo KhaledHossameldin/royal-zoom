@@ -10,6 +10,8 @@ import 'constants/fonts.dart';
 import 'constants/routes.dart';
 import 'cubits/consultations/consultations_cubit.dart';
 import 'cubits/locale_cubit.dart';
+import 'cubits/switch/switch_cubit.dart';
+import 'data/enums/user_type.dart';
 import 'data/models/authentication/user.dart';
 import 'data/services/repository.dart';
 import 'localization/app_localizations_setup.dart';
@@ -28,6 +30,7 @@ Future<List<dynamic>> _getStartValues() async {
   final isNotification = (values[1] as bool);
   final isLocation = (values[2] as bool);
   final user = await Repository.instance.getUser();
+  final type = await Repository.instance.getUserType();
   if (isNotification && isLocation) {
     if (user != null) {
       initialRoute = Routes.home;
@@ -37,7 +40,7 @@ Future<List<dynamic>> _getStartValues() async {
   } else if (isNotification) {
     initialRoute = Routes.locationPermission;
   }
-  return [initialRoute, savedLocale, user];
+  return [initialRoute, savedLocale, user, type];
 }
 
 void main() async {
@@ -52,6 +55,7 @@ void main() async {
     initialRoute: values[0],
     savedLocale: values[1],
     user: values[2],
+    type: values[3],
   ));
 }
 
@@ -60,12 +64,14 @@ class MyApp extends StatelessWidget {
     required this.initialRoute,
     required this.savedLocale,
     required this.user,
+    required this.type,
     super.key,
   });
 
   final String initialRoute;
   final String savedLocale;
   final User? user;
+  final UserType type;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +81,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AuthenticationBloc(user)),
         BlocProvider(create: (context) => ResetPasswordBloc()),
         BlocProvider(create: (context) => ConsultationsCubit()),
+        BlocProvider(
+            create: (context) => SwitchCubit(data: user?.data, type: type)),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         buildWhen: (previous, current) => previous != current,

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/brand_colors.dart';
 import '../../../constants/routes.dart';
+import '../../../data/enums/user_type.dart';
 import '../../../data/services/location_services.dart';
 import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
@@ -174,7 +175,9 @@ class _LoginScreenState extends State<LoginScreen>
         } else if (state is AuthenticationLoaded) {
           Navigator.pushReplacementNamed(
             context,
-            Routes.home,
+            (state.user?.data.type ?? UserType.normal) == UserType.normal
+                ? Routes.home
+                : Routes.userTypeChoose,
           );
         }
       },

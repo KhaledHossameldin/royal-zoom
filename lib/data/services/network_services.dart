@@ -18,6 +18,7 @@ import '../enums/chat_resource_type.dart';
 import '../enums/consultant_response_type.dart';
 import '../enums/consultation_content_type.dart';
 import '../enums/invoice_type.dart';
+import '../enums/user_type.dart';
 import '../models/appointments/appointment.dart';
 import '../models/authentication/city.dart';
 import '../models/authentication/country.dart';
@@ -28,6 +29,7 @@ import '../models/authentication/user.dart';
 import '../models/authentication/user_data.dart';
 import '../models/chat/chat.dart';
 import '../models/chat/message.dart';
+import '../models/consultant_user/consultant_user.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultants/consultant.dart';
 import '../models/consultants/details.dart';
@@ -49,6 +51,22 @@ class NetworkServices {
   static NetworkServices instance = NetworkServices._();
 
   NetworkServices._();
+
+  Future<UserData> getProfileData(
+    BuildContext context, {
+    required UserType type,
+  }) async {
+    final response = await _get(
+      context,
+      type == UserType.normal
+          ? Network.showProfile
+          : Network.showConsultantProfile,
+    );
+    final jsonMap = json.decode(response)['data'];
+    return type == UserType.normal
+        ? UserData.fromMap(jsonMap)
+        : ConsultantUserData.fromMap(jsonMap);
+  }
 
   Future<void> addNewMajorRequest(
     BuildContext context, {

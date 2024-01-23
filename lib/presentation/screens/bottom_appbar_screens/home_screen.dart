@@ -56,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Theme(
       data: theme.copyWith(
-        useMaterial3: true,
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),

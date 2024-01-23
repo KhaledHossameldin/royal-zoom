@@ -1,64 +1,33 @@
 import 'dart:convert';
+import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../utilities/extensions.dart';
 import '../../enums/gender.dart';
 import '../../enums/perview_status.dart';
 import '../../enums/user_status.dart';
 import '../../enums/user_type.dart';
-import '../account.dart';
-import 'city.dart';
-import 'country.dart';
-import 'currency.dart';
-import 'language.dart';
-import 'nationality.dart';
-import 'settings.dart';
-import 'timezone.dart';
+import '../authentication/city.dart';
+import '../authentication/country.dart';
+import '../authentication/currency.dart';
+import '../authentication/language.dart';
+import '../authentication/nationality.dart';
+import '../authentication/settings.dart';
+import '../authentication/timezone.dart';
+import '../authentication/user_data.dart';
+import '../consultants/bank_account.dart';
+import '../consultants/default_major.dart';
+import '../consultants/video.dart';
 
-class UserData extends Account {
-  City? city;
-  Language? language;
-  Timezone? timezone;
-  Currency? currency;
+class ConsultantUserData extends UserData {
+  final String consultantPreviewName;
+  final bool isFavourite;
+  final BankAccount? bankAccount;
+  final List<DefaultMajor>? majors;
+  final Video? video;
 
-  double get progress {
-    int total = 0;
-    if (!firstName.isNullOrEmpty) {
-      total++;
-    }
-    if (!middleName.isNullOrEmpty) {
-      total++;
-    }
-    if (!lastName.isNullOrEmpty) {
-      total++;
-    }
-    if (!previewName.isNullOrEmpty) {
-      total++;
-    }
-    if (!email.isNullOrEmpty) {
-      total++;
-    }
-    if (!phone.isNullOrEmpty) {
-      total++;
-    }
-    if (!image.isNullOrEmpty) {
-      total++;
-    }
-    total++;
-    if (countryId != null) {
-      total++;
-    }
-    if (cityId != null) {
-      total++;
-    }
-    if (nationalityId != null) {
-      total++;
-    }
-    return total / 11;
-  }
-
-  UserData({
+  ConsultantUserData({
     required super.id,
     required super.uuid,
     required super.image,
@@ -87,13 +56,19 @@ class UserData extends Account {
     super.country,
     super.nationality,
     super.settings,
-    this.city,
-    this.language,
-    this.timezone,
-    this.currency,
+    super.city,
+    super.language,
+    super.timezone,
+    super.currency,
+    required this.consultantPreviewName,
+    required this.isFavourite,
+    this.bankAccount,
+    this.majors,
+    this.video,
   });
 
-  UserData copyWith({
+  @override
+  ConsultantUserData copyWith({
     int? id,
     String? uuid,
     String? image,
@@ -126,8 +101,13 @@ class UserData extends Account {
     Language? language,
     Timezone? timezone,
     Currency? currency,
+    String? consultantPreviewName,
+    bool? isFavourite,
+    BankAccount? bankAccount,
+    List<DefaultMajor>? majors,
+    Video? video,
   }) {
-    return UserData(
+    return ConsultantUserData(
       id: id ?? super.id,
       uuid: uuid ?? super.uuid,
       image: image ?? super.image,
@@ -160,13 +140,18 @@ class UserData extends Account {
       language: language ?? this.language,
       timezone: timezone ?? this.timezone,
       currency: currency ?? this.currency,
+      consultantPreviewName:
+          consultantPreviewName ?? this.consultantPreviewName,
+      isFavourite: isFavourite ?? this.isFavourite,
+      bankAccount: bankAccount ?? this.bankAccount,
+      majors: majors ?? this.majors,
+      video: video ?? this.video,
     );
   }
 
   @override
   Map<String, dynamic> toMap() {
-    final contract = UserDataContract();
-
+    final contract = _ConsultantUserDataContract();
     return {
       contract.id: id,
       contract.uuid: uuid,
@@ -201,13 +186,17 @@ class UserData extends Account {
       contract.timezone: timezone?.toMap(),
       contract.currency: currency?.toMap(),
       contract.settings: settings?.toMap(),
+      contract.consultantPreviewName: consultantPreviewName,
+      contract.isFavourite: isFavourite,
+      contract.bankAccount: bankAccount?.toMap(),
+      contract.majors: majors?.map((x) => x.toMap()).toList(),
+      contract.video: video?.toMap(),
     };
   }
 
-  factory UserData.fromMap(Map<String, dynamic> map) {
-    final contract = UserDataContract();
-
-    return UserData(
+  factory ConsultantUserData.fromMap(Map<String, dynamic> map) {
+    final contract = _ConsultantUserDataContract();
+    return ConsultantUserData(
       id: map[contract.id]?.toInt() ?? 0,
       uuid: map[contract.uuid] ?? '',
       image: map[contract.image] ?? '',
@@ -260,25 +249,37 @@ class UserData extends Account {
       currency: map[contract.currency] != null
           ? Currency.fromMap(map[contract.currency])
           : null,
+      consultantPreviewName: map[contract.consultantPreviewName] ?? '',
+      isFavourite: map[contract.isFavourite] ?? false,
+      bankAccount: map[contract.bankAccount] != null
+          ? BankAccount.fromMap(map[contract.bankAccount])
+          : null,
+      majors: map[contract.majors] != null
+          ? List<DefaultMajor>.from(
+              map[contract.majors]?.map((x) => DefaultMajor.fromMap(x)))
+          : null,
+      video: map[contract.video] != null
+          ? Video.fromMap(map[contract.video])
+          : null,
     );
   }
 
   @override
   String toJson() => json.encode(toMap());
 
-  factory UserData.fromJson(String source) =>
-      UserData.fromMap(json.decode(source));
+  factory ConsultantUserData.fromJson(String source) =>
+      ConsultantUserData.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'UserData(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, email: $email, phone: $phone, lastLoginAt: $lastLoginAt, emailVerifiedAt: $emailVerifiedAt, phoneVerifiedAt: $phoneVerifiedAt, country: $country, nationality: $nationality, settings: $settings, city: $city, language: $language, timezone: $timezone, currency: $currency)';
+    return 'ConsultatnUserData(id: $id, uuid: $uuid, image: $image, walletBalance: $walletBalance, gender: $gender, color: $color, previewStatus: $previewStatus, status: $status, type: $type, createdAt: $createdAt, countryId: $countryId, nationalityId: $nationalityId, cityId: $cityId, countryTimeZoneId: $countryTimeZoneId, languageId: $languageId, currencyId: $currencyId, firstName: $firstName, middleName: $middleName, lastName: $lastName, previewName: $previewName, email: $email, phone: $phone, lastLoginAt: $lastLoginAt, emailVerifiedAt: $emailVerifiedAt, phoneVerifiedAt: $phoneVerifiedAt, country: $country, nationality: $nationality, settings: $settings, city: $city, language: $language, timezone: $timezone, currency: $currency, consultantPreviewName: $consultantPreviewName, isFavourite: $isFavourite, bankAccount: $bankAccount, majors: $majors, video: $video)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is UserData &&
+    return other is ConsultantUserData &&
         other.id == id &&
         other.uuid == uuid &&
         other.image == image &&
@@ -310,48 +311,60 @@ class UserData extends Account {
         other.city == city &&
         other.language == language &&
         other.timezone == timezone &&
-        other.currency == currency;
+        other.currency == currency &&
+        other.consultantPreviewName == consultantPreviewName &&
+        other.isFavourite == isFavourite &&
+        other.bankAccount == bankAccount &&
+        listEquals(other.majors, majors) &&
+        other.video == video;
   }
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      uuid.hashCode ^
-      image.hashCode ^
-      walletBalance.hashCode ^
-      gender.hashCode ^
-      color.hashCode ^
-      previewStatus.hashCode ^
-      status.hashCode ^
-      type.hashCode ^
-      createdAt.hashCode ^
-      countryId.hashCode ^
-      nationalityId.hashCode ^
-      cityId.hashCode ^
-      countryTimeZoneId.hashCode ^
-      languageId.hashCode ^
-      currencyId.hashCode ^
-      firstName.hashCode ^
-      middleName.hashCode ^
-      lastName.hashCode ^
-      previewName.hashCode ^
-      email.hashCode ^
-      phone.hashCode ^
-      lastLoginAt.hashCode ^
-      emailVerifiedAt.hashCode ^
-      phoneVerifiedAt.hashCode ^
-      country.hashCode ^
-      nationality.hashCode ^
-      settings.hashCode ^
-      city.hashCode ^
-      language.hashCode ^
-      timezone.hashCode ^
-      currency.hashCode;
+  int get hashCode {
+    return id.hashCode ^
+        uuid.hashCode ^
+        image.hashCode ^
+        walletBalance.hashCode ^
+        gender.hashCode ^
+        color.hashCode ^
+        previewStatus.hashCode ^
+        status.hashCode ^
+        type.hashCode ^
+        createdAt.hashCode ^
+        countryId.hashCode ^
+        nationalityId.hashCode ^
+        cityId.hashCode ^
+        countryTimeZoneId.hashCode ^
+        languageId.hashCode ^
+        currencyId.hashCode ^
+        firstName.hashCode ^
+        middleName.hashCode ^
+        lastName.hashCode ^
+        previewName.hashCode ^
+        email.hashCode ^
+        phone.hashCode ^
+        lastLoginAt.hashCode ^
+        emailVerifiedAt.hashCode ^
+        phoneVerifiedAt.hashCode ^
+        country.hashCode ^
+        nationality.hashCode ^
+        settings.hashCode ^
+        city.hashCode ^
+        language.hashCode ^
+        timezone.hashCode ^
+        currency.hashCode ^
+        consultantPreviewName.hashCode ^
+        isFavourite.hashCode ^
+        bankAccount.hashCode ^
+        majors.hashCode ^
+        video.hashCode;
+  }
 }
 
-class UserDataContract extends AccountContract {
-  final city = 'city';
-  final language = 'language';
-  final timezone = 'timezone';
-  final currency = 'currency';
+class _ConsultantUserDataContract extends UserDataContract {
+  final consultantPreviewName = 'consultant_preview_name';
+  final isFavourite = 'is_favourite';
+  final bankAccount = 'bank_account';
+  final majors = 'majors';
+  final video = 'video';
 }

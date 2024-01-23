@@ -800,6 +800,8 @@ class AppLocalizations {
 
   String get mustEnter => _translate('must_enter');
 
+  String get howEnterAccount => _translate('how_enter_account');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

@@ -44,6 +44,8 @@ class Network {
       '$_apiPath/user/consultation-appointment-requests';
   static const rateConsultation = '$_apiPath/user/ratings';
   static const newMajorRequests = '$_apiPath/consultant/consultant-majors';
+  static const showProfile = '$_apiPath/user/show-profile';
+  static const showConsultantProfile = '$_apiPath/consultant/show-profile';
 
   static String getConsultantimes(int id) =>
       '$_apiPath/consultants/$id/available-times';

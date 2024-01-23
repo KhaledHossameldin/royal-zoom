@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/preferences_keys.dart';
+import '../enums/user_type.dart';
 import '../models/authentication/user.dart';
+import '../models/authentication/user_data.dart';
 
 class SharedPreferencesHandler {
   static SharedPreferencesHandler instance = SharedPreferencesHandler._();
@@ -76,6 +78,33 @@ class SharedPreferencesHandler {
 
   Future<void> removeUser() async {
     final preferences = await SharedPreferences.getInstance();
-    await preferences.remove(PreferencesKeys.user);
+    await Future.wait([
+      preferences.remove(PreferencesKeys.user),
+      preferences.remove(PreferencesKeys.type),
+    ]);
+  }
+
+  Future<void> setUserData(UserData data, UserType type) async {
+    final user = await getUser();
+    if (user == null) {
+      return;
+    }
+    await Future.wait([setUser(user.copyWith(data: data)), setUserType(type)]);
+  }
+
+  Future<void> setUserType(UserType type) async {
+    final preferences = await SharedPreferences.getInstance();
+    preferences.setInt(PreferencesKeys.type, type.toMap());
+  }
+
+  Future<UserType> getUserType() async {
+    final preferences = await SharedPreferences.getInstance();
+    final type = preferences.getInt(PreferencesKeys.type) ?? 1;
+    return type.userTypeFromMap();
+  }
+
+  Future<bool> doesUserExist() async {
+    final preferences = await SharedPreferences.getInstance();
+    return preferences.containsKey(PreferencesKeys.user);
   }
 }

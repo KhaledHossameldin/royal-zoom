@@ -424,5 +424,6 @@
   "sending_consultation_requirements": "Sending consultation requirements",
   "activated": "Activated",
   "must_choose": "Must choose",
-  "must_enter": "Must enter"
+  "must_enter": "Must enter",
+  "how_enter_account": "How do you want to access your account?"
 }
