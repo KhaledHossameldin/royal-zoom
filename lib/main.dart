@@ -8,6 +8,7 @@ import 'blocs/reset_password/reset_password_bloc.dart';
 import 'constants/brand_colors.dart';
 import 'constants/fonts.dart';
 import 'constants/routes.dart';
+import 'core/di/di_manager.dart';
 import 'cubits/consultations/consultations_cubit.dart';
 import 'cubits/locale_cubit.dart';
 import 'cubits/switch/switch_cubit.dart';
@@ -50,6 +51,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   await Repository.instance.initializePusher();
+  await DIManager.initDI();
   final values = await _getStartValues();
   runApp(MyApp(
     initialRoute: values[0],

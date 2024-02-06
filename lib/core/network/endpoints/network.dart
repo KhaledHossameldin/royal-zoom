@@ -1,5 +1,10 @@
 class Network {
   Network._();
+  // receiveTimeout in seconds
+  static const int receiveTimeout = 30;
+
+  // connectTimeout in seconds
+  static const int connectionTimeout = 30;
 
   static const _apiPath = 'api';
   static const domain = 'api.royake.wide-techno.com';
