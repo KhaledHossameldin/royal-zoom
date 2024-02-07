@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 
-import '../../constants/network.dart';
+import '../../core/network/endpoints/network.dart';
 import '../../localization/app_localizations.dart';
 import '../../utilities/extensions.dart';
 import '../enums/chat_content_type.dart';

@@ -4,6 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
+import '../../../../core/di/di_manager.dart';
+import '../../../../core/states/base_fail_state.dart';
+import '../../../../core/states/base_success_state.dart';
+import '../../../../core/states/base_wait_state.dart';
+import '../../../../core/utils/ui/snackbar/custom_snack_bar.dart';
+import '../../../../cubits/general/auth/auth_cubit.dart';
+import '../../../../cubits/general/auth/auth_state.dart';
 import '../../../../data/enums/email_phone.dart';
 import '../../../../data/services/location_services.dart';
 import '../../../../data/services/repository.dart';
@@ -111,19 +118,73 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  BlocConsumer<AuthenticationBloc, AuthenticationState> _buildConfirmButton() {
+  // BlocConsumer<AuthenticationBloc, AuthenticationState> _buildConfirmButton() {
+  //   final appLocalizations = AppLocalizations.of(context);
+
+  //   return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+  //     buildWhen: (previous, current) => current.step == 1,
+  //     listenWhen: (previous, current) => current.step == 1,
+  //     listener: (context, state) {
+  //       if (state is AuthenticationError) {
+  //         state.message.showSnackbar(
+  //           context,
+  //           color: Colors.red,
+  //         );
+  //       } else if (state is AuthenticationLoaded) {
+  //         Navigator.pushNamed(
+  //           context,
+  //           Routes.otp,
+  //           arguments: {
+  //             'username': _getUsername(),
+  //             'isRegister': true,
+  //           },
+  //         );
+  //       }
+  //     },
+  //     builder: (context, state) {
+  //       return IgnorePointer(
+  //         ignoring: state is AuthenticationLoading,
+  //         child: ElevatedButton(
+  //           onPressed: () {
+  //             final isValid = _formKey.currentState!.validate();
+  //             if (isValid) {
+  //               context.read<AuthenticationBloc>().add(AuthenticationRegister(
+  //                     context,
+  //                     username: _getUsername(),
+  //                     password: _password.text,
+  //                     confirm: _confirm.text,
+  //                   ));
+  //             }
+  //           },
+  //           child: Builder(builder: (context) {
+  //             if (state is AuthenticationLoading) {
+  //               return const CircularProgressIndicator(
+  //                 color: Colors.white,
+  //               );
+  //             }
+  //             return Text(appLocalizations.register);
+  //           }),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+  BlocConsumer<AuthCubit, AuthState> _buildConfirmButton() {
     final appLocalizations = AppLocalizations.of(context);
 
-    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
-      buildWhen: (previous, current) => current.step == 1,
-      listenWhen: (previous, current) => current.step == 1,
+    return BlocConsumer<AuthCubit, AuthState>(
+      // buildWhen: (previous, current) => current.step == 1,
+      // listenWhen: (previous, current) => current.step == 1,
+      bloc: DIManager.findDep<AuthCubit>(),
       listener: (context, state) {
-        if (state is AuthenticationError) {
-          state.message.showSnackbar(
-            context,
-            color: Colors.red,
-          );
-        } else if (state is AuthenticationLoaded) {
+        final register = state.registerState;
+        if (register is BaseFailState) {
+          // state.message.showSnackbar(
+          //   context,
+          //   color: Colors.red,
+          // );
+          CustomSnackbar.showErrorSnackbar(register.error!);
+        } else if (register is BaseSuccessState) {
           Navigator.pushNamed(
             context,
             Routes.otp,
@@ -135,22 +196,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
       },
       builder: (context, state) {
+        final register = state.registerState;
         return IgnorePointer(
-          ignoring: state is AuthenticationLoading,
+          ignoring: register is BaseLoadingState,
           child: ElevatedButton(
             onPressed: () {
               final isValid = _formKey.currentState!.validate();
               if (isValid) {
-                context.read<AuthenticationBloc>().add(AuthenticationRegister(
-                      context,
-                      username: _getUsername(),
-                      password: _password.text,
-                      confirm: _confirm.text,
-                    ));
+                DIManager.findDep<AuthCubit>().register(
+                  username: _getUsername(),
+                  password: _password.text,
+                  confirm: _confirm.text,
+                );
               }
             },
             child: Builder(builder: (context) {
-              if (state is AuthenticationLoading) {
+              if (register is BaseLoadingState) {
                 return const CircularProgressIndicator(
                   color: Colors.white,
                 );
