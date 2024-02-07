@@ -4,6 +4,8 @@ import '../../app/cubit/application_bloc.dart';
 import '../../cubits/general/auth/auth_cubit.dart';
 import '../../data/repositories_impl/general/auth_repo_impl.dart';
 import '../../data/sources/general/auth/auth_remote_data_source.dart';
+import '../../data/sources/general/media/media_remote_data_source.dart';
+import '../../data/sources/general/world/world_remote_data_source.dart';
 import '../../domain/repositories/general/auth_repo_i.dart';
 import '../../domain/usecases/register_usecase.dart';
 import '../constants/app_colors.dart';
@@ -24,6 +26,8 @@ class DIManager {
 
     /// --------------- remote data sources --------------
     _injectDep(AuthRemoteDataSource());
+    _injectDep(WorldRemoteDataSource());
+    _injectDep(MediaRemoteDataSource());
 
     /// ------------------ repos ---------------------
     _injectDep<IAuthRepo>(AuthRepo(findDep()));

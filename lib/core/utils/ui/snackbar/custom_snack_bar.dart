@@ -9,7 +9,7 @@ import '../../../../core/utils/screen_utils/device_utils.dart';
 class CustomSnackbar {
   static const String routeName = 'CustomSnackbar/showSnackbar';
 
-  static showSnackbar(String message) {
+  static void showSnackbar(String message) {
     Get.snackbar('', '',
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 5),
