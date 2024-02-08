@@ -7,6 +7,7 @@ import '../../data/sources/consultant/major/major_remote_data_source.dart';
 import '../../data/sources/general/auth/auth_remote_data_source.dart';
 import '../../data/sources/general/media/media_remote_data_source.dart';
 import '../../data/sources/general/world/world_remote_data_source.dart';
+import '../../data/sources/user/invoices/invoices_remote_data_source.dart';
 import '../../data/sources/user/home_statistics/home_statistics_remote_data_source.dart';
 import '../../domain/repositories/general/auth_repo_i.dart';
 import '../../domain/usecases/register_usecase.dart';
@@ -31,7 +32,9 @@ class DIManager {
     _injectDep(WorldRemoteDataSource());
     _injectDep(MediaRemoteDataSource());
     _injectDep(MajorRemoteDataSource());
+    _injectDep(InvoicesRemoteDataSource());
     _injectDep(HomeStatisticsDataSource());
+
 
     /// ------------------ repos ---------------------
     _injectDep<IAuthRepo>(AuthRepo(findDep()));
