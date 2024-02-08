@@ -31,7 +31,7 @@ class GuestRemoteDataSource {
           .map((conslutation) => Consultation.fromJson(conslutation))
           .toList(),
       method: HttpMethod.GET,
-      url: Network.consultations,
+      url: Network.guestConsultations,
     );
   }
 }
