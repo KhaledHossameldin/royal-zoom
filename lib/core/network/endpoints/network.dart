@@ -24,6 +24,7 @@ class Network {
   static const statistics = '$_apiPath/user/invoices/statistics';
   static const upload = '$_apiPath/upload';
   static const consultations = '$_apiPath/user/consultations';
+  static const guestConsultations = '$_apiPath/user/consultations';
   static const homeStatistics = '$_apiPath/user/statistics';
   static const lastConsultations = '$_apiPath/user/home/last-consultations';
   static const chats = '$_apiPath/user/chats';
