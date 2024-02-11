@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:just_audio/just_audio.dart';
 
+import '../../../core/models/base_entity.dart';
+import '../../../core/models/base_model.dart';
+import '../../../domain/entities/consultation_entity.dart';
 import '../../../utilities/extensions.dart';
 import '../../enums/consultant_response_type.dart';
 import '../../enums/consultation_content_type.dart';
@@ -10,7 +13,7 @@ import '../../enums/consultation_visibility_status.dart';
 import '../consultants/consultant.dart';
 import '../major.dart';
 
-class Consultation {
+class Consultation extends BaseModel {
   final int id;
   final String uuid;
   final int majorId;
@@ -296,6 +299,33 @@ class Consultation {
         consultant.hashCode ^
         address.hashCode ^
         audioPlayer.hashCode;
+  }
+
+  @override
+  BaseEntity toEntity() {
+    return ConsultationEntity(
+        id: id,
+        uuid: uuid,
+        majorId: majorId,
+        userId: userId,
+        contentType: contentType,
+        content: content,
+        responseType: responseType,
+        maximumPrice: maximumPrice,
+        isAcceptingOffersFromAll: isAcceptingOffersFromAll,
+        isHelpRequested: isHelpRequested,
+        isHideNameFromConsultants: isHideNameFromConsultants,
+        isAcceptMinimumOfferByDefault: isAcceptMinimumOfferByDefault,
+        attendeeNumber: attendeeNumber,
+        status: status,
+        isPaid: isPaid,
+        isUnscheduled: isUnscheduled,
+        visibilityStatus: visibilityStatus,
+        publishedAt: publishedAt,
+        createdAt: createdAt,
+        isFavourite: isFavourite,
+        isFastConsultation: isFastConsultation,
+        major: major);
   }
 }
 

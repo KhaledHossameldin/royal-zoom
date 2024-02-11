@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import '../../core/models/base_entity.dart';
+import '../../core/models/base_model.dart';
+import '../../domain/entities/major_entity.dart';
 import '../enums/major_type.dart';
 
-class Major {
+class Major extends BaseModel {
   final int id;
   final String uuid;
   final int? parentId;
@@ -133,6 +136,23 @@ class Major {
       createdAt.hashCode ^
       image.hashCode ^
       parent.hashCode;
+
+  @override
+  BaseEntity toEntity() {
+    return MajorEntity(
+      id: id,
+      uuid: uuid,
+      type: type,
+      name: name,
+      description: description,
+      isActive: isActive,
+      isVisible: isVisible,
+      createdAt: createdAt,
+      image: image,
+      parent: parent,
+      parentId: parentId,
+    );
+  }
 }
 
 class _MajorContract {
