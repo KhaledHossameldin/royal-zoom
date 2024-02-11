@@ -1,5 +1,5 @@
-import '../../core/models/empty_entity.dart';
 import '../../core/results/result.dart';
+import '../entities/user_entity.dart';
 import '../repositories/general/auth_repo_i.dart';
 
 class RegisterUseCase implements IRegisterUsecase {
@@ -7,7 +7,7 @@ class RegisterUseCase implements IRegisterUsecase {
   final IAuthRepo _authRepo;
 
   @override
-  Future<Result<EmptyEntity>> call(
+  Future<Result<UserEntity>> call(
       {required String username,
       required String password,
       required String confirm}) async {
@@ -17,7 +17,7 @@ class RegisterUseCase implements IRegisterUsecase {
 }
 
 abstract class IRegisterUsecase {
-  Future<Result<EmptyEntity>> call({
+  Future<Result<UserEntity>> call({
     required String username,
     required String password,
     required String confirm,

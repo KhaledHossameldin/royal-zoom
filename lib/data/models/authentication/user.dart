@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import '../../../core/models/base_entity.dart';
+import '../../../core/models/base_model.dart';
+import '../../../domain/entities/user_entity.dart';
 import '../../services/repository.dart';
 import 'user_data.dart';
 
-class User {
+class User extends BaseModel {
   UserData data;
   final String token;
 
@@ -51,6 +54,11 @@ class User {
 
   @override
   int get hashCode => data.hashCode ^ token.hashCode;
+
+  @override
+  BaseEntity toEntity() {
+    return UserEntity(id: data.id, email: data.email, phone: data.phone);
+  }
 }
 
 class _UserContract {
