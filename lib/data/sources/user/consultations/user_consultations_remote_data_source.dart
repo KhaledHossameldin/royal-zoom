@@ -5,7 +5,6 @@ import '../../../../core/network/http_method.dart';
 import '../../../../core/results/result.dart';
 import '../../../enums/consultant_response_type.dart';
 import '../../../models/consultations/consultation.dart';
-import '../../../models/consultations/fast.dart';
 import '../../../models/consultations/favorite.dart';
 
 class UserConsultationRemoteDataSource {

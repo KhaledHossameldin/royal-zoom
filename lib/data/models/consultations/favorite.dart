@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import '../../../core/models/base_entity.dart';
+import '../../../core/models/base_model.dart';
+import '../../../domain/entities/fav_consultation_entitiy.dart';
 import '../favorite_category.dart';
 import 'consultation.dart';
 
-class FavoriteConsultation {
+class FavoriteConsultation extends BaseModel {
   final int id;
   final int consultationId;
   final int? favoriteCategoryId;
@@ -87,6 +90,12 @@ class FavoriteConsultation {
         favoriteCategoryId.hashCode ^
         consultation.hashCode ^
         favoriteCategory.hashCode;
+  }
+
+  @override
+  BaseEntity toEntity() {
+    return FavoriteConsultationEntity(
+        id: id, consultationId: consultationId, consultation: consultation);
   }
 }
 
