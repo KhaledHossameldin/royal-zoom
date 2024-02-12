@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import 'blocs/authentication/authentication_bloc.dart';
 import 'blocs/reset_password/reset_password_bloc.dart';
@@ -88,7 +89,7 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         buildWhen: (previous, current) => previous != current,
-        builder: (context, locale) => MaterialApp(
+        builder: (context, locale) => GetMaterialApp(
           title: 'Royake',
           debugShowCheckedModeBanner: false,
           initialRoute: initialRoute,

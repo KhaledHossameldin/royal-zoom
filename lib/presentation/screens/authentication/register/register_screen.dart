@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
 import '../../../../core/di/di_manager.dart';
@@ -9,8 +8,8 @@ import '../../../../core/states/base_fail_state.dart';
 import '../../../../core/states/base_success_state.dart';
 import '../../../../core/states/base_wait_state.dart';
 import '../../../../core/utils/ui/snackbar/custom_snack_bar.dart';
-import '../../../../cubits/general/auth/auth_cubit.dart';
-import '../../../../cubits/general/auth/auth_state.dart';
+import 'cubit/register_cubit.dart';
+import 'cubit/register_state.dart';
 import '../../../../data/enums/email_phone.dart';
 import '../../../../data/services/location_services.dart';
 import '../../../../data/services/repository.dart';
@@ -169,13 +168,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   //     },
   //   );
   // }
-  BlocConsumer<AuthCubit, AuthState> _buildConfirmButton() {
+  BlocConsumer<RegisterCubit, RegisterState> _buildConfirmButton() {
     final appLocalizations = AppLocalizations.of(context);
 
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocConsumer<RegisterCubit, RegisterState>(
       // buildWhen: (previous, current) => current.step == 1,
       // listenWhen: (previous, current) => current.step == 1,
-      bloc: DIManager.findDep<AuthCubit>(),
+      bloc: DIManager.findDep<RegisterCubit>(),
       listener: (context, state) {
         final register = state.registerState;
         if (register is BaseFailState) {
@@ -203,7 +202,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onPressed: () {
               final isValid = _formKey.currentState!.validate();
               if (isValid) {
-                DIManager.findDep<AuthCubit>().register(
+                DIManager.findDep<RegisterCubit>().register(
                   username: _getUsername(),
                   password: _password.text,
                   confirm: _confirm.text,

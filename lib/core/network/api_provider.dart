@@ -45,6 +45,7 @@ class ApiProvider {
     Map<String, dynamic>? queryParameters,
     bool saveToken = false,
     FormData? formData,
+    bool getAllResponse = false,
   }) async {
     try {
       late Response response;
@@ -87,6 +88,9 @@ class ApiProvider {
       if (converterList != null) {
         return Result(data: converterList(response.data['data']));
       }
+      if (getAllResponse) {
+        return Result(data: converter!(response.data));
+      }
 
       return Result(data: converter!(response.data['data']));
     }
@@ -111,7 +115,8 @@ class ApiProvider {
       if (error.type == DioExceptionType.badResponse) {
         switch (error.response!.statusCode) {
           case 401:
-            return UnauthorizedError(message: error.response!.data['message']);
+            return UnauthorizedError(
+                message: error.response!.data['message'], code: 401);
           case 400:
           case 404:
             return NotFoundError(message: error.response!.data['message']);

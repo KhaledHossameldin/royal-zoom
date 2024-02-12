@@ -1,13 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/states/base_fail_state.dart';
-import '../../../core/states/base_success_state.dart';
-import '../../../core/states/base_wait_state.dart';
-import '../../../domain/usecases/register_usecase.dart';
-import 'auth_state.dart';
+import '../../../../../core/states/base_fail_state.dart';
+import '../../../../../core/states/base_success_state.dart';
+import '../../../../../core/states/base_wait_state.dart';
+import '../../../../../domain/usecases/register_usecase.dart';
+import 'register_state.dart';
 
-class AuthCubit extends Cubit<AuthState> {
-  AuthCubit({required this.registerUsecase}) : super(AuthState.initState());
+class RegisterCubit extends Cubit<RegisterState> {
+  RegisterCubit({required this.registerUsecase})
+      : super(RegisterState.initState());
 
   final IRegisterUsecase registerUsecase;
   void register(

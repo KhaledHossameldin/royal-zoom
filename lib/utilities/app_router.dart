@@ -34,7 +34,7 @@ import '../cubits/update_consultation/update_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
 import '../data/models/notifications/user_notification.dart';
 import '../presentation/screens/add_major_screen.dart';
-import '../presentation/screens/authentication/login_screen.dart';
+import '../presentation/screens/authentication/login/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
 import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
 import '../presentation/screens/authentication/register/register_screen.dart';

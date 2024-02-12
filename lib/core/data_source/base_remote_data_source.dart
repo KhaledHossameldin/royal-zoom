@@ -15,6 +15,7 @@ abstract class RemoteDataSource {
     Map<String, dynamic>? queryParameters,
     bool requiresToken = false,
     FormData? formData,
+    bool getAllResponse = false,
   }) async {
     headers ??= {};
     if (requiresToken) {
@@ -25,6 +26,7 @@ abstract class RemoteDataSource {
       converter: converter,
       converterList: converterList,
       method: method,
+      getAllResponse: getAllResponse,
       url: url,
       data: data,
       headers: headers,

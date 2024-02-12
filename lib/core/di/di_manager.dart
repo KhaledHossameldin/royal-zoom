@@ -1,8 +1,17 @@
 // ignore_for_file: unused_element
 
 import '../../app/cubit/application_bloc.dart';
-import '../../cubits/general/auth/auth_cubit.dart';
-import '../../data/di/di_data.dart';
+import '../../data/repositories_impl/general/auth_repo_impl.dart';
+import '../../data/sources/consultant/major/major_remote_data_source.dart';
+import '../../data/sources/general/auth/auth_remote_data_source.dart';
+import '../../data/sources/general/media/media_remote_data_source.dart';
+import '../../data/sources/general/world/world_remote_data_source.dart';
+import '../../data/sources/user/home_statistics/statistics_remote_data_source.dart';
+import '../../data/sources/user/invoices/invoices_remote_data_source.dart';
+import '../../domain/repositories/general/auth_repo_i.dart';
+import '../../domain/usecases/login_usecase.dart';
+import '../../presentation/screens/authentication/login/cubit/login_cubit.dart';
+import '../../presentation/screens/authentication/register/cubit/register_cubit.dart';
 import '../../domain/usecases/register_usecase.dart';
 import '../constants/app_colors.dart';
 import '../navigator/app_navigator.dart';
@@ -15,18 +24,33 @@ class DIManager {
   DIManager._();
   static Future<void> initDI() async {
     /// -------------- Setup -------------------
-    injectDep(NetworkModule.provideDio());
-    injectDep(ApplicationCubit());
-    injectDep(AppNavigator());
-    injectDep(AppColorsController());
+    _injectDep(NetworkModule.provideDio());
+    _injectDep(ApplicationCubit());
+    _injectDep(AppNavigator());
+    _injectDep(AppColorsController());
     // data layer
-    diData();
+    _injectDep(AuthRemoteDataSource());
+    _injectDep(WorldRemoteDataSource());
+    _injectDep(MediaRemoteDataSource());
+    _injectDep(MajorRemoteDataSource());
+    _injectDep(InvoicesRemoteDataSource());
+    _injectDep(StatisticsDataSource());
+
+    /// ------------------ repos ---------------------
+    _injectDep<IAuthRepo>(AuthRepo(findDep()));
 
     ///  ----------------- usecases ----------------
-    injectDep<IRegisterUsecase>(RegisterUseCase(findDep()));
+    _injectDep<IRegisterUsecase>(RegisterUseCase(findDep()));
+    _injectDep<ILoginUseCase>(LoginUseCase(findDep()));
 
     /// ------------------ cubits ----------------
-    injectDep(AuthCubit(registerUsecase: findDep()));
+    _injectDep(RegisterCubit(registerUsecase: findDep()));
+    _injectDep(LoginCubit(findDep()));
+  }
+
+  static T _injectDep<T extends Object>(T dependency) {
+    getIt.registerSingleton<T>(dependency);
+    return getIt<T>();
   }
 
   static T findDep<T extends Object>() {
@@ -48,9 +72,4 @@ class DIManager {
   static dispose() {
     findAC().close();
   }
-}
-
-T injectDep<T extends Object>(T dependency) {
-  getIt.registerSingleton<T>(dependency);
-  return getIt<T>();
 }

@@ -1,3 +1,5 @@
+import 'package:logger/logger.dart';
+
 import '../../../../core/data_source/base_remote_data_source.dart';
 import '../../../../core/models/empty_model.dart';
 import '../../../../core/network/http_method.dart';
@@ -27,13 +29,16 @@ class AuthRemoteDataSource {
     required String password,
   }) async {
     return RemoteDataSource.request(
-      converter: (model) => User.fromJson(model),
+      converter: (model) {
+        return User.fromMap(model);
+      },
       method: HttpMethod.POST,
       url: Network.login,
       data: {
         'username': username,
         'password': password,
       },
+      getAllResponse: true,
     );
   }
 

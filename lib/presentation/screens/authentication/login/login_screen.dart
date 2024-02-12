@@ -2,17 +2,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../blocs/authentication/authentication_bloc.dart';
-import '../../../constants/brand_colors.dart';
-import '../../../constants/routes.dart';
-import '../../../data/enums/user_type.dart';
-import '../../../data/services/location_services.dart';
-import '../../../data/services/repository.dart';
-import '../../../localization/app_localizations.dart';
-import '../../../utilities/countries.dart';
-import '../../../utilities/extensions.dart';
-import '../../../utilities/validators.dart';
-import '../../widgets/copyright.dart';
+import '../../../../constants/brand_colors.dart';
+import '../../../../constants/routes.dart';
+import '../../../../core/di/di_manager.dart';
+import '../../../../core/states/base_fail_state.dart';
+import '../../../../core/states/base_success_state.dart';
+import '../../../../core/states/base_wait_state.dart';
+import '../../../../core/utils/ui/snackbar/custom_snack_bar.dart';
+import '../../../../data/enums/user_type.dart';
+import '../../../../data/models/authentication/user.dart';
+import '../../../../data/services/location_services.dart';
+import '../../../../data/services/repository.dart';
+import '../../../../domain/entities/user_entity.dart';
+import '../../../../localization/app_localizations.dart';
+import '../../../../utilities/countries.dart';
+import '../../../../utilities/extensions.dart';
+import '../../../../utilities/validators.dart';
+import '../../../widgets/copyright.dart';
+import 'cubit/login_cubit.dart';
+import 'cubit/login_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -44,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen>
     if (kDebugMode) {
       _controller.index = 0;
       _isPhone.value = false;
-      _email.text = 'khaled10@royake.com';
+      _email.text = 'royake_test@mailinator.com';
       _password.text = '123456789';
     }
     super.initState();
@@ -149,55 +157,109 @@ class _LoginScreenState extends State<LoginScreen>
     return isValid;
   }
 
-  BlocConsumer<AuthenticationBloc, AuthenticationState> _buildLoginButton() {
+  // BlocConsumer<AuthenticationBloc, AuthenticationState> _buildLoginButton() {
+  //   final appLocalizations = AppLocalizations.of(context);
+
+  //   return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+  //     buildWhen: (previous, current) => current.step == 0,
+  //     listenWhen: (previous, current) => current.step == 0,
+  //     listener: (context, state) {
+  //       if (state is AuthenticationError) {
+  //         if (state.isOTP) {
+  //           Navigator.pushNamed(
+  //             context,
+  //             Routes.otp,
+  //             arguments: {
+  //               'username': _getUsername(),
+  //               'isRegister': true,
+  //             },
+  //           );
+  //           return;
+  //         }
+  //         state.message.showSnackbar(
+  //           context,
+  //           color: Colors.red,
+  //         );
+  //       } else if (state is AuthenticationLoaded) {
+  //         Navigator.pushReplacementNamed(
+  //           context,
+  //           (state.user?.data.type ?? UserType.normal) == UserType.normal
+  //               ? Routes.home
+  //               : Routes.userTypeChoose,
+  //         );
+  //       }
+  //     },
+  //     builder: (context, state) {
+  //       return IgnorePointer(
+  //         ignoring: state is AuthenticationLoading,
+  //         child: ElevatedButton(
+  //           onPressed: () {
+  //             bool isValid = _validateForm();
+  //             if (isValid) {
+  //               context.read<AuthenticationBloc>().add(AuthenticationLogin(
+  //                     context,
+  //                     username: _getUsername(),
+  //                     password: _password.text,
+  //                     isRemember: _isRemember,
+  //                   ));
+  //             }
+  //           },
+  //           child: Builder(builder: (context) {
+  //             if (state is AuthenticationLoading) {
+  //               return const CircularProgressIndicator(
+  //                 color: Colors.white,
+  //               );
+  //             }
+  //             return Text(appLocalizations.login);
+  //           }),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  BlocConsumer<LoginCubit, LoginState> _buildLoginButton() {
     final appLocalizations = AppLocalizations.of(context);
 
-    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
-      buildWhen: (previous, current) => current.step == 0,
-      listenWhen: (previous, current) => current.step == 0,
+    return BlocConsumer<LoginCubit, LoginState>(
+      // buildWhen: (previous, current) => current.step == 0,
+      // listenWhen: (previous, current) => current.step == 0,
+      bloc: DIManager.findDep<LoginCubit>(),
       listener: (context, state) {
-        if (state is AuthenticationError) {
-          if (state.isOTP) {
-            Navigator.pushNamed(
-              context,
-              Routes.otp,
-              arguments: {
-                'username': _getUsername(),
-                'isRegister': true,
-              },
-            );
-            return;
-          }
-          state.message.showSnackbar(
-            context,
-            color: Colors.red,
-          );
-        } else if (state is AuthenticationLoaded) {
-          Navigator.pushReplacementNamed(
-            context,
-            (state.user?.data.type ?? UserType.normal) == UserType.normal
+        final login = state.loginState;
+        if (login is BaseSuccessState) {
+          DIManager.findNavigator().pushReplacementNamed(
+            ((login.data as UserEntity).type ?? UserType.normal) ==
+                    UserType.normal
                 ? Routes.home
                 : Routes.userTypeChoose,
           );
+          return;
+        }
+        if (login is BaseFailState) {
+          if (login.error!.code == 401) {
+            DIManager.findNavigator().pushNamed(Routes.otp, arguments: {
+              'username': _getUsername(),
+              'isRegister': true,
+            });
+            return;
+          }
+          CustomSnackbar.showSnackbar(login.error?.message ?? '');
         }
       },
       builder: (context, state) {
         return IgnorePointer(
-          ignoring: state is AuthenticationLoading,
+          ignoring: state.loginState is BaseLoadingState,
           child: ElevatedButton(
             onPressed: () {
               bool isValid = _validateForm();
               if (isValid) {
-                context.read<AuthenticationBloc>().add(AuthenticationLogin(
-                      context,
-                      username: _getUsername(),
-                      password: _password.text,
-                      isRemember: _isRemember,
-                    ));
+                DIManager.findDep<LoginCubit>()
+                    .login(_getUsername(), _password.text);
               }
             },
             child: Builder(builder: (context) {
-              if (state is AuthenticationLoading) {
+              if (state.loginState is BaseLoadingState) {
                 return const CircularProgressIndicator(
                   color: Colors.white,
                 );

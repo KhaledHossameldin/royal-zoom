@@ -8,7 +8,7 @@ class LoginUseCase implements ILoginUseCase {
   @override
   Future<Result<UserEntity>> call(
       {required String username, required String password}) async {
-    return _repo.login(username: username, password: password);
+    return await _repo.login(username: username, password: password);
   }
 }
 
