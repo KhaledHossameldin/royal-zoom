@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:just_audio/just_audio.dart';
 
 import '../../data/enums/consultation_content_type.dart';
-import '../../data/models/consultations/consultation.dart';
+import '../../domain/entities/consultation_entity.dart';
 
 class FormatConsultationUsecase implements IFormatConsultationUsecase {
   @override
-  Future<Consultation> call(Consultation consultation) async {
+  Future<ConsultationEntity> call(ConsultationEntity consultation) async {
     if (consultation.contentType == ConsultationContentType.voice) {
       if (Platform.isIOS &&
           !consultation.content.toLowerCase().endsWith('.aac') &&
@@ -29,5 +29,5 @@ class FormatConsultationUsecase implements IFormatConsultationUsecase {
 }
 
 abstract class IFormatConsultationUsecase {
-  Future<Consultation> call(Consultation constlustaion);
+  Future<ConsultationEntity> call(ConsultationEntity constlustaion);
 }

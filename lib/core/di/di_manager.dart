@@ -2,14 +2,7 @@
 
 import '../../app/cubit/application_bloc.dart';
 import '../../cubits/general/auth/auth_cubit.dart';
-import '../../data/repositories_impl/general/auth_repo_impl.dart';
-import '../../data/sources/consultant/major/major_remote_data_source.dart';
-import '../../data/sources/general/auth/auth_remote_data_source.dart';
-import '../../data/sources/general/media/media_remote_data_source.dart';
-import '../../data/sources/general/world/world_remote_data_source.dart';
-import '../../data/sources/user/invoices/invoices_remote_data_source.dart';
-import '../../data/sources/user/home_statistics/statistics_remote_data_source.dart';
-import '../../domain/repositories/general/auth_repo_i.dart';
+import '../../data/di/di_data.dart';
 import '../../domain/usecases/register_usecase.dart';
 import '../constants/app_colors.dart';
 import '../navigator/app_navigator.dart';
@@ -22,27 +15,18 @@ class DIManager {
   DIManager._();
   static Future<void> initDI() async {
     /// -------------- Setup -------------------
-    _injectDep(NetworkModule.provideDio());
-    _injectDep(ApplicationCubit());
-    _injectDep(AppNavigator());
-    _injectDep(AppColorsController());
-
-    /// --------------- remote data sources --------------
-    _injectDep(AuthRemoteDataSource());
-    _injectDep(WorldRemoteDataSource());
-    _injectDep(MediaRemoteDataSource());
-    _injectDep(MajorRemoteDataSource());
-    _injectDep(InvoicesRemoteDataSource());
-    _injectDep(StatisticsDataSource());
-
-    /// ------------------ repos ---------------------
-    _injectDep<IAuthRepo>(AuthRepo(findDep()));
+    injectDep(NetworkModule.provideDio());
+    injectDep(ApplicationCubit());
+    injectDep(AppNavigator());
+    injectDep(AppColorsController());
+    // data layer
+    diData();
 
     ///  ----------------- usecases ----------------
-    _injectDep<IRegisterUsecase>(RegisterUseCase(findDep()));
+    injectDep<IRegisterUsecase>(RegisterUseCase(findDep()));
 
     /// ------------------ cubits ----------------
-    _injectDep(AuthCubit(registerUsecase: findDep()));
+    injectDep(AuthCubit(registerUsecase: findDep()));
   }
 
   static T findDep<T extends Object>() {
@@ -57,11 +41,6 @@ class DIManager {
     return findDep<AppColorsController>();
   }
 
-  static T _injectDep<T extends Object>(T dependency) {
-    getIt.registerSingleton<T>(dependency);
-    return getIt<T>();
-  }
-
   static ApplicationCubit findAC() {
     return findDep<ApplicationCubit>();
   }
@@ -69,4 +48,9 @@ class DIManager {
   static dispose() {
     findAC().close();
   }
+}
+
+T injectDep<T extends Object>(T dependency) {
+  getIt.registerSingleton<T>(dependency);
+  return getIt<T>();
 }
