@@ -68,6 +68,71 @@ class ConsultationEntity extends BaseEntity {
     this.consultant,
     this.audioPlayer,
   });
+  ConsultationEntity copyWith({
+    int? id,
+    String? uuid,
+    int? majorId,
+    int? userId,
+    ConsultationContentType? contentType,
+    String? content,
+    ConsultantResponseType? responseType,
+    num? maximumPrice,
+    bool? isAcceptingOffersFromAll,
+    bool? isHelpRequested,
+    bool? isHideNameFromConsultants,
+    bool? isAcceptMinimumOfferByDefault,
+    int? attendeeNumber,
+    ConsultationStatus? status,
+    bool? isPaid,
+    bool? isUnscheduled,
+    ConsultationVisibilityStatus? visibilityStatus,
+    DateTime? publishedAt,
+    DateTime? createdAt,
+    bool? isFavourite,
+    bool? isFastConsultation,
+    Major? major,
+    int? consultantId,
+    DateTime? appointmentDate,
+    DateTime? maxTimeToReceiveOffers,
+    String? address,
+    Consultant? consultant,
+    AudioPlayer? audioPlayer,
+  }) {
+    return ConsultationEntity(
+      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
+      majorId: majorId ?? this.majorId,
+      userId: userId ?? this.userId,
+      contentType: contentType ?? this.contentType,
+      content: content ?? this.content,
+      responseType: responseType ?? this.responseType,
+      maximumPrice: maximumPrice ?? this.maximumPrice,
+      isAcceptingOffersFromAll:
+          isAcceptingOffersFromAll ?? this.isAcceptingOffersFromAll,
+      isHelpRequested: isHelpRequested ?? this.isHelpRequested,
+      isHideNameFromConsultants:
+          isHideNameFromConsultants ?? this.isHideNameFromConsultants,
+      isAcceptMinimumOfferByDefault:
+          isAcceptMinimumOfferByDefault ?? this.isAcceptMinimumOfferByDefault,
+      attendeeNumber: attendeeNumber ?? this.attendeeNumber,
+      status: status ?? this.status,
+      isPaid: isPaid ?? this.isPaid,
+      isUnscheduled: isUnscheduled ?? this.isUnscheduled,
+      visibilityStatus: visibilityStatus ?? this.visibilityStatus,
+      publishedAt: publishedAt ?? this.publishedAt,
+      createdAt: createdAt ?? this.createdAt,
+      isFavourite: isFavourite ?? this.isFavourite,
+      isFastConsultation: isFastConsultation ?? this.isFastConsultation,
+      major: major ?? this.major,
+      consultantId: consultantId ?? this.consultantId,
+      appointmentDate: appointmentDate ?? this.appointmentDate,
+      maxTimeToReceiveOffers:
+          maxTimeToReceiveOffers ?? this.maxTimeToReceiveOffers,
+      address: address ?? this.address,
+      consultant: consultant ?? this.consultant,
+      audioPlayer: audioPlayer ?? this.audioPlayer,
+    );
+  }
 
   @override
   List<Object?> get props => [
