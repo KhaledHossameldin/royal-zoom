@@ -13,7 +13,6 @@ class CustomSnackbar {
     Get.snackbar('', '',
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 5),
-        borderRadius: 5.width,
         animationDuration: const Duration(seconds: 1),
         backgroundColor: DIManager.findCC().primaryColor.withOpacity(0.9),
         isDismissible: false,

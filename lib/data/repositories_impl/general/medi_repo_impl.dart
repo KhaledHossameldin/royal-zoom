@@ -3,7 +3,7 @@ import 'dart:io';
 import '../../../core/base_repo/base_repository.dart';
 import '../../../core/results/result.dart';
 import '../../../domain/repositories/general/media_repo_i.dart';
-import '../../sources/general/media/media_remote_data_source.dart';
+import '../../sources/remote/general/media/media_remote_data_source.dart';
 
 class MediaRepo extends BaseRepository implements IMediaRepo {
   final MediaRemoteDataSource _mRD;

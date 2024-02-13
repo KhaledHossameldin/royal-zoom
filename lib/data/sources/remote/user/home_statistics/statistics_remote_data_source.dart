@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import '../../../../core/data_source/base_remote_data_source.dart';
-import '../../../../core/network/endpoints/network.dart';
-import '../../../../core/network/http_method.dart';
-import '../../../../core/results/result.dart';
-import '../../../models/home_statistics.dart';
+import '../../../../../core/data_source/base_remote_data_source.dart';
+import '../../../../../core/network/endpoints/network.dart';
+import '../../../../../core/network/http_method.dart';
+import '../../../../../core/results/result.dart';
+import '../../../../models/home_statistics.dart';
 
 class StatisticsDataSource {
   Future<Result<HomeStatistics>> getHomeStatistics() async {

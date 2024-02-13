@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import 'blocs/authentication/authentication_bloc.dart';
 import 'blocs/reset_password/reset_password_bloc.dart';
@@ -16,6 +17,7 @@ import 'cubits/switch/switch_cubit.dart';
 import 'data/enums/user_type.dart';
 import 'data/models/authentication/user.dart';
 import 'data/services/repository.dart';
+import 'data/sources/local/shared_prefs.dart';
 import 'localization/app_localizations_setup.dart';
 import 'utilities/app_router.dart';
 
@@ -31,11 +33,13 @@ Future<List<dynamic>> _getStartValues() async {
   final savedLocale = values[0] as String;
   final isNotification = (values[1] as bool);
   final isLocation = (values[2] as bool);
-  final user = await Repository.instance.getUser();
-  final type = await Repository.instance.getUserType();
+  final user = await DIManager.findDep<SharedPrefs>().getUser();
+  final type = await DIManager.findDep<SharedPrefs>().getUserType();
   if (isNotification && isLocation) {
     if (user != null) {
       initialRoute = Routes.home;
+
+      Logger().d(type);
     } else {
       initialRoute = Routes.login;
     }

@@ -4,7 +4,7 @@ import '../../../domain/entities/consultation_entity.dart';
 import '../../../domain/entities/major_entity.dart';
 import '../../../domain/repositories/general/guest_repo_i.dart';
 import '../../models/consultants/consultant.dart';
-import '../../sources/general/guest/guest_remote_data_source.dart';
+import '../../sources/remote/general/guest/guest_remote_data_source.dart';
 
 class GuestRepo extends BaseRepository implements IGuestRepo {
   final GuestRemoteDataSource _gRD;

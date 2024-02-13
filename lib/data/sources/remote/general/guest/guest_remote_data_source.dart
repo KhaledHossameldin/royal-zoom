@@ -1,10 +1,10 @@
-import '../../../../core/data_source/base_remote_data_source.dart';
-import '../../../../core/network/endpoints/network.dart';
-import '../../../../core/network/http_method.dart';
-import '../../../../core/results/result.dart';
-import '../../../models/consultants/consultant.dart';
-import '../../../models/consultations/consultation.dart';
-import '../../../models/major.dart';
+import '../../../../../core/data_source/base_remote_data_source.dart';
+import '../../../../../core/network/endpoints/network.dart';
+import '../../../../../core/network/http_method.dart';
+import '../../../../../core/results/result.dart';
+import '../../../../models/consultants/consultant.dart';
+import '../../../../models/consultations/consultation.dart';
+import '../../../../models/major.dart';
 
 class GuestRemoteDataSource {
   Future<Result<List<Major>>> getMajors() async {

@@ -1,11 +1,11 @@
-import '../../../../core/data_source/base_remote_data_source.dart';
-import '../../../../core/models/empty_model.dart';
-import '../../../../core/network/endpoints/network.dart';
-import '../../../../core/network/http_method.dart';
-import '../../../../core/results/result.dart';
-import '../../../enums/consultant_response_type.dart';
-import '../../../models/consultations/consultation.dart';
-import '../../../models/consultations/favorite.dart';
+import '../../../../../core/data_source/base_remote_data_source.dart';
+import '../../../../../core/models/empty_model.dart';
+import '../../../../../core/network/endpoints/network.dart';
+import '../../../../../core/network/http_method.dart';
+import '../../../../../core/results/result.dart';
+import '../../../../enums/consultant_response_type.dart';
+import '../../../../models/consultations/consultation.dart';
+import '../../../../models/consultations/favorite.dart';
 
 class UserConsultationRemoteDataSource {
   Future<Result<List<Consultation>>> getUserConsultations() async {

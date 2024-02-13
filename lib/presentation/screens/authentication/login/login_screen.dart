@@ -10,7 +10,6 @@ import '../../../../core/states/base_success_state.dart';
 import '../../../../core/states/base_wait_state.dart';
 import '../../../../core/utils/ui/snackbar/custom_snack_bar.dart';
 import '../../../../data/enums/user_type.dart';
-import '../../../../data/models/authentication/user.dart';
 import '../../../../data/services/location_services.dart';
 import '../../../../data/services/repository.dart';
 import '../../../../domain/entities/user_entity.dart';
@@ -255,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen>
               bool isValid = _validateForm();
               if (isValid) {
                 DIManager.findDep<LoginCubit>()
-                    .login(_getUsername(), _password.text);
+                    .login(_getUsername(), _password.text, _isRemember);
               }
             },
             child: Builder(builder: (context) {

@@ -3,11 +3,13 @@ import '../../../core/models/empty_entity.dart';
 import '../../../core/results/result.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/repositories/general/auth_repo_i.dart';
-import '../../sources/general/auth/auth_remote_data_source.dart';
+import '../../sources/local/shared_prefs.dart';
+import '../../sources/remote/general/auth/auth_remote_data_source.dart';
 
 class AuthRepo extends BaseRepository implements IAuthRepo {
-  AuthRepo(this._aRD);
+  AuthRepo(this._aRD, this._prefs);
   final AuthRemoteDataSource _aRD;
+  final SharedPrefs _prefs;
   @override
   Future<Result<UserEntity>> register(
       {required String username,
@@ -39,15 +41,27 @@ class AuthRepo extends BaseRepository implements IAuthRepo {
   }
 
   @override
-  Future<Result<UserEntity>> login(
-      {required String username, required String password}) async {
+  Future<Result<UserEntity>> login({
+    required String username,
+    required String password,
+    required bool isRemember,
+  }) async {
     final result = await _aRD.login(username: username, password: password);
+    if (result.hasDataOnly) {
+      await _prefs.setToken(result.data!.token);
+      if (isRemember) {
+        await _prefs.setUser(result.data!);
+        await _prefs.setUserData(result.data!.data, result.data!.data.type);
+        await _prefs.setUserType(result.data!.data.type);
+      }
+    }
     return mapModelToEntity(result);
   }
 
   @override
   Future<Result<EmptyEntity>> logout() async {
     final result = await _aRD.logout();
+    await _prefs.removeUser();
     return mapModelToEntity(result);
   }
 

@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 
 import '../../../core/results/result.dart';
+import '../../data/sources/local/shared_prefs.dart';
+import '../di/di_manager.dart';
 import '../network/api_provider.dart';
 import '../network/http_method.dart';
 
@@ -18,10 +20,10 @@ abstract class RemoteDataSource {
     bool getAllResponse = false,
   }) async {
     headers ??= {};
-    if (requiresToken) {
-      // headers[AppEndpoints.Authorization] =
-      // 'Bearer ${DIManager.findDep<SharedPrefs>().getToken()}';
-    }
+
+    headers['Authorization'] =
+        await DIManager.findDep<SharedPrefs>().getToken();
+
     return await ApiProvider.sendObjectRequest<MODEL>(
       converter: converter,
       converterList: converterList,

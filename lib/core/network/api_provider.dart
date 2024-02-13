@@ -84,7 +84,6 @@ class ApiProvider {
           );
           break;
       }
-
       if (converterList != null) {
         return Result(data: converterList(response.data['data']));
       }

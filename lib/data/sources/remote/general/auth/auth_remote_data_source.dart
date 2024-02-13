@@ -1,11 +1,9 @@
-import 'package:logger/logger.dart';
-
-import '../../../../core/data_source/base_remote_data_source.dart';
-import '../../../../core/models/empty_model.dart';
-import '../../../../core/network/http_method.dart';
-import '../../../../core/results/result.dart';
-import '../../../../core/network/endpoints/network.dart';
-import '../../../models/authentication/user.dart';
+import '../../../../../core/data_source/base_remote_data_source.dart';
+import '../../../../../core/models/empty_model.dart';
+import '../../../../../core/network/http_method.dart';
+import '../../../../../core/results/result.dart';
+import '../../../../../core/network/endpoints/network.dart';
+import '../../../../models/authentication/user.dart';
 
 class AuthRemoteDataSource {
   Future<Result<EmptyModel>> register({

@@ -6,9 +6,13 @@ class LoginUseCase implements ILoginUseCase {
   final IAuthRepo _repo;
   LoginUseCase(this._repo);
   @override
-  Future<Result<UserEntity>> call(
-      {required String username, required String password}) async {
-    return await _repo.login(username: username, password: password);
+  Future<Result<UserEntity>> call({
+    required String username,
+    required String password,
+    required bool isRemember,
+  }) async {
+    return await _repo.login(
+        username: username, password: password, isRemember: isRemember);
   }
 }
 
@@ -16,5 +20,6 @@ abstract class ILoginUseCase {
   Future<Result<UserEntity>> call({
     required String username,
     required String password,
+    required bool isRemember,
   });
 }

@@ -4,7 +4,7 @@ import '../../../domain/repositories/user/invoices_repo_i.dart';
 import '../../enums/invoice_type.dart';
 import '../../models/invoices/invoicable/filter.dart';
 import '../../models/invoices/invoice.dart';
-import '../../sources/user/invoices/invoices_remote_data_source.dart';
+import '../../sources/remote/user/invoices/invoices_remote_data_source.dart';
 
 class InvoiceRepo extends BaseRepository implements IInvoiceRepo {
   final InvoicesRemoteDataSource _iRD;
