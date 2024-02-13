@@ -12,6 +12,7 @@ abstract class IAuthRepo {
   Future<Result<UserEntity>> login({
     required String username,
     required String password,
+    required bool isRemember,
   });
 
   Future<Result<EmptyEntity>> logout();

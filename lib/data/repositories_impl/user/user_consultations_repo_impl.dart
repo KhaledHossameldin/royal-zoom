@@ -5,7 +5,7 @@ import '../../../domain/entities/consultation_entity.dart';
 import '../../../domain/entities/fav_consultation_entitiy.dart';
 import '../../../domain/repositories/user/user_consultations_repo_i.dart';
 import '../../enums/consultant_response_type.dart';
-import '../../sources/user/consultations/user_consultations_remote_data_source.dart';
+import '../../sources/remote/user/consultations/user_consultations_remote_data_source.dart';
 
 class UserConsultationRepo extends BaseRepository
     implements IUserConsultationRepo {

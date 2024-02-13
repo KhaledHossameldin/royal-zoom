@@ -34,7 +34,7 @@ import '../cubits/update_consultation/update_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
 import '../data/models/notifications/user_notification.dart';
 import '../presentation/screens/add_major_screen.dart';
-import '../presentation/screens/authentication/login_screen.dart';
+import '../presentation/screens/authentication/login/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
 import '../presentation/screens/authentication/register/privacy_policy_screen.dart';
 import '../presentation/screens/authentication/register/register_screen.dart';
@@ -44,7 +44,7 @@ import '../presentation/screens/authentication/register/terms_and_conditions_scr
 import '../presentation/screens/authentication/reset_password/details_screen.dart';
 import '../presentation/screens/authentication/reset_password/reset_screen.dart';
 import '../presentation/screens/authentication/reset_password/success_screen.dart';
-import '../presentation/screens/authentication/user_type_choose_screen.dart';
+import '../presentation/screens/authentication/login/user_type_choose_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/appointments/appointments_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/appointments/filter_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/consultants_screen.dart';

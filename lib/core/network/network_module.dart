@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 
+import '../../data/sources/local/shared_prefs.dart';
+import '../di/di_manager.dart';
 import 'endpoints/network.dart';
 
 abstract class NetworkModule {
@@ -12,6 +14,8 @@ abstract class NetworkModule {
           const Duration(seconds: Network.connectionTimeout)
       ..options.headers.putIfAbsent('Content-Type', () => 'application/json')
       ..options.headers.putIfAbsent('Accept', () => 'application/json')
+      ..options.headers.putIfAbsent('Authorization',
+          () async => await DIManager.findDep<SharedPrefs>().getToken())
       ..options.receiveTimeout =
           const Duration(seconds: Network.receiveTimeout);
     dio.interceptors.clear();

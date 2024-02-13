@@ -57,7 +57,8 @@ class User extends BaseModel {
 
   @override
   BaseEntity toEntity() {
-    return UserEntity(id: data.id, email: data.email, phone: data.phone);
+    return UserEntity(
+        id: data.id, email: data.email, phone: data.phone, type: data.type);
   }
 }
 

@@ -6,7 +6,7 @@ import '../../models/authentication/country.dart';
 import '../../models/authentication/currency.dart';
 import '../../models/authentication/language.dart';
 import '../../models/authentication/timezone.dart';
-import '../../sources/general/world/world_remote_data_source.dart';
+import '../../sources/remote/general/world/world_remote_data_source.dart';
 
 class WorldRepo extends BaseRepository implements IWorldRepo {
   final WorldRemoteDataSource _wRD;
