@@ -33,8 +33,8 @@ Future<List<dynamic>> _getStartValues() async {
   final savedLocale = values[0] as String;
   final isNotification = (values[1] as bool);
   final isLocation = (values[2] as bool);
-  final user = await DIManager.findDep<SharedPrefs>().getUser();
-  final type = await DIManager.findDep<SharedPrefs>().getUserType();
+  final user = DIManager.findDep<SharedPrefs>().getUser();
+  final type = DIManager.findDep<SharedPrefs>().getUserType();
   if (isNotification && isLocation) {
     if (user != null) {
       initialRoute = Routes.home;

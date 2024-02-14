@@ -1,16 +1,17 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/brand_colors.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
-import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/routes.dart';
+import '../../../core/di/di_manager.dart';
+import '../../../data/enums/user_type.dart';
+import '../../../data/sources/local/shared_prefs.dart';
 import '../consultations/consultations_screen.dart';
 import 'chat_screen.dart';
 import '../consultants/consultants_screen.dart';
-import 'main_screen.dart';
+import 'main/main_screen.dart';
 import 'profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,14 +26,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthenticationBloc>().user;
+    final user = DIManager.findDep<SharedPrefs>().getUserType();
 
     return Scaffold(
       body: ValueListenableBuilder(
         valueListenable: _index,
         builder: (context, value, child) {
           if (_index.value == 0) {
-            if (user == null) {
+            if (user == UserType.consultant) {
               return const ConsultantsScreen();
             }
             return MainScreen(index: _index);
@@ -51,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Theme _buildBottomNavigationBar() {
     final theme = Theme.of(context);
-    final user = context.read<AuthenticationBloc>().user;
+    final user = DIManager.findDep<SharedPrefs>().getUser();
     final appLocalizations = AppLocalizations.of(context);
 
     return Theme(
