@@ -48,11 +48,11 @@ class AuthRepo extends BaseRepository implements IAuthRepo {
   }) async {
     final result = await _aRD.login(username: username, password: password);
     if (result.hasDataOnly) {
-      await _prefs.setToken(result.data!.token);
+      _prefs.setToken(result.data!.token);
       if (isRemember) {
-        await _prefs.setUser(result.data!);
-        await _prefs.setUserData(result.data!.data, result.data!.data.type);
-        await _prefs.setUserType(result.data!.data.type);
+        _prefs.setUser(result.data!);
+        _prefs.setUserData(result.data!.data, result.data!.data.type);
+        _prefs.setUserType(result.data!.data.type);
       }
     }
     return mapModelToEntity(result);
@@ -61,7 +61,7 @@ class AuthRepo extends BaseRepository implements IAuthRepo {
   @override
   Future<Result<EmptyEntity>> logout() async {
     final result = await _aRD.logout();
-    await _prefs.removeUser();
+    _prefs.removeUser();
     return mapModelToEntity(result);
   }
 

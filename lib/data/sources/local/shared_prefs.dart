@@ -10,98 +10,92 @@ import '../../models/authentication/user.dart';
 import '../../models/authentication/user_data.dart';
 
 class SharedPrefs {
-  Future<void> setLocale(String languageCode) async {
-    final preferences = await SharedPreferences.getInstance();
-    preferences.setString(PreferencesKeys.locale, languageCode);
+  late SharedPreferences _preferences;
+
+  Future<void> init() async {
+    _preferences = await SharedPreferences.getInstance();
+  }
+
+  void setLocale(String languageCode) {
+    _preferences.setString(PreferencesKeys.locale, languageCode);
     Intl.defaultLocale = languageCode;
   }
 
-  Future<String> getLocale() async {
+  String getLocale() {
     if (kDebugMode) {
       Intl.defaultLocale = 'ar';
       return 'ar';
     }
-    final preferences = await SharedPreferences.getInstance();
-    final code = preferences.getString(PreferencesKeys.locale) ??
+
+    final code = _preferences.getString(PreferencesKeys.locale) ??
         Platform.localeName.substring(0, 2);
     Intl.defaultLocale = code;
     return code;
   }
 
-  Future<bool> getNotifications() async {
-    final preferences = await SharedPreferences.getInstance();
-    return preferences.getBool(PreferencesKeys.notifications) ?? false;
+  bool getNotifications() {
+    return _preferences.getBool(PreferencesKeys.notifications) ?? false;
   }
 
-  Future<void> setNotifications() async {
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(PreferencesKeys.notifications, true);
+  void setNotifications() {
+    _preferences.setBool(PreferencesKeys.notifications, true);
   }
 
-  Future<bool> getLocation() async {
-    final preferences = await SharedPreferences.getInstance();
-    return preferences.getBool(PreferencesKeys.location) ?? false;
+  bool getLocation() {
+    return _preferences.getBool(PreferencesKeys.location) ?? false;
   }
 
-  Future<void> setLocation() async {
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(PreferencesKeys.location, true);
+  void setLocation() {
+    _preferences.setBool(PreferencesKeys.location, true);
   }
 
-  Future<void> setToken(String token) async {
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.setString(PreferencesKeys.token, token);
+  void setToken(String token) {
+    _preferences.setString(PreferencesKeys.token, token);
   }
 
-  Future<String> getToken() async {
-    final preferences = await SharedPreferences.getInstance();
-    final token = preferences.getString(PreferencesKeys.token) ?? '';
+  String getToken() {
+    final token = _preferences.getString(PreferencesKeys.token) ?? '';
     return 'Bearer $token';
   }
 
-  Future<void> setUser(User user) async {
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.setString(PreferencesKeys.user, user.toJson());
+  void setUser(User user) {
+    _preferences.setString(PreferencesKeys.user, user.toJson());
   }
 
-  Future<User?> getUser() async {
-    final preferences = await SharedPreferences.getInstance();
-    final userJson = preferences.getString(PreferencesKeys.user);
+  User? getUser() {
+    final userJson = _preferences.getString(PreferencesKeys.user);
     if (userJson == null) {
       return null;
     }
     return User.fromJson(userJson);
   }
 
-  Future<void> removeUser() async {
-    final preferences = await SharedPreferences.getInstance();
-    await Future.wait([
-      preferences.remove(PreferencesKeys.user),
-      preferences.remove(PreferencesKeys.type),
+  void removeUser() {
+    Future.wait([
+      _preferences.remove(PreferencesKeys.user),
+      _preferences.remove(PreferencesKeys.type),
     ]);
   }
 
-  Future<void> setUserData(UserData data, UserType type) async {
-    final user = await getUser();
+  void setUserData(UserData data, UserType type) {
+    final user = getUser();
     if (user == null) {
       return;
     }
-    await Future.wait([setUser(user.copyWith(data: data)), setUserType(type)]);
+    setUser(user.copyWith(data: data));
+    setUserType(type);
   }
 
-  Future<void> setUserType(UserType type) async {
-    final preferences = await SharedPreferences.getInstance();
-    preferences.setInt(PreferencesKeys.type, type.toMap());
+  void setUserType(UserType type) {
+    _preferences.setInt(PreferencesKeys.type, type.toMap());
   }
 
-  Future<UserType> getUserType() async {
-    final preferences = await SharedPreferences.getInstance();
-    final type = preferences.getInt(PreferencesKeys.type) ?? 1;
+  UserType getUserType() {
+    final type = _preferences.getInt(PreferencesKeys.type) ?? 1;
     return type.userTypeFromMap();
   }
 
-  Future<bool> doesUserExist() async {
-    final preferences = await SharedPreferences.getInstance();
-    return preferences.containsKey(PreferencesKeys.user);
+  bool doesUserExist() {
+    return _preferences.containsKey(PreferencesKeys.user);
   }
 }

@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
-import '../../../blocs/authentication/authentication_bloc.dart';
-import '../../../constants/brand_colors.dart';
-import '../../../constants/routes.dart';
-import '../../../cubits/home/home_cubit.dart';
-import '../../../data/enums/consultation_content_type.dart';
-import '../../../data/models/consultations/consultation.dart';
-import '../../../data/models/home_statistics.dart';
-import '../../../data/services/repository.dart';
-import '../../../localization/app_localizations.dart';
-import '../../../utilities/extensions.dart';
-import '../../widgets/notifications_button.dart';
-import '../../widgets/reload_widget.dart';
+import '../../../../blocs/authentication/authentication_bloc.dart';
+import '../../../../constants/brand_colors.dart';
+import '../../../../constants/routes.dart';
+import '../../../../cubits/home/home_cubit.dart';
+import '../../../../data/enums/consultation_content_type.dart';
+import '../../../../data/models/consultations/consultation.dart';
+import '../../../../data/models/home_statistics.dart';
+import '../../../../data/services/repository.dart';
+import '../../../../localization/app_localizations.dart';
+import '../../../../utilities/extensions.dart';
+import '../../../widgets/notifications_button.dart';
+import '../../../widgets/reload_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key, required this.index});

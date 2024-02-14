@@ -29,7 +29,7 @@ class DIManager {
   DIManager._();
   static Future<void> initDI() async {
     /// -------------- Setup -------------------
-    _injectDep(SharedPrefs());
+    await _initSharedPrefs();
     _injectDep(NetworkModule.provideDio());
     _injectDep(ApplicationCubit());
     _injectDep(AppNavigator());
@@ -69,6 +69,12 @@ class DIManager {
 
   static AppNavigator findNavigator() {
     return findDep<AppNavigator>();
+  }
+
+  static Future<void> _initSharedPrefs() async {
+    final prefs = SharedPrefs();
+    await prefs.init();
+    _injectDep(prefs);
   }
 
   static AppColorsController findCC() {
