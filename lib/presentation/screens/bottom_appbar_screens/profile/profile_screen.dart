@@ -9,8 +9,10 @@ import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
+import '../../../../core/di/di_manager.dart';
 import '../../../../cubits/switch/switch_cubit.dart';
 import '../../../../data/enums/user_type.dart';
+import '../../../../data/sources/local/shared_prefs.dart';
 import '../../../widgets/border_painter.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -20,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
     final materialLocalizations = MaterialLocalizations.of(context);
-    final user = context.read<AuthenticationBloc>().user;
+    final user = DIManager.findDep<SharedPrefs>().getUser();
 
     return Scaffold(
       appBar: AppBar(
@@ -139,6 +141,16 @@ class ProfileScreen extends StatelessWidget {
                 color: BrandColors.orange,
                 title: appLocalizations.profile,
                 onTap: () => Navigator.pushNamed(context, Routes.profile),
+              ),
+            if (user != null)
+              _Item(
+                icon: 'major_and_experience',
+                title: appLocalizations.majorAndExperience,
+                color: Colors.black,
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  Routes.majorAndExperience,
+                ),
               ),
             if (user != null)
               _Item(
@@ -329,7 +341,7 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final appLocalizations = AppLocalizations.of(context);
-    final user = context.read<AuthenticationBloc>().user;
+    final user = DIManager.findDep<SharedPrefs>().getUser();
 
     return Card(
       child: Padding(

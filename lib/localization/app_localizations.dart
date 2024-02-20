@@ -796,11 +796,21 @@ class AppLocalizations {
 
   String get activated => _translate('activated');
 
+  String get notActivated => _translate('not_activated');
+
   String get mustChoose => _translate('must_choose');
 
   String get mustEnter => _translate('must_enter');
 
   String get howEnterAccount => _translate('how_enter_account');
+
+  String get verificationStatus => _translate('verification_status');
+
+  String get verified => _translate('verified');
+
+  String get verificationRequest => _translate('verification_request');
+
+  String get freeMajor => _translate('free_major');
 
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {

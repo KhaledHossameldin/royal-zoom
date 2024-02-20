@@ -424,7 +424,12 @@
   "consultant_preview_name": "اسم العرض لحساب المستشار",
   "sending_consultation_requirements": "شروط إرسال الإستشارة",
   "activated": "مفعل",
+  "not_activated": "غير مفعل",
   "must_choose": "يجب إختيار",
   "must_enter": "يجب إدخال",
-  "how_enter_account": "كيف تريد الدخول الى حسابك ؟"
+  "how_enter_account": "كيف تريد الدخول الى حسابك ؟",
+  "verification_status": "حالة التوثيق",
+  "verified": "موثق",
+  "verification_request": "طلب توثيق",
+  "free_major": "تخصص مجاني"
 }

@@ -423,7 +423,12 @@
   "consultant_preview_name": "Preview name for consultant account",
   "sending_consultation_requirements": "Sending consultation requirements",
   "activated": "Activated",
+  "not_activated": "Not activated",
   "must_choose": "Must choose",
   "must_enter": "Must enter",
-  "how_enter_account": "How do you want to access your account?"
+  "how_enter_account": "How do you want to access your account?",
+  "verification_status": "Verification status",
+  "verified": "Verified",
+  "verification_request": "Verification request",
+  "free_major": "Free major"
 }

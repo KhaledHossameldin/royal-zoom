@@ -63,6 +63,7 @@ import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
 import '../presentation/screens/edit_consultation/edit_content.dart';
 import '../presentation/screens/edit_consultation/edit_response_type.dart';
+import '../presentation/screens/majors_and_experiences/major_and_experience.dart';
 import '../presentation/screens/notifications/details_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
 import '../presentation/screens/payments/filter_screen.dart';
@@ -549,6 +550,11 @@ class AppRouter {
       case Routes.userTypeChoose:
         return MaterialPageRoute(
           builder: (context) => const UserTypeChooseScreen(),
+        );
+
+      case Routes.majorAndExperience:
+        return MaterialPageRoute(
+          builder: (context) => const MajorAndExperienceScreen(),
         );
 
       default:
