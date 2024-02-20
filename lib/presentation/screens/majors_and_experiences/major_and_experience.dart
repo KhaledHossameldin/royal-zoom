@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants/brand_colors.dart';
+import '../../../constants/routes.dart';
 import '../../../core/di/di_manager.dart';
 import '../../../core/states/base_fail_state.dart';
 import '../../../core/states/base_success_state.dart';
@@ -71,7 +72,15 @@ class _MajorAndExperienceScreenState extends State<MajorAndExperienceScreen> {
       floatingActionButton: FloatingActionButton(
         heroTag: 'major-and-experience-fab',
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () async {
+          final isRefresh = await Navigator.pushNamed<bool>(
+            context,
+            Routes.addMajor,
+          );
+          if (isRefresh ?? false) {
+            cubit.fetch();
+          }
+        },
       ),
     );
   }
@@ -200,7 +209,7 @@ class _Item extends StatelessWidget {
           ListTile(
             contentPadding: EdgeInsets.zero,
             dense: true,
-            title: CheckboxListTile(
+            title: SwitchListTile(
               controlAffinity: ListTileControlAffinity.leading,
               title: Text(
                 appLocalizations.freeMajor,

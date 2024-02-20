@@ -5,6 +5,8 @@ import '../../constants/brand_colors.dart';
 import '../../constants/fonts.dart';
 import '../../cubits/add_new_major/add_new_major_cubit.dart';
 import '../../cubits/majors/majors_cubit.dart';
+import '../../cubits/switch/switch_cubit.dart';
+import '../../data/enums/user_type.dart';
 import '../../data/models/major.dart';
 import '../../localization/app_localizations.dart';
 import '../../utilities/extensions.dart';
@@ -52,6 +54,7 @@ class _AddMajorScreenState extends State<AddMajorScreen> {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
+    final userType = (context.read<SwitchCubit>().state as SwitchLoaded).type;
 
     return Scaffold(
       appBar: AppBar(
@@ -80,30 +83,37 @@ class _AddMajorScreenState extends State<AddMajorScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      controller: _previewNameController,
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      validator: (value) {
-                        if (value.isNullOrEmpty) {
-                          return '${appLocalizations.mustEnter} ${appLocalizations.consultantPreviewName}';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        filled: false,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: BrandColors.gray),
-                        ),
-                        hintText: appLocalizations.consultantPreviewName,
-                        hintStyle: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: BrandColors.darkGray,
-                        ),
+                    if (userType != UserType.consultant)
+                      Column(
+                        children: [
+                          TextFormField(
+                            controller: _previewNameController,
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
+                            validator: (value) {
+                              if (value.isNullOrEmpty) {
+                                return '${appLocalizations.mustEnter} ${appLocalizations.consultantPreviewName}';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              filled: false,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    const BorderSide(color: BrandColors.gray),
+                              ),
+                              hintText: appLocalizations.consultantPreviewName,
+                              hintStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: BrandColors.darkGray,
+                              ),
+                            ),
+                          ),
+                          12.emptyHeight,
+                        ],
                       ),
-                    ),
-                    12.emptyHeight,
                     BlocBuilder<MajorsCubit, MajorsState>(
                       builder: (context, state) {
                         if (state is MajorsLoading) {
@@ -300,6 +310,12 @@ class _AddMajorScreenState extends State<AddMajorScreen> {
                             color: Colors.red,
                           );
                         }
+                        if (state is AddNewMajorLoaded) {
+                          if (userType == UserType.consultant) {
+                            Navigator.pop<bool>(context, true);
+                            return;
+                          }
+                        }
                         print(state);
                       },
                       builder: (context, state) {
@@ -321,7 +337,9 @@ class _AddMajorScreenState extends State<AddMajorScreen> {
                                           terms: _requirements.text,
                                           isNotificationsEnabled:
                                               _isNotificationsActivated,
-                                          name: _previewNameController.text,
+                                          name: userType == UserType.consultant
+                                              ? _previewNameController.text
+                                              : null,
                                         );
                                   }
                                 },

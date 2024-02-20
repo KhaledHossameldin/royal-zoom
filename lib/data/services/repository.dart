@@ -80,7 +80,7 @@ class Repository {
     required String price,
     required String terms,
     required bool isNotificationsEnabled,
-    required String name,
+    required String? name,
   }) async =>
       _network.addNewMajorRequest(
         context,

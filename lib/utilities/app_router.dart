@@ -537,7 +537,7 @@ class AppRouter {
         );
 
       case Routes.addMajor:
-        return MaterialPageRoute(
+        return MaterialPageRoute<bool>(
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => MajorsCubit()),

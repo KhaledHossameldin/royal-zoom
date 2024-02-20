@@ -76,9 +76,9 @@ class NetworkServices {
     required String price,
     required String terms,
     required bool isNotificationsEnabled,
-    required String name,
+    required String? name,
   }) async {
-    final response = await _post(context, Network.newMajorRequests, body: {
+    final map = {
       'major_id': majorId.toString(),
       'is_active': isActive.toInt.toString(),
       'years_of_experience': yearsOfExperience.toString(),
@@ -86,8 +86,11 @@ class NetworkServices {
       'terms': terms,
       'is_notifications_enabled': isNotificationsEnabled.toInt.toString(),
       'is_free': 0,
-      'consultant_preview_name': name,
-    });
+    };
+    if (name != null) {
+      map.putIfAbsent('consultant_preview_name', () => name);
+    }
+    final response = await _post(context, Network.newMajorRequests, body: map);
     dev.log(response);
   }
 
