@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+
+import '../../data/models/meta.dart';
 import 'http_method.dart';
 
 import '../../../core/di/di_manager.dart';
@@ -25,7 +27,7 @@ class ApiProvider {
       Response<T> response = await dio.get<T>(url,
           onReceiveProgress: onProgress,
           options: Options(
-            headers: {HttpHeaders.acceptEncodingHeader: "*"},
+            headers: {HttpHeaders.acceptEncodingHeader: '*'},
             responseType: ResponseType.bytes,
           ));
 
@@ -38,6 +40,7 @@ class ApiProvider {
   static Future<Result<T>> sendObjectRequest<T>({
     T Function(dynamic)? converter,
     T Function(List<dynamic>)? converterList,
+    T Function(List<dynamic>)? paginatedListConverter,
     required HttpMethod method,
     required String url,
     Map<String, dynamic>? data,
@@ -84,8 +87,14 @@ class ApiProvider {
           );
           break;
       }
+
       if (converterList != null) {
-        return Result(data: converterList(response.data['data']));
+        return Result(
+          data: converterList(response.data['data']),
+          meta: (response.data['meta'] != null)
+              ? Meta.fromJson(response.data['meta'])
+              : null,
+        );
       }
       if (getAllResponse) {
         return Result(data: converter!(response.data));

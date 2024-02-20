@@ -9,14 +9,16 @@ import '../cubit/my_orders_cubit.dart';
 import '../cubit/my_orders_state.dart';
 import '../widgets/major_item_widget.dart';
 
-class MajorTabScreen extends StatefulWidget {
-  const MajorTabScreen({super.key});
+class MajorVerificationTabScreen extends StatefulWidget {
+  const MajorVerificationTabScreen({super.key});
 
   @override
-  State<MajorTabScreen> createState() => _MajorTabScreenState();
+  State<MajorVerificationTabScreen> createState() =>
+      _MajorVerificationTabScreenState();
 }
 
-class _MajorTabScreenState extends State<MajorTabScreen> {
+class _MajorVerificationTabScreenState
+    extends State<MajorVerificationTabScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +27,7 @@ class _MajorTabScreenState extends State<MajorTabScreen> {
         bloc: DIManager.findDep<MyOrdersCubit>(),
         listener: (context, state) {},
         builder: (context, state) {
-          final majorsState = state.showNewMajorsState;
+          final majorsState = state.showMajorVerificationState;
           if (majorsState is BaseLoadingState) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -38,9 +40,9 @@ class _MajorTabScreenState extends State<MajorTabScreen> {
                   id: item.id!,
                   status: item.status!,
                   parentMajor: item.parentMajor!,
-                  subMajor: item.neededMajor!,
+                  subMajor: item.neededMajor ?? '',
                   createdAt: item.createdAt!,
-                  isMajorsTab: true,
+                  isMajorsTab: false,
                 );
               },
               separatorBuilder: (context, index) => 8.emptyHeight,
@@ -56,6 +58,6 @@ class _MajorTabScreenState extends State<MajorTabScreen> {
   @override
   void initState() {
     super.initState();
-    DIManager.findDep<MyOrdersCubit>().showAllNewMajorRequests();
+    DIManager.findDep<MyOrdersCubit>().showAllMajorVerficationRequests();
   }
 }

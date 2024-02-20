@@ -4,6 +4,7 @@ import '../../../../../core/network/endpoints/network.dart';
 import '../../../../../core/network/http_method.dart';
 import '../../../../../core/results/result.dart';
 import '../../../../models/consultants/add_new_major_request_body.dart';
+import '../../../../models/new_major_request_response/new_major_request_response.dart';
 
 class MajorRemoteDataSource {
   Future<Result<EmptyModel>> addNewMajorRequest({
@@ -14,6 +15,27 @@ class MajorRemoteDataSource {
       method: HttpMethod.POST,
       url: Network.newMajorRequests,
       data: body.toMap(),
+    );
+  }
+
+  Future<Result<List<NewMajorRequestResponse>>> getMajorsRequests() async {
+    return await RemoteDataSource.request(
+      converterList: (list) => list!
+          .map((model) => NewMajorRequestResponse.fromJson(model))
+          .toList(),
+      method: HttpMethod.GET,
+      url: Network.newMajorRequestOrders,
+    );
+  }
+
+  Future<Result<List<NewMajorRequestResponse>>>
+      getVerificationMajorRequests() async {
+    return await RemoteDataSource.request(
+      converterList: (list) => list!
+          .map((model) => NewMajorRequestResponse.fromJson(model))
+          .toList(),
+      method: HttpMethod.GET,
+      url: Network.majorVerificationRequestOrders,
     );
   }
 }

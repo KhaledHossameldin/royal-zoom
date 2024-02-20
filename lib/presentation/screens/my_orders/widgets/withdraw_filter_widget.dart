@@ -1,0 +1,161 @@
+import 'package:flutter/material.dart';
+
+import '../../../../constants/brand_colors.dart';
+import '../../../../core/di/di_manager.dart';
+import '../../../../utilities/extensions.dart';
+import '../cubit/my_orders_cubit.dart';
+
+class WithdrawFilterWidget extends StatefulWidget {
+  const WithdrawFilterWidget({super.key});
+
+  @override
+  State<WithdrawFilterWidget> createState() => _WithdrawFilterWidgetState();
+}
+
+class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
+  bool hasFilters = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InkWell(
+              onTap: () {
+                showSortBottomSheet();
+              },
+              child: Row(
+                children: [
+                  FloatingActionButton(
+                      heroTag: 'filter-fab',
+                      elevation: 0,
+                      highlightElevation: 0,
+                      backgroundColor: BrandColors.snowWhite,
+                      onPressed: null,
+                      child: 'filter'.buildSVG(color: BrandColors.darkGray)),
+                  5.emptyWidth,
+                  const Text('ترتيب حسب الاقدمية')
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                _buildDateTimeRangePicker();
+              },
+              child: Row(
+                children: [
+                  FloatingActionButton(
+                    heroTag: 'sort-fab',
+                    elevation: 0,
+                    highlightElevation: 0,
+                    backgroundColor: BrandColors.snowWhite,
+                    onPressed: null,
+                    child: 'filter'.buildSVG(color: BrandColors.darkGray),
+                  ),
+                  const Text('ترتيب حسب التاريخ')
+                ],
+              ),
+            ),
+          ],
+        ),
+        if (hasFilters)
+          Padding(
+            padding:
+                EdgeInsets.symmetric(horizontal: 20.width, vertical: 4.height),
+            child: InkWell(
+              onTap: () {
+                DIManager.findDep<MyOrdersCubit>().applyWithdrawFilters(
+                  forceNull: true,
+                );
+                setState(() {
+                  hasFilters = false;
+                });
+              },
+              child: const Row(children: [
+                Icon(
+                  Icons.clear,
+                  color: Colors.red,
+                ),
+                Text('ازاله الفلترة')
+              ]),
+            ),
+          ),
+      ],
+    );
+  }
+
+  void showSortBottomSheet() {
+    final bottom = MediaQuery.of(context).viewPadding.bottom;
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(29.0)),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.fromLTRB(40.width, 20.height, 40.width, bottom),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'sort by',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: BrandColors.orange,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ListTile(
+              title: const Text(
+                'desc',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                DIManager.findDep<MyOrdersCubit>()
+                    .applyWithdrawFilters(sort: 'desc');
+                setState(() {
+                  hasFilters = true;
+                });
+
+                DIManager.findNavigator().pop();
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text(
+                'asc',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                setState(() {
+                  hasFilters = true;
+                });
+                DIManager.findDep<MyOrdersCubit>()
+                    .applyWithdrawFilters(sort: 'asc');
+                DIManager.findNavigator().pop();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _buildDateTimeRangePicker() {
+    showDateRangePicker(
+      context: context,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    ).then((range) {
+      if (range != null) {
+        setState(() {
+          hasFilters = true;
+        });
+
+        DIManager.findDep<MyOrdersCubit>().applyWithdrawFilters(
+            startDate: '2023-06-12', endDate: '2023-06-29');
+      }
+    });
+  }
+}

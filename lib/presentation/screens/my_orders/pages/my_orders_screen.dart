@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants/fonts.dart';
 import '../../../../utilities/extensions.dart';
+import 'major_verifcation_tab_screen.dart';
 import 'majors_tab_screen.dart';
+import 'withdraw_requests_tab_screen.dart';
 
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({super.key});
+
+  final _majorTabScreen = const MajorTabScreen();
+
+  final _majorVerificationTabScreen = const MajorVerificationTabScreen();
+
+  final _withdrawRequestsTabScreen = const WithdrawRequestsTabScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +49,11 @@ class MyOrdersScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Expanded(
+            Expanded(
               child: TabBarView(children: [
-                MajorTabScreen(),
-                Placeholder(),
-                Placeholder(),
+                _majorTabScreen,
+                _majorVerificationTabScreen,
+                _withdrawRequestsTabScreen
               ]),
             )
           ],
