@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../constants/fonts.dart';
+import '../../../../localization/localizor.dart';
 import '../../../../utilities/extensions.dart';
 import 'major_verifcation_tab_screen.dart';
 import 'majors_tab_screen.dart';
@@ -21,7 +22,7 @@ class MyOrdersScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('My Orders'),
+          title: Text(Localizor.translator.myOrders),
         ),
         body: Column(
           children: [
@@ -30,21 +31,21 @@ class MyOrdersScreen extends StatelessWidget {
                 vertical: 13.height,
                 horizontal: 35.width,
               ),
-              child: const TabBar(
-                labelStyle: TextStyle(
+              child: TabBar(
+                labelStyle: const TextStyle(
                   fontSize: 12.0,
                   fontFamily: Fonts.main,
                   fontWeight: FontWeight.bold,
                 ),
                 tabs: [
                   Tab(
-                    text: 'التخصصات',
+                    text: Localizor.translator.getMajor(false),
                   ),
                   Tab(
-                    text: 'التوثيق',
+                    text: Localizor.translator.verification,
                   ),
                   Tab(
-                    text: 'سحب ارصدة',
+                    text: Localizor.translator.withdraw,
                   ),
                 ],
               ),

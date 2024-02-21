@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../core/constants/app_style.dart';
 import '../../../../domain/entities/withdraw_request_entity.dart';
+import '../../../../localization/localizor.dart';
 import '../../../../utilities/extensions.dart';
 
 class WithDrawItemWidget extends StatelessWidget {
@@ -27,7 +28,7 @@ class WithDrawItemWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'رقم الطلب: ${item.id}',
+                  '${Localizor.translator.orderNumber} ${item.id}',
                   style: AppStyle.smallTitleStyle,
                 ),
                 Container(
@@ -43,16 +44,17 @@ class WithDrawItemWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Text('التاريح: ${item.getCreatedAtTime()}'),
+            Text('${Localizor.translator.hisotry}: ${item.getCreatedAtTime()}'),
             const Divider(),
             Text(
-              'المبلغ: ${item.amount}',
+              '${Localizor.translator.amount}: ${item.amount}',
               style: AppStyle.smallTitleStyle,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('نوع التحويل: ${item.transferType}'),
+                Text(
+                    '${Localizor.translator.transferType}: ${Localizor.translator.getWithdrawStatus(item.transferType!.toInt())}'),
                 if (item.chat != null)
                   Row(
                     children: [
@@ -61,7 +63,7 @@ class WithDrawItemWidget extends StatelessWidget {
                               'assets/images/bottom_app_bar_icons/chat.png'),
                           size: 20.0),
                       Text(
-                        'التفاصيل',
+                        Localizor.translator.details,
                         style: AppStyle.smallTitleStyle,
                       )
                     ],

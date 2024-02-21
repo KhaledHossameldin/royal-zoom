@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../core/constants/app_style.dart';
 import '../../../../core/utils/date_utils/date_utils.dart';
-import '../../../../data/enums/new_major_status.dart';
+import '../../../../localization/localizor.dart';
 import '../../../../utilities/extensions.dart';
 
 class MajorItemWidget extends StatelessWidget {
@@ -42,7 +42,7 @@ class MajorItemWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'رقم الطلب: $id',
+                  '${Localizor.translator.orderNumber}: $id',
                   style: AppStyle.smallTitleStyle,
                 ),
                 Container(
@@ -52,20 +52,23 @@ class MajorItemWidget extends StatelessWidget {
                       color: BrandColors.snowWhite,
                       borderRadius: BorderRadius.circular(5.width)),
                   child: Text(
-                    status.newMajorStatusFromMap().name,
+                    Localizor.translator.getNewMajorStatus(status),
                     style: const TextStyle(color: BrandColors.green),
                   ),
                 ),
               ],
             ),
-            Text('التاريح: ${DateUtil.dateWithTime(createdAt)}'),
+            Text(
+                '${Localizor.translator.hisotry}: ${DateUtil.dateWithTime(createdAt)}'),
             const Divider(),
             Text(
-              'التخصص ${isMajorsTab ? "المطلوب" : "الفرعي"}: $subMajor',
+              isMajorsTab
+                  ? '${Localizor.translator.neededMajor}: $subMajor'
+                  : '${Localizor.translator.subMajor}: $subMajor',
               style: AppStyle.smallTitleStyle,
             ),
             Text(
-              'التخصص الرئيسي: $parentMajor',
+              '${Localizor.translator.mainMajor}: $parentMajor',
               style: AppStyle.smallTitleStyle,
             ),
           ],

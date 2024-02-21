@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../constants/brand_colors.dart';
+import '../../../../core/constants/app_style.dart';
 import '../../../../core/di/di_manager.dart';
+import '../../../../localization/localizor.dart';
 import '../../../../utilities/extensions.dart';
 import '../cubit/my_orders_cubit.dart';
 
@@ -19,7 +22,38 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              Localizor.translator.sortBy,
+              style: AppStyle.smallTitleStyle,
+            ),
+            if (hasFilters)
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 20.width, vertical: 4.height),
+                child: InkWell(
+                  onTap: () {
+                    DIManager.findDep<MyOrdersCubit>().applyWithdrawFilters(
+                      forceNull: true,
+                    );
+                    setState(() {
+                      hasFilters = false;
+                    });
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.clear,
+                        color: Colors.red,
+                      ),
+                      Text('ازاله الفلترة')
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+        Row(
           children: [
             InkWell(
               onTap: () {
@@ -35,10 +69,11 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
                       onPressed: null,
                       child: 'filter'.buildSVG(color: BrandColors.darkGray)),
                   5.emptyWidth,
-                  const Text('ترتيب حسب الاقدمية')
+                  const Text('الاقدمية')
                 ],
               ),
             ),
+            20.emptyWidth,
             InkWell(
               onTap: () {
                 _buildDateTimeRangePicker();
@@ -53,34 +88,13 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
                     onPressed: null,
                     child: 'filter'.buildSVG(color: BrandColors.darkGray),
                   ),
-                  const Text('ترتيب حسب التاريخ')
+                  5.emptyWidth,
+                  Text(Localizor.translator.hideFromConsultant)
                 ],
               ),
             ),
           ],
         ),
-        if (hasFilters)
-          Padding(
-            padding:
-                EdgeInsets.symmetric(horizontal: 20.width, vertical: 4.height),
-            child: InkWell(
-              onTap: () {
-                DIManager.findDep<MyOrdersCubit>().applyWithdrawFilters(
-                  forceNull: true,
-                );
-                setState(() {
-                  hasFilters = false;
-                });
-              },
-              child: const Row(children: [
-                Icon(
-                  Icons.clear,
-                  color: Colors.red,
-                ),
-                Text('ازاله الفلترة')
-              ]),
-            ),
-          ),
       ],
     );
   }
@@ -98,18 +112,18 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'sort by',
-              style: TextStyle(
+            Text(
+              Localizor.translator.sortBy,
+              style: const TextStyle(
                 fontSize: 16.0,
                 color: BrandColors.orange,
                 fontWeight: FontWeight.bold,
               ),
             ),
             ListTile(
-              title: const Text(
-                'desc',
-                style: TextStyle(fontSize: 16.0),
+              title: Text(
+                Localizor.translator.descendingOrder,
+                style: const TextStyle(fontSize: 16.0),
               ),
               onTap: () {
                 DIManager.findDep<MyOrdersCubit>()
@@ -123,9 +137,9 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
             ),
             const Divider(),
             ListTile(
-              title: const Text(
-                'asc',
-                style: TextStyle(fontSize: 16.0),
+              title: Text(
+                Localizor.translator.ascendingOrder,
+                style: const TextStyle(fontSize: 16.0),
               ),
               onTap: () {
                 setState(() {
@@ -152,9 +166,10 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
         setState(() {
           hasFilters = true;
         });
-
-        DIManager.findDep<MyOrdersCubit>().applyWithdrawFilters(
-            startDate: '2023-06-12', endDate: '2023-06-29');
+        var start = DateFormat('yyyy-MM-dd').format(range.start);
+        var end = DateFormat('yyyy-MM-dd').format(range.end);
+        DIManager.findDep<MyOrdersCubit>()
+            .applyWithdrawFilters(startDate: start, endDate: end);
       }
     });
   }

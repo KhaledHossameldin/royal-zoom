@@ -1,8 +1,8 @@
 import '../../core/models/base_entity.dart';
 import '../../core/utils/date_utils/date_utils.dart';
-import '../../data/enums/new_major_status.dart';
 import '../../data/models/meta.dart';
 import '../../data/models/withdraw_request_response/chat.dart';
+import '../../localization/localizor.dart';
 
 class WithdrawRequesEntity extends BaseEntity {
   final num? id;
@@ -23,7 +23,7 @@ class WithdrawRequesEntity extends BaseEntity {
   });
 
   String getStatus() {
-    return status?.toInt().newMajorStatusFromMap().name ?? '';
+    return Localizor.translator.getNewMajorStatus(status!.toInt());
   }
 
   String getCreatedAtTime() {

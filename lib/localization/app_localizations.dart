@@ -802,6 +802,17 @@ class AppLocalizations {
 
   String get howEnterAccount => _translate('how_enter_account');
 
+  String get myOrders => _translate('my_orders');
+  String get verification => _translate('verification');
+  String get withdraw => _translate('withdraw');
+  String get seniority => _translate('seniority');
+  String get hisotry => _translate('history');
+  String get orderNumber => _translate('order_number');
+  String get neededMajor => _translate('needed_major');
+  String get amount => _translate('amount');
+  String get transferType => _translate('transfer_type');
+  String get details => _translate('details');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');
@@ -820,6 +831,17 @@ class AppLocalizations {
       return _translate('intermediate');
     }
     return _translate('professional');
+  }
+
+  String getWithdrawStatus(int status) {
+    switch (status) {
+      case 1:
+        return _translate('bank_transfer');
+      case 2:
+        return _translate('paypal');
+      default:
+        return _translate('wallet');
+    }
   }
 
   String getPaymentMethod(PaymentMethod paymentMethod) {
@@ -952,6 +974,17 @@ class AppLocalizations {
 
       default:
         return _translate('excellent');
+    }
+  }
+
+  String getNewMajorStatus(int status) {
+    switch (status) {
+      case 1:
+        return _translate('under_revision');
+      case 2:
+        return _translate('acceptable');
+      default:
+        return _translate('rejected');
     }
   }
 
