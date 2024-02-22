@@ -44,10 +44,13 @@ class ChatMessagesCubit extends Cubit<ChatMessagesState> {
     BuildContext context, {
     required int id,
     required ChatResourceType type,
+    Chat? chatt,
   }) async {
     try {
       emit(const ChatMessagesLoading());
-      final chat = await repository.startChat(context, id: id, type: type);
+      final chat = (chatt != null)
+          ? chatt
+          : await repository.startChat(context, id: id, type: type);
       if (!context.mounted) {
         return;
       }

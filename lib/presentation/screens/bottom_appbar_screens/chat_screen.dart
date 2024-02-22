@@ -91,16 +91,17 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: CircleAvatar(
                           radius: 20.0,
                           backgroundColor: Colors.white,
-                          backgroundImage: chats[index].sender.image.isNotEmpty
-                              ? NetworkImage(chats[index].sender.image)
-                              : 'royake'.png.image,
+                          backgroundImage:
+                              chats[index].sender!.image!.isNotEmpty
+                                  ? NetworkImage(chats[index].sender!.image!)
+                                  : 'royake'.png.image,
                         ),
                       ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            chats[index].sender.previewName ??
+                            chats[index].sender?.previewName ??
                                 appLocalizations.none,
                             style: const TextStyle(
                               fontSize: 14.0,

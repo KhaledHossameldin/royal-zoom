@@ -466,10 +466,10 @@ class AppRouter {
               BlocProvider(create: (context) => ChatRecordingCubit()),
             ],
             child: ChatDetailsScreen(
-              id: arguments['id'],
-              type: arguments['type'],
-              account: arguments['account'],
-            ),
+                id: arguments['id'],
+                type: arguments['type'],
+                account: arguments['account'],
+                chat: arguments['chat']),
           ),
         );
 

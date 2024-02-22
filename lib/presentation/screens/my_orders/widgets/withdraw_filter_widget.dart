@@ -89,7 +89,7 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
                     child: 'filter'.buildSVG(color: BrandColors.darkGray),
                   ),
                   5.emptyWidth,
-                  Text(Localizor.translator.hideFromConsultant)
+                  Text(Localizor.translator.hisotry)
                 ],
               ),
             ),

@@ -5,6 +5,7 @@ import '../../../../core/constants/app_style.dart';
 import '../../../../core/utils/date_utils/date_utils.dart';
 import '../../../../localization/localizor.dart';
 import '../../../../utilities/extensions.dart';
+import 'status_widget.dart';
 
 class MajorItemWidget extends StatelessWidget {
   const MajorItemWidget({
@@ -42,35 +43,50 @@ class MajorItemWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
+                    '${Localizor.translator.hisotry}: ${DateUtil.dateWithTime(createdAt)}'),
+                Text(
                   '${Localizor.translator.orderNumber}: $id',
                   style: AppStyle.smallTitleStyle,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 8.height, horizontal: 8.width),
-                  decoration: BoxDecoration(
-                      color: BrandColors.snowWhite,
-                      borderRadius: BorderRadius.circular(5.width)),
-                  child: Text(
-                    Localizor.translator.getNewMajorStatus(status),
-                    style: const TextStyle(color: BrandColors.green),
-                  ),
-                ),
               ],
             ),
-            Text(
-                '${Localizor.translator.hisotry}: ${DateUtil.dateWithTime(createdAt)}'),
             const Divider(),
-            Text(
-              isMajorsTab
-                  ? '${Localizor.translator.neededMajor}: $subMajor'
-                  : '${Localizor.translator.subMajor}: $subMajor',
-              style: AppStyle.smallTitleStyle,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    isMajorsTab
+                        ? '${Localizor.translator.neededMajor}: $subMajor'
+                        : '${Localizor.translator.getMajor(true)}: $subMajor',
+                    maxLines: 2,
+                    style: AppStyle.smallTitleStyle,
+                  ),
+                ),
+                if (!isMajorsTab)
+                  StatusWidget(
+                    onChatTapped: () {},
+                    status: status,
+                  ),
+              ],
             ),
-            Text(
-              '${Localizor.translator.mainMajor}: $parentMajor',
-              style: AppStyle.smallTitleStyle,
-            ),
+            if (isMajorsTab)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${Localizor.translator.mainMajor}: $parentMajor',
+                      style: AppStyle.smallTitleStyle,
+                      maxLines: 2,
+                    ),
+                  ),
+                  StatusWidget(
+                    onChatTapped: () {},
+                    status: status,
+                  ),
+                ],
+              ),
           ],
         ),
       ),

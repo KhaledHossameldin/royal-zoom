@@ -62,7 +62,7 @@ class Network {
       '$_apiPath/consultants/$id/available-times';
 
   static String getChatMessages(int id) =>
-      '$_apiPath/user/chats-messages/$id/messages';
+      '$_apiPath/conslutant/chats-messages/$id/messages';
 
   static String favoriteConsultant(int id) =>
       '$_apiPath/user/consultants/$id/favorite';
