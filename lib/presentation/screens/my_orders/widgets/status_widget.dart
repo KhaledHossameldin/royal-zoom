@@ -23,12 +23,12 @@ class StatusWidget extends StatelessWidget {
           height: 42.height,
           padding: EdgeInsets.symmetric(horizontal: 8.width),
           decoration: BoxDecoration(
-              color: BrandColors.snowWhite,
+              color: statusColor(status)[1],
               borderRadius: BorderRadius.circular(5.width)),
           alignment: Alignment.center,
           child: Text(
             Localizor.translator.getNewMajorStatus(status),
-            style: TextStyle(color: statusColor(status), fontSize: 12),
+            style: TextStyle(color: statusColor(status)[0], fontSize: 12),
           ),
         ),
         if (isChatVisible) 2.emptyWidth,
@@ -38,27 +38,26 @@ class StatusWidget extends StatelessWidget {
               onChatTapped();
             },
             child: Container(
-                height: 42.height,
-                padding: EdgeInsets.symmetric(
-                    vertical: 8.height, horizontal: 8.width),
-                decoration: BoxDecoration(
-                    color: BrandColors.snowWhite,
-                    borderRadius: BorderRadius.circular(5.width)),
-                child: const ImageIcon(
-                    AssetImage('assets/images/bottom_app_bar_icons/chat.png'))),
+              height: 42.height,
+              padding: EdgeInsets.symmetric(horizontal: 8.width),
+              decoration: BoxDecoration(
+                  color: BrandColors.snowWhite,
+                  borderRadius: BorderRadius.circular(5.width)),
+              child: 'eye'.buildSVG(color: BrandColors.purple),
+            ),
           ),
       ],
     );
   }
 
-  Color statusColor(int status) {
+  List<Color> statusColor(int status) {
     switch (status) {
       case 1:
-        return BrandColors.orange;
+        return [BrandColors.orange, BrandColors.orange.withOpacity(0.2)];
       case 2:
-        return BrandColors.green;
+        return [BrandColors.green, BrandColors.green.withOpacity(0.2)];
       default:
-        return BrandColors.red;
+        return [BrandColors.red, BrandColors.red.withOpacity(0.2)];
     }
   }
 }
