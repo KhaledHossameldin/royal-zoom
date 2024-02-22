@@ -426,5 +426,20 @@
   "activated": "مفعل",
   "must_choose": "يجب إختيار",
   "must_enter": "يجب إدخال",
-  "how_enter_account": "كيف تريد الدخول الى حسابك ؟"
+  "how_enter_account": "كيف تريد الدخول الى حسابك ؟",
+  "my_orders":"طلباتي",
+  "history":"التاريخ",
+  "seniority":"الأقدمية",
+  "verification":"التوثيق",
+  "withdraw":"سحب أرصدة",
+  "order_number":"رقم الطلب",
+  "needed_major":"التخصص المطلوب",
+  "under_revision":"قيد المراجعة",
+  "rejected":"مرفوض",
+  "amount":"المبلغ",
+  "transfer_type":"نوع التحويل",
+  "details":"التفاصيل",
+  "paypal":"بايبال",
+  "wallet":"المحفظة"
+
 }

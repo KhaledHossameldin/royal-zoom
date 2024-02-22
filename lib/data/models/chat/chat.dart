@@ -1,135 +1,138 @@
 import 'dart:convert';
 
-import '../../../utilities/extensions.dart';
-import '../../enums/chat_resource_type.dart';
-import '../account.dart';
-import '../consultants/consultant.dart';
+import 'package:collection/collection.dart';
+
+import 'resource.dart';
+import 'sender.dart';
 
 class Chat {
   final int id;
   final String uuid;
   final int resourceId;
-  final ChatResourceType resourceType;
+  final int resourceType;
+  final Resource resource;
   final int senderId;
   final int senderType;
-  final int? receiverId;
+  final int receiverId;
   final int receiverType;
-  final bool isActive;
+  final int isActive;
   final DateTime createdAt;
-  final Account sender;
-  final Consultant? receiver;
+  final int unreadMessagesCount;
+  final Sender? sender;
+  final dynamic receiver;
 
   Chat({
     required this.id,
     required this.uuid,
     required this.resourceId,
     required this.resourceType,
+    required this.resource,
     required this.senderId,
     required this.senderType,
     required this.receiverId,
     required this.receiverType,
     required this.isActive,
     required this.createdAt,
+    required this.unreadMessagesCount,
     required this.sender,
     required this.receiver,
   });
+
+  @override
+  String toString() {
+    return 'Chat(id: $id, uuid: $uuid, resourceId: $resourceId, resourceType: $resourceType, resource: $resource, senderId: $senderId, senderType: $senderType, receiverId: $receiverId, receiverType: $receiverType, isActive: $isActive, createdAt: $createdAt, unreadMessagesCount: $unreadMessagesCount, sender: $sender, receiver: $receiver)';
+  }
+
+  factory Chat.fromMap(Map<String, dynamic> data) => Chat(
+        id: int.parse(data['id'].toString()),
+        uuid: data['uuid'].toString(),
+        resourceId: int.parse(data['resource_id'].toString()),
+        resourceType: int.parse(data['resource_type'].toString()),
+        resource: Resource.fromMap(Map<String, dynamic>.from(data['resource'])),
+        senderId: int.parse(data['sender_id'].toString()),
+        senderType: int.parse(data['sender_type'].toString()),
+        receiverId: data['receiver_id'],
+        receiverType: int.parse(data['receiver_type'].toString()),
+        isActive: int.parse(data['is_active'].toString()),
+        createdAt: DateTime.parse(data['created_at'].toString()),
+        unreadMessagesCount:
+            int.parse(data['unread_messages_count'].toString()),
+        sender: data['sender'] == null
+            ? null
+            : Sender.fromMap(Map<String, dynamic>.from(data['sender'])),
+        receiver: data['receiver'],
+      );
+
+  Map<String, dynamic> toMap() => {
+        if (id != null) 'id': id,
+        if (uuid != null) 'uuid': uuid,
+        if (resourceId != null) 'resource_id': resourceId,
+        if (resourceType != null) 'resource_type': resourceType,
+        if (resource != null) 'resource': resource?.toMap(),
+        if (senderId != null) 'sender_id': senderId,
+        if (senderType != null) 'sender_type': senderType,
+        if (receiverId != null) 'receiver_id': receiverId,
+        if (receiverType != null) 'receiver_type': receiverType,
+        if (isActive != null) 'is_active': isActive,
+        if (createdAt != null) 'created_at': createdAt?.toIso8601String(),
+        if (unreadMessagesCount != null)
+          'unread_messages_count': unreadMessagesCount,
+        if (sender != null) 'sender': sender?.toMap(),
+        if (receiver != null) 'receiver': receiver,
+      };
+
+  /// `dart:convert`
+  ///
+  /// Parses the string and returns the resulting Json object as [Chat].
+  factory Chat.fromJson(String data) {
+    return Chat.fromMap(json.decode(data) as Map<String, dynamic>);
+  }
+
+  /// `dart:convert`
+  ///
+  /// Converts [Chat] to a JSON string.
+  String toJson() => json.encode(toMap());
 
   Chat copyWith({
     int? id,
     String? uuid,
     int? resourceId,
-    ChatResourceType? resourceType,
+    int? resourceType,
+    Resource? resource,
     int? senderId,
     int? senderType,
-    int? receiverId,
+    dynamic receiverId,
     int? receiverType,
-    bool? isActive,
+    int? isActive,
     DateTime? createdAt,
-    Account? sender,
-    Consultant? receiver,
-  }) =>
-      Chat(
-        id: id ?? this.id,
-        uuid: uuid ?? this.uuid,
-        resourceId: resourceId ?? this.resourceId,
-        resourceType: resourceType ?? this.resourceType,
-        senderId: senderId ?? this.senderId,
-        senderType: senderType ?? this.senderType,
-        receiverId: receiverId ?? this.receiverId,
-        receiverType: receiverType ?? this.receiverType,
-        isActive: isActive ?? this.isActive,
-        createdAt: createdAt ?? this.createdAt,
-        sender: sender ?? this.sender,
-        receiver: receiver ?? this.receiver,
-      );
-
-  Map<String, dynamic> toMap() {
-    final contract = _ChatContract();
-
-    return {
-      contract.id: id,
-      contract.uuid: uuid,
-      contract.resourceId: resourceId,
-      contract.resourceType: resourceType.toMap(),
-      contract.senderId: senderId,
-      contract.senderType: senderType,
-      contract.receiverId: receiverId,
-      contract.receiverType: receiverType,
-      contract.isActive: isActive.toInt,
-      contract.createdAt: createdAt.toIso8601String(),
-      contract.sender: sender.toMap(),
-      contract.receiver: receiver?.toMap(),
-    };
-  }
-
-  factory Chat.fromMap(Map<String, dynamic> map) {
-    final contract = _ChatContract();
-
+    int? unreadMessagesCount,
+    Sender? sender,
+    dynamic receiver,
+  }) {
     return Chat(
-      id: map[contract.id]?.toInt() ?? 0,
-      uuid: map[contract.uuid] ?? '',
-      resourceId: map[contract.resourceId]?.toInt() ?? 0,
-      resourceType:
-          (map[contract.resourceType] as int).chatResourceTypeFromMap(),
-      senderId: map[contract.senderId]?.toInt() ?? 0,
-      senderType: map[contract.senderType]?.toInt() ?? 0,
-      receiverId: map[contract.receiverId]?.toInt(),
-      receiverType: map[contract.receiverType]?.toInt() ?? 0,
-      isActive: (map[contract.isActive] as int) != 0,
-      createdAt: DateTime.parse(map[contract.createdAt]),
-      sender: Account.fromMap(map[contract.sender]),
-      receiver: map[contract.receiver] != null
-          ? Consultant.fromMap(map[contract.receiver])
-          : null,
+      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
+      resourceId: resourceId ?? this.resourceId,
+      resourceType: resourceType ?? this.resourceType,
+      resource: resource ?? this.resource,
+      senderId: senderId ?? this.senderId,
+      senderType: senderType ?? this.senderType,
+      receiverId: receiverId ?? this.receiverId,
+      receiverType: receiverType ?? this.receiverType,
+      isActive: isActive ?? this.isActive,
+      createdAt: createdAt ?? this.createdAt,
+      unreadMessagesCount: unreadMessagesCount ?? this.unreadMessagesCount,
+      sender: sender ?? this.sender,
+      receiver: receiver ?? this.receiver,
     );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Chat.fromJson(String source) => Chat.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'Chat(id: $id, uuid: $uuid, resourceId: $resourceId, resourceType: $resourceType, senderId: $senderId, senderType: $senderType, receiverId: $receiverId, receiverType: $receiverType, isActive: $isActive, createdAt: $createdAt, sender: $sender, receiver: $receiver)';
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Chat &&
-        other.id == id &&
-        other.uuid == uuid &&
-        other.resourceId == resourceId &&
-        other.resourceType == resourceType &&
-        other.senderId == senderId &&
-        other.senderType == senderType &&
-        other.receiverId == receiverId &&
-        other.receiverType == receiverType &&
-        other.isActive == isActive &&
-        other.createdAt == createdAt &&
-        other.sender == sender &&
-        other.receiver == receiver;
+    if (identical(other, this)) return true;
+    if (other is! Chat) return false;
+    final mapEquals = const DeepCollectionEquality().equals;
+    return mapEquals(other.toMap(), toMap());
   }
 
   @override
@@ -138,27 +141,14 @@ class Chat {
       uuid.hashCode ^
       resourceId.hashCode ^
       resourceType.hashCode ^
+      resource.hashCode ^
       senderId.hashCode ^
       senderType.hashCode ^
       receiverId.hashCode ^
       receiverType.hashCode ^
       isActive.hashCode ^
       createdAt.hashCode ^
+      unreadMessagesCount.hashCode ^
       sender.hashCode ^
       receiver.hashCode;
-}
-
-class _ChatContract {
-  final id = 'id';
-  final uuid = 'uuid';
-  final resourceId = 'resource_id';
-  final resourceType = 'resource_type';
-  final senderId = 'sender_id';
-  final senderType = 'sender_type';
-  final receiverId = 'receiver_id';
-  final receiverType = 'receiver_type';
-  final isActive = 'is_active';
-  final createdAt = 'created_at';
-  final sender = 'sender';
-  final receiver = 'receiver';
 }

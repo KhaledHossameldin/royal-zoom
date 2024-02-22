@@ -121,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            chats[index].sender!.previewName ??
+                            chats[index].sender?.previewName ??
                                 appLocalizations.none,
                             style: const TextStyle(
                               fontSize: 14.0,

@@ -425,5 +425,19 @@
   "activated": "Activated",
   "must_choose": "Must choose",
   "must_enter": "Must enter",
-  "how_enter_account": "How do you want to access your account?"
+  "how_enter_account": "How do you want to access your account?",
+  "my_orders":"My orders",
+  "history":"Hisotry",
+  "seniority":"Seniority",
+  "verification":"Documentation",
+  "withdraw":"Withdraw credits",
+  "order_number":"Order No",
+  "needed_major":"Required Profession",
+  "under_revision":"Under review",
+  "rejected":"Rejected",
+  "amount":"Amount",
+  "transfer_type":"Transfer type",
+  "details":"Details",
+  "paypal":"PayPal",
+  "wallet":"Wallet"
 }

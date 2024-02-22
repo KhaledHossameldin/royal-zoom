@@ -63,6 +63,7 @@ import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
 import '../presentation/screens/edit_consultation/edit_content.dart';
 import '../presentation/screens/edit_consultation/edit_response_type.dart';
+import '../presentation/screens/my_orders/pages/my_orders_screen.dart';
 import '../presentation/screens/notifications/details_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
 import '../presentation/screens/payments/filter_screen.dart';
@@ -465,10 +466,10 @@ class AppRouter {
               BlocProvider(create: (context) => ChatRecordingCubit()),
             ],
             child: ChatDetailsScreen(
-              id: arguments['id'],
-              type: arguments['type'],
-              account: arguments['account'],
-            ),
+                id: arguments['id'],
+                type: arguments['type'],
+                account: arguments['account'],
+                chat: arguments['chat']),
           ),
         );
 
@@ -551,6 +552,8 @@ class AppRouter {
           builder: (context) => const UserTypeChooseScreen(),
         );
 
+      case Routes.myOrders:
+        return MaterialPageRoute(builder: (context) => const MyOrdersScreen());
       default:
         return null;
     }
