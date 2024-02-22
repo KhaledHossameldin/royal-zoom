@@ -1,3 +1,5 @@
+import '../../../data/enums/user_type.dart';
+
 class Network {
   Network._();
   // receiveTimeout in seconds
@@ -76,4 +78,22 @@ class Network {
 
   static String consultationComments(int id) =>
       '$_apiPath/user/consultations/$id/consultation-comments';
+
+  static String chatss(UserType type) {
+    return (type == UserType.consultant)
+        ? '$_apiPath/consultant/chats'
+        : '$_apiPath/user/chats';
+  }
+
+  static String chat(UserType type, int id) {
+    return (type == UserType.consultant)
+        ? '$_apiPath/consultant/chats/$id'
+        : '$_apiPath/user/chats/$id';
+  }
+
+  static String getMessages(UserType type, int id) {
+    return (type == UserType.consultant)
+        ? '$_apiPath/consultant/chats-messages/$id/messages'
+        : '$_apiPath/user/chats-messages/$id/messages';
+  }
 }

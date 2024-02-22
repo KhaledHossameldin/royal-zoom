@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../../../localization/app_localizations.dart';
-import '../../../../utilities/extensions.dart';
-import '../../../constants/brand_colors.dart';
-import '../../../constants/routes.dart';
-import '../../../cubits/chats/chats_cubit.dart';
-import '../../widgets/reload_widget.dart';
+import '../../../../../localization/app_localizations.dart';
+import '../../../../../utilities/extensions.dart';
+import '../../../../constants/brand_colors.dart';
+import '../../../../constants/routes.dart';
+import '../../../../core/di/di_manager.dart';
+import '../../../../core/states/base_fail_state.dart';
+import '../../../../core/states/base_success_state.dart';
+import '../../../../core/states/base_wait_state.dart';
+import '../../../../data/models/new_chat/new_chat.dart';
+import '../../../widgets/reload_widget.dart';
+import 'cubit/chats_cubit.dart';
+import 'cubit/chats_state.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -19,8 +25,8 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
-    context.read<ChatsCubit>().fetch(context);
     super.initState();
+    DIManager.findDep<ChatsCubit>().showAllChats();
   }
 
   @override
@@ -34,25 +40,39 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: BlocBuilder<ChatsCubit, ChatsState>(
         builder: (context, state) {
-          switch (state.runtimeType) {
-            case ChatsLoading:
+          switch (state.showAllChatsState.runtimeType) {
+            case BaseLoadingState:
               return const Center(child: CircularProgressIndicator());
 
-            case ChatsEmpty:
-              return SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    'chat'.lottie,
-                    Text(appLocalizations.chatEmpty,
-                        style: textTheme.bodyMedium),
-                  ],
-                ),
-              );
+            // case ChatsEmpty:
+            // return SizedBox(
+            //   width: double.infinity,
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       'chat'.lottie,
+            //       Text(appLocalizations.chatEmpty,
+            //           style: textTheme.bodyMedium),
+            //     ],
+            //   ),
+            // );
 
-            case ChatsLoaded:
-              final chats = (state as ChatsLoaded).chats;
+            case BaseSuccessState:
+              final chats = (state.showAllChatsState as BaseSuccessState).data
+                  as List<NewChat>;
+              if (chats.isEmpty) {
+                return SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      'chat'.lottie,
+                      Text(appLocalizations.chatEmpty,
+                          style: textTheme.bodyMedium),
+                    ],
+                  ),
+                );
+              }
               return ListView.separated(
                 itemCount: chats.length,
                 padding: EdgeInsets.symmetric(
@@ -91,16 +111,17 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: CircleAvatar(
                           radius: 20.0,
                           backgroundColor: Colors.white,
-                          backgroundImage: chats[index].sender.image.isNotEmpty
-                              ? NetworkImage(chats[index].sender.image)
-                              : 'royake'.png.image,
+                          backgroundImage:
+                              chats[index].sender!.image!.isNotEmpty
+                                  ? NetworkImage(chats[index].sender!.image!)
+                                  : 'royake'.png.image,
                         ),
                       ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            chats[index].sender.previewName ??
+                            chats[index].sender!.previewName ??
                                 appLocalizations.none,
                             style: const TextStyle(
                               fontSize: 14.0,
@@ -132,11 +153,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               );
 
-            case ChatsError:
+            case BaseFailState:
               return ReloadWidget(
-                title: (state as ChatsError).message,
+                title: (state as BaseFailState).error!.message!,
                 buttonText: appLocalizations.getReload(''),
-                onPressed: () => context.read<ChatsCubit>().fetch(context),
+                onPressed: () => DIManager.findDep<ChatsCubit>().showAllChats(),
               );
 
             default:

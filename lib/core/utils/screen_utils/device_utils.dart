@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,7 +18,7 @@ class ScreenHelper {
   static double? safeBlockHorizontal;
   static double? safeBlockVertical;
 
-  static get statusBarHeight =>_screenUtil?.statusBarHeight ?? 0;
+  static get statusBarHeight => _screenUtil?.statusBarHeight ?? 0;
   ScreenHelper(BuildContext context) {
     width55 = MediaQuery.of(context).size.width;
     height55 = MediaQuery.of(context).size.height;
