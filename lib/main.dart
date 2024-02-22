@@ -19,6 +19,7 @@ import 'data/models/authentication/user.dart';
 import 'data/services/repository.dart';
 import 'data/sources/local/shared_prefs.dart';
 import 'localization/app_localizations_setup.dart';
+import 'localization/localizor.dart';
 import 'utilities/app_router.dart';
 
 Future<List<dynamic>> _getStartValues() async {
@@ -102,6 +103,10 @@ class MyApp extends StatelessWidget {
           localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
           locale: locale,
           theme: _setTheme,
+          builder: (context, child) {
+            Localizor(context);
+            return child!;
+          },
         ),
       ),
     );

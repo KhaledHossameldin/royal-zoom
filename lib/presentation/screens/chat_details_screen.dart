@@ -6,13 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../blocs/authentication/authentication_bloc.dart';
 import '../../constants/brand_colors.dart';
+import '../../core/di/di_manager.dart';
 import '../../cubits/chat_messages/chat_messages_cubit.dart';
 import '../../cubits/chat_recording/chat_recording_cubit.dart';
 import '../../data/enums/chat_content_type.dart';
 import '../../data/enums/chat_resource_type.dart';
 import '../../data/models/account.dart';
+
+import '../../data/models/chat/chat.dart';
+import '../../data/sources/local/shared_prefs.dart';
 import '../../localization/app_localizations.dart';
 import '../../utilities/extensions.dart';
 import '../widgets/reload_widget.dart';
@@ -23,11 +26,13 @@ class ChatDetailsScreen extends StatefulWidget {
     required this.id,
     required this.type,
     required this.account,
+    this.chat,
   });
 
   final int id;
   final ChatResourceType type;
   final Account account;
+  final Chat? chat;
 
   @override
   State<ChatDetailsScreen> createState() => _ChatDetailsScreenState();
@@ -43,7 +48,7 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen>
   void initState() {
     context
         .read<ChatMessagesCubit>()
-        .fetch(context, id: widget.id, type: widget.type);
+        .fetch(context, id: widget.id, type: widget.type, chatt: widget.chat);
     super.initState();
   }
 
@@ -103,10 +108,9 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen>
                                 10.emptyHeight,
                             itemBuilder: (context, index) {
                               final isSelf = messages[index].senderId ==
-                                  context
-                                      .read<AuthenticationBloc>()
-                                      .user!
-                                      .data
+                                  DIManager.findDep<SharedPrefs>()
+                                      .getUser()
+                                      ?.data
                                       .id;
                               return UnconstrainedBox(
                                 alignment: isSelf
