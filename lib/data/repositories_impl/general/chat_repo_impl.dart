@@ -1,7 +1,7 @@
 import '../../../core/base_repo/base_repository.dart';
 import '../../../core/results/result.dart';
 import '../../../domain/repositories/general/chat_repo_i.dart';
-import '../../models/chat/message.dart';
+import '../../models/chat/chat_message.dart';
 import '../../models/new_chat/new_chat.dart';
 import '../../sources/local/shared_prefs.dart';
 import '../../sources/remote/general/chat/chat_remote_data_souce.dart';

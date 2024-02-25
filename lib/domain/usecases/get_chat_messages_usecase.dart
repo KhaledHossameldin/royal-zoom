@@ -1,5 +1,5 @@
 import '../../core/results/result.dart';
-import '../../data/models/chat/message.dart';
+import '../../data/models/chat/chat_message.dart';
 import '../repositories/general/chat_repo_i.dart';
 
 class GetChatMessagesUseCase implements IGetChatMessagesUseCase {

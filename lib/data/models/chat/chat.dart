@@ -64,19 +64,18 @@ class Chat {
       );
 
   Map<String, dynamic> toMap() => {
-        if (id != null) 'id': id,
-        if (uuid != null) 'uuid': uuid,
-        if (resourceId != null) 'resource_id': resourceId,
-        if (resourceType != null) 'resource_type': resourceType,
-        if (resource != null) 'resource': resource?.toMap(),
-        if (senderId != null) 'sender_id': senderId,
-        if (senderType != null) 'sender_type': senderType,
-        if (receiverId != null) 'receiver_id': receiverId,
-        if (receiverType != null) 'receiver_type': receiverType,
-        if (isActive != null) 'is_active': isActive,
-        if (createdAt != null) 'created_at': createdAt?.toIso8601String(),
-        if (unreadMessagesCount != null)
-          'unread_messages_count': unreadMessagesCount,
+        'id': id,
+        'uuid': uuid,
+        'resource_id': resourceId,
+        'resource_type': resourceType,
+        'resource': resource.toMap(),
+        'sender_id': senderId,
+        'sender_type': senderType,
+        'receiver_id': receiverId,
+        'receiver_type': receiverType,
+        'is_active': isActive,
+        'created_at': createdAt.toIso8601String(),
+        'unread_messages_count': unreadMessagesCount,
         if (sender != null) 'sender': sender?.toMap(),
         if (receiver != null) 'receiver': receiver,
       };

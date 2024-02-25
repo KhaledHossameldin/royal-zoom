@@ -9,7 +9,7 @@ import '../../../core/di/di_manager.dart';
 import '../../../data/enums/user_type.dart';
 import '../../../data/sources/local/shared_prefs.dart';
 import '../consultations/consultations_screen.dart';
-import 'chats/chat_screen.dart';
+import 'chats/pages/chat_screen.dart';
 import '../consultants/consultants_screen.dart';
 import 'main/main_screen.dart';
 import 'profile/profile_screen.dart';

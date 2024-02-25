@@ -1,5 +1,5 @@
 import '../../../core/results/result.dart';
-import '../../../data/models/chat/message.dart';
+import '../../../data/models/chat/chat_message.dart';
 import '../../../data/models/new_chat/new_chat.dart';
 
 abstract class IChatRepo {

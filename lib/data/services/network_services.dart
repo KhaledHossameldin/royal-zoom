@@ -29,7 +29,7 @@ import '../models/authentication/timezone.dart';
 import '../models/authentication/user.dart';
 import '../models/authentication/user_data.dart';
 import '../models/chat/chat.dart';
-import '../models/chat/message.dart';
+import '../models/chat/chat_message.dart';
 import '../models/consultant_user/consultant_user.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultants/consultant.dart';
@@ -338,24 +338,25 @@ class NetworkServices {
       'content': path ?? content,
       'content_type': type.toMap().toString(),
     });
-    final chatMessage = ChatMessage.fromSentMap(json.decode(message)['data']);
-    if (chatMessage.contentType == ChatContentType.voice) {
-      if (Platform.isIOS &&
-          !chatMessage.content.toLowerCase().endsWith('.aac') &&
-          !chatMessage.content.toLowerCase().endsWith('.aiff') &&
-          !chatMessage.content.toLowerCase().endsWith('.caf') &&
-          !chatMessage.content.toLowerCase().endsWith('.mp3') &&
-          !chatMessage.content.toLowerCase().endsWith('.mp4') &&
-          !chatMessage.content.toLowerCase().endsWith('.m4p') &&
-          !chatMessage.content.toLowerCase().endsWith('.wav')) {
-        return chatMessage;
-      }
-      final player = AudioPlayer();
-      await player.setUrl(chatMessage.content);
-      await player.pause();
-      return chatMessage.copyWith(player: player);
-    }
-    return chatMessage;
+    // final chatMessage = ChatMessage.fromSentMap(json.decode(message)['data']);
+    // if (chatMessage.contentType == ChatContentType.voice) {
+    //   if (Platform.isIOS &&
+    //       !chatMessage.content.toLowerCase().endsWith('.aac') &&
+    //       !chatMessage.content.toLowerCase().endsWith('.aiff') &&
+    //       !chatMessage.content.toLowerCase().endsWith('.caf') &&
+    //       !chatMessage.content.toLowerCase().endsWith('.mp3') &&
+    //       !chatMessage.content.toLowerCase().endsWith('.mp4') &&
+    //       !chatMessage.content.toLowerCase().endsWith('.m4p') &&
+    //       !chatMessage.content.toLowerCase().endsWith('.wav')) {
+    //     return chatMessage;
+    //   }
+    //   final player = AudioPlayer();
+    //   await player.setUrl(chatMessage.content);
+    //   await player.pause();
+    //   return chatMessage.copyWith(player: player);
+    // }
+    // return chatMessage;
+    return Future(() => ChatMessage());
   }
 
   Future<List<ChatMessage>> chatMessages(
@@ -366,22 +367,22 @@ class NetworkServices {
     return await Future.wait(
         (json.decode(response)['data'] as List).map((item) async {
       final chatMessage = ChatMessage.fromMap(item);
-      if (chatMessage.contentType == ChatContentType.voice) {
-        if (Platform.isIOS &&
-            !chatMessage.content.toLowerCase().endsWith('.aac') &&
-            !chatMessage.content.toLowerCase().endsWith('.aiff') &&
-            !chatMessage.content.toLowerCase().endsWith('.caf') &&
-            !chatMessage.content.toLowerCase().endsWith('.mp3') &&
-            !chatMessage.content.toLowerCase().endsWith('.mp4') &&
-            !chatMessage.content.toLowerCase().endsWith('.m4p') &&
-            !chatMessage.content.toLowerCase().endsWith('.wav')) {
-          return chatMessage;
-        }
-        final player = AudioPlayer();
-        await player.setUrl(chatMessage.content);
-        await player.pause();
-        return chatMessage.copyWith(player: player);
-      }
+      // if (chatMessage.contentType == ChatContentType.voice) {
+      //   if (Platform.isIOS &&
+      //       !chatMessage.content.toLowerCase().endsWith('.aac') &&
+      //       !chatMessage.content.toLowerCase().endsWith('.aiff') &&
+      //       !chatMessage.content.toLowerCase().endsWith('.caf') &&
+      //       !chatMessage.content.toLowerCase().endsWith('.mp3') &&
+      //       !chatMessage.content.toLowerCase().endsWith('.mp4') &&
+      //       !chatMessage.content.toLowerCase().endsWith('.m4p') &&
+      //       !chatMessage.content.toLowerCase().endsWith('.wav')) {
+      //     return chatMessage;
+      //   }
+      //   final player = AudioPlayer();
+      //   await player.setUrl(chatMessage.content);
+      //   await player.pause();
+      //   return chatMessage.copyWith(player: player);
+      // }
       return chatMessage;
     }));
   }

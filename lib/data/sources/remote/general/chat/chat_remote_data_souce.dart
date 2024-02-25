@@ -3,7 +3,7 @@ import '../../../../../core/network/endpoints/network.dart';
 import '../../../../../core/network/http_method.dart';
 import '../../../../../core/results/result.dart';
 import '../../../../enums/user_type.dart';
-import '../../../../models/chat/message.dart';
+import '../../../../models/chat/chat_message.dart';
 import '../../../../models/new_chat/new_chat.dart';
 
 class ChatRemoteDataSource {

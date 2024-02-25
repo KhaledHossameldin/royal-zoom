@@ -21,6 +21,8 @@ import '../../domain/repositories/consultant/majors_repo_i.dart';
 import '../../domain/repositories/general/auth_repo_i.dart';
 import '../../domain/repositories/general/chat_repo_i.dart';
 import '../../domain/repositories/general/profile_repo_i.dart';
+import '../../domain/usecases/get_chat_messages_usecase.dart';
+import '../../domain/usecases/get_chat_usecase.dart';
 import '../../domain/usecases/get_chats_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/major_verification_request_usecase.dart';
@@ -81,11 +83,13 @@ class DIManager {
         MajorVerificationRequestUseCase(findDep()));
     _injectDep<IRefundRequestUseCase>(RefundRequestUseCase(findDep()));
     _injectDep<IWithdrawRequestUseCase>(WithdrawRequestUseCase(findDep()));
+    _injectDep<IGetChatUseCase>(GetChatUseCase(findDep()));
+    _injectDep<IGetChatMessagesUseCase>(GetChatMessagesUseCase(findDep()));
 
     /// ------------------ cubits ----------------
     _injectDep(RegisterCubit(registerUsecase: findDep()));
     _injectDep(LoginCubit(findDep(), findDep()));
-    _injectDep(ChatsCubit(findDep()));
+    _injectDep(ChatsCubit(findDep(), findDep(), findDep()));
     _injectDep(MyOrdersCubit(findDep(), findDep(), findDep()));
   }
 

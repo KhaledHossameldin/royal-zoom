@@ -51,7 +51,7 @@ import '../presentation/screens/bottom_appbar_screens/profile/consultants_screen
 import '../presentation/screens/bottom_appbar_screens/profile/contact_us_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/favorites_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/review_app_screen.dart';
-import '../presentation/screens/chat_details_screen.dart';
+import '../presentation/screens/bottom_appbar_screens/chats/pages/chat_details_screen.dart';
 import '../presentation/screens/consultants/details_screen.dart';
 import '../presentation/screens/consultants/filter_screen.dart';
 import '../presentation/screens/consultants/report/report_screen.dart';
@@ -466,10 +466,11 @@ class AppRouter {
               BlocProvider(create: (context) => ChatRecordingCubit()),
             ],
             child: ChatDetailsScreen(
-                id: arguments['id'],
-                type: arguments['type'],
-                account: arguments['account'],
-                chat: arguments['chat']),
+              id: arguments['id'],
+              // type: arguments['type'],
+              // account: arguments['account'],
+              // chat: arguments['chat'],
+            ),
           ),
         );
 
