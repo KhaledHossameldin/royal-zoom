@@ -17,7 +17,7 @@ class MessageParentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSelf = DIManager.findDep<SharedPrefs>().getUser()!.data.id ==
-        message.sender!.id;
+        message.senderId!.toInt();
     return UnconstrainedBox(
       alignment: isSelf
           ? AlignmentDirectional.centerStart

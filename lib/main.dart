@@ -56,7 +56,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  await Repository.instance.initializePusher();
+  // await Repository.instance.initializePusher();
   await DIManager.initDI();
   final values = await _getStartValues();
   runApp(MyApp(

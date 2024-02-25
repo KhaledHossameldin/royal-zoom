@@ -1,6 +1,8 @@
 import '../../../core/base_repo/base_repository.dart';
+import '../../../core/models/empty_entity.dart';
 import '../../../core/results/result.dart';
 import '../../../domain/repositories/general/chat_repo_i.dart';
+import '../../enums/chat_content_type.dart';
 import '../../models/chat/chat_message.dart';
 import '../../models/new_chat/new_chat.dart';
 import '../../sources/local/shared_prefs.dart';
@@ -34,5 +36,20 @@ class ChatRepo extends BaseRepository implements IChatRepo {
         type: _prefs.getUserType(),
         resouceId: resouceId,
         resouceType: resouceType);
+  }
+
+  @override
+  Future<Result<EmptyEntity>> sendMessage({
+    required int chatId,
+    required String content,
+    required ChatContentType contentType,
+  }) async {
+    final result = await _cRD.sendMessage(
+      chatId: chatId,
+      content: content,
+      contentType: contentType,
+      userType: _prefs.getUserType(),
+    );
+    return mapModelToEntity(result);
   }
 }

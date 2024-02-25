@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../../../localization/app_localizations.dart';
 import '../../../../../../utilities/extensions.dart';
@@ -64,7 +63,6 @@ class _ChatScreenState extends State<ChatScreen> {
           if (chatsState is BaseSuccessState) {
             final chats = (state.showAllChatsState as BaseSuccessState).data
                 as List<NewChat>;
-            Logger().d(chats.length);
             if (chats.isEmpty) {
               return SizedBox(
                 width: double.infinity,

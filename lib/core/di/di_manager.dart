@@ -5,6 +5,7 @@ import '../../data/repositories_impl/consultant/balance_repo_impl.dart';
 import '../../data/repositories_impl/consultant/major_repo_impl.dart';
 import '../../data/repositories_impl/general/auth_repo_impl.dart';
 import '../../data/repositories_impl/general/chat_repo_impl.dart';
+import '../../data/repositories_impl/general/medi_repo_impl.dart';
 import '../../data/repositories_impl/general/profile_repo_impl.dart';
 import '../../data/sources/local/shared_prefs.dart';
 import '../../data/sources/remote/consultant/balance/balance_remote_data_source.dart';
@@ -20,7 +21,9 @@ import '../../domain/repositories/consultant/balance_repo_i.dart';
 import '../../domain/repositories/consultant/majors_repo_i.dart';
 import '../../domain/repositories/general/auth_repo_i.dart';
 import '../../domain/repositories/general/chat_repo_i.dart';
+import '../../domain/repositories/general/media_repo_i.dart';
 import '../../domain/repositories/general/profile_repo_i.dart';
+import '../../domain/usecases/contect_to_pusher_usecase.dart';
 import '../../domain/usecases/get_chat_messages_usecase.dart';
 import '../../domain/usecases/get_chat_usecase.dart';
 import '../../domain/usecases/get_chats_usecase.dart';
@@ -29,6 +32,8 @@ import '../../domain/usecases/major_verification_request_usecase.dart';
 import '../../domain/usecases/new_major_requests_usecase.dart';
 import '../../domain/usecases/profile_usecase.dart';
 import '../../domain/usecases/refund_request_usecase.dart';
+import '../../domain/usecases/send_message_usecase.dart';
+import '../../domain/usecases/upload_file_usecase.dart';
 import '../../domain/usecases/withdraw_request_usecase.dart';
 import '../../presentation/screens/authentication/login/cubit/login_cubit.dart';
 import '../../presentation/screens/authentication/register/cubit/register_cubit.dart';
@@ -43,6 +48,8 @@ import '../navigator/app_navigator.dart';
 import '../network/network_module.dart';
 import 'package:get_it/get_it.dart';
 
+import '../services/pusher_handler.dart';
+
 final getIt = GetIt.instance;
 
 class DIManager {
@@ -54,7 +61,7 @@ class DIManager {
     _injectDep(ApplicationCubit());
     _injectDep(AppNavigator());
     _injectDep(AppColorsController());
-
+    _injectLazyDep(PusherHandler());
     // data layer
     _injectDep(AuthRemoteDataSource());
     _injectDep(WorldRemoteDataSource());
@@ -72,8 +79,10 @@ class DIManager {
     _injectDep<IChatRepo>(ChatRepo(findDep(), findDep()));
     _injectDep<IMajorRepo>(MajorRepo(findDep()));
     _injectDep<IBalanceRepo>(BalanceRepo(findDep()));
+    _injectDep<IMediaRepo>(MediaRepo(findDep()));
 
     ///  ----------------- usecases ----------------
+    _injectDep<IUploadFileUseCase>(UploadFileUseCase(findDep()));
     _injectDep<IRegisterUsecase>(RegisterUseCase(findDep()));
     _injectDep<ILoginUseCase>(LoginUseCase(findDep()));
     _injectDep<IProfileUseCase>(ProfileUseCase(findDep()));
@@ -85,11 +94,14 @@ class DIManager {
     _injectDep<IWithdrawRequestUseCase>(WithdrawRequestUseCase(findDep()));
     _injectDep<IGetChatUseCase>(GetChatUseCase(findDep()));
     _injectDep<IGetChatMessagesUseCase>(GetChatMessagesUseCase(findDep()));
+    _injectDep<ISendMessageUseCase>(SendMessageUseCase(findDep(), findDep()));
+    _injectDep<IConnectToPusherUseCase>(ConnectToPusherUseCase(findDep()));
 
     /// ------------------ cubits ----------------
     _injectDep(RegisterCubit(registerUsecase: findDep()));
     _injectDep(LoginCubit(findDep(), findDep()));
-    _injectDep(ChatsCubit(findDep(), findDep(), findDep()));
+    _injectDep(
+        ChatsCubit(findDep(), findDep(), findDep(), findDep(), findDep()));
     _injectDep(MyOrdersCubit(findDep(), findDep(), findDep()));
   }
 
@@ -99,6 +111,11 @@ class DIManager {
   }
 
   static T findDep<T extends Object>() {
+    return getIt<T>();
+  }
+
+  static Future<T> _injectLazyDep<T extends Object>(T dependency) async {
+    getIt.registerLazySingleton(() => dependency);
     return getIt<T>();
   }
 

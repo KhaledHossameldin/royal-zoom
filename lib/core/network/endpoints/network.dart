@@ -101,4 +101,10 @@ class Network {
         ? '$_apiPath/consultant/chats-messages/$id/messages'
         : '$_apiPath/user/chats-messages/$id/messages';
   }
+
+  static String sendMessage(UserType type) {
+    return (type == UserType.consultant)
+        ? '$_apiPath/consultant/chats-messages'
+        : '$_apiPath/user/chats-messages';
+  }
 }
