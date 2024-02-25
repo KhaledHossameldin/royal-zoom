@@ -9,7 +9,7 @@ import '../../../core/di/di_manager.dart';
 import '../../../core/states/base_fail_state.dart';
 import '../../../core/states/base_success_state.dart';
 import '../../../core/states/base_wait_state.dart';
-import '../../../domain/entities/default_major_entity.dart';
+import '../../../domain/entities/consultant_major_entity.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import 'cubit/major_and_experience_cubit.dart';
@@ -50,7 +50,8 @@ class _MajorAndExperienceScreenState extends State<MajorAndExperienceScreen> {
             );
           }
           if (majorAndExperience is BaseSuccessState) {
-            final majors = majorAndExperience.data! as List<DefaultMajorEntity>;
+            final majors =
+                majorAndExperience.data! as List<ConsultantMajorEntity>;
             log(majors.toString());
             return ListView.separated(
               padding: EdgeInsets.symmetric(
@@ -93,7 +94,7 @@ class _Item extends StatelessWidget {
   });
 
   final AppLocalizations appLocalizations;
-  final DefaultMajorEntity major;
+  final ConsultantMajorEntity major;
 
   @override
   Widget build(BuildContext context) {
@@ -141,12 +142,12 @@ class _Item extends StatelessWidget {
               ),
             ),
             trailing: Text(
-              major.isActive
+              major.isActive != 0
                   ? appLocalizations.activated
                   : appLocalizations.notActivated,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
-                color: major.isActive ? Colors.green : Colors.red,
+                color: major.isActive != 0 ? Colors.green : Colors.red,
               ),
             ),
           ),
@@ -163,7 +164,7 @@ class _Item extends StatelessWidget {
                 TextSpan(text: '${appLocalizations.verificationStatus} : '),
                 WidgetSpan(
                   child: Builder(builder: (context) {
-                    if (major.isVerified) {
+                    if (major.isVerified != 0) {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -182,8 +183,20 @@ class _Item extends StatelessWidget {
                         ],
                       );
                     }
+                    if (major.majorVerificationRequest != null) {
+                      return Text(
+                        appLocalizations.verifying,
+                        style: const TextStyle(color: BrandColors.orange),
+                      );
+                    }
                     return TextButton.icon(
-                      onPressed: () {},
+                      onPressed: major.isAvailableForVerification != 0
+                          ? () => Navigator.pushNamed<bool>(
+                                context,
+                                Routes.verifyMajor,
+                                arguments: major.id,
+                              )
+                          : null,
                       style: TextButton.styleFrom(
                         foregroundColor: BrandColors.darkGreen,
                         textStyle: const TextStyle(
@@ -215,7 +228,7 @@ class _Item extends StatelessWidget {
                 appLocalizations.freeMajor,
                 style: const TextStyle(fontSize: 12),
               ),
-              value: major.isFree,
+              value: major.isFree != 0,
               onChanged: (value) {},
             ),
             trailing: Row(

@@ -1,8 +1,11 @@
 // ignore_for_file: unused_element
 
+import 'package:flutter/material.dart';
+
 import '../../app/cubit/application_bloc.dart';
 import '../../data/repositories_impl/consultant/major_repo_impl.dart';
 import '../../data/repositories_impl/general/auth_repo_impl.dart';
+import '../../data/repositories_impl/general/medi_repo_impl.dart';
 import '../../data/repositories_impl/general/profile_repo_impl.dart';
 import '../../data/sources/local/shared_prefs.dart';
 import '../../data/sources/remote/consultant/major/major_remote_data_source.dart';
@@ -14,10 +17,13 @@ import '../../data/sources/remote/user/home_statistics/statistics_remote_data_so
 import '../../data/sources/remote/user/invoices/invoices_remote_data_source.dart';
 import '../../domain/repositories/consultant/major_repo_i.dart';
 import '../../domain/repositories/general/auth_repo_i.dart';
+import '../../domain/repositories/general/media_repo_i.dart';
 import '../../domain/repositories/general/profile_repo_i.dart';
-import '../../domain/usecases/default_majors_usecase.dart';
+import '../../domain/usecases/consultant_majors_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/profile_usecase.dart';
+import '../../domain/usecases/upload_file_usecase.dart';
+import '../../localization/app_localizations.dart';
 import '../../presentation/screens/authentication/login/cubit/login_cubit.dart';
 import '../../presentation/screens/authentication/register/cubit/register_cubit.dart';
 import '../../domain/usecases/register_usecase.dart';
@@ -38,6 +44,7 @@ class DIManager {
     _injectDep(ApplicationCubit());
     _injectDep(AppNavigator());
     _injectDep(AppColorsController());
+    _injectDep(await AppLocalizations.delegate.load(const Locale('ar')));
 
     // data layer
     _injectDep(AuthRemoteDataSource());
@@ -51,18 +58,20 @@ class DIManager {
     /// ------------------ repos ---------------------
     _injectDep<IAuthRepo>(AuthRepo(findDep(), findDep()));
     _injectDep<IProfileRepo>(ProfileRepo(findDep(), findDep()));
-    _injectDep<IDefaultMajorRepo>(DefaultMajorRepo(findDep()));
+    _injectDep<IConsultantMajorRepo>(ConsultantMajorRepo(findDep()));
+    _injectDep<IMediaRepo>(MediaRepo(findDep()));
 
     ///  ----------------- usecases ----------------
     _injectDep<IRegisterUsecase>(RegisterUseCase(findDep()));
     _injectDep<ILoginUseCase>(LoginUseCase(findDep()));
     _injectDep<IProfileUseCase>(ProfileUseCase(findDep()));
-    _injectDep<IDefaultMajorsUsecase>(DefaultMajorsUseCase(findDep()));
+    _injectDep<IUploadFileUseCase>(UploadFileUseCase(findDep()));
+    _injectDep<IConsultantMajorsUsecase>(ConsultantMajorsUseCase(findDep()));
 
     /// ------------------ cubits ----------------
     _injectDep(RegisterCubit(registerUsecase: findDep()));
     _injectDep(LoginCubit(findDep(), findDep()));
-    _injectDep(MajorAndExperienceCubit(defaultMajorsUsecase: findDep()));
+    _injectDep(MajorAndExperienceCubit(consultantMajorsUsecase: findDep()));
   }
 
   static T _injectDep<T extends Object>(T dependency) {

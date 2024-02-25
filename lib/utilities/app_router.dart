@@ -64,6 +64,7 @@ import '../presentation/screens/consultations/filter_screen.dart';
 import '../presentation/screens/edit_consultation/edit_content.dart';
 import '../presentation/screens/edit_consultation/edit_response_type.dart';
 import '../presentation/screens/majors_and_experiences/major_and_experience.dart';
+import '../presentation/screens/majors_and_experiences/verify_major_screen.dart';
 import '../presentation/screens/notifications/details_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
 import '../presentation/screens/payments/filter_screen.dart';
@@ -555,6 +556,13 @@ class AppRouter {
       case Routes.majorAndExperience:
         return MaterialPageRoute(
           builder: (context) => const MajorAndExperienceScreen(),
+        );
+
+      case Routes.verifyMajor:
+        return MaterialPageRoute<bool>(
+          builder: (context) => VerifyMajorScreen(
+            majorId: settings.arguments as int,
+          ),
         );
 
       default:

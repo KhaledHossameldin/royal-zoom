@@ -52,6 +52,34 @@ class NetworkServices {
 
   NetworkServices._();
 
+  Future<void> verifyMajor(
+    BuildContext context, {
+    required int majorId,
+    required bool acceptPaidConsultations,
+    required String resumePath,
+    required String identityProofPath,
+    required List<String> documents,
+  }) async {
+    final paths = await Future.wait<String>([
+      _upload(context, path: resumePath),
+      _upload(context, path: identityProofPath),
+    ]);
+    final documentsPaths = await Future.wait(
+        documents.map((e) async => _upload(context, path: e)));
+    final map = {
+      'accept_paid_consultations': acceptPaidConsultations,
+      'major_id': majorId,
+      'documents': [
+        {'major_document_id': 1, 'file': paths[0]},
+        {'major_document_id': 2, 'file': paths[1]}
+      ],
+    };
+    if (documentsPaths.isNotEmpty) {
+      map.putIfAbsent('attachments', () => documentsPaths);
+    }
+    await _post(context, Network.majorVerificationRequests, body: map);
+  }
+
   Future<UserData> getProfileData(
     BuildContext context, {
     required UserType type,

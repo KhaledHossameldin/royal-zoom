@@ -812,6 +812,31 @@ class AppLocalizations {
 
   String get freeMajor => _translate('free_major');
 
+  String get resume => _translate('resume');
+
+  String get identityProof => _translate('identity_proof');
+
+  String get otherFiles => _translate('other_files');
+
+  String get verifying => _translate('verifying');
+
+  String get mustAcceptPolicies => _translate('must_accept_policies');
+
+  String get mustUploadResume => _translate('must_upload_resume');
+
+  String get mustUploadIdentityProof =>
+      _translate('must_upload_identity_proof');
+
+  String get verificationAcceptPolicies =>
+      _translate('verification_accept_policies');
+
+  String get verificationAcceptReceive =>
+      _translate('verification_accept_receive');
+
+  String get sendRequest => _translate('send_request');
+
+  String get browse => _translate('browse');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

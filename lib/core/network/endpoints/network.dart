@@ -52,6 +52,8 @@ class Network {
   static const newMajorRequests = '$_apiPath/consultant/consultant-majors';
   static const showProfile = '$_apiPath/user/show-profile';
   static const showConsultantProfile = '$_apiPath/consultant/show-profile';
+  static const majorVerificationRequests =
+      '$_apiPath/consultant/major-verification-requests';
 
   static String getConsultantimes(int id) =>
       '$_apiPath/consultants/$id/available-times';

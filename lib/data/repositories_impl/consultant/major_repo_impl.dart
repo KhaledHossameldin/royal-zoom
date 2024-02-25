@@ -1,13 +1,15 @@
 import '../../../core/base_repo/base_repository.dart';
 import '../../../core/models/empty_model.dart';
 import '../../../core/results/result.dart';
-import '../../../domain/entities/default_major_entity.dart';
+import '../../../domain/entities/consultant_major_entity.dart';
 import '../../../domain/repositories/consultant/major_repo_i.dart';
 import '../../models/consultants/add_new_major_request_body.dart';
+import '../../models/consultants/verify_major_request_body.dart';
 import '../../sources/remote/consultant/major/major_remote_data_source.dart';
 
-class DefaultMajorRepo extends BaseRepository implements IDefaultMajorRepo {
-  DefaultMajorRepo(this._mRD);
+class ConsultantMajorRepo extends BaseRepository
+    implements IConsultantMajorRepo {
+  ConsultantMajorRepo(this._mRD);
   final MajorRemoteDataSource _mRD;
 
   @override
@@ -18,8 +20,14 @@ class DefaultMajorRepo extends BaseRepository implements IDefaultMajorRepo {
   }
 
   @override
-  Future<Result<List<DefaultMajorEntity>>> getMajors() async {
+  Future<Result<List<ConsultantMajorEntity>>> getMajors() async {
     final result = await _mRD.getMajors();
     return mapModelsToEntities(result);
+  }
+
+  @override
+  Future<Result<EmptyModel>> verify({required VerifyRequestBody body}) async {
+    final result = await _mRD.verify(body: body);
+    return mapModelToEntity(result);
   }
 }
