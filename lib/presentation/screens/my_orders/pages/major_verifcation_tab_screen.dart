@@ -43,6 +43,7 @@ class _MajorVerificationTabScreenState
                   subMajor: item.neededMajor ?? '',
                   createdAt: item.createdAt!,
                   isMajorsTab: false,
+                  chatId: item.chat!.id!.toInt(),
                 );
               },
               separatorBuilder: (context, index) => 8.emptyHeight,
