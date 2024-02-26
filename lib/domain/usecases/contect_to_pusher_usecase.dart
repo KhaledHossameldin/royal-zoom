@@ -4,11 +4,11 @@ class ConnectToPusherUseCase implements IConnectToPusherUseCase {
   final PusherHandler _pusher;
   ConnectToPusherUseCase(this._pusher);
   @override
-  Future<void> call(int chatId, Function(dynamic event) onEvent) async {
-    return await _pusher.connect(chatId, onEvent);
+  Future<void> call(Function(dynamic event) onEvent) async {
+    return await _pusher.connect(onEvent);
   }
 }
 
 abstract class IConnectToPusherUseCase {
-  Future<void> call(int chatId, Function(dynamic event) onEvent);
+  Future<void> call(Function(dynamic event) onEvent);
 }

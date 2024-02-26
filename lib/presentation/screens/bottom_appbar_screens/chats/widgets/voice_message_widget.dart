@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:voice_message_package/voice_message_package.dart';
+
+import '../../../../../constants/brand_colors.dart';
 
 class VoiceMessageWidget extends StatelessWidget {
-  const VoiceMessageWidget({super.key});
-
+  const VoiceMessageWidget({
+    super.key,
+    required this.audioUri,
+  });
+  final String audioUri;
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return VoiceMessageView(
+      controller: VoiceController(
+        audioSrc: audioUri,
+        maxDuration: const Duration(seconds: 10),
+        isFile: false,
+        onComplete: () {},
+        onPause: () {},
+        onPlaying: () {},
+      ),
+      backgroundColor: BrandColors.snowWhite,
+    );
   }
 }
 

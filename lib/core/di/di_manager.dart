@@ -49,6 +49,7 @@ import '../network/network_module.dart';
 import 'package:get_it/get_it.dart';
 
 import '../services/pusher_handler.dart';
+import '../utils/audio/audio_handler.dart';
 
 final getIt = GetIt.instance;
 
@@ -62,6 +63,7 @@ class DIManager {
     _injectDep(AppNavigator());
     _injectDep(AppColorsController());
     _injectLazyDep(PusherHandler());
+    _injectLazyDep(AudioHandler());
     // data layer
     _injectDep(AuthRemoteDataSource());
     _injectDep(WorldRemoteDataSource());

@@ -18,28 +18,29 @@ class MessageParentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSelf = DIManager.findDep<SharedPrefs>().getUser()!.data.id ==
         message.senderId!.toInt();
-    return UnconstrainedBox(
-      alignment: isSelf
-          ? AlignmentDirectional.centerStart
-          : AlignmentDirectional.centerEnd,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 10.height,
-          horizontal: 10.width,
-        ),
-        constraints: BoxConstraints(maxWidth: 320.width),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadiusDirectional.only(
-            topEnd: const Radius.circular(26.0),
-            topStart: const Radius.circular(26.0),
-            bottomEnd: Radius.circular(isSelf ? 26.0 : 3.0),
-            bottomStart: Radius.circular(isSelf ? 3.0 : 26.0),
-          ),
-          color: isSelf ? BrandColors.snowWhite : BrandColors.darkGreen,
-        ),
-        child: _buildMessageType(),
-      ),
-    );
+    // return UnconstrainedBox(
+    //   alignment: isSelf
+    //       ? AlignmentDirectional.centerStart
+    //       : AlignmentDirectional.centerEnd,
+    //   child: Container(
+    //     padding: EdgeInsets.symmetric(
+    //       vertical: 20.height,
+    //       horizontal: 20.width,
+    //     ),
+    //     constraints: BoxConstraints(maxWidth: 320.width),
+    //     decoration: BoxDecoration(
+    //       borderRadius: BorderRadiusDirectional.only(
+    //         topEnd: const Radius.circular(26.0),
+    //         topStart: const Radius.circular(26.0),
+    //         bottomEnd: Radius.circular(isSelf ? 26.0 : 3.0),
+    //         bottomStart: Radius.circular(isSelf ? 3.0 : 26.0),
+    //       ),
+    //       color: isSelf ? BrandColors.snowWhite : BrandColors.darkGreen,
+    //     ),
+    //     child: _buildMessageType(),
+    //   ),
+    // );
+    return _buildMessageType();
   }
 
   Widget _buildMessageType() {
@@ -50,6 +51,8 @@ class MessageParentWidget extends StatelessWidget {
       return AttachmentMessageWidget(attachmentUri: message.content);
     }
 
-    return const VoiceMessageWidget();
+    return VoiceMessageWidget(
+      audioUri: message.content!,
+    );
   }
 }

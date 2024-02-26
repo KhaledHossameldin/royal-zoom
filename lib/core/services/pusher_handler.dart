@@ -11,10 +11,9 @@ class PusherHandler {
         cluster: 'mt1',
       );
 
-  Future<void> connect(int chatId, dynamic onEvent) async {
+  Future<void> connect(dynamic onEvent) async {
     if (!_isSubscribed) {
       await pusher.subscribe(
-        // channelName: 'new-chat-message-$chatId',
         channelName: 'my-channel',
         onEvent: onEvent,
       );
@@ -23,9 +22,8 @@ class PusherHandler {
     }
   }
 
-  Future<void> disconnect(int chatId) async {
+  Future<void> disconnect() async {
     await pusher.unsubscribe(channelName: 'my-channel');
-    // await pusher.unsubscribe(channelName: 'new-chat-message-$chatId');
     await pusher.disconnect();
   }
 }

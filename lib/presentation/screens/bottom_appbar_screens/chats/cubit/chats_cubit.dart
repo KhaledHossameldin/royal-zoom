@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 import '../../../../../core/results/result.dart';
 import '../../../../../core/states/base_fail_state.dart';
@@ -50,7 +49,7 @@ class ChatsCubit extends Cubit<ChatsState> {
     Future.wait([
       _chatUsecase(id: chatId),
       _messagesUseCase(chatId: chatId),
-      _pusherUseCase(chatId, (event) {
+      _pusherUseCase((event) {
         _listenToMessages(event, chatId);
       })
     ]).then((results) {
