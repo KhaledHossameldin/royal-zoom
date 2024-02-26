@@ -78,4 +78,7 @@ class Network {
 
   static String consultationComments(int id) =>
       '$_apiPath/user/consultations/$id/consultation-comments';
+
+  static String changeConsultantMajorStatus(int id) =>
+      '$_apiPath/consultant/consultant-majors/$id/change-status';
 }

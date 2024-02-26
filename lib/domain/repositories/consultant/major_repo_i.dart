@@ -1,3 +1,4 @@
+import '../../../core/models/empty_entity.dart';
 import '../../../core/models/empty_model.dart';
 import '../../../core/results/result.dart';
 import '../../../data/models/consultants/add_new_major_request_body.dart';
@@ -9,7 +10,11 @@ abstract class IConsultantMajorRepo {
   Future<Result<EmptyModel>> addNewMajorRequest({
     required AddNewMajorRequestBody body,
   });
-  Future<Result<EmptyModel>> verify({
+  Future<Result<EmptyEntity>> verify({
     required VerifyRequestBody body,
+  });
+  Future<Result<EmptyEntity>> changeStatus({
+    required int id,
+    required bool isFree,
   });
 }

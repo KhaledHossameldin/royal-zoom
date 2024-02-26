@@ -1,4 +1,5 @@
 import '../../../core/base_repo/base_repository.dart';
+import '../../../core/models/empty_entity.dart';
 import '../../../core/models/empty_model.dart';
 import '../../../core/results/result.dart';
 import '../../../domain/entities/consultant_major_entity.dart';
@@ -26,8 +27,17 @@ class ConsultantMajorRepo extends BaseRepository
   }
 
   @override
-  Future<Result<EmptyModel>> verify({required VerifyRequestBody body}) async {
+  Future<Result<EmptyEntity>> verify({required VerifyRequestBody body}) async {
     final result = await _mRD.verify(body: body);
+    return mapModelToEntity(result);
+  }
+
+  @override
+  Future<Result<EmptyEntity>> changeStatus({
+    required int id,
+    required bool isFree,
+  }) async {
+    final result = await _mRD.changeStatus(id: id, isFree: isFree);
     return mapModelToEntity(result);
   }
 }

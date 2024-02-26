@@ -88,13 +88,14 @@ class _MajorAndExperienceScreenState extends State<MajorAndExperienceScreen> {
 }
 
 class _Item extends StatelessWidget {
-  const _Item({
+  _Item({
     required this.appLocalizations,
     required this.major,
   });
 
   final AppLocalizations appLocalizations;
   final ConsultantMajorEntity major;
+  final cubit = DIManager.findDep<MajorAndExperienceCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -219,33 +220,57 @@ class _Item extends StatelessWidget {
             )),
           ),
           const Divider(),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            dense: true,
-            title: SwitchListTile(
-              controlAffinity: ListTileControlAffinity.leading,
-              title: Text(
-                appLocalizations.freeMajor,
-                style: const TextStyle(fontSize: 12),
-              ),
-              value: major.isFree != 0,
-              onChanged: (value) {},
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.edit),
-                  color: BrandColors.orange,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.delete_outline),
+          BlocConsumer<MajorAndExperienceCubit, MajorAndExperienceState>(
+            listener: (context, state) {
+              final changeStatus = state.changeStatusState;
+              if (changeStatus is BaseFailState) {
+                (changeStatus.error!.message ?? '').showSnackbar(
+                  context,
                   color: BrandColors.red,
+                );
+                return;
+              }
+              if (changeStatus is BaseSuccessState) {
+                cubit.fetch();
+                return;
+              }
+            },
+            bloc: cubit,
+            builder: (context, state) {
+              final changeStatus = state.changeStatusState;
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                title: SwitchListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: changeStatus is! BaseLoadingState
+                      ? Text(
+                          appLocalizations.freeMajor,
+                          style: const TextStyle(fontSize: 12),
+                        )
+                      : const Center(child: CircularProgressIndicator()),
+                  value: major.isFree != 0,
+                  onChanged: (value) {
+                    cubit.changeStatus(id: major.id!.toInt(), isFree: value);
+                  },
                 ),
-              ],
-            ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.edit),
+                      color: BrandColors.orange,
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.delete_outline),
+                      color: BrandColors.red,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ]),
       ),

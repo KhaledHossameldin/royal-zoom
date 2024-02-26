@@ -3,6 +3,7 @@ import '../../../../../core/models/empty_model.dart';
 import '../../../../../core/network/endpoints/network.dart';
 import '../../../../../core/network/http_method.dart';
 import '../../../../../core/results/result.dart';
+import '../../../../../utilities/extensions.dart';
 import '../../../../models/consultants/add_new_major_request_body.dart';
 import '../../../../models/consultants/consultant_major.dart';
 import '../../../../models/consultants/verify_major_request_body.dart';
@@ -34,6 +35,18 @@ class MajorRemoteDataSource {
       method: HttpMethod.POST,
       url: Network.majorVerificationRequests,
       data: body.toMap(),
+    );
+  }
+
+  Future<Result<EmptyModel>> changeStatus({
+    required int id,
+    required bool isFree,
+  }) async {
+    return await RemoteDataSource.request(
+      converter: (model) => EmptyModel(model),
+      method: HttpMethod.PUT,
+      url: Network.changeConsultantMajorStatus(id),
+      data: {'is_free': isFree.toInt},
     );
   }
 }

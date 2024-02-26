@@ -1,13 +1,7 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 import '../../../constants/brand_colors.dart';
 import '../../../core/di/di_manager.dart';
@@ -15,7 +9,6 @@ import '../../../core/states/base_fail_state.dart';
 import '../../../core/states/base_success_state.dart';
 import '../../../core/states/base_wait_state.dart';
 import '../../../data/models/consultants/verify_major_request_body.dart';
-import '../../../domain/usecases/upload_file_usecase.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import 'cubit/major_and_experience_cubit.dart';
@@ -191,20 +184,17 @@ class _VerifyMajorScreenState extends State<VerifyMajorScreen> {
                         );
                         return;
                       }
-                      final t = DIManager.findDep<IUploadFileUseCase>();
-                      final path = await t(File(resume.value!.path!));
-                      Logger().d(path.error!);
-                      // cubit.verify(
-                      //   body: VerifyRequestBody(
-                      //     majorId: widget.majorId,
-                      //     resume: resume.value!.path!,
-                      //     identityProof: identityProof.value!.path!,
-                      //     attachments:
-                      //         attachments.value.map((e) => e.path!).toList(),
-                      //     isAcceptPaidConsultations:
-                      //         acceptPaidConsultations.value,
-                      //   ),
-                      // );
+                      cubit.verify(
+                        body: VerifyRequestBody(
+                          majorId: widget.majorId,
+                          resume: resume.value!.path!,
+                          identityProof: identityProof.value!.path!,
+                          attachments:
+                              attachments.value.map((e) => e.path!).toList(),
+                          isAcceptPaidConsultations:
+                              acceptPaidConsultations.value,
+                        ),
+                      );
                     },
                     child: Builder(builder: (context) {
                       if (state.verifyMajorState is BaseLoadingState) {

@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:logger/logger.dart';
-
 import '../../core/di/di_manager.dart';
-import '../../core/models/empty_model.dart';
+import '../../core/models/empty_entity.dart';
 import '../../core/results/result.dart';
 import '../../data/models/consultants/verify_major_request_body.dart';
 import '../entities/consultant_major_entity.dart';
@@ -22,10 +20,9 @@ class ConsultantMajorsUseCase implements IConsultantMajorsUsecase {
   }
 
   @override
-  Future<Result<EmptyModel>> verify({
+  Future<Result<EmptyEntity>> verify({
     required VerifyRequestBody body,
   }) async {
-    Logger().d(body);
     body = body.copyWith(
       resume: (await _uploadFileUseCase(File(body.resume))).data!,
       identityProof: (await _uploadFileUseCase(File(body.identityProof))).data!,
@@ -37,14 +34,25 @@ class ConsultantMajorsUseCase implements IConsultantMajorsUsecase {
         })),
       );
     }
-    Logger().d(body);
     return await _repo.verify(body: body);
+  }
+
+  @override
+  Future<Result<EmptyEntity>> changeStatus({
+    required int id,
+    required bool isFree,
+  }) async {
+    return await _repo.changeStatus(id: id, isFree: isFree);
   }
 }
 
 abstract class IConsultantMajorsUsecase {
   Future<Result<List<ConsultantMajorEntity>>> call();
-  Future<Result<EmptyModel>> verify({
+  Future<Result<EmptyEntity>> verify({
     required VerifyRequestBody body,
+  });
+  Future<Result<EmptyEntity>> changeStatus({
+    required int id,
+    required bool isFree,
   });
 }
