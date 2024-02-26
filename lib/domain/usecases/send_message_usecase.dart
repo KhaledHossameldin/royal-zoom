@@ -21,7 +21,11 @@ class SendMessageUseCase implements ISendMessageUseCase {
     String? path;
     if (contentType == ChatContentType.attachment ||
         contentType == ChatContentType.voice) {
-      final tempResult = await _upload(File(content));
+      final file = File(content);
+      final size = await file.length();
+      Logger().d(size);
+      final tempResult = await _upload(file);
+      Logger().d('line 26');
       if (tempResult.hasDataOnly) {
         Logger().d(tempResult.data);
         path = tempResult.data;

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../../core/errors/custom_error.dart';
 import '../../../../../core/results/result.dart';
 import '../../../../../core/states/base_fail_state.dart';
 import '../../../../../core/states/base_success_state.dart';
@@ -79,12 +80,20 @@ class ChatsCubit extends Cubit<ChatsState> {
   }) {
     emit(state.copyWith(sendMessageState: const BaseLoadingState()));
     _send(chatId: chatId, content: content, contentType: contentType)
-        .then((result) {
+        .catchError((error, stackTrace) {
+      Logger().d(error);
+      emit(state.copyWith(
+          sendMessageState:
+              BaseFailState(CustomError(message: error.toString()))));
+      // ignore: invalid_return_type_for_catch_error
+      return Result(error: CustomError(message: error.toString()));
+    }).then((result) {
       if (result.hasDataOnly) {
         emit(state.copyWith(sendMessageState: const BaseSuccessState()));
       } else {
-        emit(state.copyWith(sendMessageState: BaseFailState(result.error)));
         Logger().d(result.error?.message);
+        emit(state.copyWith(sendMessageState: BaseFailState(result.error)));
+
         CustomSnackbar.showErrorSnackbar(result.error!);
       }
     });

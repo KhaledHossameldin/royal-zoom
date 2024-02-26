@@ -9,7 +9,6 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
-import 'package:logger/logger.dart';
 
 import '../../core/network/endpoints/network.dart';
 import '../../localization/app_localizations.dart';
@@ -740,7 +739,6 @@ class NetworkServices {
     Map<String, Object>? params,
   }) async {
     try {
-      Logger().d(params);
       final response = await http
           .get(
             Uri.https(Network.domain, url, params),
@@ -760,7 +758,6 @@ class NetworkServices {
     Map<String, Object>? body,
   }) async {
     try {
-      Logger().d(body);
       final response = await http
           .post(
             Uri.https(Network.domain, url),
@@ -768,7 +765,7 @@ class NetworkServices {
             body: json.encode(body),
           )
           .timeout(const Duration(minutes: 1));
-      Logger().d(response.body);
+
       return _processResponse(response);
     } catch (e) {
       throw _getExceptionString(context, error: e as Exception);
@@ -788,7 +785,7 @@ class NetworkServices {
             body: json.encode(body),
           )
           .timeout(const Duration(minutes: 1));
-      Logger().d(response.body);
+
       return _processResponse(response);
     } catch (e) {
       throw _getExceptionString(context, error: e as Exception);

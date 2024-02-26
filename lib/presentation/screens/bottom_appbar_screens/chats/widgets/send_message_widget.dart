@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../../constants/brand_colors.dart';
 import '../../../../../core/di/di_manager.dart';
@@ -47,6 +48,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget>
               bottom: Platform.isAndroid ? 17.height : 0.0,
             ),
             child: BlocBuilder<ChatRecordingCubit, ChatRecordingState>(
+              bloc: DIManager.findDep<ChatRecordingCubit>(),
               builder: (context, state) {
                 return (widget.isChatClosed)
                     ? const Row(
@@ -92,11 +94,11 @@ class _SendMessageWidgetState extends State<SendMessageWidget>
                           IconButton(
                             onPressed: () {
                               if (state is ChatRecordingWorking) {
-                                context.read<ChatRecordingCubit>().stop();
+                                DIManager.findDep<ChatRecordingCubit>()
+                                    .cancelRecording();
                                 return;
                               }
-                              context
-                                  .read<ChatRecordingCubit>()
+                              DIManager.findDep<ChatRecordingCubit>()
                                   .start(vsync: this);
                             },
                             icon: state is ChatRecordingWorking
@@ -112,26 +114,17 @@ class _SendMessageWidgetState extends State<SendMessageWidget>
                               onPressed: value
                                   ? null
                                   : () async {
-                                      // if (state is ChatRecordingWorking) {
-                                      //   await context
-                                      //       .read<ChatRecordingCubit>()
-                                      //       .stop();
-                                      //   if (!context.mounted) {
-                                      //     return;
-                                      //   }
-                                      //   // await context
-                                      //   //     .read<ChatsCubit>()
-                                      //   //     .send(
-                                      //   //       context,
-                                      //   //       isSending: _isSending,
-                                      //   //       content: context
-                                      //   //           .read<
-                                      //   //               ChatRecordingCubit>()
-                                      //   //           .recordPath!,
-                                      //   //       type: ChatContentType.voice,
-                                      //   //     );
-                                      //   return;
-                                      // }
+                                      if (state is ChatRecordingWorking) {
+                                        DIManager.findDep<ChatRecordingCubit>()
+                                            .stop(widget.chatId, ((uri) async {
+                                          DIManager.findDep<ChatsCubit>()
+                                              .sendMessage(
+                                            chatId: widget.chatId,
+                                            content: uri,
+                                            contentType: ChatContentType.voice,
+                                          );
+                                        }));
+                                      }
                                       if (_messageController.text.isEmpty) {
                                         return;
                                       }

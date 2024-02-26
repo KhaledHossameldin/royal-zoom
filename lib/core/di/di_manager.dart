@@ -1,6 +1,7 @@
 // ignore_for_file: unused_element
 
 import '../../app/cubit/application_bloc.dart';
+import '../../cubits/chat_recording/chat_recording_cubit.dart';
 import '../../data/repositories_impl/consultant/balance_repo_impl.dart';
 import '../../data/repositories_impl/consultant/major_repo_impl.dart';
 import '../../data/repositories_impl/general/auth_repo_impl.dart';
@@ -105,6 +106,7 @@ class DIManager {
     _injectDep(
         ChatsCubit(findDep(), findDep(), findDep(), findDep(), findDep()));
     _injectDep(MyOrdersCubit(findDep(), findDep(), findDep()));
+    _injectDep(ChatRecordingCubit());
   }
 
   static T _injectDep<T extends Object>(T dependency) {

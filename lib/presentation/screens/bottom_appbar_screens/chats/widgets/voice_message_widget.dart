@@ -7,8 +7,10 @@ class VoiceMessageWidget extends StatelessWidget {
   const VoiceMessageWidget({
     super.key,
     required this.audioUri,
+    required this.isSelf,
   });
   final String audioUri;
+  final bool isSelf;
   @override
   Widget build(BuildContext context) {
     return VoiceMessageView(
@@ -20,7 +22,8 @@ class VoiceMessageWidget extends StatelessWidget {
         onPause: () {},
         onPlaying: () {},
       ),
-      backgroundColor: BrandColors.snowWhite,
+      backgroundColor: isSelf ? BrandColors.snowWhite : BrandColors.darkGreen,
+      circlesColor: isSelf ? BrandColors.darkGray : BrandColors.red,
     );
   }
 }

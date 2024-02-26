@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
+import 'package:grouped_list/grouped_list.dart';
 
 import '../../../../../core/di/di_manager.dart';
 import '../../../../../core/states/base_fail_state.dart';
@@ -9,6 +9,7 @@ import '../../../../../core/states/base_wait_state.dart';
 
 import '../../../../../data/models/chat/chat_message.dart';
 import '../../../../../data/models/new_chat/new_chat.dart';
+import '../../../../../data/sources/local/shared_prefs.dart';
 import '../../../../../localization/app_localizations.dart';
 import '../../../../../utilities/extensions.dart';
 import '../../../../widgets/reload_widget.dart';
@@ -36,8 +37,6 @@ class ChatDetailsScreen extends StatefulWidget {
 }
 
 class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
-  final _scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
@@ -50,14 +49,7 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
 
     return BlocConsumer<ChatsCubit, ChatsState>(
       bloc: DIManager.findDep<ChatsCubit>(),
-      listener: (context, state) {
-        if (state.showChatMessagesState is BaseSuccessState) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            _scrollController
-                .jumpTo(_scrollController.position.maxScrollExtent);
-          });
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         final messagesState = state.showChatMessagesState;
 
@@ -68,7 +60,6 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
         if (messagesState is BaseSuccessState) {
           final messages = messagesState.data['messages'] as List<ChatMessage>;
           final chat = messagesState.data['chat'] as NewChat;
-          Logger().d(messages.length);
 
           return Scaffold(
             appBar: AppBar(
@@ -88,17 +79,36 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
               children: [
                 Expanded(
                   child: messages.isNotEmpty
-                      ? ListView.separated(
-                          controller: _scrollController,
+                      ? GroupedListView<ChatMessage, DateTime>(
+                          elements: messages,
+                          groupBy: (message) => DateTime(
+                            message.createdAt!.year,
+                            message.createdAt!.month,
+                            message.createdAt!.day,
+                          ),
+                          reverse: true,
+                          order: GroupedListOrder.DESC,
+                          groupHeaderBuilder: (element) => 0.emptyHeight,
+                          separator: 8.emptyHeight,
                           padding: EdgeInsets.symmetric(
                             vertical: 16.height,
                             horizontal: 16.width,
                           ),
-                          itemCount: messages.length,
-                          separatorBuilder: (context, index) => 10.emptyHeight,
-                          itemBuilder: (context, index) {
-                            return MessageParentWidget(
-                                message: messages[index]);
+                          itemBuilder: (context, message) {
+                            final isSelf = DIManager.findDep<SharedPrefs>()
+                                    .getUser()!
+                                    .data
+                                    .id ==
+                                message.senderId!.toInt();
+                            return Align(
+                              alignment: isSelf
+                                  ? AlignmentDirectional.centerStart
+                                  : AlignmentDirectional.centerEnd,
+                              child: MessageParentWidget(
+                                message: message,
+                                isSelf: isSelf,
+                              ),
+                            );
                           },
                         )
                       : Center(child: Text(appLocalizations.chatsEmpty)),
@@ -116,10 +126,9 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
           return ReloadWidget(
             title: messagesState.error!.message!,
             buttonText: appLocalizations.getReload(''),
-            // onPressed: () => context
-            //     .read<ChatsCubit>()
-            //     .fetch(context, id: widget.id, type: widget.type),
-            onPressed: () {},
+            onPressed: () {
+              DIManager.findDep<ChatsCubit>().showChatMessages(widget.id);
+            },
           );
         }
 
