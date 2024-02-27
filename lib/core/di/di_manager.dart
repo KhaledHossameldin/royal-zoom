@@ -143,5 +143,6 @@ class DIManager {
 
   static dispose() {
     findAC().close();
+    findDep<PusherHandler>().disconnect();
   }
 }

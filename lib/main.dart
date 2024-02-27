@@ -67,7 +67,7 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({
     required this.initialRoute,
     required this.savedLocale,
@@ -82,22 +82,35 @@ class MyApp extends StatelessWidget {
   final UserType type;
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    super.dispose();
+    DIManager.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LocaleCubit(Locale(savedLocale))),
-        BlocProvider(create: (context) => AuthenticationBloc(user)),
+        BlocProvider(
+            create: (context) => LocaleCubit(Locale(widget.savedLocale))),
+        BlocProvider(create: (context) => AuthenticationBloc(widget.user)),
         BlocProvider(create: (context) => ResetPasswordBloc()),
         BlocProvider(create: (context) => ConsultationsCubit()),
         BlocProvider(
-            create: (context) => SwitchCubit(data: user?.data, type: type)),
+            create: (context) =>
+                SwitchCubit(data: widget.user?.data, type: widget.type)),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, locale) => GetMaterialApp(
           title: 'Royake',
           debugShowCheckedModeBanner: false,
-          initialRoute: initialRoute,
+          initialRoute: widget.initialRoute,
           onGenerateRoute: AppRouter.instance.onGenerateRoute,
           supportedLocales: AppLocalizationsSetup.supportedLocales,
           localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
