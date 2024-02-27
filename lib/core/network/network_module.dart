@@ -15,7 +15,7 @@ abstract class NetworkModule {
       ..options.headers.putIfAbsent('Content-Type', () => 'application/json')
       ..options.headers.putIfAbsent('Accept', () => 'application/json')
       ..options.headers.putIfAbsent('Authorization',
-          () async => await DIManager.findDep<SharedPrefs>().getToken())
+          () async => DIManager.findDep<SharedPrefs>().getToken())
       ..options.receiveTimeout =
           const Duration(seconds: Network.receiveTimeout);
     dio.interceptors.clear();

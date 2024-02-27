@@ -2,6 +2,7 @@ import '../../../core/models/base_entity.dart';
 import '../../../core/models/base_model.dart';
 import '../../../domain/entities/new_major_entity.dart';
 import '../major.dart';
+import '../new_chat/new_chat.dart';
 import '../withdraw_request_response/chat.dart';
 
 class MajorVerificationRequestResponse extends BaseModel {
@@ -11,7 +12,7 @@ class MajorVerificationRequestResponse extends BaseModel {
   num? status;
   DateTime? createdAt;
   Major? major;
-  Chat? chat;
+  NewChat? chat;
 
   MajorVerificationRequestResponse({
     this.id,
@@ -35,9 +36,7 @@ class MajorVerificationRequestResponse extends BaseModel {
       major: json['major'] == null
           ? null
           : Major.fromMap(Map<String, dynamic>.from(json['major'])),
-      chat: json['chat'] == null
-          ? null
-          : Chat.fromJson(Map<String, dynamic>.from(json['chat'])),
+      chat: json['chat'] == null ? null : NewChat.fromJson(json['chat']),
     );
   }
 
@@ -59,6 +58,7 @@ class MajorVerificationRequestResponse extends BaseModel {
       neededMajor: major?.name,
       parentMajor: major?.parent?.name,
       status: status?.toInt(),
+      chat: chat,
     );
   }
 }

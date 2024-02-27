@@ -16,7 +16,7 @@ import '../models/authentication/timezone.dart';
 import '../models/authentication/user.dart';
 import '../models/authentication/user_data.dart';
 import '../models/chat/chat.dart';
-import '../models/chat/message.dart';
+import '../models/chat/chat_message.dart';
 import '../models/consultants/available_time.dart';
 import '../models/consultants/consultant.dart';
 import '../models/consultants/details.dart';

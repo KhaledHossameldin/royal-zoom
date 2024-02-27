@@ -19,6 +19,7 @@ class MediaRemoteDataSource {
         ),
       }),
       method: HttpMethod.POST,
+      getAllResponse: true,
       url: Network.upload,
     );
   }
