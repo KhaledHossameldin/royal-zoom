@@ -384,7 +384,9 @@ class _AddMajorScreenState extends State<AddMajorScreen> {
                                 ),
                                 child: update is BaseLoadingState
                                     ? const Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
                                       )
                                     : Text(appLocalizations.save),
                               );

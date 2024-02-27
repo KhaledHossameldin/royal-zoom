@@ -19,10 +19,14 @@ import '../../domain/repositories/consultant/major_repo_i.dart';
 import '../../domain/repositories/general/auth_repo_i.dart';
 import '../../domain/repositories/general/media_repo_i.dart';
 import '../../domain/repositories/general/profile_repo_i.dart';
+import '../../domain/usecases/change_consultant_major_status_usecase.dart';
 import '../../domain/usecases/consultant_majors_usecase.dart';
+import '../../domain/usecases/delete_consultant_major_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/profile_usecase.dart';
+import '../../domain/usecases/update_consultant_major_usecase.dart';
 import '../../domain/usecases/upload_file_usecase.dart';
+import '../../domain/usecases/verify_consultant_major_usecase.dart';
 import '../../localization/app_localizations.dart';
 import '../../presentation/screens/authentication/login/cubit/login_cubit.dart';
 import '../../presentation/screens/authentication/register/cubit/register_cubit.dart';
@@ -67,11 +71,29 @@ class DIManager {
     _injectDep<IProfileUseCase>(ProfileUseCase(findDep()));
     _injectDep<IUploadFileUseCase>(UploadFileUseCase(findDep()));
     _injectDep<IConsultantMajorsUsecase>(ConsultantMajorsUseCase(findDep()));
+    _injectDep<IVerifyConsultantMajorUseCase>(
+      VerifyConsultantMajorUseCase(findDep()),
+    );
+    _injectDep<IChangeConsultantMajorStatusUseCase>(
+      ChangeConsultantMajorStatusUseCase(findDep()),
+    );
+    _injectDep<IUpdateConsultantMajorUseCase>(
+      UpdateConsultantMajorUseCase(findDep()),
+    );
+    _injectDep<IDeleteConsultantMajorUseCase>(
+      DeleteConsultantMajorUseCase(findDep()),
+    );
 
     /// ------------------ cubits ----------------
     _injectDep(RegisterCubit(registerUsecase: findDep()));
     _injectDep(LoginCubit(findDep(), findDep()));
-    _injectDep(MajorAndExperienceCubit(consultantMajorsUsecase: findDep()));
+    _injectDep(MajorAndExperienceCubit(
+      consultantMajorsUsecase: findDep(),
+      verifyConsultantMajorUseCase: findDep(),
+      changeConsultantMajorStatusUseCase: findDep(),
+      updateConsultantMajorUseCase: findDep(),
+      deleteConsultantMajorUseCase: findDep(),
+    ));
   }
 
   static T _injectDep<T extends Object>(T dependency) {
