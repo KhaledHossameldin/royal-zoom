@@ -19,7 +19,6 @@ import '../../data/sources/remote/user/home_statistics/statistics_remote_data_so
 import '../../data/sources/remote/user/invoices/invoices_remote_data_source.dart';
 import '../../domain/repositories/consultant/major_repo_i.dart';
 import '../../domain/repositories/consultant/balance_repo_i.dart';
-import '../../domain/repositories/consultant/majors_repo_i.dart';
 import '../../domain/repositories/general/auth_repo_i.dart';
 import '../../domain/repositories/general/media_repo_i.dart';
 import '../../domain/repositories/general/profile_repo_i.dart';
@@ -40,9 +39,7 @@ import '../../domain/usecases/register_usecase.dart';
 import '../../presentation/screens/majors_and_experiences/cubit/major_and_experience_cubit.dart';
 import '../../domain/usecases/refund_request_usecase.dart';
 import '../../domain/usecases/withdraw_request_usecase.dart';
-import '../../presentation/screens/authentication/login/cubit/login_cubit.dart';
-import '../../presentation/screens/authentication/register/cubit/register_cubit.dart';
-import '../../domain/usecases/register_usecase.dart';
+
 import '../../presentation/screens/my_orders/cubit/my_orders_cubit.dart';
 import '../constants/app_colors.dart';
 import '../navigator/app_navigator.dart';
@@ -77,7 +74,7 @@ class DIManager {
     _injectDep<IProfileRepo>(ProfileRepo(findDep(), findDep()));
     _injectDep<IConsultantMajorRepo>(ConsultantMajorRepo(findDep()));
     _injectDep<IMediaRepo>(MediaRepo(findDep()));
-    _injectDep<IMajorRepo>(MajorRepo(findDep()));
+    // _injectDep<IMajorRepo>(MajorRepo(findDep()));
     _injectDep<IBalanceRepo>(BalanceRepo(findDep()));
 
     ///  ----------------- usecases ----------------
