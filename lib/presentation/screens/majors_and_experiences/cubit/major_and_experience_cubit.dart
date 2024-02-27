@@ -4,6 +4,7 @@ import '../../../../core/states/base_fail_state.dart';
 import '../../../../core/states/base_init_state.dart';
 import '../../../../core/states/base_success_state.dart';
 import '../../../../core/states/base_wait_state.dart';
+import '../../../../data/models/consultants/update_consultant_major_body.dart';
 import '../../../../data/models/consultants/verify_major_request_body.dart';
 import '../../../../domain/usecases/consultant_majors_usecase.dart';
 import 'major_and_experience_state.dart';
@@ -17,6 +18,7 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
     emit(state.copyWith(
       majorAndExperiencesState: const BaseLoadingState(),
       changeStatusState: BaseInitState(),
+      updateState: BaseInitState(),
     ));
     consultantMajorsUsecase().then((result) {
       if (result.hasDataOnly) {
@@ -49,6 +51,17 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
         emit(state.copyWith(changeStatusState: BaseSuccessState(result.data)));
       } else {
         emit(state.copyWith(changeStatusState: BaseFailState(result.error)));
+      }
+    });
+  }
+
+  void update({required UpdateConsultantMajorBody body}) {
+    emit(state.copyWith(updateState: const BaseLoadingState()));
+    consultantMajorsUsecase.update(body: body).then((result) {
+      if (result.hasDataOnly) {
+        emit(state.copyWith(updateState: BaseSuccessState(result.data)));
+      } else {
+        emit(state.copyWith(updateState: BaseFailState(result.error)));
       }
     });
   }

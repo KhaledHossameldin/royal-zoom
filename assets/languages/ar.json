@@ -442,5 +442,6 @@
   "verifying": "تحت الدراسة",
   "must_accept_policies": "يجب الموافقة على سياسة التوثيق",
   "must_upload_resume": "يجب تحميل السيرة الذاتية",
-  "must_upload_identity_proof": "يجب تحميل إثبات الهوية"
+  "must_upload_identity_proof": "يجب تحميل إثبات الهوية",
+  "update_major": "تعديل التخصص"
 }

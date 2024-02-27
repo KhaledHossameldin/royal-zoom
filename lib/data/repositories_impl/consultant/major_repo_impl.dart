@@ -5,6 +5,7 @@ import '../../../core/results/result.dart';
 import '../../../domain/entities/consultant_major_entity.dart';
 import '../../../domain/repositories/consultant/major_repo_i.dart';
 import '../../models/consultants/add_new_major_request_body.dart';
+import '../../models/consultants/update_consultant_major_body.dart';
 import '../../models/consultants/verify_major_request_body.dart';
 import '../../sources/remote/consultant/major/major_remote_data_source.dart';
 
@@ -38,6 +39,14 @@ class ConsultantMajorRepo extends BaseRepository
     required bool isFree,
   }) async {
     final result = await _mRD.changeStatus(id: id, isFree: isFree);
+    return mapModelToEntity(result);
+  }
+
+  @override
+  Future<Result<EmptyEntity>> update({
+    required UpdateConsultantMajorBody body,
+  }) async {
+    final result = await _mRD.update(body: body);
     return mapModelToEntity(result);
   }
 }

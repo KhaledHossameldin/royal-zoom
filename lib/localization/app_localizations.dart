@@ -837,6 +837,8 @@ class AppLocalizations {
 
   String get browse => _translate('browse');
 
+  String get updateMajor => _translate('update_major');
+
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

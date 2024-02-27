@@ -33,6 +33,7 @@ import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../cubits/update_consultation/update_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
 import '../data/models/notifications/user_notification.dart';
+import '../domain/entities/consultant_major_entity.dart';
 import '../presentation/screens/add_major_screen.dart';
 import '../presentation/screens/authentication/login/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
@@ -544,7 +545,9 @@ class AppRouter {
               BlocProvider(create: (context) => MajorsCubit()),
               BlocProvider(create: (context) => AddNewMajorCubit()),
             ],
-            child: const AddMajorScreen(),
+            child: AddMajorScreen(
+              major: settings.arguments as ConsultantMajorEntity?,
+            ),
           ),
         );
 

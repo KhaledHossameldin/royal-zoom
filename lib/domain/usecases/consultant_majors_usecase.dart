@@ -3,6 +3,7 @@ import 'dart:io';
 import '../../core/di/di_manager.dart';
 import '../../core/models/empty_entity.dart';
 import '../../core/results/result.dart';
+import '../../data/models/consultants/update_consultant_major_body.dart';
 import '../../data/models/consultants/verify_major_request_body.dart';
 import '../entities/consultant_major_entity.dart';
 import '../repositories/consultant/major_repo_i.dart';
@@ -44,6 +45,13 @@ class ConsultantMajorsUseCase implements IConsultantMajorsUsecase {
   }) async {
     return await _repo.changeStatus(id: id, isFree: isFree);
   }
+
+  @override
+  Future<Result<EmptyEntity>> update({
+    required UpdateConsultantMajorBody body,
+  }) async {
+    return await _repo.update(body: body);
+  }
 }
 
 abstract class IConsultantMajorsUsecase {
@@ -54,5 +62,9 @@ abstract class IConsultantMajorsUsecase {
   Future<Result<EmptyEntity>> changeStatus({
     required int id,
     required bool isFree,
+  });
+
+  Future<Result<EmptyEntity>> update({
+    required UpdateConsultantMajorBody body,
   });
 }

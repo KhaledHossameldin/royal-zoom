@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,7 +50,6 @@ class _MajorAndExperienceScreenState extends State<MajorAndExperienceScreen> {
           if (majorAndExperience is BaseSuccessState) {
             final majors =
                 majorAndExperience.data! as List<ConsultantMajorEntity>;
-            log(majors.toString());
             return ListView.separated(
               padding: EdgeInsets.symmetric(
                 horizontal: 16.width,
@@ -258,7 +255,16 @@ class _Item extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final isRefetch = await Navigator.pushNamed<bool>(
+                          context,
+                          Routes.addMajor,
+                          arguments: major,
+                        );
+                        if (isRefetch ?? false) {
+                          cubit.fetch();
+                        }
+                      },
                       icon: const Icon(Icons.edit),
                       color: BrandColors.orange,
                     ),

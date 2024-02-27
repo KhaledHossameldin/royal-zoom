@@ -441,5 +441,6 @@
   "verifying": "Verifying",
   "must_accept_policies": "Must accept policies",
   "must_upload_resume": "Must upload resume",
-  "must_upload_identity_proof": "Must upload proof of identity"
+  "must_upload_identity_proof": "Must upload proof of identity",
+  "update_major": "Update major"
 }
