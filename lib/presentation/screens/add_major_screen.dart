@@ -361,7 +361,7 @@ class _AddMajorScreenState extends State<AddMajorScreen> {
                                 onPressed: update is BaseLoadingState
                                     ? null
                                     : () {
-                                        cubit.update(
+                                        cubit.updateMajor(
                                           body: UpdateConsultantMajorBody(
                                             majorId: widget.major!.id!.toInt(),
                                             userId:

@@ -11,16 +11,15 @@ abstract class IConsultantMajorRepo {
   Future<Result<EmptyEntity>> addNewMajorRequest({
     required AddNewMajorRequestBody body,
   });
-  Future<Result<EmptyEntity>> verify({
+  Future<Result<EmptyEntity>> verifyMajor({
     required VerifyRequestBody body,
   });
-  Future<Result<EmptyEntity>> changeStatus({
+  Future<Result<EmptyEntity>> changeMajorStatus({
     required int id,
     required bool isFree,
   });
-  Future<Result<EmptyEntity>> update({
+  Future<Result<EmptyEntity>> updateMajor({
     required UpdateConsultantMajorBody body,
   });
-  Future<Result<EmptyEntity>> delete({required int id});
-  Future<Result<List<NewMajorEntity>>> getMajorsRequests();
+  Future<Result<EmptyEntity>> deleteMajor({required int id});
 }

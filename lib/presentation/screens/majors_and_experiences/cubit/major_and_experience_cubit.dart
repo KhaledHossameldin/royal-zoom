@@ -27,7 +27,7 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
   final IChangeConsultantMajorStatusUseCase changeConsultantMajorStatusUseCase;
   final IUpdateConsultantMajorUseCase updateConsultantMajorUseCase;
   final IDeleteConsultantMajorUseCase deleteConsultantMajorUseCase;
-  void fetch() {
+  void fetchMajors() {
     emit(state.copyWith(
       majorAndExperiencesState: const BaseLoadingState(),
       changeStatusState: BaseInitState(),
@@ -47,7 +47,7 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
     });
   }
 
-  void verify({required VerifyRequestBody body}) {
+  void verifyMajor({required VerifyRequestBody body}) {
     emit(state.copyWith(verifyMajorState: const BaseLoadingState()));
     verifyConsultantMajorUseCase(body: body).then((result) {
       if (result.hasDataOnly) {
@@ -58,7 +58,7 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
     });
   }
 
-  void changeStatus({required int id, required bool isFree}) {
+  void changeMajorStatus({required int id, required bool isFree}) {
     emit(state.copyWith(changeStatusState: const BaseLoadingState()));
     changeConsultantMajorStatusUseCase(id: id, isFree: isFree).then((result) {
       if (result.hasDataOnly) {
@@ -69,7 +69,7 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
     });
   }
 
-  void update({required UpdateConsultantMajorBody body}) {
+  void updateMajor({required UpdateConsultantMajorBody body}) {
     emit(state.copyWith(updateState: const BaseLoadingState()));
     updateConsultantMajorUseCase(body: body).then((result) {
       if (result.hasDataOnly) {
@@ -80,7 +80,7 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
     });
   }
 
-  void delete({required int id}) {
+  void deleteMajor({required int id}) {
     emit(state.copyWith(deleteState: const BaseLoadingState()));
     deleteConsultantMajorUseCase(id: id).then((result) {
       if (result.hasDataOnly) {

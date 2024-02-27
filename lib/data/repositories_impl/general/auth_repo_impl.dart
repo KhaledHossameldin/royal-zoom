@@ -49,12 +49,11 @@ class AuthRepo extends BaseRepository implements IAuthRepo {
     final result = await _aRD.login(username: username, password: password);
     if (result.hasDataOnly) {
       _prefs.setToken(result.data!.token);
-      // TODO: call shehata
-      // if (isRemember) {
-      _prefs.setUser(result.data!);
-      _prefs.setUserData(result.data!.data, result.data!.data.type);
-      _prefs.setUserType(result.data!.data.type);
-      // }
+      if (isRemember) {
+        _prefs.setUser(result.data!);
+        _prefs.setUserData(result.data!.data, result.data!.data.type);
+        _prefs.setUserType(result.data!.data.type);
+      }
     }
     return mapModelToEntity(result);
   }

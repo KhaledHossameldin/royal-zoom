@@ -33,7 +33,8 @@ class MajorRemoteDataSource {
     );
   }
 
-  Future<Result<EmptyModel>> verify({required VerifyRequestBody body}) async {
+  Future<Result<EmptyModel>> verifyMajor(
+      {required VerifyRequestBody body}) async {
     return await RemoteDataSource.request(
       converter: (model) => EmptyModel(model),
       method: HttpMethod.POST,

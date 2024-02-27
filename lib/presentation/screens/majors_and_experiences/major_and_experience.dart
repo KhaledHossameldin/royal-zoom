@@ -25,7 +25,7 @@ class _MajorAndExperienceScreenState extends State<MajorAndExperienceScreen> {
   final cubit = DIManager.findDep<MajorAndExperienceCubit>();
   @override
   void initState() {
-    cubit.fetch();
+    cubit.fetchMajors();
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class _MajorAndExperienceScreenState extends State<MajorAndExperienceScreen> {
             Routes.addMajor,
           );
           if (isRefresh ?? false) {
-            cubit.fetch();
+            cubit.fetchMajors();
           }
         },
       ),
@@ -228,7 +228,7 @@ class _Item extends StatelessWidget {
                 return;
               }
               if (changeStatus is BaseSuccessState) {
-                cubit.fetch();
+                cubit.fetchMajors();
                 return;
               }
             },
@@ -248,7 +248,8 @@ class _Item extends StatelessWidget {
                       : const Center(child: CircularProgressIndicator()),
                   value: major.isFree != 0,
                   onChanged: (value) {
-                    cubit.changeStatus(id: major.id!.toInt(), isFree: value);
+                    cubit.changeMajorStatus(
+                        id: major.id!.toInt(), isFree: value);
                   },
                 ),
                 trailing: Row(
@@ -262,7 +263,7 @@ class _Item extends StatelessWidget {
                           arguments: major,
                         );
                         if (isRefetch ?? false) {
-                          cubit.fetch();
+                          cubit.fetchMajors();
                         }
                       },
                       icon: const Icon(Icons.edit),
@@ -281,7 +282,7 @@ class _Item extends StatelessWidget {
                           return;
                         }
                         if (delete is BaseSuccessState) {
-                          cubit.fetch();
+                          cubit.fetchMajors();
                           return;
                         }
                       },
@@ -291,7 +292,7 @@ class _Item extends StatelessWidget {
                           onPressed: delete is BaseLoadingState
                               ? null
                               : () {
-                                  cubit.delete(id: major.id!.toInt());
+                                  cubit.deleteMajor(id: major.id!.toInt());
                                 },
                           icon: delete is BaseLoadingState
                               ? const CircularProgressIndicator(

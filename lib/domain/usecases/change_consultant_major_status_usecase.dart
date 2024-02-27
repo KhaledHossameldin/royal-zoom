@@ -12,7 +12,7 @@ class ChangeConsultantMajorStatusUseCase
     required int id,
     required bool isFree,
   }) async {
-    return await _repo.changeStatus(id: id, isFree: isFree);
+    return await _repo.changeMajorStatus(id: id, isFree: isFree);
   }
 }
 

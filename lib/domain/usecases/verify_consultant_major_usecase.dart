@@ -29,7 +29,7 @@ class VerifyConsultantMajorUseCase extends IVerifyConsultantMajorUseCase {
         })),
       );
     }
-    return await _repo.verify(body: body);
+    return await _repo.verifyMajor(body: body);
   }
 }
 

@@ -184,7 +184,7 @@ class _VerifyMajorScreenState extends State<VerifyMajorScreen> {
                         );
                         return;
                       }
-                      cubit.verify(
+                      cubit.verifyMajor(
                         body: VerifyRequestBody(
                           majorId: widget.majorId,
                           resume: resume.value!.path!,

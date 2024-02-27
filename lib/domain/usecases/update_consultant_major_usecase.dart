@@ -11,7 +11,7 @@ class UpdateConsultantMajorUseCase implements IUpdateConsultantMajorUseCase {
   Future<Result<EmptyEntity>> call({
     required UpdateConsultantMajorBody body,
   }) async {
-    return await _repo.update(body: body);
+    return await _repo.updateMajor(body: body);
   }
 }
 

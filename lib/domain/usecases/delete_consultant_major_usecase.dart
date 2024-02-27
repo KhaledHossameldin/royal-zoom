@@ -7,7 +7,7 @@ class DeleteConsultantMajorUseCase implements IDeleteConsultantMajorUseCase {
   DeleteConsultantMajorUseCase(this._repo);
   @override
   Future<Result<EmptyEntity>> call({required int id}) async {
-    return await _repo.delete(id: id);
+    return await _repo.deleteMajor(id: id);
   }
 }
 
