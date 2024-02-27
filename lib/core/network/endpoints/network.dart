@@ -39,6 +39,8 @@ class Network {
   static const languages = '$_apiPath/languages';
   static const fastConsultation =
       '$_apiPath/user/consultations/fast-consultation';
+  static const refundRequests = '$_apiPath/consultant/refund-requests';
+  static const withdrawRequests = '$_apiPath/consultant/withdraw-requests';
   static const consultationAppointmentRequests =
       '$_apiPath/user/consultation-appointment-requests';
   static const favoriteConsultations =
@@ -54,13 +56,14 @@ class Network {
   static const showConsultantProfile = '$_apiPath/consultant/show-profile';
   static const majorVerificationRequests =
       '$_apiPath/consultant/major-verification-requests';
-
+  static const newMajorRequestOrders =
+      '$_apiPath/consultant/new-major-requests';
+  static const majorVerificationRequestOrders =
+      '$_apiPath/consultant/major-verification-requests';
   static String getConsultantimes(int id) =>
       '$_apiPath/consultants/$id/available-times';
-
   static String getChatMessages(int id) =>
-      '$_apiPath/user/chats-messages/$id/messages';
-
+      '$_apiPath/conslutant/chats-messages/$id/messages';
   static String favoriteConsultant(int id) =>
       '$_apiPath/user/consultants/$id/favorite';
 

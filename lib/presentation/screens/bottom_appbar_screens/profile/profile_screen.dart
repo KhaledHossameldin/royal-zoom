@@ -13,6 +13,9 @@ import '../../../../core/di/di_manager.dart';
 import '../../../../cubits/switch/switch_cubit.dart';
 import '../../../../data/enums/user_type.dart';
 import '../../../../data/sources/local/shared_prefs.dart';
+
+import '../../../../localization/localizor.dart';
+
 import '../../../widgets/border_painter.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -182,6 +185,13 @@ class ProfileScreen extends StatelessWidget {
                 color: BrandColors.purple,
                 title: appLocalizations.payments,
                 onTap: () => Navigator.pushNamed(context, Routes.payments),
+              ),
+            if (user != null)
+              _Item(
+                icon: 'orders',
+                color: BrandColors.green,
+                title: Localizor.translator.myOrders,
+                onTap: () => Navigator.pushNamed(context, Routes.myOrders),
               ),
             _Item(
               icon: 'about-application',

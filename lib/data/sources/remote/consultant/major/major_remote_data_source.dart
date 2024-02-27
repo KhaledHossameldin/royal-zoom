@@ -9,6 +9,9 @@ import '../../../../models/consultants/consultant_major.dart';
 import '../../../../models/consultants/update_consultant_major_body.dart';
 import '../../../../models/consultants/verify_major_request_body.dart';
 
+import '../../../../models/major_verification_request_response/major_verification_request_response.dart';
+import '../../../../models/new_major_request_response/new_major_request_response.dart';
+
 class MajorRemoteDataSource {
   Future<Result<EmptyModel>> addNewMajorRequest({
     required AddNewMajorRequestBody body,
@@ -67,6 +70,26 @@ class MajorRemoteDataSource {
       converter: (model) => EmptyModel(model),
       method: HttpMethod.DELETE,
       url: '${Network.newMajorRequests}/$id',
+    );
+  }
+  Future<Result<List<NewMajorRequestResponse>>> getMajorsRequests() async {
+    return await RemoteDataSource.request(
+      converterList: (list) => list!
+          .map((model) => NewMajorRequestResponse.fromJson(model))
+          .toList(),
+      method: HttpMethod.GET,
+      url: Network.newMajorRequestOrders,
+    );
+  }
+
+  Future<Result<List<MajorVerificationRequestResponse>>>
+      getVerificationMajorRequests() async {
+    return await RemoteDataSource.request(
+      converterList: (list) => list!
+          .map((model) => MajorVerificationRequestResponse.fromJson(model))
+          .toList(),
+      method: HttpMethod.GET,
+      url: Network.majorVerificationRequestOrders,
     );
   }
 }

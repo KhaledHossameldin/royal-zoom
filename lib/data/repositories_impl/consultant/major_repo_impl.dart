@@ -23,6 +23,13 @@ class ConsultantMajorRepo extends BaseRepository
   @override
   Future<Result<List<ConsultantMajorEntity>>> getMajors() async {
     final result = await _mRD.getMajors();
+       return mapModelsToEntities(result);
+  }
+ 
+
+  @override
+  Future<Result<List<NewMajorEntity>>> getMajorsRequests() async {
+    final result = await _mRD.getMajorsRequests();
     return mapModelsToEntities(result);
   }
 
@@ -53,5 +60,10 @@ class ConsultantMajorRepo extends BaseRepository
   Future<Result<EmptyEntity>> delete({required int id}) async {
     final result = await _mRD.delete(id: id);
     return mapModelToEntity(result);
+  }  
+
+  Future<Result<List<NewMajorEntity>>> getMajorVerificationRequest() async {
+    final result = await _mRD.getVerificationMajorRequests();
+    return mapModelsToEntities(result);
   }
 }

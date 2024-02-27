@@ -443,5 +443,21 @@
   "must_accept_policies": "يجب الموافقة على سياسة التوثيق",
   "must_upload_resume": "يجب تحميل السيرة الذاتية",
   "must_upload_identity_proof": "يجب تحميل إثبات الهوية",
-  "update_major": "تعديل التخصص"
+  "update_major": "تعديل التخصص",
+  "my_orders":"طلباتي",
+  "history":"التاريخ",
+  "seniority":"الأقدمية",
+  "verification":"التوثيق",
+  "withdraw":"سحب أرصدة",
+  "order_number":"رقم الطلب",
+  "needed_major":"التخصص المطلوب",
+  "under_revision":"قيد المراجعة",
+  "rejected":"مرفوض",
+  "amount":"المبلغ",
+  "transfer_type":"نوع التحويل",
+  "details":"التفاصيل",
+  "paypal":"بايبال",
+  "wallet":"المحفظة"
+
+
 }

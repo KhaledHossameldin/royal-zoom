@@ -60,4 +60,6 @@ class Routes {
   static const userTypeChoose = 'user-type-choose-screen';
   static const majorAndExperience = 'major-and-experience-screen';
   static const verifyMajor = 'verify-major-screen';
+  static const myOrders = 'my-orders-screen';
+
 }
