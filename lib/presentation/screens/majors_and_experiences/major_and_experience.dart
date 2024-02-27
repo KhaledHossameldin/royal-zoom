@@ -268,10 +268,39 @@ class _Item extends StatelessWidget {
                       icon: const Icon(Icons.edit),
                       color: BrandColors.orange,
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.delete_outline),
-                      color: BrandColors.red,
+                    BlocConsumer<MajorAndExperienceCubit,
+                        MajorAndExperienceState>(
+                      bloc: cubit,
+                      listener: (context, state) {
+                        final delete = state.deleteState;
+                        if (delete is BaseFailState) {
+                          (delete.error!.message ?? '').showSnackbar(
+                            context,
+                            color: BrandColors.red,
+                          );
+                          return;
+                        }
+                        if (delete is BaseSuccessState) {
+                          cubit.fetch();
+                          return;
+                        }
+                      },
+                      builder: (context, state) {
+                        final delete = state.deleteState;
+                        return IconButton(
+                          onPressed: delete is BaseLoadingState
+                              ? null
+                              : () {
+                                  cubit.delete(id: major.id!.toInt());
+                                },
+                          icon: delete is BaseLoadingState
+                              ? const CircularProgressIndicator(
+                                  color: BrandColors.red,
+                                )
+                              : const Icon(Icons.delete_outline),
+                          color: BrandColors.red,
+                        );
+                      },
                     ),
                   ],
                 ),

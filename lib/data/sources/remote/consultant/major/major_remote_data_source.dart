@@ -61,4 +61,12 @@ class MajorRemoteDataSource {
       data: body.toMap(),
     );
   }
+
+  Future<Result<EmptyModel>> delete({required int id}) async {
+    return await RemoteDataSource.request(
+      converter: (model) => EmptyModel(model),
+      method: HttpMethod.DELETE,
+      url: '${Network.newMajorRequests}/$id',
+    );
+  }
 }

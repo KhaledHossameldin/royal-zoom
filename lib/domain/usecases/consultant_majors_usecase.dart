@@ -52,6 +52,11 @@ class ConsultantMajorsUseCase implements IConsultantMajorsUsecase {
   }) async {
     return await _repo.update(body: body);
   }
+
+  @override
+  Future<Result<EmptyEntity>> delete({required int id}) async {
+    return await _repo.delete(id: id);
+  }
 }
 
 abstract class IConsultantMajorsUsecase {
@@ -67,4 +72,5 @@ abstract class IConsultantMajorsUsecase {
   Future<Result<EmptyEntity>> update({
     required UpdateConsultantMajorBody body,
   });
+  Future<Result<EmptyEntity>> delete({required int id});
 }

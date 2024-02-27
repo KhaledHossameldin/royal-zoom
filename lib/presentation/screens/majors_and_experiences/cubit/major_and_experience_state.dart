@@ -6,11 +6,13 @@ class MajorAndExperienceState {
   BaseState verifyMajorState;
   BaseState changeStatusState;
   BaseState updateState;
+  BaseState deleteState;
   MajorAndExperienceState({
     required this.majorAndExperiencesState,
     required this.verifyMajorState,
     required this.changeStatusState,
     required this.updateState,
+    required this.deleteState,
   });
 
   factory MajorAndExperienceState.initState() => MajorAndExperienceState(
@@ -18,6 +20,7 @@ class MajorAndExperienceState {
         verifyMajorState: BaseInitState(),
         changeStatusState: BaseInitState(),
         updateState: BaseInitState(),
+        deleteState: BaseInitState(),
       );
 
   MajorAndExperienceState copyWith({
@@ -25,6 +28,7 @@ class MajorAndExperienceState {
     BaseState? verifyMajorState,
     BaseState? changeStatusState,
     BaseState? updateState,
+    BaseState? deleteState,
   }) {
     return MajorAndExperienceState(
       majorAndExperiencesState:
@@ -32,6 +36,7 @@ class MajorAndExperienceState {
       verifyMajorState: verifyMajorState ?? this.verifyMajorState,
       changeStatusState: changeStatusState ?? this.changeStatusState,
       updateState: updateState ?? this.updateState,
+      deleteState: deleteState ?? this.deleteState,
     );
   }
 }

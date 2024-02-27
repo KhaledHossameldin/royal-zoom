@@ -1,6 +1,5 @@
 import '../../../core/base_repo/base_repository.dart';
 import '../../../core/models/empty_entity.dart';
-import '../../../core/models/empty_model.dart';
 import '../../../core/results/result.dart';
 import '../../../domain/entities/consultant_major_entity.dart';
 import '../../../domain/repositories/consultant/major_repo_i.dart';
@@ -15,7 +14,7 @@ class ConsultantMajorRepo extends BaseRepository
   final MajorRemoteDataSource _mRD;
 
   @override
-  Future<Result<EmptyModel>> addNewMajorRequest(
+  Future<Result<EmptyEntity>> addNewMajorRequest(
       {required AddNewMajorRequestBody body}) async {
     final result = await _mRD.addNewMajorRequest(body: body);
     return mapModelToEntity(result);
@@ -47,6 +46,12 @@ class ConsultantMajorRepo extends BaseRepository
     required UpdateConsultantMajorBody body,
   }) async {
     final result = await _mRD.update(body: body);
+    return mapModelToEntity(result);
+  }
+
+  @override
+  Future<Result<EmptyEntity>> delete({required int id}) async {
+    final result = await _mRD.delete(id: id);
     return mapModelToEntity(result);
   }
 }

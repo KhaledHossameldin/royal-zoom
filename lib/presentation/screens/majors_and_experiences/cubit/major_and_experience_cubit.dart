@@ -19,6 +19,7 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
       majorAndExperiencesState: const BaseLoadingState(),
       changeStatusState: BaseInitState(),
       updateState: BaseInitState(),
+      deleteState: BaseInitState(),
     ));
     consultantMajorsUsecase().then((result) {
       if (result.hasDataOnly) {
@@ -62,6 +63,17 @@ class MajorAndExperienceCubit extends Cubit<MajorAndExperienceState> {
         emit(state.copyWith(updateState: BaseSuccessState(result.data)));
       } else {
         emit(state.copyWith(updateState: BaseFailState(result.error)));
+      }
+    });
+  }
+
+  void delete({required int id}) {
+    emit(state.copyWith(deleteState: const BaseLoadingState()));
+    consultantMajorsUsecase.delete(id: id).then((result) {
+      if (result.hasDataOnly) {
+        emit(state.copyWith(deleteState: BaseSuccessState(result.data)));
+      } else {
+        emit(state.copyWith(deleteState: BaseFailState(result.error)));
       }
     });
   }
