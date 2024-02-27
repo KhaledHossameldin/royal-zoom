@@ -10,4 +10,9 @@ class CustomError extends BaseError {
     this.message,
     this.statusCode,
   }) : super(message);
+
+  @override
+  String toString() {
+    return 'CustomError{message: $message, statusCode: $statusCode)';
+  }
 }

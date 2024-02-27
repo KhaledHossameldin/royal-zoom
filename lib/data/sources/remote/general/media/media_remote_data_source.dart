@@ -11,9 +11,12 @@ class MediaRemoteDataSource {
   Future<Result<String>> uploadImage(File image) async {
     return await RemoteDataSource.request(
       converter: (model) => model['path'],
+      getAllResponse: true,
       formData: FormData.fromMap({
-        'file': await MultipartFile.fromFile(image.path,
-            filename: image.path.split('/').last),
+        'file': await MultipartFile.fromFile(
+          image.path,
+          filename: image.path.split('/').last,
+        ),
       }),
       method: HttpMethod.POST,
       getAllResponse: true,

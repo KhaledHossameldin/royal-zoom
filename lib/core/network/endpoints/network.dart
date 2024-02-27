@@ -56,16 +56,16 @@ class Network {
   static const newMajorRequests = '$_apiPath/consultant/consultant-majors';
   static const showProfile = '$_apiPath/user/show-profile';
   static const showConsultantProfile = '$_apiPath/consultant/show-profile';
+  static const majorVerificationRequests =
+      '$_apiPath/consultant/major-verification-requests';
   static const newMajorRequestOrders =
       '$_apiPath/consultant/new-major-requests';
   static const majorVerificationRequestOrders =
       '$_apiPath/consultant/major-verification-requests';
   static String getConsultantimes(int id) =>
       '$_apiPath/consultants/$id/available-times';
-
   static String getChatMessages(int id) =>
       '$_apiPath/conslutant/chats-messages/$id/messages';
-
   static String favoriteConsultant(int id) =>
       '$_apiPath/user/consultants/$id/favorite';
 
@@ -83,6 +83,9 @@ class Network {
 
   static String consultationComments(int id) =>
       '$_apiPath/user/consultations/$id/consultation-comments';
+
+  static String changeConsultantMajorStatus(int id) =>
+      '$_apiPath/consultant/consultant-majors/$id/change-status';
 
   static String chatss(UserType type) {
     return (type == UserType.consultant)
@@ -107,4 +110,5 @@ class Network {
         ? '$_apiPath/consultant/chats-messages'
         : '$_apiPath/user/chats-messages';
   }
+
 }

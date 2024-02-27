@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import '../../../core/models/base_entity.dart';
+import '../../../core/models/base_model.dart';
+import '../../../domain/entities/default_major_entity.dart';
 import '../major.dart';
 
-class DefaultMajor {
+class DefaultMajor extends BaseModel {
   final int id;
   final String uuid;
   final int userId;
@@ -150,6 +153,25 @@ class DefaultMajor {
         isNotificationsEnabled.hashCode ^
         isDefault.hashCode ^
         major.hashCode;
+  }
+
+  @override
+  BaseEntity toEntity() {
+    return DefaultMajorEntity(
+      id: id,
+      uuid: uuid,
+      userId: userId,
+      majorId: majorId,
+      isVerified: isVerified,
+      isActive: isActive,
+      isFree: isFree,
+      yearsOfExperience: yearsOfExperience,
+      pricePerHour: pricePerHour,
+      terms: terms,
+      isNotificationsEnabled: isNotificationsEnabled,
+      isDefault: isDefault,
+      major: major,
+    );
   }
 }
 

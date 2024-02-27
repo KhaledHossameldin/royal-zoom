@@ -424,9 +424,26 @@
   "consultant_preview_name": "اسم العرض لحساب المستشار",
   "sending_consultation_requirements": "شروط إرسال الإستشارة",
   "activated": "مفعل",
+  "not_activated": "غير مفعل",
   "must_choose": "يجب إختيار",
   "must_enter": "يجب إدخال",
   "how_enter_account": "كيف تريد الدخول الى حسابك ؟",
+  "verification_status": "حالة التوثيق",
+  "verified": "موثق",
+  "verification_request": "طلب توثيق",
+  "free_major": "تخصص مجاني",
+  "resume": "السيرة الذاتية",
+  "identity_proof": "إثبات الهوية",
+  "other_files": "ملفات أخرى",
+  "verification_accept_policies": "أوافق على سياسة التوثيق",
+  "verification_accept_receive": "هل ترغب في استقبال استشارات مدفوعة؟ باختيارك انت توافق على سياسة المجموعات",
+  "send_request": "إرسال طلب",
+  "browse": "استعرض",
+  "verifying": "تحت الدراسة",
+  "must_accept_policies": "يجب الموافقة على سياسة التوثيق",
+  "must_upload_resume": "يجب تحميل السيرة الذاتية",
+  "must_upload_identity_proof": "يجب تحميل إثبات الهوية",
+  "update_major": "تعديل التخصص",
   "my_orders":"طلباتي",
   "history":"التاريخ",
   "seniority":"الأقدمية",
@@ -441,5 +458,6 @@
   "details":"التفاصيل",
   "paypal":"بايبال",
   "wallet":"المحفظة"
+
 
 }

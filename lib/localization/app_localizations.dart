@@ -796,11 +796,48 @@ class AppLocalizations {
 
   String get activated => _translate('activated');
 
+  String get notActivated => _translate('not_activated');
+
   String get mustChoose => _translate('must_choose');
 
   String get mustEnter => _translate('must_enter');
 
   String get howEnterAccount => _translate('how_enter_account');
+
+  String get verificationStatus => _translate('verification_status');
+
+  String get verified => _translate('verified');
+
+  String get verificationRequest => _translate('verification_request');
+
+  String get freeMajor => _translate('free_major');
+
+  String get resume => _translate('resume');
+
+  String get identityProof => _translate('identity_proof');
+
+  String get otherFiles => _translate('other_files');
+
+  String get verifying => _translate('verifying');
+
+  String get mustAcceptPolicies => _translate('must_accept_policies');
+
+  String get mustUploadResume => _translate('must_upload_resume');
+
+  String get mustUploadIdentityProof =>
+      _translate('must_upload_identity_proof');
+
+  String get verificationAcceptPolicies =>
+      _translate('verification_accept_policies');
+
+  String get verificationAcceptReceive =>
+      _translate('verification_accept_receive');
+
+  String get sendRequest => _translate('send_request');
+
+  String get browse => _translate('browse');
+
+  String get updateMajor => _translate('update_major');
 
   String get myOrders => _translate('my_orders');
   String get verification => _translate('verification');
@@ -812,6 +849,7 @@ class AppLocalizations {
   String get amount => _translate('amount');
   String get transferType => _translate('transfer_type');
   String get details => _translate('details');
+
 
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {

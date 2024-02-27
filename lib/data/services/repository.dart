@@ -61,6 +61,23 @@ class Repository {
 
   void disposeAudio() => _audio.dispose();
 
+  Future<void> verifyMajor(
+    BuildContext context, {
+    required int majorId,
+    required bool acceptPaidConsultations,
+    required String resumePath,
+    required String identityProofPath,
+    required List<String> documents,
+  }) async =>
+      await _network.verifyMajor(
+        context,
+        majorId: majorId,
+        acceptPaidConsultations: acceptPaidConsultations,
+        resumePath: resumePath,
+        identityProofPath: identityProofPath,
+        documents: documents,
+      );
+
   Future<UserData> getProfileData(
     BuildContext context, {
     required UserType type,
@@ -80,7 +97,7 @@ class Repository {
     required String price,
     required String terms,
     required bool isNotificationsEnabled,
-    required String name,
+    required String? name,
   }) async =>
       _network.addNewMajorRequest(
         context,

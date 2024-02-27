@@ -1,11 +1,15 @@
 // ignore_for_file: unused_element
 
+import 'package:flutter/material.dart';
+
 import '../../app/cubit/application_bloc.dart';
 import '../../cubits/chat_recording/chat_recording_cubit.dart';
 import '../../data/repositories_impl/consultant/balance_repo_impl.dart';
 import '../../data/repositories_impl/consultant/major_repo_impl.dart';
 import '../../data/repositories_impl/general/auth_repo_impl.dart';
+
 import '../../data/repositories_impl/general/chat_repo_impl.dart';
+
 import '../../data/repositories_impl/general/medi_repo_impl.dart';
 import '../../data/repositories_impl/general/profile_repo_impl.dart';
 import '../../data/sources/local/shared_prefs.dart';
@@ -18,9 +22,14 @@ import '../../data/sources/remote/general/profile/profile_remote_data_source.dar
 import '../../data/sources/remote/general/world/world_remote_data_source.dart';
 import '../../data/sources/remote/user/home_statistics/statistics_remote_data_source.dart';
 import '../../data/sources/remote/user/invoices/invoices_remote_data_source.dart';
+import '../../domain/repositories/consultant/major_repo_i.dart';
 import '../../domain/repositories/consultant/balance_repo_i.dart';
-import '../../domain/repositories/consultant/majors_repo_i.dart';
 import '../../domain/repositories/general/auth_repo_i.dart';
+import '../../domain/repositories/general/media_repo_i.dart';
+import '../../domain/repositories/general/profile_repo_i.dart';
+import '../../domain/usecases/change_consultant_major_status_usecase.dart';
+import '../../domain/usecases/consultant_majors_usecase.dart';
+import '../../domain/usecases/delete_consultant_major_usecase.dart';
 import '../../domain/repositories/general/chat_repo_i.dart';
 import '../../domain/repositories/general/media_repo_i.dart';
 import '../../domain/repositories/general/profile_repo_i.dart';
@@ -32,6 +41,17 @@ import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/major_verification_request_usecase.dart';
 import '../../domain/usecases/new_major_requests_usecase.dart';
 import '../../domain/usecases/profile_usecase.dart';
+import '../../domain/usecases/update_consultant_major_usecase.dart';
+import '../../domain/usecases/upload_file_usecase.dart';
+import '../../domain/usecases/verify_consultant_major_usecase.dart';
+import '../../localization/app_localizations.dart';
+import '../../presentation/screens/authentication/login/cubit/login_cubit.dart';
+import '../../presentation/screens/authentication/register/cubit/register_cubit.dart';
+import '../../domain/usecases/register_usecase.dart';
+import '../../presentation/screens/majors_and_experiences/cubit/major_and_experience_cubit.dart';
+import '../../domain/usecases/refund_request_usecase.dart';
+import '../../domain/usecases/withdraw_request_usecase.dart';
+=======
 import '../../domain/usecases/refund_request_usecase.dart';
 import '../../domain/usecases/send_message_usecase.dart';
 import '../../domain/usecases/upload_file_usecase.dart';
@@ -65,6 +85,7 @@ class DIManager {
     _injectDep(AppColorsController());
     _injectLazyDep(PusherHandler());
     _injectLazyDep(AudioHandler());
+
     // data layer
     _injectDep(AuthRemoteDataSource());
     _injectDep(WorldRemoteDataSource());
@@ -79,8 +100,12 @@ class DIManager {
     /// ------------------ repos ---------------------
     _injectDep<IAuthRepo>(AuthRepo(findDep(), findDep()));
     _injectDep<IProfileRepo>(ProfileRepo(findDep(), findDep()));
+    _injectDep<IConsultantMajorRepo>(ConsultantMajorRepo(findDep()));
+    _injectDep<IMediaRepo>(MediaRepo(findDep()));
+    // _injectDep<IMajorRepo>(MajorRepo(findDep()));
     _injectDep<IChatRepo>(ChatRepo(findDep(), findDep()));
     _injectDep<IMajorRepo>(MajorRepo(findDep()));
+
     _injectDep<IBalanceRepo>(BalanceRepo(findDep()));
     _injectDep<IMediaRepo>(MediaRepo(findDep()));
 
@@ -89,6 +114,22 @@ class DIManager {
     _injectDep<IRegisterUsecase>(RegisterUseCase(findDep()));
     _injectDep<ILoginUseCase>(LoginUseCase(findDep()));
     _injectDep<IProfileUseCase>(ProfileUseCase(findDep()));
+
+    _injectDep<IUploadFileUseCase>(UploadFileUseCase(findDep()));
+    _injectDep<IConsultantMajorsUsecase>(ConsultantMajorsUseCase(findDep()));
+    _injectDep<IVerifyConsultantMajorUseCase>(
+      VerifyConsultantMajorUseCase(findDep()),
+    );
+    _injectDep<IChangeConsultantMajorStatusUseCase>(
+      ChangeConsultantMajorStatusUseCase(findDep()),
+    );
+    _injectDep<IUpdateConsultantMajorUseCase>(
+      UpdateConsultantMajorUseCase(findDep()),
+    );
+    _injectDep<IDeleteConsultantMajorUseCase>(
+      DeleteConsultantMajorUseCase(findDep()),
+    );
+
     _injectDep<IGetChatsUseCase>(GetChatsUseCase(findDep()));
     _injectDep<INewMajorRequestsUseCase>(NewMajorRequestUseCase(findDep()));
     _injectDep<IMajorVerificationRequestsUseCase>(
@@ -103,8 +144,19 @@ class DIManager {
     /// ------------------ cubits ----------------
     _injectDep(RegisterCubit(registerUsecase: findDep()));
     _injectDep(LoginCubit(findDep(), findDep()));
+
+
+    _injectDep(MajorAndExperienceCubit(
+      consultantMajorsUsecase: findDep(),
+      verifyConsultantMajorUseCase: findDep(),
+      changeConsultantMajorStatusUseCase: findDep(),
+      updateConsultantMajorUseCase: findDep(),
+      deleteConsultantMajorUseCase: findDep(),
+    ));
+
     _injectDep(
         ChatsCubit(findDep(), findDep(), findDep(), findDep(), findDep()));
+
     _injectDep(MyOrdersCubit(findDep(), findDep(), findDep()));
     _injectDep(ChatRecordingCubit());
   }

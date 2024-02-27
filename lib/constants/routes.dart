@@ -58,5 +58,8 @@ class Routes {
   static const editConsultantResponse = 'edit-consultant-response-screen';
   static const addMajor = 'add-major-screen';
   static const userTypeChoose = 'user-type-choose-screen';
+  static const majorAndExperience = 'major-and-experience-screen';
+  static const verifyMajor = 'verify-major-screen';
   static const myOrders = 'my-orders-screen';
+
 }

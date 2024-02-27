@@ -33,6 +33,7 @@ import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../cubits/update_consultation/update_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
 import '../data/models/notifications/user_notification.dart';
+import '../domain/entities/consultant_major_entity.dart';
 import '../presentation/screens/add_major_screen.dart';
 import '../presentation/screens/authentication/login/login_screen.dart';
 import '../presentation/screens/authentication/otp_screen.dart';
@@ -63,6 +64,8 @@ import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
 import '../presentation/screens/edit_consultation/edit_content.dart';
 import '../presentation/screens/edit_consultation/edit_response_type.dart';
+import '../presentation/screens/majors_and_experiences/major_and_experience.dart';
+import '../presentation/screens/majors_and_experiences/verify_major_screen.dart';
 import '../presentation/screens/my_orders/pages/my_orders_screen.dart';
 import '../presentation/screens/notifications/details_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
@@ -538,13 +541,15 @@ class AppRouter {
         );
 
       case Routes.addMajor:
-        return MaterialPageRoute(
+        return MaterialPageRoute<bool>(
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => MajorsCubit()),
               BlocProvider(create: (context) => AddNewMajorCubit()),
             ],
-            child: const AddMajorScreen(),
+            child: AddMajorScreen(
+              major: settings.arguments as ConsultantMajorEntity?,
+            ),
           ),
         );
 
@@ -553,8 +558,22 @@ class AppRouter {
           builder: (context) => const UserTypeChooseScreen(),
         );
 
+      case Routes.majorAndExperience:
+        return MaterialPageRoute(
+          builder: (context) => const MajorAndExperienceScreen(),
+        );
+
+      case Routes.verifyMajor:
+        return MaterialPageRoute<bool>(
+          builder: (context) => VerifyMajorScreen(
+            majorId: settings.arguments as int,
+          ),
+        );
+
+
       case Routes.myOrders:
         return MaterialPageRoute(builder: (context) => const MyOrdersScreen());
+
       default:
         return null;
     }

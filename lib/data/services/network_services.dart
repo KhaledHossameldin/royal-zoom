@@ -52,6 +52,34 @@ class NetworkServices {
 
   NetworkServices._();
 
+  Future<void> verifyMajor(
+    BuildContext context, {
+    required int majorId,
+    required bool acceptPaidConsultations,
+    required String resumePath,
+    required String identityProofPath,
+    required List<String> documents,
+  }) async {
+    final paths = await Future.wait<String>([
+      _upload(context, path: resumePath),
+      _upload(context, path: identityProofPath),
+    ]);
+    final documentsPaths = await Future.wait(
+        documents.map((e) async => _upload(context, path: e)));
+    final map = {
+      'accept_paid_consultations': acceptPaidConsultations,
+      'major_id': majorId,
+      'documents': [
+        {'major_document_id': 1, 'file': paths[0]},
+        {'major_document_id': 2, 'file': paths[1]}
+      ],
+    };
+    if (documentsPaths.isNotEmpty) {
+      map.putIfAbsent('attachments', () => documentsPaths);
+    }
+    await _post(context, Network.majorVerificationRequests, body: map);
+  }
+
   Future<UserData> getProfileData(
     BuildContext context, {
     required UserType type,
@@ -76,9 +104,9 @@ class NetworkServices {
     required String price,
     required String terms,
     required bool isNotificationsEnabled,
-    required String name,
+    required String? name,
   }) async {
-    final response = await _post(context, Network.newMajorRequests, body: {
+    final map = {
       'major_id': majorId.toString(),
       'is_active': isActive.toInt.toString(),
       'years_of_experience': yearsOfExperience.toString(),
@@ -86,8 +114,11 @@ class NetworkServices {
       'terms': terms,
       'is_notifications_enabled': isNotificationsEnabled.toInt.toString(),
       'is_free': 0,
-      'consultant_preview_name': name,
-    });
+    };
+    if (name != null) {
+      map.putIfAbsent('consultant_preview_name', () => name);
+    }
+    final response = await _post(context, Network.newMajorRequests, body: map);
     dev.log(response);
   }
 

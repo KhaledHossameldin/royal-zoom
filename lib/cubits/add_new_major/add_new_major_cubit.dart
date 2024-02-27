@@ -17,7 +17,7 @@ class AddNewMajorCubit extends Cubit<AddNewMajorState> {
     required String price,
     required String terms,
     required bool isNotificationsEnabled,
-    required String name,
+    required String? name,
   }) async {
     try {
       emit(const AddNewMajorLoading());
