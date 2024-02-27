@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../constants/brand_colors.dart';
+import '../../../../constants/routes.dart';
 import '../../../../core/constants/app_style.dart';
 import '../../../../domain/entities/withdraw_request_entity.dart';
 import '../../../../localization/localizor.dart';
@@ -47,7 +48,10 @@ class WithDrawItemWidget extends StatelessWidget {
                 Text(
                     '${Localizor.translator.transferType}: ${Localizor.translator.getWithdrawStatus(item.transferType!.toInt())}'),
                 StatusWidget(
-                  onChatTapped: () {},
+                  onChatTapped: () {
+                    Navigator.of(context).pushNamed(Routes.chatDetails,
+                        arguments: {'id': item.chat?.id});
+                  },
                   status: item.status!.toInt(),
                   isChatVisible: item.chat != null,
                 )

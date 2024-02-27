@@ -16,6 +16,7 @@ class MediaRemoteDataSource {
             filename: image.path.split('/').last),
       }),
       method: HttpMethod.POST,
+      getAllResponse: true,
       url: Network.upload,
     );
   }

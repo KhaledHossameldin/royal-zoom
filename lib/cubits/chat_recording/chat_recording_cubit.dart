@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:record/record.dart';
+import 'package:logger/logger.dart';
 
-import '../../data/services/repository.dart';
+import '../../core/di/di_manager.dart';
+import '../../core/utils/audio/audio_handler.dart';
 
 part 'chat_recording_state.dart';
 
@@ -13,16 +13,9 @@ class ChatRecordingCubit extends Cubit<ChatRecordingState> {
   ChatRecordingCubit() : super(const ChatRecordingInitial());
 
   Timer? timer;
-  final record = AudioRecorder();
-  String? recordPath;
-  final repository = Repository.instance;
 
   Future<void> start({required TickerProvider vsync}) async {
-    final path = await getTemporaryDirectory();
-    recordPath = '${path.path}/record.mp4';
-    if (await record.hasPermission()) {
-      record.start(const RecordConfig(), path: recordPath!);
-    }
+    DIManager.findDep<AudioHandler>().recordAudio();
     emit(ChatRecordingWorking(vsync: vsync));
     final currentState = state as ChatRecordingWorking;
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -30,18 +23,30 @@ class ChatRecordingCubit extends Cubit<ChatRecordingState> {
     });
   }
 
-  Future<void> stop() async {
-    await record.stop();
+  Future<void> stop(int chatId, Function(String uri) onUpload) async {
     timer?.cancel();
     timer = null;
+    DIManager.findDep<AudioHandler>().stopRecording().then((uri) {
+      if (uri != null) {
+        Logger().d(uri);
+        onUpload(uri);
+      }
+    });
+    timer?.cancel();
+    timer = null;
+    emit(const ChatRecordingInitial());
+  }
+
+  void cancelRecording() {
+    timer?.cancel();
+    timer = null;
+    DIManager.findDep<AudioHandler>().cancelRecord();
     emit(const ChatRecordingInitial());
   }
 
   @override
   Future<void> close() {
     timer?.cancel();
-    record.dispose();
-    repository.disposeAudio();
     return super.close();
   }
 }

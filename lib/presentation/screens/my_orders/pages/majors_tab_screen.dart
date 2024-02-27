@@ -41,6 +41,7 @@ class _MajorTabScreenState extends State<MajorTabScreen> {
                   subMajor: item.neededMajor!,
                   createdAt: item.createdAt!,
                   isMajorsTab: true,
+                  chatId: item.chat!.id!.toInt(),
                 );
               },
               separatorBuilder: (context, index) => 8.emptyHeight,

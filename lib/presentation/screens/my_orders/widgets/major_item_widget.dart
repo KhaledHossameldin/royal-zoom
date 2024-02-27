@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../constants/brand_colors.dart';
+import '../../../../constants/routes.dart';
 import '../../../../core/constants/app_style.dart';
 import '../../../../core/utils/date_utils/date_utils.dart';
 import '../../../../localization/localizor.dart';
@@ -16,6 +17,7 @@ class MajorItemWidget extends StatelessWidget {
     required this.subMajor,
     required this.createdAt,
     required this.isMajorsTab,
+    required this.chatId,
   });
   final int id;
   final int status;
@@ -23,6 +25,7 @@ class MajorItemWidget extends StatelessWidget {
   final String subMajor;
   final DateTime createdAt;
   final bool isMajorsTab;
+  final int chatId;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +68,10 @@ class MajorItemWidget extends StatelessWidget {
                 ),
                 if (!isMajorsTab)
                   StatusWidget(
-                    onChatTapped: () {},
+                    onChatTapped: () {
+                      Navigator.of(context).pushNamed(Routes.chatDetails,
+                          arguments: {'id': chatId});
+                    },
                     status: status,
                   ),
               ],
@@ -82,7 +88,10 @@ class MajorItemWidget extends StatelessWidget {
                     ),
                   ),
                   StatusWidget(
-                    onChatTapped: () {},
+                    onChatTapped: () {
+                      Navigator.of(context).pushNamed(Routes.chatDetails,
+                          arguments: {'id': chatId});
+                    },
                     status: status,
                   ),
                 ],
