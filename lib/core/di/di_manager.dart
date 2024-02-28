@@ -1,7 +1,5 @@
 // ignore_for_file: unused_element
 
-import 'package:flutter/material.dart';
-
 import '../../app/cubit/application_bloc.dart';
 import '../../cubits/chat_recording/chat_recording_cubit.dart';
 import '../../data/repositories_impl/consultant/balance_repo_impl.dart';
@@ -31,8 +29,7 @@ import '../../domain/usecases/change_consultant_major_status_usecase.dart';
 import '../../domain/usecases/consultant_majors_usecase.dart';
 import '../../domain/usecases/delete_consultant_major_usecase.dart';
 import '../../domain/repositories/general/chat_repo_i.dart';
-import '../../domain/repositories/general/media_repo_i.dart';
-import '../../domain/repositories/general/profile_repo_i.dart';
+
 import '../../domain/usecases/contect_to_pusher_usecase.dart';
 import '../../domain/usecases/get_chat_messages_usecase.dart';
 import '../../domain/usecases/get_chat_usecase.dart';
@@ -51,14 +48,7 @@ import '../../domain/usecases/register_usecase.dart';
 import '../../presentation/screens/majors_and_experiences/cubit/major_and_experience_cubit.dart';
 import '../../domain/usecases/refund_request_usecase.dart';
 import '../../domain/usecases/withdraw_request_usecase.dart';
-=======
-import '../../domain/usecases/refund_request_usecase.dart';
 import '../../domain/usecases/send_message_usecase.dart';
-import '../../domain/usecases/upload_file_usecase.dart';
-import '../../domain/usecases/withdraw_request_usecase.dart';
-import '../../presentation/screens/authentication/login/cubit/login_cubit.dart';
-import '../../presentation/screens/authentication/register/cubit/register_cubit.dart';
-import '../../domain/usecases/register_usecase.dart';
 
 import '../../presentation/screens/bottom_appbar_screens/chats/cubit/chats_cubit.dart';
 
@@ -104,7 +94,7 @@ class DIManager {
     _injectDep<IMediaRepo>(MediaRepo(findDep()));
     // _injectDep<IMajorRepo>(MajorRepo(findDep()));
     _injectDep<IChatRepo>(ChatRepo(findDep(), findDep()));
-    _injectDep<IMajorRepo>(MajorRepo(findDep()));
+    // _injectDep<IMajorRepo>(MajorRepo(findDep()));
 
     _injectDep<IBalanceRepo>(BalanceRepo(findDep()));
     _injectDep<IMediaRepo>(MediaRepo(findDep()));
@@ -144,7 +134,6 @@ class DIManager {
     /// ------------------ cubits ----------------
     _injectDep(RegisterCubit(registerUsecase: findDep()));
     _injectDep(LoginCubit(findDep(), findDep()));
-
 
     _injectDep(MajorAndExperienceCubit(
       consultantMajorsUsecase: findDep(),
