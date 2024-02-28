@@ -61,5 +61,5 @@ class Routes {
   static const majorAndExperience = 'major-and-experience-screen';
   static const verifyMajor = 'verify-major-screen';
   static const myOrders = 'my-orders-screen';
-
+  static const paymentGetway = 'payment-getway';
 }
