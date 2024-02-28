@@ -74,6 +74,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   voice_message_package: ^2.1.4
   grouped_list: ^5.1.2
+  webview_flutter: ^4.5.0
 
 
 dev_dependencies:

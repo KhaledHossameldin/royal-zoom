@@ -57,8 +57,15 @@ class ConsultantMajorRepo extends BaseRepository
     return mapModelToEntity(result);
   }
 
+  @override
   Future<Result<List<NewMajorEntity>>> getMajorVerificationRequest() async {
     final result = await _mRD.getVerificationMajorRequests();
+    return mapModelsToEntities(result);
+  }
+
+  @override
+  Future<Result<List<NewMajorEntity>>> getMajorsRequests() async {
+    final result = await _mRD.getMajorsRequests();
     return mapModelsToEntities(result);
   }
 }

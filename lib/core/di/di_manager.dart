@@ -92,12 +92,9 @@ class DIManager {
     _injectDep<IProfileRepo>(ProfileRepo(findDep(), findDep()));
     _injectDep<IConsultantMajorRepo>(ConsultantMajorRepo(findDep()));
     _injectDep<IMediaRepo>(MediaRepo(findDep()));
-    // _injectDep<IMajorRepo>(MajorRepo(findDep()));
     _injectDep<IChatRepo>(ChatRepo(findDep(), findDep()));
-    // _injectDep<IMajorRepo>(MajorRepo(findDep()));
 
     _injectDep<IBalanceRepo>(BalanceRepo(findDep()));
-    _injectDep<IMediaRepo>(MediaRepo(findDep()));
 
     ///  ----------------- usecases ----------------
     _injectDep<IUploadFileUseCase>(UploadFileUseCase(findDep()));
@@ -105,7 +102,6 @@ class DIManager {
     _injectDep<ILoginUseCase>(LoginUseCase(findDep()));
     _injectDep<IProfileUseCase>(ProfileUseCase(findDep()));
 
-    _injectDep<IUploadFileUseCase>(UploadFileUseCase(findDep()));
     _injectDep<IConsultantMajorsUsecase>(ConsultantMajorsUseCase(findDep()));
     _injectDep<IVerifyConsultantMajorUseCase>(
       VerifyConsultantMajorUseCase(findDep()),

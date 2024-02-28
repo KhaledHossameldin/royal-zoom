@@ -567,7 +567,9 @@ class _HeaderCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(Routes.paymentGetway);
+                    },
                     icon: 'add_credit'.svg,
                     label: FittedBox(
                       child: Text(appLocalizations.addCredit),

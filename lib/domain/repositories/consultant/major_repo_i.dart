@@ -22,4 +22,7 @@ abstract class IConsultantMajorRepo {
     required UpdateConsultantMajorBody body,
   });
   Future<Result<EmptyEntity>> deleteMajor({required int id});
+
+  Future<Result<List<NewMajorEntity>>> getMajorsRequests();
+  Future<Result<List<NewMajorEntity>>> getMajorVerificationRequest();
 }
