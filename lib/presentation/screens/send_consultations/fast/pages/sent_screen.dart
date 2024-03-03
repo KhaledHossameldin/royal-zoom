@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/brand_colors.dart';
-import '../../../../constants/fonts.dart';
-import '../../../../localization/app_localizations.dart';
-import '../../../../utilities/extensions.dart';
+import '../../../../../constants/brand_colors.dart';
+import '../../../../../constants/fonts.dart';
+import '../../../../../localization/app_localizations.dart';
+import '../../../../../utilities/extensions.dart';
 
 class FastConsultationSentScreen extends StatelessWidget {
   const FastConsultationSentScreen({super.key});

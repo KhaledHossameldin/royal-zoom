@@ -20,6 +20,7 @@ class BrandColors {
   static const darkGray = Color(0xFF666666);
   static const black = Color(0xFF2C3F38);
   static const shadow = Color(0xFFFFFF01);
+  static const lightGray = Color(0xFFFAFAFA);
 
   static const blackTransparent = LinearGradient(
     begin: Alignment.bottomCenter,

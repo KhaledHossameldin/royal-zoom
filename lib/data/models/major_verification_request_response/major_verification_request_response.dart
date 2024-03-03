@@ -3,7 +3,6 @@ import '../../../core/models/base_model.dart';
 import '../../../domain/entities/new_major_entity.dart';
 import '../major.dart';
 import '../new_chat/new_chat.dart';
-import '../withdraw_request_response/chat.dart';
 
 class MajorVerificationRequestResponse extends BaseModel {
   num? id;

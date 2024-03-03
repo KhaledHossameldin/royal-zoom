@@ -2,6 +2,8 @@ import 'dart:io';
 
 import '../../core/results/result.dart';
 import '../../data/models/consultations/fast.dart';
+import '../../data/models/fast_consultation/fast_consultation.dart'
+    as fast_response;
 import '../repositories/user/user_consultations_repo_i.dart';
 import 'upload_file_usecase.dart';
 
@@ -10,7 +12,8 @@ class FastConsultationUseCase extends IFastConsultationUseCase {
   final IUploadFileUseCase _mediaUsecase;
   FastConsultationUseCase(this._repo, this._mediaUsecase);
   @override
-  Future<Result<int>> call(FastConsultation consultation) async {
+  Future<Result<fast_response.FastConsultation>> call(
+      FastConsultation consultation) async {
     final files = await Future.wait(consultation.paths
         .map((path) async => await _mediaUsecase(File(path)))
         .toList());
@@ -27,5 +30,6 @@ class FastConsultationUseCase extends IFastConsultationUseCase {
 }
 
 abstract class IFastConsultationUseCase {
-  Future<Result<int>> call(FastConsultation consultation);
+  Future<Result<fast_response.FastConsultation>> call(
+      FastConsultation consultation);
 }

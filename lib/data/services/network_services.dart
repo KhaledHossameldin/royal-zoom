@@ -363,7 +363,7 @@ class NetworkServices {
     if (type == ChatContentType.voice || type == ChatContentType.attachment) {
       path = await _upload(context, path: content);
     }
-    final message = await _post(context, Network.chatsMessages, body: {
+    await _post(context, Network.chatsMessages, body: {
       'chat_id': chatId.toString(),
       'content': path ?? content,
       'content_type': type.toMap().toString(),

@@ -54,6 +54,8 @@ import '../presentation/screens/bottom_appbar_screens/profile/favorites_screen.d
 import '../presentation/screens/bottom_appbar_screens/profile/review_app_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/chats/pages/chat_details_screen.dart';
 import '../presentation/screens/complete_payment/pages/payment_getway_screen.dart';
+import '../presentation/screens/complete_payment/pages/payment_result_screen.dart';
+import '../presentation/screens/payments/pages/add_balance_to_wallet_screen.dart';
 import '../presentation/screens/consultants/details_screen.dart';
 import '../presentation/screens/consultants/filter_screen.dart';
 import '../presentation/screens/consultants/report/report_screen.dart';
@@ -70,8 +72,8 @@ import '../presentation/screens/majors_and_experiences/verify_major_screen.dart'
 import '../presentation/screens/my_orders/pages/my_orders_screen.dart';
 import '../presentation/screens/notifications/details_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
-import '../presentation/screens/payments/filter_screen.dart';
-import '../presentation/screens/payments/payments_screen.dart';
+import '../presentation/screens/payments/pages/filter_screen.dart';
+import '../presentation/screens/payments/pages/payments_screen.dart';
 import '../presentation/screens/permissions/location_permission_screen.dart';
 import '../presentation/screens/permissions/notifications_permission_screen.dart';
 import '../presentation/screens/bottom_appbar_screens/profile/about_screen.dart';
@@ -85,11 +87,12 @@ import '../presentation/screens/send_consultations/customized/choose_time_screen
 import '../presentation/screens/send_consultations/customized/consultant_answer_screen.dart';
 import '../presentation/screens/send_consultations/customized/content_screen.dart';
 import '../presentation/screens/send_consultations/customized/filter_screen.dart';
-import '../presentation/screens/send_consultations/fast/choose_consultant_screen.dart';
-import '../presentation/screens/send_consultations/fast/consultant_answer_screen.dart';
-import '../presentation/screens/send_consultations/fast/content_screen.dart';
-import '../presentation/screens/send_consultations/fast/filter_screen.dart';
-import '../presentation/screens/send_consultations/fast/sent_screen.dart';
+import '../presentation/screens/send_consultations/fast/pages/choose_consultant_screen.dart';
+import '../presentation/screens/send_consultations/fast/pages/consultant_answer_screen.dart';
+import '../presentation/screens/send_consultations/fast/pages/content_screen.dart';
+import '../presentation/screens/send_consultations/fast/pages/filter_screen.dart';
+import '../presentation/screens/send_consultations/fast/pages/invoice_screen.dart';
+import '../presentation/screens/send_consultations/fast/pages/sent_screen.dart';
 
 class AppRouter {
   static AppRouter instance = AppRouter._();
@@ -263,24 +266,18 @@ class AppRouter {
         );
 
       case Routes.fastConsultationContent:
-        final cubit = settings.arguments as FastConsultationCubit;
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => ConsultationRecordingCubit()),
-              BlocProvider.value(value: cubit),
             ],
             child: const FastConsultationContentScreen(),
           ),
         );
 
       case Routes.fastConsultantAnswer:
-        final cubit = settings.arguments as FastConsultationCubit;
         return MaterialPageRoute(
-          builder: (context) => BlocProvider.value(
-            value: cubit,
-            child: const FastConsultantAnswerScreen(),
-          ),
+          builder: (context) => const FastConsultantAnswerScreen(),
         );
 
       case Routes.consultationSent:
@@ -290,13 +287,9 @@ class AppRouter {
         );
 
       case Routes.consultationsFilter:
-        final cubit = settings.arguments as ConsultationsCubit;
         return MaterialPageRoute(
           fullscreenDialog: true,
-          builder: (context) => BlocProvider.value(
-            value: cubit,
-            child: const ConsultationsFilterScreen(),
-          ),
+          builder: (context) => const ConsultationsFilterScreen(),
         );
 
       case Routes.search:
@@ -563,6 +556,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => const MajorAndExperienceScreen(),
         );
+      case Routes.addBalanceToWalletScreen:
+        return MaterialPageRoute(
+            builder: (context) => const AddBalanceToWalletScreen());
 
       case Routes.verifyMajor:
         return MaterialPageRoute<bool>(
@@ -571,11 +567,30 @@ class AppRouter {
           ),
         );
       case Routes.paymentGetway:
+        final args = settings.arguments as Map;
         return MaterialPageRoute(
-            builder: (context) => const PaymentGetWayScreen());
+            builder: (context) => PaymentGetWayScreen(
+                  ndc: args['ndc'].toString(),
+                  invoiceId: args['id'],
+                ));
 
       case Routes.myOrders:
         return MaterialPageRoute(builder: (context) => const MyOrdersScreen());
+
+      case Routes.invoiceScreen:
+        final invoiceId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => InvoiceScreen(
+            invoiceId: invoiceId,
+          ),
+        );
+      case Routes.paymentResult:
+        final invoiceId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => PaymentResultScreen(
+            invoiceId: invoiceId,
+          ),
+        );
 
       default:
         return null;

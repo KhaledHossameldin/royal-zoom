@@ -850,7 +850,6 @@ class AppLocalizations {
   String get transferType => _translate('transfer_type');
   String get details => _translate('details');
 
-
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

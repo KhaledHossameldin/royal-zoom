@@ -3,15 +3,20 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../constants/brand_colors.dart';
-import '../../../../constants/routes.dart';
-import '../../../../cubits/fast_consultation/fast_consultation_cubit.dart';
-import '../../../../data/enums/consultant_response_type.dart';
-import '../../../../localization/app_localizations.dart';
-import '../../../../utilities/extensions.dart';
-import '../../../widgets/border_painter.dart';
+import '../../../../../constants/brand_colors.dart';
+import '../../../../../constants/routes.dart';
+import '../../../../../core/di/di_manager.dart';
+import '../../../../../core/states/base_fail_state.dart';
+import '../../../../../core/states/base_success_state.dart';
+import '../../../../../core/states/base_wait_state.dart';
+import '../../../../../data/enums/consultant_response_type.dart';
+import '../../../../../data/models/fast_consultation/fast_consultation.dart';
+import '../../../../../localization/app_localizations.dart';
+import '../../../../../utilities/extensions.dart';
+import '../../../../widgets/border_painter.dart';
+import '../cubit/fast_consultation_cubit.dart';
+import '../cubit/fast_consultation_state.dart';
 
-// ignore: must_be_immutable
 class FastConsultantAnswerScreen extends StatefulWidget {
   const FastConsultantAnswerScreen({super.key});
 
@@ -169,20 +174,31 @@ class _FastConsultantAnswerScreenState
                     valueListenable: type,
                     builder: (context, value, child) => BlocConsumer<
                         FastConsultationCubit, FastConsultationState>(
+                      bloc: DIManager.findDep<FastConsultationCubit>(),
+                      listenWhen: (o, n) =>
+                          o.sendConsultation != n.sendConsultation,
                       listener: (context, state) {
-                        if (state is FastConsultationSent) {
-                          Navigator.pushNamed(
-                            context,
-                            Routes.consultationSent,
-                            arguments: state.id,
-                          );
-                        } else if (state is FastConsultationError) {
+                        final sendState = state.sendConsultation;
+                        if (sendState is BaseSuccessState) {
+                          final data = (sendState.data as FastConsultation);
+                          if (data.isPaid ?? false) {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.consultationDetails,
+                              arguments: {'id': data.id!.toInt()},
+                            );
+                          } else {
+                            Navigator.of(context).pushNamed(
+                                Routes.invoiceScreen,
+                                arguments: data.invoice!.id!);
+                          }
+                        } else if (sendState is BaseFailState) {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0)),
-                              content: Text(state.message),
+                              content: Text(sendState.error!.message!),
                             ),
                           );
                         }
@@ -190,16 +206,15 @@ class _FastConsultantAnswerScreenState
                       builder: (context, state) {
                         return ElevatedButton.icon(
                           onPressed: value != ConsultantResponseType.none
-                              ? () => context
-                                  .read<FastConsultationCubit>()
-                                  .send(context, type: type.value)
+                              ? () => DIManager.findDep<FastConsultationCubit>()
+                                  .sendConsultation(type.value)
                               : null,
                           icon: const Directionality(
                             textDirection: TextDirection.rtl,
                             child: Icon(Icons.send_rounded),
                           ),
                           label: Builder(builder: (context) {
-                            if (state is FastConsultationSending) {
+                            if (state.sendConsultation is BaseLoadingState) {
                               return const CircularProgressIndicator(
                                   color: Colors.white);
                             }

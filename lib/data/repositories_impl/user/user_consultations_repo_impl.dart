@@ -5,6 +5,7 @@ import '../../../domain/entities/consultation_entity.dart';
 import '../../../domain/entities/fav_consultation_entitiy.dart';
 import '../../../domain/repositories/user/user_consultations_repo_i.dart';
 import '../../enums/consultant_response_type.dart';
+import '../../models/fast_consultation/fast_consultation.dart';
 import '../../sources/remote/user/consultations/user_consultations_remote_data_source.dart';
 
 class UserConsultationRepo extends BaseRepository
@@ -46,7 +47,7 @@ class UserConsultationRepo extends BaseRepository
   }
 
   @override
-  Future<Result<int>> fastConsultation(
+  Future<Result<FastConsultation>> fastConsultation(
       {required Map<String, Object> consultation}) async {
     return await _uRD.fastConsultation(consultation: consultation);
   }

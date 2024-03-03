@@ -62,4 +62,7 @@ class Routes {
   static const verifyMajor = 'verify-major-screen';
   static const myOrders = 'my-orders-screen';
   static const paymentGetway = 'payment-getway';
+  static const addBalanceToWalletScreen = 'add-balance';
+  static const invoiceScreen = 'invoice-screen';
+  static const paymentResult = 'payment-result';
 }

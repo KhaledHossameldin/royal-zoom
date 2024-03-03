@@ -73,6 +73,7 @@ class MajorRemoteDataSource {
       url: '${Network.newMajorRequests}/$id',
     );
   }
+
   Future<Result<List<NewMajorRequestResponse>>> getMajorsRequests() async {
     return await RemoteDataSource.request(
       converterList: (list) => list!

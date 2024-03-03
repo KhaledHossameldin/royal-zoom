@@ -1,6 +1,7 @@
 import '../../../core/models/empty_entity.dart';
 import '../../../core/results/result.dart';
 import '../../../data/enums/consultant_response_type.dart';
+import '../../../data/models/fast_consultation/fast_consultation.dart';
 import '../../entities/consultation_entity.dart';
 import '../../entities/fav_consultation_entitiy.dart';
 
@@ -11,7 +12,7 @@ abstract class IUserConsultationRepo {
     required id,
     required ConsultantResponseType type,
   });
-  Future<Result<int>> fastConsultation(
+  Future<Result<FastConsultation>> fastConsultation(
       {required Map<String, Object> consultation});
   Future<Result<EmptyEntity>> addFavoriteConsultation(
       {required int id, int? category});

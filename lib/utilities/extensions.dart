@@ -62,6 +62,10 @@ extension NumbersExtension on num {
   SizedBox get emptyWidth => SizedBox(width: width);
 
   SizedBox get emptyHeight => SizedBox(height: height);
+  double get screenWidth => _screenSize.width;
+  double get screenHeight => _screenSize.height;
+  double fromHeight(double percent) => _screenSize.height * percent / 100.0;
+  double fromWidth(double percent) => _screenSize.height * percent / 100.0;
 }
 
 extension NullableStringExtension on String? {

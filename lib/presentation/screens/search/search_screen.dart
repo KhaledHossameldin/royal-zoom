@@ -15,7 +15,7 @@ import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/brand_back_button.dart';
 import '../../widgets/reload_widget.dart';
-import '../send_consultations/fast/filter_screen.dart';
+import '../send_consultations/fast/pages/filter_screen.dart';
 
 enum Review { unreviewed, reviewed }
 

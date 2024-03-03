@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../constants/fonts.dart';
-import '../../../cubits/invoice/invoice_cubit.dart';
-import '../../../localization/app_localizations.dart';
-import '../../../utilities/extensions.dart';
+import '../../../../constants/fonts.dart';
+import '../../../../cubits/invoice/invoice_cubit.dart';
+import '../../../../localization/app_localizations.dart';
+import '../../../../utilities/extensions.dart';
 import 'consultation_tab.dart';
 import 'payments_tab.dart';
 
