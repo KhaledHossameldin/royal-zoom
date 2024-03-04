@@ -62,6 +62,9 @@ class Network {
       '$_apiPath/consultant/new-major-requests';
   static const majorVerificationRequestOrders =
       '$_apiPath/consultant/major-verification-requests';
+
+  static const walletChargeRequest =
+      '$_apiPath/user/invoices/wallet-charge-request';
   static String getConsultantimes(int id) =>
       '$_apiPath/consultants/$id/available-times';
   static String getChatMessages(int id) =>
@@ -111,4 +114,7 @@ class Network {
         : '$_apiPath/user/chats-messages';
   }
 
+  static String getUserInvoice(int id) => '$_apiPath/user/invoices/$id';
+  static String getInvoiceStatus(int id) =>
+      '$_apiPath/user/invoices/$id/check-status';
 }

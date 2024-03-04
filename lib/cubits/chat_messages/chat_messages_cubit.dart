@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 import '../../data/enums/chat_content_type.dart';
 import '../../data/enums/chat_resource_type.dart';

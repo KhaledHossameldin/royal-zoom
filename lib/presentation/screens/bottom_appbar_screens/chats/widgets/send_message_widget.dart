@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
-
 import '../../../../../constants/brand_colors.dart';
 import '../../../../../core/di/di_manager.dart';
 import '../../../../../core/states/base_wait_state.dart';
@@ -51,9 +49,9 @@ class _SendMessageWidgetState extends State<SendMessageWidget>
               bloc: DIManager.findDep<ChatRecordingCubit>(),
               builder: (context, state) {
                 return (widget.isChatClosed)
-                    ? const Row(
+                    ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Text('closed chat')],
+                        children: [Text(Localizor.translator.closedChat)],
                       )
                     : Row(
                         children: [

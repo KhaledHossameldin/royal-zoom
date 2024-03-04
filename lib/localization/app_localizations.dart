@@ -849,7 +849,14 @@ class AppLocalizations {
   String get amount => _translate('amount');
   String get transferType => _translate('transfer_type');
   String get details => _translate('details');
-
+  String get closedChat => _translate('closed_chat');
+  String get removeFilters => _translate('remove_filters');
+  String get addBalanceToWallet => _translate('add_balance_to_wallet');
+  String get continuePayment => _translate('continue_payment');
+  String get apply => _translate('apply');
+  String get sarShort => _translate('sar_short');
+  String get successPayment => _translate('success_payment');
+  String get failPayment => _translate('fail_payment');
 
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {

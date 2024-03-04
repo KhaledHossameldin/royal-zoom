@@ -6,6 +6,7 @@ import '../../../../../core/results/result.dart';
 import '../../../../enums/consultant_response_type.dart';
 import '../../../../models/consultations/consultation.dart';
 import '../../../../models/consultations/favorite.dart';
+import '../../../../models/fast_consultation/fast_consultation.dart';
 
 class UserConsultationRemoteDataSource {
   Future<Result<List<Consultation>>> getUserConsultations() async {
@@ -41,10 +42,10 @@ class UserConsultationRemoteDataSource {
         });
   }
 
-  Future<Result<int>> fastConsultation(
+  Future<Result<FastConsultation>> fastConsultation(
       {required Map<String, Object> consultation}) async {
     return await RemoteDataSource.request(
-      converter: (model) => model['id'],
+      converter: (model) => FastConsultation.fromJson(model),
       method: HttpMethod.POST,
       url: Network.fastConsultation,
       data: consultation,

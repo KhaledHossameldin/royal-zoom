@@ -1,5 +1,3 @@
-import 'package:logger/logger.dart';
-
 import '../../../../../core/data_source/base_remote_data_source.dart';
 import '../../../../../core/network/endpoints/network.dart';
 import '../../../../../core/network/http_method.dart';

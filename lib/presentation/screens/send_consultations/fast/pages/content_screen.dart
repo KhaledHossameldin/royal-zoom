@@ -4,15 +4,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../constants/brand_colors.dart';
-import '../../../../constants/numbers.dart';
-import '../../../../constants/routes.dart';
-import '../../../../cubits/consultation_recording/consultation_recording_cubit.dart';
-import '../../../../cubits/fast_consultation/fast_consultation_cubit.dart';
-import '../../../../data/enums/consultation_content_type.dart';
-import '../../../../localization/app_localizations.dart';
-import '../../../../utilities/extensions.dart';
-import '../../../widgets/border_painter.dart';
+import '../../../../../constants/brand_colors.dart';
+import '../../../../../constants/numbers.dart';
+import '../../../../../constants/routes.dart';
+import '../../../../../core/di/di_manager.dart';
+import '../../../../../cubits/consultation_recording/consultation_recording_cubit.dart';
+import '../../../../../data/enums/consultation_content_type.dart';
+import '../../../../../localization/app_localizations.dart';
+import '../../../../../utilities/extensions.dart';
+import '../../../../widgets/border_painter.dart';
+import '../cubit/fast_consultation_cubit.dart';
 
 class FastConsultationContentScreen extends StatefulWidget {
   const FastConsultationContentScreen({super.key});
@@ -315,9 +316,8 @@ class _FastConsultationContentScreenState
                     builder: (context, value, child) => ElevatedButton.icon(
                       onPressed: value
                           ? () {
-                              final cubit =
-                                  context.read<FastConsultationCubit>();
-                              cubit.setContent(
+                              DIManager.findDep<FastConsultationCubit>()
+                                  .setContent(
                                 type: _type.value,
                                 files: _files.value,
                                 content:
@@ -330,7 +330,6 @@ class _FastConsultationContentScreenState
                               Navigator.pushNamed(
                                 context,
                                 Routes.fastConsultantAnswer,
-                                arguments: cubit,
                               );
                             }
                           : null,

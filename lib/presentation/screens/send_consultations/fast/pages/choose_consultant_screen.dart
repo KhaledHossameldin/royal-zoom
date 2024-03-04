@@ -4,16 +4,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../constants/brand_colors.dart';
-import '../../../../constants/fonts.dart';
-import '../../../../constants/routes.dart';
-import '../../../../cubits/consultants/consultants_cubit.dart';
-import '../../../../cubits/fast_consultation/fast_consultation_cubit.dart';
-import '../../../../data/models/consultants/consultant.dart';
-import '../../../../localization/app_localizations.dart';
-import '../../../../utilities/extensions.dart';
-import '../../../widgets/border_painter.dart';
-import '../../../widgets/reload_widget.dart';
+import '../../../../../constants/brand_colors.dart';
+import '../../../../../constants/fonts.dart';
+import '../../../../../constants/routes.dart';
+import '../../../../../core/di/di_manager.dart';
+import '../../../../../cubits/consultants/consultants_cubit.dart';
+import '../../../../../data/models/consultants/consultant.dart';
+import '../../../../../localization/app_localizations.dart';
+import '../../../../../utilities/extensions.dart';
+import '../../../../widgets/border_painter.dart';
+import '../../../../widgets/reload_widget.dart';
+import '../cubit/fast_consultation_cubit.dart';
 
 class ChooseFastConsultantScreen extends StatefulWidget {
   const ChooseFastConsultantScreen({super.key});
@@ -305,9 +306,8 @@ class _ChooseFastConsultantScreenState
                               onPressed: value <= -1
                                   ? null
                                   : () {
-                                      final cubit =
-                                          context.read<FastConsultationCubit>();
-                                      cubit.chooseConsultant(
+                                      DIManager.findDep<FastConsultationCubit>()
+                                          .chooseConsultant(
                                         _consultantId.value,
                                         isHideName: _isHideName,
                                         majorId: majorId,
@@ -315,7 +315,6 @@ class _ChooseFastConsultantScreenState
                                       Navigator.pushNamed(
                                         context,
                                         Routes.fastConsultationContent,
-                                        arguments: cubit,
                                       );
                                     },
                               icon: const Icon(

@@ -1,37 +1,63 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../constants/routes.dart';
+import '../../../../localization/localizor.dart';
+
 class PaymentGetWayScreen extends StatefulWidget {
-  const PaymentGetWayScreen({super.key});
+  const PaymentGetWayScreen({super.key, this.ndc, this.invoiceId});
+  final String? ndc;
+  final num? invoiceId;
 
   @override
   State<PaymentGetWayScreen> createState() => _PaymentGetWayScreenState();
 }
 
 class _PaymentGetWayScreenState extends State<PaymentGetWayScreen> {
-  final WebViewController controller = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(const Color(0x00000000))
-    ..setNavigationDelegate(
-      NavigationDelegate(
-        onProgress: (int progress) {
-          // Update loading bar.
-        },
-        onPageStarted: (String url) {},
-        onPageFinished: (String url) {},
-        onWebResourceError: (WebResourceError error) {},
-        onNavigationRequest: (NavigationRequest request) {
-          if (request.url.startsWith('https://www.youtube.com/')) {
-            return NavigationDecision.prevent;
-          }
-          return NavigationDecision.navigate;
-        },
-      ),
-    )
-    ..loadRequest(Uri.parse('https://flutter.dev'));
+  Future<String> loadHtml() async {
+    var result = await rootBundle.loadString('assets/html/payment.html');
+
+    result = result.replaceAll('{checkoutId}', widget.ndc ?? '');
+    result =
+        result.replaceAll('{locale}', Localizor.translator.locale.languageCode);
+    Logger().d(result);
+    return result;
+  }
+
+  WebViewController? _controller;
+
+  void initContrller(String html) {
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (request) {
+            Navigator.of(context)
+                .pushNamed(Routes.paymentResult, arguments: widget.invoiceId);
+
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadHtmlString(html);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadHtml().then((html) {
+      initContrller(html);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(controller: controller);
+    return (_controller == null)
+        ? const CircularProgressIndicator()
+        : WebViewWidget(controller: _controller!);
   }
 }

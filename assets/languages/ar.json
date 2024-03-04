@@ -457,7 +457,14 @@
   "transfer_type":"نوع التحويل",
   "details":"التفاصيل",
   "paypal":"بايبال",
-  "wallet":"المحفظة"
-
+  "wallet":"المحفظة",
+  "closed_chat":"محادثة مغلقة",
+  "remove_filters":"اعادة تعيين",
+  "add_balance_to_wallet":"اضافة رصيد للمحفظة",
+  "continue_payment":"استكمال الدفع",
+  "apply":"تطبيق",
+  "sar_short":"ر.س",
+  "success_payment":"تم الدفع بنجاح",
+  "fail_payment":"عملية غير ناجحة الرجاء المحاولة مرة اخرى"
 
 }

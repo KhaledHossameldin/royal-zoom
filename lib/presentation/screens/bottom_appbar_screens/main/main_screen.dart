@@ -7,11 +7,13 @@ import 'package:intl/intl.dart' show DateFormat;
 import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
+import '../../../../core/di/di_manager.dart';
 import '../../../../cubits/home/home_cubit.dart';
 import '../../../../data/enums/consultation_content_type.dart';
 import '../../../../data/models/consultations/consultation.dart';
 import '../../../../data/models/home_statistics.dart';
 import '../../../../data/services/repository.dart';
+import '../../../../data/sources/local/shared_prefs.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../widgets/notifications_button.dart';
@@ -43,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthenticationBloc>().user!.data;
+    final user = DIManager.findDep<SharedPrefs>().getUser()!.data;
     final appLocalizations = AppLocalizations.of(context);
 
     return Scaffold(

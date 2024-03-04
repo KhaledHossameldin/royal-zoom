@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../blocs/authentication/authentication_bloc.dart';
-import '../../../constants/brand_colors.dart';
-import '../../../constants/routes.dart';
-import '../../../cubits/invoice/invoice_cubit.dart';
-import '../../../data/enums/invoice_type.dart';
-import '../../../data/enums/sort.dart';
-import '../../../data/models/invoices/invoice.dart';
-import '../../../localization/app_localizations.dart';
-import '../../../utilities/extensions.dart';
-import '../../widgets/gradient_progress_bar.dart';
-import '../../widgets/reload_widget.dart';
+import '../../../../blocs/authentication/authentication_bloc.dart';
+import '../../../../constants/brand_colors.dart';
+import '../../../../constants/routes.dart';
+import '../../../../cubits/invoice/invoice_cubit.dart';
+import '../../../../data/enums/invoice_type.dart';
+import '../../../../data/enums/sort.dart';
+import '../../../../data/models/invoices/invoice.dart';
+import '../../../../localization/app_localizations.dart';
+import '../../../../utilities/extensions.dart';
+import '../../../widgets/gradient_progress_bar.dart';
+import '../../../widgets/reload_widget.dart';
 
 class PaymentsTab extends StatefulWidget {
   const PaymentsTab({super.key});
@@ -568,7 +568,8 @@ class _HeaderCard extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.paymentGetway);
+                      Navigator.of(context)
+                          .pushNamed(Routes.addBalanceToWalletScreen);
                     },
                     icon: 'add_credit'.svg,
                     label: FittedBox(

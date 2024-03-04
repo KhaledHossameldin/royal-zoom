@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../constants/brand_colors.dart';
-import '../../../../cubits/consultants/consultants_cubit.dart';
-import '../../../../cubits/filter/filter_cubit.dart';
-import '../../../../data/models/authentication/city.dart';
-import '../../../../data/models/major.dart';
-import '../../../../data/services/repository.dart';
-import '../../../../localization/app_localizations.dart';
-import '../../../../utilities/countries.dart';
-import '../../../../utilities/extensions.dart';
-import '../../../widgets/reload_widget.dart';
+import '../../../../../constants/brand_colors.dart';
+import '../../../../../cubits/consultants/consultants_cubit.dart';
+import '../../../../../cubits/filter/filter_cubit.dart';
+import '../../../../../data/models/authentication/city.dart';
+import '../../../../../data/models/major.dart';
+import '../../../../../data/services/repository.dart';
+import '../../../../../localization/app_localizations.dart';
+import '../../../../../utilities/countries.dart';
+import '../../../../../utilities/extensions.dart';
+import '../../../../widgets/reload_widget.dart';
 
 class SendFastConsultantionFilterScreen extends StatefulWidget {
   const SendFastConsultantionFilterScreen({super.key, required this.maxPrice});

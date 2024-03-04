@@ -40,13 +40,13 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
                       hasFilters = false;
                     });
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.clear,
                         color: Colors.red,
                       ),
-                      Text('ازاله الفلترة')
+                      Text(Localizor.translator.removeFilters)
                     ],
                   ),
                 ),
@@ -69,7 +69,7 @@ class _WithdrawFilterWidgetState extends State<WithdrawFilterWidget> {
                       onPressed: null,
                       child: 'filter'.buildSVG(color: BrandColors.darkGray)),
                   5.emptyWidth,
-                  const Text('الاقدمية')
+                  Text(Localizor.translator.seniority)
                 ],
               ),
             ),
