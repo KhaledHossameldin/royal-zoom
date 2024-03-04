@@ -8,6 +8,7 @@ import '../../../../core/di/di_manager.dart';
 import '../../../../core/states/base_success_state.dart';
 import '../../../../core/states/base_wait_state.dart';
 import '../../../../data/enums/payment_method.dart';
+import '../../../../localization/localizor.dart';
 import '../../../../utilities/extensions.dart';
 import '../cubit/payment_cubit.dart';
 import '../cubit/payment_state.dart';
@@ -30,7 +31,7 @@ class _AddBalanceToWalletScreenState extends State<AddBalanceToWalletScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('اضافة رصيد الى المحفظة'),
+          title: Text(Localizor.translator.addBalanceToWallet),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 34.width),
@@ -99,7 +100,7 @@ class _AddBalanceToWalletScreenState extends State<AddBalanceToWalletScreen> {
                           },
                           child: paymentState is BaseLoadingState
                               ? const CircularProgressIndicator()
-                              : const Text('اضافة'),
+                              : Text(Localizor.translator.add),
                         ),
                       );
                     },

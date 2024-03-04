@@ -30,7 +30,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('استكمال الدفع'),
+        title: Text(Localizor.translator.continuePayment),
       ),
       body: BlocBuilder<FastConsultationCubit, FastConsultationState>(
         bloc: DIManager.findDep<FastConsultationCubit>(),
@@ -49,7 +49,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                   SizedBox(
                       width: 161.width,
                       height: 161.height,
-                      child: 'chat'.toLottie((p0) => null)),
+                      child: 'continue_payment'.toLottie((p0) => null)),
                   Text(
                     'تاكيد دفع مبلغ',
                     style: AppStyle.titleStyle,
@@ -75,7 +75,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       Navigator.of(context).pushNamed(Routes.paymentGetway,
                           arguments: {'ndc': data.ndc, 'id': widget.invoiceId});
                     },
-                    child: const Text('استكمال الدفع'),
+                    child: Text(Localizor.translator.continuePayment),
                   ),
                   20.emptyHeight,
                 ],

@@ -58,12 +58,12 @@ class _PaymentResultScreenState extends State<PaymentResultScreen> {
                       : 'transaction_fail'.toLottie((p0) => null),
                   isSuccess
                       ? Text(
-                          'تم الدفع بنجاح',
+                          Localizor.translator.successPayment,
                           style: AppStyle.bigTitleStyle
                               .copyWith(color: BrandColors.orange),
                         )
                       : Text(
-                          'عملية غير ناجحة الرجاء المحاولة مرة اخرى',
+                          Localizor.translator.failPayment,
                           style: AppStyle.bigTitleStyle
                               .copyWith(color: BrandColors.red),
                         )

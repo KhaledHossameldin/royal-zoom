@@ -456,5 +456,13 @@
   "transfer_type":"Transfer type",
   "details":"Details",
   "paypal":"PayPal",
-  "wallet":"Wallet"
+  "wallet":"Wallet",
+  "closed_chat":"Closed chat",
+  "remove_filters":"Clear filters",
+  "add_balance_to_wallet":"Add balance to the wallet",
+  "continue_payment": "Continue payment",
+  "apply":"Apply",
+  "sar_short":"SAR",
+  "success_payment":"Payment completed successfully",
+  "fail_payment":"Operation unsuccessful, please try again"
 }

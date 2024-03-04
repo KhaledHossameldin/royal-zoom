@@ -47,7 +47,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                 setState(
                   () {
                     isSelected = value!;
-                    widget.onSelectedPayment(isSelected);
+                    widget.onSelectedPayment(isSelected + 1);
                   },
                 );
               },
@@ -57,7 +57,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
             setState(
               () {
                 isSelected = index;
-                widget.onSelectedPayment(isSelected);
+                widget.onSelectedPayment(isSelected + 1);
               },
             );
           },

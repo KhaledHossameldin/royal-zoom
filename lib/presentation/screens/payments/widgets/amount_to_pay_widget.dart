@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../../constants/brand_colors.dart';
+import '../../../../localization/localizor.dart';
 import '../../../../utilities/extensions.dart';
 
 class AmountToPayWidget extends StatefulWidget {
@@ -28,7 +29,7 @@ class AmountToPayWidgetState extends State<AmountToPayWidget> {
               borderRadius: BorderRadius.all(Radius.circular(15.width)),
             ),
             fillColor: Colors.transparent,
-            suffix: const Text('ر.س'),
+            suffix: Text(Localizor.translator.sarShort),
             suffixStyle: const TextStyle(color: BrandColors.orange),
           ),
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -66,7 +67,7 @@ class AmountToPayWidgetState extends State<AmountToPayWidget> {
           ),
           borderRadius: BorderRadius.circular(10.width),
         ),
-        child: Text('$amount ر.س'),
+        child: Text('$amount ${Localizor.translator.sarShort}'),
       ),
     );
   }

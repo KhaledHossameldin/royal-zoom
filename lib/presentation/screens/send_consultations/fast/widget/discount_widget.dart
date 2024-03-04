@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../constants/brand_colors.dart';
 import '../../../../../core/constants/app_style.dart';
+import '../../../../../localization/localizor.dart';
 import '../../../../../utilities/extensions.dart';
 
 class DiscountWidget extends StatelessWidget {
@@ -35,7 +36,7 @@ class DiscountWidget extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                  child: const Text('تطبيق'),
+                  child: Text(Localizor.translator.apply),
                 ),
               )
             ],
