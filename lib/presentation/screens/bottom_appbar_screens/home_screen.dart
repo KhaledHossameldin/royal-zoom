@@ -6,11 +6,11 @@ import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../constants/routes.dart';
 import '../../../core/di/di_manager.dart';
-import '../../../data/enums/user_type.dart';
+import '../../../data/models/authentication/user.dart';
 import '../../../data/sources/local/shared_prefs.dart';
 import '../consultations/consultations_screen.dart';
 import 'chats/pages/chat_screen.dart';
-import '../consultants/consultants_screen.dart';
+import '../consultants/guest_screen.dart';
 import 'main/main_screen.dart';
 import 'profile/profile_screen.dart';
 
@@ -23,18 +23,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _index = ValueNotifier(0);
+  User? user = DIManager.findDep<SharedPrefs>().getUser();
 
   @override
   Widget build(BuildContext context) {
-    final user = DIManager.findDep<SharedPrefs>().getUserType();
-
     return Scaffold(
       body: ValueListenableBuilder(
         valueListenable: _index,
         builder: (context, value, child) {
           if (_index.value == 0) {
-            if (user == UserType.consultant) {
-              return const ConsultantsScreen();
+            if (user == null) {
+              return const GuestScreen();
             }
             return MainScreen(index: _index);
           } else if (_index.value == 1) {
@@ -52,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Theme _buildBottomNavigationBar() {
     final theme = Theme.of(context);
-    final user = DIManager.findDep<SharedPrefs>().getUser();
+
     final appLocalizations = AppLocalizations.of(context);
 
     return Theme(

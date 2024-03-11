@@ -34,13 +34,13 @@ Future<List<dynamic>> _getStartValues() async {
   final savedLocale = values[0] as String;
   final isNotification = (values[1] as bool);
   final isLocation = (values[2] as bool);
+  await DIManager.findDep<SharedPrefs>().removeTempUser();
   final user = DIManager.findDep<SharedPrefs>().getUser();
   final type = DIManager.findDep<SharedPrefs>().getUserType();
+
   if (isNotification && isLocation) {
     if (user != null) {
       initialRoute = Routes.home;
-
-      Logger().d(type);
     } else {
       initialRoute = Routes.login;
     }
@@ -88,8 +88,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
-    super.dispose();
     DIManager.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override

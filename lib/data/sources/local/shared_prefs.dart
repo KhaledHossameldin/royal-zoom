@@ -59,11 +59,22 @@ class SharedPrefs {
   }
 
   void setUser(User user) {
-    _preferences.setString(PreferencesKeys.user, user.toJson());
+    if (isUserRemembered()) {
+      _preferences.setString(PreferencesKeys.user, user.toJson());
+    } else {
+      _preferences.setString(PreferencesKeys.tempUser, user.toJson());
+    }
   }
 
   User? getUser() {
-    final userJson = _preferences.getString(PreferencesKeys.user);
+    if (isUserRemembered()) {
+      final userJson = _preferences.getString(PreferencesKeys.user);
+      if (userJson == null) {
+        return null;
+      }
+      return User.fromJson(userJson);
+    }
+    final userJson = _preferences.getString(PreferencesKeys.tempUser);
     if (userJson == null) {
       return null;
     }
@@ -74,7 +85,12 @@ class SharedPrefs {
     Future.wait([
       _preferences.remove(PreferencesKeys.user),
       _preferences.remove(PreferencesKeys.type),
+      _forgetUser(),
     ]);
+  }
+
+  Future<void> removeTempUser() async {
+    await _preferences.remove(PreferencesKeys.tempUser);
   }
 
   void setUserData(UserData data, UserType type) {
@@ -89,6 +105,15 @@ class SharedPrefs {
   void setUserType(UserType type) {
     _preferences.setInt(PreferencesKeys.type, type.toMap());
   }
+
+  void rememberUser() {
+    _preferences.setBool(PreferencesKeys.isRemembered, true);
+  }
+
+  bool isUserRemembered() =>
+      _preferences.getBool(PreferencesKeys.isRemembered) ?? false;
+  Future _forgetUser() =>
+      _preferences.setBool(PreferencesKeys.isRemembered, false);
 
   UserType getUserType() {
     final type = _preferences.getInt(PreferencesKeys.type) ?? 1;

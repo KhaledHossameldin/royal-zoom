@@ -6,5 +6,7 @@ class PreferencesKeys {
   static const location = 'location-permission';
   static const token = 'token';
   static const user = 'user-data';
+  static const tempUser = 'temp-user';
   static const type = 'user-type';
+  static const isRemembered = 'remember-user';
 }

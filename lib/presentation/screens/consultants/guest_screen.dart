@@ -5,7 +5,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
 import '../../../../cubits/consultants/consultants_cubit.dart';
-import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../data/models/consultants/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
@@ -14,14 +13,14 @@ import '../../widgets/app_bar_logo.dart';
 import '../../widgets/reload_widget.dart';
 import '../../widgets/notifications_button.dart';
 
-class ConsultantsScreen extends StatefulWidget {
-  const ConsultantsScreen({super.key});
+class GuestScreen extends StatefulWidget {
+  const GuestScreen({super.key});
 
   @override
-  State<ConsultantsScreen> createState() => _ConsultantsScreenState();
+  State<GuestScreen> createState() => _GuestScreenState();
 }
 
-class _ConsultantsScreenState extends State<ConsultantsScreen> {
+class _GuestScreenState extends State<GuestScreen> {
   final _controller = TextEditingController();
   final _favoriteConsultantId = ValueNotifier<int?>(null);
 
@@ -41,16 +40,17 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
-    final user = BlocProvider.of<AuthenticationBloc>(context).user;
+
+    // final user = BlocProvider.of<AuthenticationBloc>(context).user;
 
     return Scaffold(
-      appBar: user == null
-          ? AppBar(
-              leadingWidth: 100.0,
-              leading: const AppBarLogo(),
-              actions: const [NotificationsButton()],
-            )
-          : null,
+      appBar: //user == null?
+          AppBar(
+        leadingWidth: 100.0,
+        leading: const AppBarLogo(),
+        actions: const [NotificationsButton()],
+      ),
+      // : null,
       body: BlocBuilder<ConsultantsCubit, ConsultantsState>(
         builder: (context, state) {
           switch (state.runtimeType) {
