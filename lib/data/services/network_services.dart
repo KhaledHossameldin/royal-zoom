@@ -446,10 +446,15 @@ class NetworkServices {
             !consultation.content.toLowerCase().endsWith('.wav')) {
           return consultation;
         }
-        final player = AudioPlayer();
-        await player.setUrl(consultation.content);
-        await player.pause();
-        return consultation.copyWith(audioPlayer: player);
+        AudioPlayer player;
+        try {
+          player = AudioPlayer();
+          await player.setUrl(consultation.content);
+          await player.pause();
+          return consultation.copyWith(audioPlayer: player);
+        } catch (e) {
+          return consultation;
+        }
       }
       return consultation;
     }).toList());
@@ -541,10 +546,15 @@ class NetworkServices {
             !consultation.content.toLowerCase().endsWith('.wav')) {
           return consultation;
         }
-        final player = AudioPlayer();
-        await player.setUrl(consultation.content);
-        await player.pause();
-        return consultation.copyWith(audioPlayer: player);
+        AudioPlayer player;
+        try {
+          player = AudioPlayer();
+          await player.setUrl(consultation.content);
+          await player.pause();
+          return consultation.copyWith(audioPlayer: player);
+        } catch (e) {
+          return consultation;
+        }
       }
       return consultation;
     }).toList());
@@ -571,10 +581,15 @@ class NetworkServices {
             !consultation.content.toLowerCase().endsWith('.wav')) {
           return consultation;
         }
-        final player = AudioPlayer();
-        await player.setUrl(consultation.content);
-        await player.pause();
-        return consultation.copyWith(audioPlayer: player);
+        AudioPlayer player;
+        try {
+          player = AudioPlayer();
+          await player.setUrl(consultation.content);
+          await player.pause();
+          return consultation.copyWith(audioPlayer: player);
+        } catch (e) {
+          return consultation;
+        }
       }
       return consultation;
     }).toList());

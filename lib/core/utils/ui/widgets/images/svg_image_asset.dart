@@ -12,8 +12,7 @@ class SvgImageAsset extends StatelessWidget {
   final AlignmentGeometry? alignment;
 
   const SvgImageAsset(this.assetName,
-      {Key? key, this.color, this.fit, this.width, this.height, this.alignment})
-      : super(key: key);
+      {super.key, this.color, this.fit, this.width, this.height, this.alignment});
 
   @override
   Widget build(BuildContext context) {

@@ -100,7 +100,7 @@ class Sender {
         phoneVerifiedAt: json['phone_verified_at'],
         whatsappVerifiedAt: json['whatsapp_verified_at'],
         status: num.tryParse(json['status'].toString()),
-        isFavourite: json['is_favourite']?.toString().contains("true"),
+        isFavourite: json['is_favourite']?.toString().contains('true'),
         userType: num.tryParse(json['user_type'].toString()),
         createdAt: json['created_at'] == null
             ? null

@@ -1,4 +1,5 @@
 /// this class will represent the durations in milliseconds [int]
+library;
 // ignore_for_file: constant_identifier_names
 
 class DurationConsts {

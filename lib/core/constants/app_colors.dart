@@ -5,7 +5,7 @@ class AppColorsController {
   AppColorsController();
 
   final Rx<Color?> _primaryColor = const Color(0xDDD42B1E).obs;
-  final String _primaryColorStr = "#EE3E43";
+  final String _primaryColorStr = '#EE3E43';
 
   Color get primaryColor => _primaryColor.value ?? defaultPrimaryColor;
 

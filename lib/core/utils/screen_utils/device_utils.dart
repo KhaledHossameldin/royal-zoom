@@ -18,7 +18,7 @@ class ScreenHelper {
   static double? safeBlockHorizontal;
   static double? safeBlockVertical;
 
-  static get statusBarHeight => _screenUtil?.statusBarHeight ?? 0;
+  static double get statusBarHeight => _screenUtil?.statusBarHeight ?? 0;
   ScreenHelper(BuildContext context) {
     width55 = MediaQuery.of(context).size.width;
     height55 = MediaQuery.of(context).size.height;
@@ -63,8 +63,8 @@ class ScreenHelper {
     return (percent / 100.0) * height;
   }
 
-  static scaleText(double fontSize, {bool? allowFontScalingSelf}) {
-    if (_screenUtil == null) return;
+  static double scaleText(double fontSize, {bool? allowFontScalingSelf}) {
+    if (_screenUtil == null) return 0.0;
     return _screenUtil!.setSp(
       fontSize,
     );

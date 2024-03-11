@@ -32,8 +32,8 @@ class Major {
         type: num.tryParse(json['type'].toString()),
         name: json['name']?.toString(),
         description: json['description']?.toString(),
-        isActive: json['is_active']?.toString().contains("true"),
-        isVisible: json['is_visible']?.toString().contains("true"),
+        isActive: json['is_active']?.toString().contains('true'),
+        isVisible: json['is_visible']?.toString().contains('true'),
         createdAt: json['created_at'] == null
             ? null
             : DateTime.tryParse(json['created_at'].toString()),

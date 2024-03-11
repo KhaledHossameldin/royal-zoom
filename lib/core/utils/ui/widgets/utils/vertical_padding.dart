@@ -5,7 +5,7 @@ import '../../../../../../core/utils/screen_utils/device_utils.dart';
 class VerticalPadding extends StatelessWidget {
   final double percentage;
 
-  const VerticalPadding(this.percentage, {Key? key}) : super(key: key);
+  const VerticalPadding(this.percentage, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import '../../../../../core/network/endpoints/network.dart';
 import '../../../../../core/network/http_method.dart';
 import '../../../../../core/results/result.dart';
 import '../../../../enums/consultant_response_type.dart';
+import '../../../../enums/consultation_content_type.dart';
 import '../../../../models/consultations/consultation.dart';
 import '../../../../models/consultations/favorite.dart';
 import '../../../../models/fast_consultation/fast_consultation.dart';
@@ -31,14 +32,18 @@ class UserConsultationRemoteDataSource {
 
   Future<Result<EmptyModel>> updateConsultation({
     required id,
-    required ConsultantResponseType type,
+    required ConsultantResponseType consultantResponseType,
+    required ConsultationContentType contentType,
+    required String content,
   }) async {
     return await RemoteDataSource.request(
         converter: (model) => EmptyModel(model),
         method: HttpMethod.PUT,
         url: '${Network.consultations}/$id',
         data: {
-          'consultant_response_type': type.toMap(),
+          'consultant_response_type': consultantResponseType.toMap(),
+          'content_type': contentType.toMap(),
+          'content': content,
         });
   }
 

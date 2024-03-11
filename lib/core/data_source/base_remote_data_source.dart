@@ -22,7 +22,7 @@ abstract class RemoteDataSource {
     headers ??= {};
 
     headers['Authorization'] =
-        await DIManager.findDep<SharedPrefs>().getToken();
+        DIManager.findDep<SharedPrefs>().getToken();
 
     return await ApiProvider.sendObjectRequest<MODEL>(
       converter: converter,

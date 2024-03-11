@@ -48,12 +48,14 @@ import '../../domain/usecases/major_verification_request_usecase.dart';
 import '../../domain/usecases/new_major_requests_usecase.dart';
 import '../../domain/usecases/profile_usecase.dart';
 import '../../domain/usecases/update_consultant_major_usecase.dart';
+import '../../domain/usecases/update_consultations.dart';
 import '../../domain/usecases/upload_file_usecase.dart';
 import '../../domain/usecases/verify_consultant_major_usecase.dart';
 import '../../presentation/screens/authentication/login/cubit/login_cubit.dart';
 import '../../presentation/screens/authentication/register/cubit/register_cubit.dart';
 import '../../domain/usecases/register_usecase.dart';
 import '../../presentation/screens/complete_payment/cubit/payment_result_cubit.dart';
+import '../../presentation/screens/edit_consultation/cubit/edit_consultation_cubit.dart';
 import '../../presentation/screens/majors_and_experiences/cubit/major_and_experience_cubit.dart';
 import '../../domain/usecases/refund_request_usecase.dart';
 import '../../domain/usecases/withdraw_request_usecase.dart';
@@ -147,6 +149,8 @@ class DIManager {
         ConsultationInvoiceUseCase(findDep()));
     _injectDep<ICheckInvoiceStatusUseCase>(
         CheckInvoiceStatusUseCase(findDep()));
+    _injectDep<IUpdateConsultationUseCase>(
+        UpdateConsultationUseCase(findDep(), findDep()));
 
     /// ------------------ cubits ----------------
     _injectDep(RegisterCubit(registerUsecase: findDep()));
@@ -168,6 +172,7 @@ class DIManager {
     _injectDep(FastConsultationCubit(findDep(), findDep()));
     _injectDep(PaymentCubit(findDep()));
     _injectDep(PaymentResultCubit(findDep()));
+    _injectDep(EditConsultationCubit(findDep()));
   }
 
   static T _injectDep<T extends Object>(T dependency) {

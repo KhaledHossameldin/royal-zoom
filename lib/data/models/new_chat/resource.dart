@@ -92,7 +92,7 @@ class Resource {
         createdAt: json['created_at'] == null
             ? null
             : DateTime.tryParse(json['created_at'].toString()),
-        isFavourite: json['is_favourite']?.toString().contains("true"),
+        isFavourite: json['is_favourite']?.toString().contains('true'),
         isFastConsultation:
             num.tryParse(json['is_fast_consultation'].toString()),
         selectedConsultants:
