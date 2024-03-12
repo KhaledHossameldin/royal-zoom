@@ -51,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 20.height),
                 child: Builder(builder: (context) {
-                  if (user.data.type == UserType.consultant) {
+                  if (user.type == UserType.consultant) {
                     return BlocConsumer<SwitchCubit, SwitchState>(
                       listener: (context, state) {
                         if (state is SwitchError) {
@@ -376,9 +376,9 @@ class _Header extends StatelessWidget {
                     fit: BoxFit.contain,
                     image: user == null
                         ? 'guest'.png.image
-                        : user.data.image.isEmpty
+                        : user.image.isEmpty
                             ? 'royake'.png.image
-                            : NetworkImage(user.data.image),
+                            : NetworkImage(user.image),
                   ),
                 ),
               ),
@@ -390,7 +390,7 @@ class _Header extends StatelessWidget {
                 children: [
                   Text(user == null
                       ? appLocalizations.guest
-                      : user.data.previewName ?? appLocalizations.none),
+                      : user.previewName ?? appLocalizations.none),
                   user == null
                       ? TextButton(
                           onPressed: () => Navigator.pushNamedAndRemoveUntil(
@@ -412,9 +412,7 @@ class _Header extends StatelessWidget {
                           ),
                         )
                       : Text(
-                          user.data.email ??
-                              user.data.phone ??
-                              appLocalizations.none,
+                          user.email ?? user.phone ?? appLocalizations.none,
                           overflow: TextOverflow.ellipsis,
                         ),
                 ],
@@ -424,10 +422,10 @@ class _Header extends StatelessWidget {
               painter: BorderPainter(
                 stroke: 4.width,
                 padding: 12.width,
-                progress: user != null ? user.data.progress : 0,
+                progress: user != null ? user.progress : 0,
               ),
               child: Text(NumberFormat.percentPattern()
-                  .format(user != null ? user.data.progress : 0)),
+                  .format(user != null ? user.progress : 0)),
             ),
             12.emptyWidth,
           ],

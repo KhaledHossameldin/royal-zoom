@@ -6,7 +6,7 @@ import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../constants/routes.dart';
 import '../../../core/di/di_manager.dart';
-import '../../../data/models/authentication/user.dart';
+import '../../../data/models/authentication/user_data.dart';
 import '../../../data/sources/local/shared_prefs.dart';
 import '../consultations/consultations_screen.dart';
 import 'chats/pages/chat_screen.dart';
@@ -23,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _index = ValueNotifier(0);
-  User? user = DIManager.findDep<SharedPrefs>().getUser();
+  UserData? user = DIManager.findDep<SharedPrefs>().getUser();
 
   @override
   Widget build(BuildContext context) {

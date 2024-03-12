@@ -53,8 +53,7 @@ class AuthRepo extends BaseRepository implements IAuthRepo {
       }
       _prefs.setToken(result.data!.token);
       _prefs.setUserType(result.data!.data.type);
-      _prefs.setUser(result.data!);
-      _prefs.setUserData(result.data!.data, result.data!.data.type);
+      _prefs.setUser(result.data!.data);
     }
     return mapModelToEntity(result);
   }

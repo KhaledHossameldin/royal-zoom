@@ -97,7 +97,6 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
                           itemBuilder: (context, message) {
                             final isSelf = DIManager.findDep<SharedPrefs>()
                                     .getUser()!
-                                    .data
                                     .id ==
                                 message.senderId!.toInt();
                             return Align(
