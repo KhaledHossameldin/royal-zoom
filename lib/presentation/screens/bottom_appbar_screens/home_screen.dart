@@ -1,11 +1,13 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../constants/brand_colors.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../constants/routes.dart';
 import '../../../core/di/di_manager.dart';
+import '../../../data/enums/user_type.dart';
 import '../../../data/models/authentication/user_data.dart';
 import '../../../data/sources/local/shared_prefs.dart';
 import '../consultations/consultations_screen.dart';
@@ -24,6 +26,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _index = ValueNotifier(0);
   UserData? user = DIManager.findDep<SharedPrefs>().getUser();
+  final UserType type = DIManager.findDep<SharedPrefs>().getUserType();
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +34,21 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ValueListenableBuilder(
         valueListenable: _index,
         builder: (context, value, child) {
+          Logger().d(_index.value);
           if (_index.value == 0) {
             if (user == null) {
               return const GuestScreen();
             }
             return MainScreen(index: _index);
-          } else if (_index.value == 1) {
-            return const ConsultationsScreen();
-          } else if (_index.value == 3) {
-            return const ChatScreen();
-          } else {
-            return const ProfileScreen();
           }
+          if (_index.value == 1) {
+            return const ConsultationsScreen();
+          }
+          if ((_index.value == 3 && type == UserType.normal) ||
+              (_index.value == 2 && type == UserType.consultant)) {
+            return const ChatScreen();
+          }
+          return const ProfileScreen();
         },
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
@@ -64,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, value, child) => BottomNavigationBar(
           currentIndex: value,
           onTap: (value) {
-            if (value == 2) {
+            if (value == 2 && type == UserType.normal) {
               return;
             }
             _index.value = value;
@@ -78,24 +84,25 @@ class _HomeScreenState extends State<HomeScreen> {
             'consultations'.buildBottomAppBarIcon(
               appLocalizations.consultations,
             ),
-            BottomNavigationBarItem(
-              icon: FloatingActionButton(
-                onPressed: () {
-                  if (user == null) {
-                    Navigator.pushReplacementNamed(context, Routes.login);
-                    return;
-                  }
-                  showModal(
-                    context: context,
-                    builder: (context) => const _ConsultationDialog(),
-                  );
-                },
-                elevation: 0,
-                backgroundColor: BrandColors.orange,
-                child: 'send_consultation'.svg,
+            if (type == UserType.normal)
+              BottomNavigationBarItem(
+                icon: FloatingActionButton(
+                  onPressed: () {
+                    if (user == null) {
+                      Navigator.pushReplacementNamed(context, Routes.login);
+                      return;
+                    }
+                    showModal(
+                      context: context,
+                      builder: (context) => const _ConsultationDialog(),
+                    );
+                  },
+                  elevation: 0,
+                  backgroundColor: BrandColors.orange,
+                  child: 'send_consultation'.svg,
+                ),
+                label: appLocalizations.consult,
               ),
-              label: appLocalizations.consult,
-            ),
             'chat'.buildBottomAppBarIcon(appLocalizations.chat),
             'profile'.buildBottomAppBarIcon(appLocalizations.profile),
           ],
