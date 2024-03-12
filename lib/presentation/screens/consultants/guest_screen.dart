@@ -5,10 +5,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
 import '../../../../cubits/consultants/consultants_cubit.dart';
+import '../../../core/di/di_manager.dart';
 import '../../../data/models/consultants/consultant.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../data/services/repository.dart';
+import '../../../data/sources/local/shared_prefs.dart';
 import '../../widgets/app_bar_logo.dart';
 import '../../widgets/reload_widget.dart';
 import '../../widgets/notifications_button.dart';
@@ -41,16 +43,15 @@ class _GuestScreenState extends State<GuestScreen> {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
 
-    // final user = BlocProvider.of<AuthenticationBloc>(context).user;
-
+    final user = DIManager.findDep<SharedPrefs>().getUser();
     return Scaffold(
-      appBar: //user == null?
-          AppBar(
-        leadingWidth: 100.0,
-        leading: const AppBarLogo(),
-        actions: const [NotificationsButton()],
-      ),
-      // : null,
+      appBar: user == null
+          ? AppBar(
+              leadingWidth: 100.0,
+              leading: const AppBarLogo(),
+              actions: const [NotificationsButton()],
+            )
+          : null,
       body: BlocBuilder<ConsultantsCubit, ConsultantsState>(
         builder: (context, state) {
           switch (state.runtimeType) {
