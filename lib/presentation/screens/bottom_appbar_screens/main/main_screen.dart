@@ -138,28 +138,27 @@ class _ConsultationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
-
-    return SizedBox(
-      width: 330.width,
-      child: Card(
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10.0),
-          onTap: () => Navigator.pushNamed(
-            context,
-            Routes.consultationDetails,
-            arguments: {
-              'id': consultation.id,
-              'player': consultation.audioPlayer,
-            },
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 12.height,
-              horizontal: 18.width,
-            ),
-            child: Builder(builder: (context) {
-              if (consultation.isHideNameFromConsultants) {
-                return Row(
+    if (consultation.isHideNameFromConsultants) {
+      return Center(
+        child: SizedBox(
+          width: 330.width,
+          child: Card(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(10.0),
+              onTap: () => Navigator.pushNamed(
+                context,
+                Routes.consultationDetails,
+                arguments: {
+                  'id': consultation.id,
+                  'player': consultation.audioPlayer,
+                },
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 12.height,
+                  horizontal: 18.width,
+                ),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -182,8 +181,33 @@ class _ConsultationItem extends StatelessWidget {
                       ),
                     ),
                   ],
-                );
-              }
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return SizedBox(
+      width: 330.width,
+      child: Card(
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10.0),
+          onTap: () => Navigator.pushNamed(
+            context,
+            Routes.consultationDetails,
+            arguments: {
+              'id': consultation.id,
+              'player': consultation.audioPlayer,
+            },
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 12.height,
+              horizontal: 18.width,
+            ),
+            child: Builder(builder: (context) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
