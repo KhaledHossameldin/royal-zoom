@@ -109,7 +109,7 @@ class Sender {
         phoneVerifiedAt: data['phone_verified_at'],
         whatsappVerifiedAt: data['whatsapp_verified_at'],
         status: num.tryParse(data['status'].toString()),
-        isFavourite: data['is_favourite']?.toString().contains("true"),
+        isFavourite: data['is_favourite']?.toString().contains('true'),
         userType: num.tryParse(data['user_type'].toString()),
         createdAt: data['created_at'] == null
             ? null

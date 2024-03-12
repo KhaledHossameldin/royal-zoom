@@ -65,7 +65,7 @@ import '../presentation/screens/consultations/change_time/choose_time_screen.dar
 import '../presentation/screens/consultations/change_time/success_screen.dart';
 import '../presentation/screens/consultations/details_screen.dart';
 import '../presentation/screens/consultations/filter_screen.dart';
-import '../presentation/screens/edit_consultation/edit_content.dart';
+import '../presentation/screens/edit_consultation/pages/edit_content.dart';
 import '../presentation/screens/edit_consultation/edit_response_type.dart';
 import '../presentation/screens/majors_and_experiences/major_and_experience.dart';
 import '../presentation/screens/majors_and_experiences/verify_major_screen.dart';
@@ -520,9 +520,17 @@ class AppRouter {
         );
 
       case Routes.editConsultationContent:
+        final args = settings.arguments as ConsultationDetails;
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => const EditConsultationContent(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => ConsultationRecordingCubit()),
+            ],
+            child: EditConsultationContent(
+              consultation: args,
+            ),
+          ),
         );
 
       case Routes.editConsultantResponse:

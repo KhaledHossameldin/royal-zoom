@@ -5,6 +5,7 @@ import '../../../domain/entities/consultation_entity.dart';
 import '../../../domain/entities/fav_consultation_entitiy.dart';
 import '../../../domain/repositories/user/user_consultations_repo_i.dart';
 import '../../enums/consultant_response_type.dart';
+import '../../enums/consultation_content_type.dart';
 import '../../models/fast_consultation/fast_consultation.dart';
 import '../../sources/remote/user/consultations/user_consultations_remote_data_source.dart';
 
@@ -80,9 +81,17 @@ class UserConsultationRepo extends BaseRepository
   }
 
   @override
-  Future<Result<EmptyEntity>> updateConsultation(
-      {required id, required ConsultantResponseType type}) async {
-    final result = await _uRD.updateConsultation(id: id, type: type);
+  Future<Result<EmptyEntity>> updateConsultation({
+    required id,
+    required ConsultantResponseType consultantResponseType,
+    required ConsultationContentType contentType,
+    required String content,
+  }) async {
+    final result = await _uRD.updateConsultation(
+        id: id,
+        consultantResponseType: consultantResponseType,
+        contentType: contentType,
+        content: content);
     return mapModelToEntity(result);
   }
 }

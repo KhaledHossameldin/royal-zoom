@@ -13,7 +13,7 @@ class ProfileRepo extends BaseRepository implements IProfileRepo {
   @override
   Future<Result<UserData>> getProfile(UserType type) async {
     final result = await _pRD.getProfile(type);
-    if (result.hasDataOnly && await _prefs.doesUserExist()) {
+    if (result.hasDataOnly && _prefs.doesUserExist()) {
       _prefs.setUserData(result.data!, type);
     }
     return result;

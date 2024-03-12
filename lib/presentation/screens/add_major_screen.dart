@@ -438,7 +438,6 @@ class _AddMajorScreenState extends State<AddMajorScreen> {
 
 class _AddButton extends StatelessWidget {
   const _AddButton({
-    super.key,
     required this.userType,
     required GlobalKey<FormState> formKey,
     required Major? mainMajor,

@@ -136,7 +136,7 @@ class CustomImage extends StatelessWidget {
     );
   }
 
-  _buildLocalImage() {
+  Widget _buildLocalImage() {
     bool isSvgPicture = image!.endsWith('svg');
     if (isSvgPicture) {
       return SvgImageAsset(
@@ -152,7 +152,7 @@ class CustomImage extends StatelessWidget {
     );
   }
 
-  _buildImageFile() {
+  Image _buildImageFile() {
     return Image.file(
       file!,
       fit: boxFit ?? BoxFit.cover,
@@ -160,7 +160,7 @@ class CustomImage extends StatelessWidget {
     );
   }
 
-  _buildNetworkImage() {
+  CachedImage _buildNetworkImage() {
     return CachedImage(
       imageUrl: image ?? '',
       placeholder: placeHolder,
@@ -170,7 +170,7 @@ class CustomImage extends StatelessWidget {
     );
   }
 
-  _buildNetworkOrAssetsImage() {
+  dynamic _buildNetworkOrAssetsImage() {
     final isNetwork =
         ((image?.isNotEmpty ?? false) && (image?.startsWith('http') ?? false) ||
             (image?.startsWith('https') ?? false));

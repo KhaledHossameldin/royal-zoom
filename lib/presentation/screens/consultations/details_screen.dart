@@ -235,7 +235,12 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                                   context,
                                   Routes.editConsultationContent,
                                   arguments: consultation,
-                                ),
+                                ).then((value) {
+                                  context.read<ShowConsultationCubit>().fetch(
+                                      context,
+                                      id: widget.id,
+                                      player: widget.player);
+                                }),
                                 icon: const Icon(Icons.edit),
                                 label: Text(appLocalizations.edit),
                               ),
