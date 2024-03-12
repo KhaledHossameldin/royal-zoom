@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = DIManager.findDep<SharedPrefs>().getUser()!.data;
+    final user = DIManager.findDep<SharedPrefs>().getUser()!;
     final appLocalizations = AppLocalizations.of(context);
 
     return Scaffold(

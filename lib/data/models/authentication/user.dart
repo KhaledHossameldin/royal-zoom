@@ -14,7 +14,7 @@ class User extends BaseModel {
 
   void updateData(UserData data) {
     this.data = data;
-    Repository.instance.setUser(this);
+    Repository.instance.setUser(this.data);
   }
 
   User copyWith({UserData? data, String? token}) =>

@@ -6,11 +6,13 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/brand_colors.dart';
+import '../../../core/di/di_manager.dart';
 import '../../../cubits/profile/profile_cubit.dart';
 import '../../../data/enums/gender.dart';
 import '../../../data/enums/perview_status.dart';
 import '../../../data/models/authentication/city.dart';
 import '../../../data/services/location_services.dart';
+import '../../../data/sources/local/shared_prefs.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/countries.dart';
 import '../../../utilities/extensions.dart';
@@ -848,7 +850,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
   SingleChildScrollView _buildDataTab(ProfileState state) {
     final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
-    final userData = context.read<AuthenticationBloc>().user!.data;
+    final userData = DIManager.findDep<SharedPrefs>().getUser()!;
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(

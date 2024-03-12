@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants/preferences_keys.dart';
 import '../../enums/user_type.dart';
-import '../../models/authentication/user.dart';
 import '../../models/authentication/user_data.dart';
 
 class SharedPrefs {
@@ -58,7 +57,7 @@ class SharedPrefs {
     return 'Bearer $token';
   }
 
-  void setUser(User user) {
+  void setUser(UserData user) {
     if (isUserRemembered()) {
       _preferences.setString(PreferencesKeys.user, user.toJson());
     } else {
@@ -66,19 +65,19 @@ class SharedPrefs {
     }
   }
 
-  User? getUser() {
+  UserData? getUser() {
     if (isUserRemembered()) {
       final userJson = _preferences.getString(PreferencesKeys.user);
       if (userJson == null) {
         return null;
       }
-      return User.fromJson(userJson);
+      return UserData.fromJson(userJson);
     }
     final userJson = _preferences.getString(PreferencesKeys.tempUser);
     if (userJson == null) {
       return null;
     }
-    return User.fromJson(userJson);
+    return UserData.fromJson(userJson);
   }
 
   void removeUser() {
@@ -93,14 +92,14 @@ class SharedPrefs {
     await _preferences.remove(PreferencesKeys.tempUser);
   }
 
-  void setUserData(UserData data, UserType type) {
-    final user = getUser();
-    if (user == null) {
-      return;
-    }
-    setUser(user.copyWith(data: data));
-    setUserType(type);
-  }
+  // void setUserData(UserData data, UserType type) {
+  //   final user = getUser();
+  //   if (user == null) {
+  //     return;
+  //   }
+  //   setUser(user.copyWith(data: data));
+  //   setUserType(type);
+  // }
 
   void setUserType(UserType type) {
     _preferences.setInt(PreferencesKeys.type, type.toMap());

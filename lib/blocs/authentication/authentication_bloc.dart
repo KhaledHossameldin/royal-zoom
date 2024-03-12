@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/authentication/user.dart';
+import '../../data/models/authentication/user_data.dart';
 import '../../data/services/repository.dart';
 
 part 'authentication_event.dart';
@@ -11,14 +11,14 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final repository = Repository.instance;
 
-  User? get user {
+  UserData? get user {
     if (state is! AuthenticationLoaded) {
       return null;
     }
     return (state as AuthenticationLoaded).user;
   }
 
-  AuthenticationBloc(User? user)
+  AuthenticationBloc(UserData? user)
       : super(user == null
             ? const AuthenticationInitial(0)
             : AuthenticationLoaded(0, user: user)) {
@@ -71,7 +71,7 @@ class AuthenticationBloc
         username: event.username,
         code: event.code,
       );
-      emit(AuthenticationLoaded(2, user: user));
+      emit(AuthenticationLoaded(2, user: user.data));
     } catch (e) {
       emit(AuthenticationError('$e', 2));
     }
@@ -126,7 +126,7 @@ class AuthenticationBloc
           password: event.password,
           isRemember: event.isRemember,
         );
-        emit(AuthenticationLoaded(0, user: user));
+        emit(AuthenticationLoaded(0, user: user.data));
       }
     } catch (e) {
       if (e.toString().startsWith('401')) {

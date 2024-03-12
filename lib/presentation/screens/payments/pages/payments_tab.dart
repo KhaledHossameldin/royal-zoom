@@ -538,7 +538,7 @@ class _HeaderCard extends StatelessWidget {
             ),
             Text(
               NumberFormat.currency(name: appLocalizations.sar)
-                  .format(user.data.walletBalance),
+                  .format(user.walletBalance),
               style: const TextStyle(
                 fontSize: 24.0,
                 color: BrandColors.orange,

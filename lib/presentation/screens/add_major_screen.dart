@@ -367,7 +367,6 @@ class _AddMajorScreenState extends State<AddMajorScreen> {
                                             userId:
                                                 DIManager.findDep<SharedPrefs>()
                                                     .getUser()!
-                                                    .data
                                                     .id,
                                             isActive: _isActivated,
                                             yearsOfExperience:

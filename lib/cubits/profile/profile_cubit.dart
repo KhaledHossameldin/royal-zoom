@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/authentication/authentication_bloc.dart';
+import '../../core/di/di_manager.dart';
 import '../../data/enums/gender.dart';
 import '../../data/enums/perview_status.dart';
 import '../../data/models/authentication/city.dart';
@@ -13,6 +14,7 @@ import '../../data/models/update_profile/notifications_update.dart';
 import '../../data/models/update_profile/profile_update.dart';
 import '../../data/models/update_profile/settings_update.dart';
 import '../../data/services/repository.dart';
+import '../../data/sources/local/shared_prefs.dart';
 import '../locale_cubit.dart';
 
 part 'profile_state.dart';
@@ -29,8 +31,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     final data = await repository.updateNotifications(context,
         body: notificationsUpdate.toMap());
     if (!context.mounted) return;
-    final user = context.read<AuthenticationBloc>().user!;
-    user.updateData(data);
+    DIManager.findDep<SharedPrefs>().setUser(data);
   }
 
   void setNotificationsUpdate({
@@ -79,9 +80,9 @@ class ProfileCubit extends Cubit<ProfileState> {
         await repository.updateSettings(context, body: settingsUpdate.toMap());
     if (!context.mounted) return;
     final user = context.read<AuthenticationBloc>().user!;
-    user.updateData(data);
-    if (user.data.language != null) {
-      context.read<LocaleCubit>().switchLanguage(user.data.language!.symbol);
+    DIManager.findDep<SharedPrefs>().setUser(data);
+    if (user.language != null) {
+      context.read<LocaleCubit>().switchLanguage(user.language!.symbol);
     }
   }
 
@@ -100,11 +101,11 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> updateProfile(BuildContext context) async {
-    final userData = context.read<AuthenticationBloc>().user!.data;
+    final userData = context.read<AuthenticationBloc>().user!;
     final data = await repository.updateProfile(context,
         body: profileUpdate.toMap(userData));
     if (!context.mounted) return;
-    context.read<AuthenticationBloc>().user!.updateData(data);
+    DIManager.findDep<SharedPrefs>().setUser(data);
   }
 
   void setProfileUpdate({
@@ -154,7 +155,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> fetch(BuildContext context, {int? countryId}) async {
-    final userData = context.read<AuthenticationBloc>().user!.data;
+    final userData = context.read<AuthenticationBloc>().user!;
     profileUpdate = ProfileUpdate.fromUserData(userData);
     settingsUpdate = SettingsUpdate.fromUserData(userData);
     if (userData.settings == null) {

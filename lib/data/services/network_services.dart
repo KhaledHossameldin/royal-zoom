@@ -10,8 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 
+import '../../core/di/di_manager.dart';
 import '../../core/network/endpoints/network.dart';
 import '../../localization/app_localizations.dart';
+import '../../localization/localizor.dart';
 import '../../utilities/extensions.dart';
 import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
@@ -44,8 +46,8 @@ import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
 import '../models/notifications/user_notification.dart';
+import '../sources/local/shared_prefs.dart';
 import 'app_exception.dart';
-import 'shared_preferences_handler.dart';
 
 class NetworkServices {
   static NetworkServices instance = NetworkServices._();
@@ -842,9 +844,9 @@ class NetworkServices {
         HttpHeaders.acceptHeader: 'application/json',
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader:
-            await SharedPreferencesHandler.instance.getToken(),
+            DIManager.findDep<SharedPrefs>().getToken(),
         HttpHeaders.acceptLanguageHeader:
-            AppLocalizations.of(context).isEnLocale ? 'en' : 'ar',
+            Localizor.translator.isEnLocale ? 'en' : 'ar',
       };
 
   String _getExceptionString(BuildContext context, {required Exception error}) {

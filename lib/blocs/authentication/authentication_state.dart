@@ -16,7 +16,7 @@ class AuthenticationLoading extends AuthenticationState {
 }
 
 class AuthenticationLoaded extends AuthenticationState {
-  final User? user;
+  final UserData? user;
   const AuthenticationLoaded(super.step, {super.isResend = false, this.user});
 }
 

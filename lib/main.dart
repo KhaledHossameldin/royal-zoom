@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 
 import 'blocs/authentication/authentication_bloc.dart';
 import 'blocs/reset_password/reset_password_bloc.dart';
@@ -15,7 +14,7 @@ import 'cubits/consultations/consultations_cubit.dart';
 import 'cubits/locale_cubit.dart';
 import 'cubits/switch/switch_cubit.dart';
 import 'data/enums/user_type.dart';
-import 'data/models/authentication/user.dart';
+import 'data/models/authentication/user_data.dart';
 import 'data/services/repository.dart';
 import 'data/sources/local/shared_prefs.dart';
 import 'localization/app_localizations_setup.dart';
@@ -78,7 +77,7 @@ class MyApp extends StatefulWidget {
 
   final String initialRoute;
   final String savedLocale;
-  final User? user;
+  final UserData? user;
   final UserType type;
 
   @override
@@ -108,7 +107,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => ConsultationsCubit()),
         BlocProvider(
             create: (context) =>
-                SwitchCubit(data: widget.user?.data, type: widget.type)),
+                SwitchCubit(data: widget.user, type: widget.type)),
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         buildWhen: (previous, current) => previous != current,

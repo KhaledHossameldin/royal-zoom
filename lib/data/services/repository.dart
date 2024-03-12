@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../../core/di/di_manager.dart';
 import '../enums/chat_content_type.dart';
 import '../enums/chat_resource_type.dart';
 import '../enums/consultant_response_type.dart';
@@ -30,18 +31,18 @@ import '../models/favorite_category.dart';
 import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
+import '../sources/local/shared_prefs.dart';
 import 'audio_handler.dart';
 import 'location_services.dart';
 import 'network_services.dart';
 import 'pusher_handler.dart';
-import 'shared_preferences_handler.dart';
 
 class Repository {
   static Repository instance = Repository._();
   Repository._();
 
   final _network = NetworkServices.instance;
-  final _sharedPreferences = SharedPreferencesHandler.instance;
+  final _sharedPreferences = DIManager.findDep<SharedPrefs>();
   final _location = LocationServices.instance;
   final _audio = AudioHandler.instance;
   final _pusher = PusherHandler.instance;
@@ -83,8 +84,9 @@ class Repository {
     required UserType type,
   }) async {
     final data = await _network.getProfileData(context, type: type);
-    if (await _sharedPreferences.doesUserExist()) {
-      await _sharedPreferences.setUserData(data, type);
+    if (_sharedPreferences.doesUserExist()) {
+      _sharedPreferences.setUserType(data.type);
+      _sharedPreferences.setUser(data);
     }
     return data;
   }
@@ -226,14 +228,13 @@ class Repository {
 
   Future<void> logout(BuildContext context) async {
     await _network.logout(context);
-    await _sharedPreferences.removeUser();
+    _sharedPreferences.removeUser();
   }
 
   Future<void> setUserType(UserType type) async =>
-      await _sharedPreferences.setUserType(type);
+      _sharedPreferences.setUserType(type);
 
-  Future<UserType> getUserType() async =>
-      await _sharedPreferences.getUserType();
+  Future<UserType> getUserType() async => _sharedPreferences.getUserType();
 
   Future<Chat> startChat(BuildContext context,
           {required int id, required ChatResourceType type}) async =>
@@ -396,41 +397,38 @@ class Repository {
       username: username,
       password: password,
     );
-    await _sharedPreferences.setToken(user.token);
+    _sharedPreferences.setToken(user.token);
     if (isRemember) {
-      await setUser(user);
+      await setUser(user.data);
     }
     return user;
   }
 
-  Future<void> setUser(User user) async =>
-      await _sharedPreferences.setUser(user);
+  Future<void> setUser(UserData user) async => _sharedPreferences.setUser(user);
 
-  Future<User?> getUser() async => await _sharedPreferences.getUser();
+  Future<UserData?> getUser() async => _sharedPreferences.getUser();
 
   Future<void> setLocalePreferences(String languageCode) async =>
-      await _sharedPreferences.setLocale(languageCode);
+      _sharedPreferences.setLocale(languageCode);
 
-  Future<String> getLocalePreferences() async =>
-      await _sharedPreferences.getLocale();
+  Future<String> getLocalePreferences() async => _sharedPreferences.getLocale();
 
   Future<bool> getNotificationsPreferences() async =>
-      await _sharedPreferences.getNotifications();
+      _sharedPreferences.getNotifications();
 
   Future<void> setNotificationsPreferences() async =>
-      await _sharedPreferences.setNotifications();
+      _sharedPreferences.setNotifications();
 
   Future<bool> getLocationPreferences() async =>
-      await _sharedPreferences.getLocation();
+      _sharedPreferences.getLocation();
 
   Future<void> setLocationPreferences() async =>
-      await _sharedPreferences.setLocation();
+      _sharedPreferences.setLocation();
 
   Future<void> setTokenPreferences(String token) async =>
-      await _sharedPreferences.setToken(token);
+      _sharedPreferences.setToken(token);
 
-  Future<String> getTokenPreferences() async =>
-      await _sharedPreferences.getToken();
+  Future<String> getTokenPreferences() async => _sharedPreferences.getToken();
 
   Future<void> setCurrentLocation({bool isFromMain = false}) async =>
       await _location.setCurrent(isFromMain);
