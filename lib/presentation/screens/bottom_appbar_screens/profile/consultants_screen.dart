@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../localization/app_localizations.dart';
-import '../../consultants/consultants_screen.dart';
+import '../../consultants/guest_screen.dart';
 
 class ConsultantsProfileScreen extends StatelessWidget {
   const ConsultantsProfileScreen({super.key});
@@ -11,7 +11,7 @@ class ConsultantsProfileScreen extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(appLocalizations.consultants)),
-      body: const ConsultantsScreen(),
+      body: const GuestScreen(),
     );
   }
 }

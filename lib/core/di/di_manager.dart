@@ -207,8 +207,12 @@ class DIManager {
     return findDep<ApplicationCubit>();
   }
 
-  static dispose() {
+  static void dispose() {
     findAC().close();
     findDep<PusherHandler>().disconnect();
+    final toRemove = !findDep<SharedPrefs>().isUserRemembered();
+    if (toRemove) {
+      findDep<SharedPrefs>().removeUser();
+    }
   }
 }
