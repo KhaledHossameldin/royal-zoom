@@ -55,7 +55,9 @@ class ConsultationsFilter {
     }
     if (status != null && status!.isNotEmpty) {
       params.putIfAbsent(
-          'status[]', () => status!.map((e) => e.toMap().toString()).toList());
+        'status[]',
+        () => status!.map((e) => e.toMap().toString()).toList(),
+      );
     }
     if (dateRange != null) {
       final format = DateFormat('yyyy-MM-dd', 'en');

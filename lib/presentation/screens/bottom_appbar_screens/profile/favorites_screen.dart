@@ -397,14 +397,16 @@ class _ConsultationItem extends StatelessWidget {
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(10.0),
-        onTap: () => Navigator.pushNamed(
-          context,
-          Routes.consultationDetails,
-          arguments: {
-            'id': consultation.id,
-            'player': consultation.audioPlayer,
-          },
-        ),
+        onTap: consultation.isHideNameFromConsultants
+            ? null
+            : () => Navigator.pushNamed(
+                  context,
+                  Routes.consultationDetails,
+                  arguments: {
+                    'id': consultation.id,
+                    'player': consultation.audioPlayer,
+                  },
+                ),
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 12.height,
