@@ -9,7 +9,7 @@ part 'switch_state.dart';
 
 class SwitchCubit extends Cubit<SwitchState> {
   SwitchCubit({UserData? data, UserType? type})
-      : super(data != null && type != null
+      : super(type != null
             ? SwitchLoaded(data: data, type: type)
             : const SwitchInitial());
 

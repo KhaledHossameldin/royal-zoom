@@ -14,7 +14,7 @@ class SwitchLoading extends SwitchState {
 }
 
 class SwitchLoaded extends SwitchState {
-  final UserData data;
+  final UserData? data;
   final UserType type;
   const SwitchLoaded({required this.data, required this.type});
 }
