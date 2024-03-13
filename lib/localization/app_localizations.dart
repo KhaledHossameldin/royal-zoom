@@ -858,6 +858,8 @@ class AppLocalizations {
   String get successPayment => _translate('success_payment');
   String get failPayment => _translate('fail_payment');
   String get clickToGoPage => _translate('click_to_go_page');
+  String get attachments => _translate('attachments');
+
 
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {

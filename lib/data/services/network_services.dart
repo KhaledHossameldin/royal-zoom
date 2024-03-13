@@ -9,6 +9,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import 'package:logger/logger.dart';
 
 import '../../core/di/di_manager.dart';
 import '../../core/network/endpoints/network.dart';
@@ -508,6 +509,7 @@ class NetworkServices {
     final response = await _get(context, '${Network.consultations}/$id');
     ConsultationDetails consultationDetails =
         ConsultationDetails.fromJson(response);
+    Logger().d(response);
     return consultationDetails.copyWith(audioPlayer: player);
   }
 

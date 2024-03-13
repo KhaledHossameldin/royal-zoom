@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -84,26 +85,42 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
             case ShowConsultationLoaded:
               final consultation =
                   (state as ShowConsultationLoaded).consultation;
-              return SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  vertical: 21.height,
-                  horizontal: 27.width,
-                ),
-                child: Column(
-                  children: [
-                    _Header(
+              return CustomScrollView(slivers: [
+                SliverToBoxAdapter(child: 24.emptyHeight),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4.height,
+                    horizontal: 27.width,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: _Header(
                       id: consultation.id,
                       majorName: consultation.major.name,
-                      date: consultation.appointmentDate,
                       isFavourite: consultation.isFavourite,
+                      date: consultation.appointmentDate,
                       favoriteConsultationId: _favoriteConsultationId,
                     ),
-                    _Item(
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4.height,
+                    horizontal: 27.width,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: _Item(
                       title: appLocalizations.consultationDetails,
                       child: _Details(consultation: consultation),
                     ),
-                    8.emptyHeight,
-                    _Item(
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4.height,
+                    horizontal: 27.width,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: _Item(
                       title: appLocalizations.consultation,
                       child: _Content(
                         type: consultation.contentType,
@@ -111,7 +128,63 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                         player: consultation.audioPlayer,
                       ),
                     ),
-                    Builder(
+                  ),
+                ),
+                if (consultation.attachments != null)
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 4.height,
+                      horizontal: 27.width,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.height),
+                        child: _Item(
+                          title: appLocalizations.attachments,
+                          child: const Material(),
+                        ),
+                      ),
+                    ),
+                  ),
+                if (consultation.attachments != null)
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 4.height,
+                      horizontal: 27.width,
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 176 / 51,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => ListTile(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                              color: BrandColors.orange.withOpacity(0.5),
+                            ),
+                          ),
+                          leading: 'file'.svg,
+                          title: Text(
+                            consultation.attachments![index].file!
+                                .split('/')
+                                .last,
+                            style: const TextStyle(fontSize: 9),
+                          ),
+                        ),
+                        childCount: consultation.attachments!.length,
+                      ),
+                    ),
+                  ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4.height,
+                    horizontal: 27.width,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: Builder(
                       builder: (context) {
                         if (consultation.consultant == null) {
                           return const Material();
@@ -197,8 +270,15 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                         );
                       },
                     ),
-                    8.emptyHeight,
-                    Builder(
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4.height,
+                    horizontal: 27.width,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: Builder(
                       builder: (context) {
                         if (consultation.status ==
                             ConsultationStatus.requestToChangetime) {
@@ -250,9 +330,9 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                         return const Material();
                       },
                     ),
-                  ],
+                  ),
                 ),
-              );
+              ]);
 
             case ShowConsultationError:
               return ReloadWidget(
