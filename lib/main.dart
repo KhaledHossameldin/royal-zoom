@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import 'blocs/authentication/authentication_bloc.dart';
 import 'blocs/reset_password/reset_password_bloc.dart';
@@ -36,6 +37,8 @@ Future<List<dynamic>> _getStartValues() async {
   await DIManager.findDep<SharedPrefs>().removeTempUser();
   final user = DIManager.findDep<SharedPrefs>().getUser();
   final type = DIManager.findDep<SharedPrefs>().getUserType();
+  Logger().d(user);
+  Logger().d(type);
 
   if (isNotification && isLocation) {
     if (user != null) {

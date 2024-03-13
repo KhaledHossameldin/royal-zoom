@@ -131,164 +131,178 @@ class ProfileScreen extends StatelessWidget {
                   );
                 }),
               ),
-            if (user != null)
-              _Item(
-                icon: 'search',
-                color: BrandColors.lightBlue,
-                title: appLocalizations.search,
-                onTap: () => Navigator.pushNamed(context, Routes.search),
-              ),
-            if (user != null)
-              _Item(
-                icon: 'profile',
-                color: BrandColors.orange,
-                title: appLocalizations.profile,
-                onTap: () => Navigator.pushNamed(context, Routes.profile),
-              ),
-            if (user != null)
-              _Item(
-                icon: 'major_and_experience',
-                title: appLocalizations.majorAndExperience,
-                color: Colors.black,
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  Routes.majorAndExperience,
-                ),
-              ),
-            if (user != null)
-              _Item(
-                icon: 'consultants',
-                color: BrandColors.red,
-                title: appLocalizations.consultants,
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  Routes.consultantsProfile,
-                ),
-              ),
-            if (user != null)
-              _Item(
-                icon: 'appointments',
-                title: appLocalizations.appointments,
-                color: BrandColors.green,
-                onTap: () => Navigator.pushNamed(context, Routes.appointments),
-              ),
-            if (user != null)
-              _Item(
-                icon: 'heart-profile',
-                title: appLocalizations.favorite,
-                color: BrandColors.fuschia,
-                onTap: () => Navigator.pushNamed(context, Routes.favorites),
-              ),
-            if (user != null)
-              _Item(
-                icon: 'wallet',
-                color: BrandColors.purple,
-                title: appLocalizations.payments,
-                onTap: () => Navigator.pushNamed(context, Routes.payments),
-              ),
-            if (user != null)
-              _Item(
-                icon: 'orders',
-                color: BrandColors.green,
-                title: Localizor.translator.myOrders,
-                onTap: () => Navigator.pushNamed(context, Routes.myOrders),
-              ),
-            _Item(
-              icon: 'about-application',
-              color: Colors.black,
-              title: appLocalizations.aboutApplication,
-              onTap: () => Navigator.pushNamed(context, Routes.about),
-            ),
-            _Item(
-              icon: 'terms-and-conditions',
-              color: BrandColors.red,
-              title: appLocalizations.termsOfUseTitle,
-              onTap: () => Navigator.pushNamed(
-                context,
-                Routes.termsAndConditions,
-                arguments: user == null,
-              ),
-            ),
-            _Item(
-              icon: 'privacy-policy',
-              color: BrandColors.lightBlue,
-              title: appLocalizations.privacyPolicy,
-              onTap: () => Navigator.pushNamed(
-                context,
-                Routes.privacyPolicy,
-                arguments: user == null,
-              ),
-            ),
-            _Item(
-              icon: 'contact-us',
-              color: BrandColors.purple,
-              title: appLocalizations.contactUs,
-              onTap: () => Navigator.pushNamed(
-                context,
-                Routes.contactUs,
-                arguments: user == null,
-              ),
-            ),
-            _Item(
-              icon: 'share-application',
-              color: BrandColors.orange,
-              title: appLocalizations.shareWithFriends,
-              onTap: () => Share.share('royake'),
-            ),
-            _Item(
-              icon: 'rate',
-              color: BrandColors.lightBlue,
-              title: appLocalizations.reviewApplication,
-              onTap: () => Navigator.pushNamed(context, Routes.reviewApp),
-            ),
-            if (user != null)
-              BlocConsumer<AuthenticationBloc, AuthenticationState>(
-                listener: (context, state) {
-                  if (state is AuthenticationLoaded) {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      Routes.login,
-                      (route) => false,
-                    );
-                  }
-                },
-                builder: (context, state) => Card(
-                  child: ListTile(
-                    splashColor: BrandColors.red.withOpacity(0.3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+            BlocBuilder<SwitchCubit, SwitchState>(
+              builder: (context, state) {
+                if (state is! SwitchLoaded) {
+                  return const Material();
+                }
+                return Column(children: [
+                  if (user != null)
+                    _Item(
+                      icon: 'search',
+                      color: BrandColors.lightBlue,
+                      title: appLocalizations.search,
+                      onTap: () => Navigator.pushNamed(context, Routes.search),
                     ),
-                    leading: Container(
-                      width: 50.width,
-                      height: 50.height,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 14.height,
-                        horizontal: 14.width,
+                  if (user != null)
+                    _Item(
+                      icon: 'profile',
+                      color: BrandColors.orange,
+                      title: appLocalizations.profile,
+                      onTap: () => Navigator.pushNamed(context, Routes.profile),
+                    ),
+                  if (user != null && state.type == UserType.consultant)
+                    _Item(
+                      icon: 'major_and_experience',
+                      title: appLocalizations.majorAndExperience,
+                      color: Colors.black,
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        Routes.majorAndExperience,
                       ),
-                      decoration: ShapeDecoration(
-                        color: BrandColors.red.withOpacity(0.15),
-                        shape: ContinuousRectangleBorder(
-                          borderRadius: BorderRadius.circular(35.0),
+                    ),
+                  if (user != null)
+                    _Item(
+                      icon: 'consultants',
+                      color: BrandColors.red,
+                      title: appLocalizations.consultants,
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        Routes.consultantsProfile,
+                      ),
+                    ),
+                  if (user != null)
+                    _Item(
+                      icon: 'appointments',
+                      title: appLocalizations.appointments,
+                      color: BrandColors.green,
+                      onTap: () =>
+                          Navigator.pushNamed(context, Routes.appointments),
+                    ),
+                  if (user != null)
+                    _Item(
+                      icon: 'heart-profile',
+                      title: appLocalizations.favorite,
+                      color: BrandColors.fuschia,
+                      onTap: () =>
+                          Navigator.pushNamed(context, Routes.favorites),
+                    ),
+                  if (user != null)
+                    _Item(
+                      icon: 'wallet',
+                      color: BrandColors.purple,
+                      title: appLocalizations.payments,
+                      onTap: () =>
+                          Navigator.pushNamed(context, Routes.payments),
+                    ),
+                  if (user != null && state.type == UserType.consultant)
+                    _Item(
+                      icon: 'orders',
+                      color: BrandColors.green,
+                      title: Localizor.translator.myOrders,
+                      onTap: () =>
+                          Navigator.pushNamed(context, Routes.myOrders),
+                    ),
+                  _Item(
+                    icon: 'about-application',
+                    color: Colors.black,
+                    title: appLocalizations.aboutApplication,
+                    onTap: () => Navigator.pushNamed(context, Routes.about),
+                  ),
+                  _Item(
+                    icon: 'terms-and-conditions',
+                    color: BrandColors.red,
+                    title: appLocalizations.termsOfUseTitle,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      Routes.termsAndConditions,
+                      arguments: user == null,
+                    ),
+                  ),
+                  _Item(
+                    icon: 'privacy-policy',
+                    color: BrandColors.lightBlue,
+                    title: appLocalizations.privacyPolicy,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      Routes.privacyPolicy,
+                      arguments: user == null,
+                    ),
+                  ),
+                  _Item(
+                    icon: 'contact-us',
+                    color: BrandColors.purple,
+                    title: appLocalizations.contactUs,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      Routes.contactUs,
+                      arguments: user == null,
+                    ),
+                  ),
+                  _Item(
+                    icon: 'share-application',
+                    color: BrandColors.orange,
+                    title: appLocalizations.shareWithFriends,
+                    onTap: () => Share.share('royake'),
+                  ),
+                  _Item(
+                    icon: 'rate',
+                    color: BrandColors.lightBlue,
+                    title: appLocalizations.reviewApplication,
+                    onTap: () => Navigator.pushNamed(context, Routes.reviewApp),
+                  ),
+                  if (user != null)
+                    BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                      listener: (context, state) {
+                        if (state is AuthenticationLoaded) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            Routes.login,
+                            (route) => false,
+                          );
+                        }
+                      },
+                      builder: (context, state) => Card(
+                        child: ListTile(
+                          splashColor: BrandColors.red.withOpacity(0.3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          leading: Container(
+                            width: 50.width,
+                            height: 50.height,
+                            padding: EdgeInsets.symmetric(
+                              vertical: 14.height,
+                              horizontal: 14.width,
+                            ),
+                            decoration: ShapeDecoration(
+                              color: BrandColors.red.withOpacity(0.15),
+                              shape: ContinuousRectangleBorder(
+                                borderRadius: BorderRadius.circular(35.0),
+                              ),
+                            ),
+                            child: 'logout'.buildSVG(
+                                color: BrandColors.red,
+                                blendMode: BlendMode.srcATop),
+                          ),
+                          title: state is AuthenticationLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                      color: BrandColors.red),
+                                )
+                              : Text(
+                                  appLocalizations.logout,
+                                  style: const TextStyle(fontSize: 15.0),
+                                ),
+                          onTap: () => context
+                              .read<AuthenticationBloc>()
+                              .add(AuthenticationLogout(context)),
                         ),
                       ),
-                      child: 'logout'.buildSVG(
-                          color: BrandColors.red, blendMode: BlendMode.srcATop),
                     ),
-                    title: state is AuthenticationLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                                color: BrandColors.red),
-                          )
-                        : Text(
-                            appLocalizations.logout,
-                            style: const TextStyle(fontSize: 15.0),
-                          ),
-                    onTap: () => context
-                        .read<AuthenticationBloc>()
-                        .add(AuthenticationLogout(context)),
-                  ),
-                ),
-              ),
+                ]);
+              },
+            )
           ],
         ),
       ),
