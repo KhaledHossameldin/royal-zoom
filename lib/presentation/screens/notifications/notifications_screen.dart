@@ -30,244 +30,453 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     final appLocalizations = AppLocalizations.of(context);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(appLocalizations.notifications),
-          actions: [
-            PopupMenuButton<NotificationsReadStatus>(
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: NotificationsReadStatus.markAsRead,
-                  child: Text(appLocalizations.markAllRead),
+      appBar: AppBar(
+        title: Text(appLocalizations.notifications),
+        actions: [
+          PopupMenuButton<NotificationsReadStatus>(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: NotificationsReadStatus.markAsRead,
+                child: Text(appLocalizations.markAllRead),
+              ),
+              PopupMenuItem(
+                value: NotificationsReadStatus.markAsUnread,
+                child: Text(appLocalizations.markAllUnread),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: BlocBuilder<NotificationsCubit, NotificationsState>(
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case NotificationsLoading:
+              return const Center(child: CircularProgressIndicator());
+
+            case NotificationsEmpty:
+              return SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    'notifications'.lottie,
+                    Text(
+                      appLocalizations.notificationsEmpty,
+                      style: textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
-                PopupMenuItem(
-                  value: NotificationsReadStatus.markAsUnread,
-                  child: Text(appLocalizations.markAllUnread),
-                ),
-              ],
-            ),
-          ],
-        ),
-        body: BlocBuilder<NotificationsCubit, NotificationsState>(
-          builder: (context, state) {
-            switch (state.runtimeType) {
-              case NotificationsLoading:
-                return const Center(child: CircularProgressIndicator());
+              );
 
-              case NotificationsEmpty:
-                return SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      'notifications'.lottie,
-                      Text(
-                        appLocalizations.notificationsEmpty,
-                        style: textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                );
+            case NotificationsError:
+              return ReloadWidget(
+                title: (state as NotificationsError).message,
+                buttonText: appLocalizations.getReload(''),
+                onPressed: () =>
+                    context.read<NotificationsCubit>().fetch(context),
+              );
 
-              case NotificationsError:
-                return ReloadWidget(
-                  title: (state as NotificationsError).message,
-                  buttonText: appLocalizations.getReload(''),
-                  onPressed: () =>
-                      context.read<NotificationsCubit>().fetch(context),
-                );
-
-              case NotificationsLoaded:
-                final notifications =
-                    (state as NotificationsLoaded).notifications;
-                return Scrollbar(
-                  notificationPredicate: (notification) {
-                    if (!state.canFetchMore || state.hasEndedScrolling) {
-                      return false;
-                    }
-                    if (notification.metrics.pixels >=
-                        notification.metrics.maxScrollExtent) {
-                      context.read<NotificationsCubit>().fetchMore(context);
-                    }
+            case NotificationsLoaded:
+              final notifications =
+                  (state as NotificationsLoaded).notifications;
+              return Scrollbar(
+                notificationPredicate: (notification) {
+                  if (!state.canFetchMore || state.hasEndedScrolling) {
                     return false;
-                  },
-                  child: CustomScrollView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    slivers: [
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 16.height,
-                        ),
-                        sliver: SliverList.separated(
-                          itemCount: notifications.length,
-                          separatorBuilder: (context, index) => 9.emptyHeight,
-                          itemBuilder: (context, index) => Card(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 21.width,
+                  }
+                  if (notification.metrics.pixels >=
+                      notification.metrics.maxScrollExtent) {
+                    context.read<NotificationsCubit>().fetchMore(context);
+                  }
+                  return false;
+                },
+                child: CustomScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  slivers: [
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(vertical: 16.height),
+                      sliver: SliverList.separated(
+                        itemCount: notifications.length,
+                        separatorBuilder: (context, index) => 9.emptyHeight,
+                        itemBuilder: (context, index) => Card(
+                          margin: EdgeInsets.symmetric(horizontal: 21.width),
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              Routes.notificationDetails,
+                              arguments: notifications[index],
                             ),
-                            child: InkWell(
-                              onTap: () => Navigator.pushNamed(
-                                context,
-                                Routes.notificationDetails,
-                                arguments: notifications[index],
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 11.height,
+                                horizontal: 14.width,
                               ),
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 11.height,
-                                  horizontal: 14.width,
-                                ),
-                                child: Column(
-                                  children: [
-                                    ListTile(
-                                      contentPadding: EdgeInsets.zero,
-                                      leading: Stack(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: BrandColors.orange),
-                                            ),
-                                            child: Container(
-                                              width: 46.width,
-                                              height: 46.height,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    color: Colors.white,
-                                                    width: 2.0),
-                                                image: DecorationImage(
-                                                  fit: BoxFit.contain,
-                                                  image: notifications[index]
-                                                              .sender
-                                                              .image !=
-                                                          null
-                                                      ? NetworkImage(
-                                                          notifications[index]
-                                                              .sender
-                                                              .image!)
-                                                      : 'royake'.png.image,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          if (notifications[index]
-                                              .sender
-                                              .isActive)
-                                            Positioned(
-                                              bottom: 0,
-                                              left: 5.width,
-                                              right: 5.width,
-                                              child: Container(
-                                                color: Colors.white,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    CircleAvatar(
-                                                      radius: 3.width,
-                                                      backgroundColor:
-                                                          BrandColors.green,
-                                                    ),
-                                                    Text(
-                                                      appLocalizations.active,
-                                                      style: const TextStyle(
-                                                        fontSize: 7,
-                                                        color:
-                                                            BrandColors.green,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                      title: Text(
-                                        notifications[index].title,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontSize: 14.0),
-                                      ),
-                                      subtitle: Text(
-                                        notifications[index].sender.name,
-                                        style: const TextStyle(
-                                          fontSize: 14.0,
-                                          color: BrandColors.gray,
-                                        ),
-                                      ),
-                                      trailing: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            notifications[index].id.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 10.0,
-                                              color: BrandColors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            DateFormat('dd/MM/yyyy')
-                                                .add_jms()
-                                                .format(notifications[index]
-                                                    .createdAt),
-                                            style: const TextStyle(
-                                              fontSize: 10.0,
-                                              color: BrandColors.gray,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const Divider(),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 11.height,
-                                        horizontal: 14.width,
-                                      ),
-                                      width: double.infinity,
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    leading: Container(
                                       decoration: BoxDecoration(
-                                        color: BrandColors.snowWhite,
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: BrandColors.orange,
+                                        ),
                                       ),
-                                      child: Text(
-                                        notifications[index].content,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.normal,
-                                          color: BrandColors.darkBlackGreen,
+                                      child: Container(
+                                        width: 46.width,
+                                        height: 46.height,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.white,
+                                            width: 2.0,
+                                          ),
+                                          image: DecorationImage(
+                                            image: notifications[index]
+                                                        .sender
+                                                        ?.image !=
+                                                    null
+                                                ? NetworkImage(
+                                                    notifications[index]
+                                                        .sender!
+                                                        .image!,
+                                                  )
+                                                : 'royake'.png.image,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                    title: Text(
+                                      notifications[index].title ?? '',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 14.0),
+                                    ),
+                                    subtitle: Text(
+                                      notifications[index]
+                                              .sender
+                                              ?.previewName ??
+                                          '',
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                        color: BrandColors.gray,
+                                      ),
+                                    ),
+                                    trailing: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          notifications[index].id?.toString() ??
+                                              '',
+                                          style: const TextStyle(
+                                            fontSize: 10.0,
+                                            color: BrandColors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          DateFormat('dd/MM/yyyy')
+                                              .add_jms()
+                                              .format(
+                                                notifications[index].createdAt!,
+                                              ),
+                                          style: const TextStyle(
+                                            fontSize: 10.0,
+                                            color: BrandColors.gray,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Divider(),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 11.height,
+                                      horizontal: 14.width,
+                                    ),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: BrandColors.snowWhite,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Text(
+                                      notifications[index].content ?? '',
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.normal,
+                                        color: BrandColors.darkBlackGreen,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ),
                       ),
-                      if (state.canFetchMore)
-                        SliverPadding(
-                          padding: EdgeInsets.symmetric(vertical: 16.height),
-                          sliver: const SliverToBoxAdapter(
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
+                    ),
+                    if (state.canFetchMore)
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(vertical: 16.height),
+                        sliver: const SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
                         ),
-                    ],
-                  ),
-                );
+                      ),
+                  ],
+                ),
+              );
 
-              default:
-                return const Material();
-            }
-          },
-        ));
+            default:
+              return const Material();
+          }
+        },
+      ),
+    );
+
+    // return Scaffold(
+    //     appBar: AppBar(
+    //       title: Text(appLocalizations.notifications),
+    //       actions: [
+    //         PopupMenuButton<NotificationsReadStatus>(
+    //           itemBuilder: (context) => [
+    //             PopupMenuItem(
+    //               value: NotificationsReadStatus.markAsRead,
+    //               child: Text(appLocalizations.markAllRead),
+    //             ),
+    //             PopupMenuItem(
+    //               value: NotificationsReadStatus.markAsUnread,
+    //               child: Text(appLocalizations.markAllUnread),
+    //             ),
+    //           ],
+    //         ),
+    //       ],
+    //     ),
+    //     body: BlocBuilder<NotificationsCubit, NotificationsState>(
+    //       builder: (context, state) {
+    //         switch (state.runtimeType) {
+    //           case NotificationsLoading:
+    //             return const Center(child: CircularProgressIndicator());
+
+    //           case NotificationsEmpty:
+    //             return SizedBox(
+    //               width: double.infinity,
+    //               child: Column(
+    //                 mainAxisAlignment: MainAxisAlignment.center,
+    //                 children: [
+    //                   'notifications'.lottie,
+    //                   Text(
+    //                     appLocalizations.notificationsEmpty,
+    //                     style: textTheme.bodyMedium,
+    //                   ),
+    //                 ],
+    //               ),
+    //             );
+
+    //           case NotificationsError:
+    //             return ReloadWidget(
+    //               title: (state as NotificationsError).message,
+    //               buttonText: appLocalizations.getReload(''),
+    //               onPressed: () =>
+    //                   context.read<NotificationsCubit>().fetch(context),
+    //             );
+
+    //           case NotificationsLoaded:
+    //             final notifications =
+    //                 (state as NotificationsLoaded).notifications;
+    //             return Scrollbar(
+    //               notificationPredicate: (notification) {
+    //                 if (!state.canFetchMore || state.hasEndedScrolling) {
+    //                   return false;
+    //                 }
+    //                 if (notification.metrics.pixels >=
+    //                     notification.metrics.maxScrollExtent) {
+    //                   context.read<NotificationsCubit>().fetchMore(context);
+    //                 }
+    //                 return false;
+    //               },
+    //               child: CustomScrollView(
+    //                 keyboardDismissBehavior:
+    //                     ScrollViewKeyboardDismissBehavior.onDrag,
+    //                 slivers: [
+    //                   SliverPadding(
+    //                     padding: EdgeInsets.symmetric(
+    //                       vertical: 16.height,
+    //                     ),
+    //                     sliver: SliverList.separated(
+    //                       itemCount: notifications.length,
+    //                       separatorBuilder: (context, index) => 9.emptyHeight,
+    //                       itemBuilder: (context, index) => Card(
+    //                         margin: EdgeInsets.symmetric(
+    //                           horizontal: 21.width,
+    //                         ),
+    //                         child: InkWell(
+    //                           onTap: () => Navigator.pushNamed(
+    //                             context,
+    //                             Routes.notificationDetails,
+    //                             arguments: notifications[index],
+    //                           ),
+    //                           borderRadius: BorderRadius.circular(10.0),
+    //                           child: Padding(
+    //                             padding: EdgeInsets.symmetric(
+    //                               vertical: 11.height,
+    //                               horizontal: 14.width,
+    //                             ),
+    //                             child: Column(
+    //                               children: [
+    //                                 ListTile(
+    //                                   contentPadding: EdgeInsets.zero,
+    //                                   leading: Stack(
+    //                                     children: [
+    //                                       Container(
+    //                                         decoration: BoxDecoration(
+    //                                           shape: BoxShape.circle,
+    //                                           border: Border.all(
+    //                                               color: BrandColors.orange),
+    //                                         ),
+    //                                         child: Container(
+    //                                           width: 46.width,
+    //                                           height: 46.height,
+    //                                           decoration: BoxDecoration(
+    //                                             shape: BoxShape.circle,
+    //                                             border: Border.all(
+    //                                                 color: Colors.white,
+    //                                                 width: 2.0),
+    //                                             image: DecorationImage(
+    //                                               fit: BoxFit.contain,
+    //                                               image: notifications[index]
+    //                                                           .sender
+    //                                                           .image !=
+    //                                                       null
+    //                                                   ? NetworkImage(
+    //                                                       notifications[index]
+    //                                                           .sender
+    //                                                           .image!)
+    //                                                   : 'royake'.png.image,
+    //                                             ),
+    //                                           ),
+    //                                         ),
+    //                                       ),
+    //                                       if (notifications[index]
+    //                                           .sender
+    //                                           .isActive)
+    //                                         Positioned(
+    //                                           bottom: 0,
+    //                                           left: 5.width,
+    //                                           right: 5.width,
+    //                                           child: Container(
+    //                                             color: Colors.white,
+    //                                             child: Row(
+    //                                               mainAxisAlignment:
+    //                                                   MainAxisAlignment
+    //                                                       .spaceAround,
+    //                                               children: [
+    //                                                 CircleAvatar(
+    //                                                   radius: 3.width,
+    //                                                   backgroundColor:
+    //                                                       BrandColors.green,
+    //                                                 ),
+    //                                                 Text(
+    //                                                   appLocalizations.active,
+    //                                                   style: const TextStyle(
+    //                                                     fontSize: 7,
+    //                                                     color:
+    //                                                         BrandColors.green,
+    //                                                   ),
+    //                                                 ),
+    //                                               ],
+    //                                             ),
+    //                                           ),
+    //                                         ),
+    //                                     ],
+    //                                   ),
+    //                                   title: Text(
+    //                                     notifications[index].title,
+    //                                     overflow: TextOverflow.ellipsis,
+    //                                     style: const TextStyle(fontSize: 14.0),
+    //                                   ),
+    //                                   subtitle: Text(
+    //                                     notifications[index].sender.name,
+    //                                     style: const TextStyle(
+    //                                       fontSize: 14.0,
+    //                                       color: BrandColors.gray,
+    //                                     ),
+    //                                   ),
+    //                                   trailing: Column(
+    //                                     mainAxisAlignment:
+    //                                         MainAxisAlignment.center,
+    //                                     crossAxisAlignment:
+    //                                         CrossAxisAlignment.end,
+    //                                     children: [
+    //                                       Text(
+    //                                         notifications[index].id.toString(),
+    //                                         style: const TextStyle(
+    //                                           fontSize: 10.0,
+    //                                           color: BrandColors.black,
+    //                                         ),
+    //                                       ),
+    //                                       Text(
+    //                                         DateFormat('dd/MM/yyyy')
+    //                                             .add_jms()
+    //                                             .format(notifications[index]
+    //                                                 .createdAt),
+    //                                         style: const TextStyle(
+    //                                           fontSize: 10.0,
+    //                                           color: BrandColors.gray,
+    //                                         ),
+    //                                       ),
+    //                                     ],
+    //                                   ),
+    //                                 ),
+    //                                 const Divider(),
+    //                                 Container(
+    //                                   padding: EdgeInsets.symmetric(
+    //                                     vertical: 11.height,
+    //                                     horizontal: 14.width,
+    //                                   ),
+    //                                   width: double.infinity,
+    //                                   decoration: BoxDecoration(
+    //                                     color: BrandColors.snowWhite,
+    //                                     borderRadius:
+    //                                         BorderRadius.circular(10.0),
+    //                                   ),
+    //                                   child: Text(
+    //                                     notifications[index].content,
+    //                                     maxLines: 3,
+    //                                     overflow: TextOverflow.ellipsis,
+    //                                     style: const TextStyle(
+    //                                       fontSize: 12.0,
+    //                                       fontWeight: FontWeight.normal,
+    //                                       color: BrandColors.darkBlackGreen,
+    //                                     ),
+    //                                   ),
+    //                                 ),
+    //                               ],
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   if (state.canFetchMore)
+    //                     SliverPadding(
+    //                       padding: EdgeInsets.symmetric(vertical: 16.height),
+    //                       sliver: const SliverToBoxAdapter(
+    //                         child: Center(child: CircularProgressIndicator()),
+    //                       ),
+    //                     ),
+    //                 ],
+    //               ),
+    //             );
+
+    //           default:
+    //             return const Material();
+    //         }
+    //       },
+    //     ));
   }
 }

@@ -46,7 +46,7 @@ import '../models/favorite_category.dart';
 import '../models/home_statistics.dart';
 import '../models/invoices/invoice.dart';
 import '../models/major.dart';
-import '../models/notifications/user_notification.dart';
+import '../models/user_notification/user_notification.dart';
 import '../sources/local/shared_prefs.dart';
 import 'app_exception.dart';
 

@@ -32,7 +32,7 @@ import '../cubits/show_consultant/show_consultant_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../cubits/update_consultation/update_consultation_cubit.dart';
 import '../data/models/consultations/details.dart';
-import '../data/models/notifications/user_notification.dart';
+import '../data/models/user_notification/user_notification.dart';
 import '../domain/entities/consultant_major_entity.dart';
 import '../presentation/screens/add_major_screen.dart';
 import '../presentation/screens/authentication/login/login_screen.dart';

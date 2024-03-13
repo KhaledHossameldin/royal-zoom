@@ -465,5 +465,7 @@
   "sar_short": "SAR",
   "success_payment": "Payment completed successfully",
   "fail_payment": "Operation unsuccessful, please try again",
+  "click_to_go_page": "Click here to go to the page",
   "attachments": "Attachments"
+
 }
