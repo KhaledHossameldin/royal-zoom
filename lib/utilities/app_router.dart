@@ -14,7 +14,6 @@ import '../cubits/chats/chats_cubit.dart';
 import '../cubits/consultants/consultants_cubit.dart';
 import '../cubits/consultants_available_times/consultants_available_times_cubit.dart';
 import '../cubits/consultation_recording/consultation_recording_cubit.dart';
-import '../cubits/consultations/consultations_cubit.dart';
 import '../cubits/accept_date_change/accept_date_change_cubit.dart';
 import '../cubits/customized_consultation/customized_consultation_cubit.dart';
 import '../cubits/fast_consultation/fast_consultation_cubit.dart';
@@ -158,7 +157,6 @@ class AppRouter {
             providers: [
               BlocProvider(create: (context) => HomeCubit()),
               BlocProvider(create: (context) => ConsultantsCubit()),
-              BlocProvider(create: (context) => ConsultationsCubit()),
               BlocProvider(create: (context) => ChatsCubit()),
             ],
             child: const HomeScreen(),
@@ -303,10 +301,7 @@ class AppRouter {
       case Routes.consultationsResults:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => BlocProvider(
-            create: (context) => ConsultationsCubit(),
-            child: const ConsultationsResultsScreen(),
-          ),
+          builder: (context) => const ConsultationsResultsScreen(),
         );
 
       case Routes.consultationDetails:

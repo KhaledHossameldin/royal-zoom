@@ -1,12 +1,13 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/brand_colors.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../constants/routes.dart';
 import '../../../core/di/di_manager.dart';
+import '../../../cubits/consultations/consultations_cubit.dart';
 import '../../../data/enums/user_type.dart';
 import '../../../data/models/authentication/user_data.dart';
 import '../../../data/sources/local/shared_prefs.dart';
@@ -34,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ValueListenableBuilder(
         valueListenable: _index,
         builder: (context, value, child) {
-          Logger().d(_index.value);
           if (_index.value == 0) {
             if (user == null) {
               return const GuestScreen();
@@ -74,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return;
             }
             _index.value = value;
+            context.read<ConsultationsCubit>().clearFilters();
           },
           items: [
             'home'.buildBottomAppBarIcon(

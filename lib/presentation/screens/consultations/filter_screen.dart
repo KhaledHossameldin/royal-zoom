@@ -35,51 +35,42 @@ class _ConsultationsFilterScreenState extends State<ConsultationsFilterScreen> {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
 
-    return WillPopScope(
-      onWillPop: () {
-        context.read<ConsultationsCubit>().clearFilters();
-        return Future.value(true);
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(appLocalizations.filter),
-          actions: [
-            TextButton(
-              onPressed: () {
-                context.read<ConsultationsCubit>().clearFilters();
-                context.read<ConsultationsCubit>().fetch(context);
-                Navigator.pop(context);
-              },
-              child: Text(appLocalizations.reset),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(appLocalizations.filter),
+        actions: [
+          TextButton(
+            onPressed: () {
+              context.read<ConsultationsCubit>().clearFilters();
+              context.read<ConsultationsCubit>().fetch(context);
+              Navigator.pop(context);
+            },
+            child: Text(appLocalizations.reset),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+          vertical: 10.height,
+          horizontal: 34.width,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(appLocalizations.status, style: textStyle),
+            8.emptyHeight,
+            const _StatusDropDown(),
+            10.emptyHeight,
+            Text(appLocalizations.date, style: textStyle),
+            8.emptyHeight,
+            _DateRangeTextField(dateController: _dateController),
+            30.emptyHeight,
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(appLocalizations.confirm),
             ),
           ],
-        ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            vertical: 10.height,
-            horizontal: 34.width,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(appLocalizations.status, style: textStyle),
-              8.emptyHeight,
-              const _StatusDropDown(),
-              10.emptyHeight,
-              Text(appLocalizations.date, style: textStyle),
-              8.emptyHeight,
-              _DateRangeTextField(dateController: _dateController),
-              30.emptyHeight,
-              ElevatedButton(
-                onPressed: () {
-                  context.read<ConsultationsCubit>().fetch(context);
-                  Navigator.pop(context);
-                },
-                child: Text(appLocalizations.confirm),
-              ),
-            ],
-          ),
         ),
       ),
     );

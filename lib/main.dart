@@ -111,6 +111,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
             create: (context) =>
                 SwitchCubit(data: widget.user, type: widget.type)),
+        BlocProvider(create: (context) => ConsultationsCubit())
       ],
       child: BlocBuilder<LocaleCubit, Locale>(
         buildWhen: (previous, current) => previous != current,

@@ -143,45 +143,34 @@ class _ConsultationItem extends StatelessWidget {
         child: SizedBox(
           width: 330.width,
           child: Card(
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10.0),
-              onTap: () => Navigator.pushNamed(
-                context,
-                Routes.consultationDetails,
-                arguments: {
-                  'id': consultation.id,
-                  'player': consultation.audioPlayer,
-                },
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 12.height,
+                horizontal: 18.width,
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 12.height,
-                  horizontal: 18.width,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${appLocalizations.consultationNumber}${consultation.id}',
-                      style: const TextStyle(
-                        fontSize: 11.0,
-                        color: BrandColors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${appLocalizations.consultationNumber}${consultation.id}',
+                    style: const TextStyle(
+                      fontSize: 11.0,
+                      color: BrandColors.black,
+                      fontWeight: FontWeight.normal,
                     ),
-                    Text(
-                      appLocalizations.getConsultationStatus(
-                        consultation.status,
-                        consultation.isHideNameFromConsultants,
-                      ),
-                      style: const TextStyle(
-                        fontSize: 11.0,
-                        color: BrandColors.gray,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  Text(
+                    appLocalizations.getConsultationStatus(
+                      consultation.status,
+                      consultation.isHideNameFromConsultants,
                     ),
-                  ],
-                ),
+                    style: const TextStyle(
+                      fontSize: 11.0,
+                      color: BrandColors.gray,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

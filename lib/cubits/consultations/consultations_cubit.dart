@@ -83,8 +83,10 @@ class ConsultationsCubit extends Cubit<ConsultationsState> {
     try {
       _page = 1;
       emit(const ConsultationsLoading());
-      final response =
-          await repository.consultations(context, params: _filter.toMap(_page));
+      final response = await repository.consultations(
+        context,
+        params: _filter.toMap(_page),
+      );
       final consultations = response['consultations'] as List<Consultation>;
       final perPage = response['per_page'] as int;
       _page++;

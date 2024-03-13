@@ -37,6 +37,12 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    context.read<ConsultationsCubit>().clearFilters();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
 
@@ -167,11 +173,16 @@ class _SearchTextField extends StatelessWidget {
           highlightElevation: 0.0,
           tooltip: appLocalizations.filter,
           backgroundColor: BrandColors.snowWhite,
-          onPressed: () => Navigator.pushNamed(
-            context,
-            Routes.consultationsFilter,
-            arguments: context.read<ConsultationsCubit>(),
-          ),
+          onPressed: () async {
+            await Navigator.pushNamed(
+              context,
+              Routes.consultationsFilter,
+              arguments: context.read<ConsultationsCubit>(),
+            );
+            if (context.mounted) {
+              context.read<ConsultationsCubit>().fetch(context);
+            }
+          },
           child: 'filter'.buildSVG(color: BrandColors.indigoBlue),
         ),
       ],
@@ -242,14 +253,16 @@ class _ConsultationItem extends StatelessWidget {
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(10.0),
-        onTap: () => Navigator.pushNamed(
-          context,
-          Routes.consultationDetails,
-          arguments: {
-            'id': consultation.id,
-            'player': consultation.audioPlayer,
-          },
-        ),
+        onTap: consultation.isHideNameFromConsultants
+            ? null
+            : () => Navigator.pushNamed(
+                  context,
+                  Routes.consultationDetails,
+                  arguments: {
+                    'id': consultation.id,
+                    'player': consultation.audioPlayer,
+                  },
+                ),
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 12.height,

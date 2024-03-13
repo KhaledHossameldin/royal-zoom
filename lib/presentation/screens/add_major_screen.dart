@@ -483,7 +483,6 @@ class _AddButton extends StatelessWidget {
             return;
           }
         }
-        print(state);
       },
       builder: (context, state) {
         return ElevatedButton(
