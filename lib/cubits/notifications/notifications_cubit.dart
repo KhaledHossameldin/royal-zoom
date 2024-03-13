@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/notifications/user_notification.dart';
+import '../../data/models/user_notification/user_notification.dart';
 import '../../data/services/repository.dart';
 
 part 'notifications_state.dart';
