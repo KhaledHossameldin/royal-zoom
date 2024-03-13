@@ -13,10 +13,11 @@ import '../consultants/consultant.dart';
 import '../consultation_request.dart';
 import '../major.dart';
 import '../rating.dart';
+import 'attachment.dart';
 import 'consultation.dart';
 
 class ConsultationDetails extends Consultation {
-  //TODO: attachments
+  final List<Attachment>? attachments;
   final Account user;
   //TODO: replies
   final List<ConsultationRequest> requests;
@@ -62,6 +63,7 @@ class ConsultationDetails extends Consultation {
     required this.selectedConsultants,
     required this.ratingAverage,
     required this.ratings,
+    this.attachments,
   });
 
   @override
@@ -100,6 +102,7 @@ class ConsultationDetails extends Consultation {
     List<Consultant>? selectedConsultants,
     double? ratingAverage,
     List<Rating>? ratings,
+    List<Attachment>? attachments,
   }) {
     return ConsultationDetails(
       id: id ?? this.id,
@@ -140,6 +143,7 @@ class ConsultationDetails extends Consultation {
       selectedConsultants: selectedConsultants ?? this.selectedConsultants,
       ratingAverage: ratingAverage ?? this.ratingAverage,
       ratings: ratings ?? this.ratings,
+      attachments: attachments ?? this.attachments,
     );
   }
 
@@ -183,6 +187,7 @@ class ConsultationDetails extends Consultation {
           selectedConsultants.map((x) => x.toMap()).toList(),
       contract.ratingAverage: ratingAverage.toString(),
       contract.ratings: ratings.map((x) => x.toMap()).toList(),
+      contract.attachments: attachments?.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -242,6 +247,8 @@ class ConsultationDetails extends Consultation {
       ratingAverage: num.tryParse(map[contract.ratingAverage]) ?? 0,
       ratings: List<Rating>.from(
           map[contract.ratings]?.map((x) => Rating.fromMap(x))),
+      attachments: List<Attachment>.from(
+          map[contract.attachments]?.map((x) => Attachment.fromMap(x))),
     );
   }
 
@@ -254,7 +261,7 @@ class ConsultationDetails extends Consultation {
 
   @override
   String toString() {
-    return 'ConsultationDetails(id: $id, uuid: $uuid, majorId: $majorId, userId: $userId, contentType: $contentType, content: $content, responseType: $responseType, maximumPrice: $maximumPrice, isAcceptingOffersFromAll: $isAcceptingOffersFromAll, isHelpRequested: $isHelpRequested, isHideNameFromConsultants: $isHideNameFromConsultants, isAcceptMinimumOfferByDefault: $isAcceptMinimumOfferByDefault, attendeeNumber: $attendeeNumber, status: $status, isPaid: $isPaid, isUnscheduled: $isUnscheduled, visibilityStatus: $visibilityStatus, publishedAt: $publishedAt, createdAt: $createdAt, isFavourite: $isFavourite, isFastConsultation: $isFastConsultation, major: $major, consultantId: $consultantId, appointmentDate: $appointmentDate, maxTimeToReceiveOffers: $maxTimeToReceiveOffers, address: $address, consultant: $consultant, audioPlayer: $audioPlayer, user: $user, requests: $requests, assignedRequest: $assignedRequest, selectedConsultants: $selectedConsultants, ratingAverage: $ratingAverage, ratings: $ratings)';
+    return 'ConsultationDetails(id: $id, uuid: $uuid, majorId: $majorId, userId: $userId, contentType: $contentType, content: $content, responseType: $responseType, maximumPrice: $maximumPrice, isAcceptingOffersFromAll: $isAcceptingOffersFromAll, isHelpRequested: $isHelpRequested, isHideNameFromConsultants: $isHideNameFromConsultants, isAcceptMinimumOfferByDefault: $isAcceptMinimumOfferByDefault, attendeeNumber: $attendeeNumber, status: $status, isPaid: $isPaid, isUnscheduled: $isUnscheduled, visibilityStatus: $visibilityStatus, publishedAt: $publishedAt, createdAt: $createdAt, isFavourite: $isFavourite, isFastConsultation: $isFastConsultation, major: $major, consultantId: $consultantId, appointmentDate: $appointmentDate, maxTimeToReceiveOffers: $maxTimeToReceiveOffers, address: $address, consultant: $consultant, audioPlayer: $audioPlayer, user: $user, requests: $requests, assignedRequest: $assignedRequest, selectedConsultants: $selectedConsultants, ratingAverage: $ratingAverage, ratings: $ratings, attachment: $attachments)';
   }
 
   @override
@@ -295,7 +302,8 @@ class ConsultationDetails extends Consultation {
         other.assignedRequest == assignedRequest &&
         listEquals(other.selectedConsultants, selectedConsultants) &&
         other.ratingAverage == ratingAverage &&
-        listEquals(other.ratings, ratings);
+        listEquals(other.ratings, ratings) &&
+        listEquals(other.attachments, attachments);
   }
 
   @override
@@ -333,7 +341,8 @@ class ConsultationDetails extends Consultation {
         assignedRequest.hashCode ^
         selectedConsultants.hashCode ^
         ratingAverage.hashCode ^
-        ratings.hashCode;
+        ratings.hashCode ^
+        attachments.hashCode;
   }
 }
 
@@ -344,4 +353,5 @@ class _ConsultationDetailsContract extends ConsultationContract {
   final selectedConsultants = 'selected_consultants';
   final ratingAverage = 'rating_average';
   final ratings = 'ratings';
+  final attachments = 'attachments';
 }
