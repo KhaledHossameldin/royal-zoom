@@ -51,10 +51,11 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: ListTile(
           leading: CircleAvatar(
-              backgroundColor: BrandColors.snowWhite,
-              backgroundImage: user.image.isNotEmpty
-                  ? NetworkImage(user.image)
-                  : 'royake'.png.image),
+            backgroundColor: BrandColors.snowWhite,
+            backgroundImage: user.image.isNotEmpty
+                ? NetworkImage(user.image)
+                : 'royake'.png.image,
+          ),
           title: Text(
             user.previewName ?? appLocalizations.none,
             style: const TextStyle(fontSize: 12.0),
@@ -489,43 +490,43 @@ class _GridView extends StatelessWidget {
       ),
       sliver: SliverGrid.count(
         crossAxisCount: 2,
-        childAspectRatio: 2.25,
+        childAspectRatio: 180 / 90,
         mainAxisSpacing: 16.height,
         crossAxisSpacing: 16.width,
         children: [
           _buildItem(
             image: 'consultation',
-            title: statistics.all.toString(),
+            title: statistics.consultationsAll.toString(),
             subtitle: appLocalizations.allConsultations,
           ),
           _buildItem(
             image: 'consultation',
-            title: statistics.underReview.toString(),
+            title: statistics.consultationsUnderReview.toString(),
             subtitle: appLocalizations.underReviewConsultations,
           ),
           _buildItem(
             image: 'consultation',
-            title: statistics.scheduled.toString(),
+            title: statistics.consultationsScheduled.toString(),
             subtitle: appLocalizations.scheduledConsultations,
           ),
           _buildItem(
             image: 'consultation',
-            title: statistics.upcoming.toString(),
+            title: statistics.consultationsPending.toString(),
             subtitle: appLocalizations.pendingConsultations,
           ),
           _buildItem(
             image: 'consultation',
-            title: statistics.upcoming.toString(),
+            title: statistics.consultationsUpcoming.toString(),
             subtitle: appLocalizations.upcomingConsultations,
           ),
           _buildItem(
             image: 'consultation',
-            title: statistics.pendingPayment.toString(),
+            title: statistics.consultationsPendingPayment.toString(),
             subtitle: appLocalizations.pendingPaymentConsultations,
           ),
           _buildItem(
             image: 'consultation',
-            title: statistics.requiredAmount.toString(),
+            title: statistics.consultationsRequiredAmount.toString(),
             subtitle: appLocalizations.requiredAmountConsultations,
             isCurrency: true,
           ),
@@ -539,44 +540,33 @@ class _GridView extends StatelessWidget {
     required String title,
     required String subtitle,
     bool isCurrency = false,
-  }) =>
-      Card(
-        child: Center(
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: BrandColors.orange.withOpacity(0.2),
+  }) {
+    return Card(
+      child: Center(
+        child: ListTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          leading: image.svg,
+          title: Text.rich(
+            TextSpan(children: [
+              TextSpan(text: title),
+              if (isCurrency)
+                TextSpan(
+                  text: ' ${appLocalizations.sar}',
+                  style: const TextStyle(fontSize: 11.0),
                 ),
-                padding: EdgeInsets.all(12.width),
-                margin: EdgeInsets.all(8.width),
-                child: image.svg,
-              ),
-            ),
-            title: Builder(builder: (context) {
-              if (isCurrency) {
-                return Text.rich(
-                  TextSpan(children: [
-                    TextSpan(text: title),
-                    TextSpan(
-                      text: ' ${appLocalizations.sar}',
-                      style: const TextStyle(fontSize: 11.0),
-                    ),
-                  ]),
-                  style: const TextStyle(fontSize: 23.0),
-                );
-              }
-              return Text(title, style: const TextStyle(fontSize: 23.0));
-            }),
-            subtitle: Text(
-              subtitle,
-              maxLines: 2,
-              style: const TextStyle(fontSize: 8.0),
-            ),
+            ]),
+            style: const TextStyle(fontSize: 23.0),
+          ),
+          subtitle: Text(
+            subtitle,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 8.0),
           ),
         ),
-      );
+      ),
+    );
+  }
 }

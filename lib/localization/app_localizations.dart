@@ -860,7 +860,6 @@ class AppLocalizations {
   String get clickToGoPage => _translate('click_to_go_page');
   String get attachments => _translate('attachments');
 
-
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
       return _translate('busy');

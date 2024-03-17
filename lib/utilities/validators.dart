@@ -46,18 +46,18 @@ class Validators {
   }
 
   static String? password(BuildContext context, {required String password}) {
-    if (kDebugMode) {
-      return null;
-    }
-    final appLocalizations = AppLocalizations.of(context);
-    if (password.isEmpty) {
-      return appLocalizations.passwordEmptyValidation;
-    }
-    final containsLowerCase = RegExp('.*[a-z].*').hasMatch(password);
-    final containsUpperCase = RegExp('.*[A-Z].*').hasMatch(password);
-    if (!containsUpperCase || !containsLowerCase || password.length < 8) {
-      return appLocalizations.passwordInvalidValidation;
-    }
+    // if (kDebugMode) {
+    //   return null;
+    // }
+    // final appLocalizations = AppLocalizations.of(context);
+    // if (password.isEmpty) {
+    //   return appLocalizations.passwordEmptyValidation;
+    // }
+    // final containsLowerCase = RegExp('.*[a-z].*').hasMatch(password);
+    // final containsUpperCase = RegExp('.*[A-Z].*').hasMatch(password);
+    // if (!containsUpperCase || !containsLowerCase || password.length < 8) {
+    //   return appLocalizations.passwordInvalidValidation;
+    // }
     return null;
   }
 
