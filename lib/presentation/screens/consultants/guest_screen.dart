@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -252,88 +253,86 @@ class _ConsultantItem extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
 
     return GridTile(
-      footer: Row(
-        children: [
-          Expanded(
-            child: MaterialButton(
-              elevation: 0.0,
+      footer: Row(children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacementNamed(context, Routes.login);
+            },
+            child: Container(
               height: 28.height,
-              highlightElevation: 0.0,
-              color: BrandColors.darkGreen,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              shape: const RoundedRectangleBorder(
+              decoration: const BoxDecoration(
+                color: BrandColors.darkGreen,
                 borderRadius: BorderRadiusDirectional.only(
                   bottomStart: Radius.circular(10.0),
                 ),
               ),
-              onPressed: () {},
-              child: Text(
-                appLocalizations.consult,
-                style: textTheme.labelSmall!.copyWith(color: Colors.white),
+              child: Center(
+                child: Text(
+                  appLocalizations.consult,
+                  style: textTheme.labelSmall!.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11.0,
+                  ),
+                ),
               ),
             ),
           ),
-          Expanded(
-            child: ValueListenableBuilder(
-              valueListenable: favoriteConsultantId,
-              builder: (context, value, child) => MaterialButton(
-                elevation: 0.0,
+        ),
+        Expanded(
+          child: ValueListenableBuilder(
+            valueListenable: favoriteConsultantId,
+            builder: (context, value, child) => GestureDetector(
+              onTap: () async {
+                favoriteConsultantId.value = consultant.id;
+                try {
+                  await Repository.instance
+                      .favoriteConsultant(context, id: consultant.id);
+                  if (!context.mounted) return;
+                  BlocProvider.of<ConsultantsCubit>(context)
+                      .toggleFavorite(consultant.id);
+                  favoriteConsultantId.value = null;
+                } catch (e) {
+                  if (!context.mounted) return;
+                  '$e'.showSnackbar(context, color: BrandColors.red);
+                  favoriteConsultantId.value = null;
+                }
+              },
+              child: Container(
                 height: 28.height,
-                highlightElevation: 0.0,
-                color: BrandColors.gray,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                shape: const RoundedRectangleBorder(
+                decoration: const BoxDecoration(
+                  color: BrandColors.gray,
                   borderRadius: BorderRadiusDirectional.only(
                     bottomEnd: Radius.circular(10.0),
                   ),
                 ),
-                onPressed: () async {
-                  favoriteConsultantId.value = consultant.id;
-                  try {
-                    await Repository.instance
-                        .favoriteConsultant(context, id: consultant.id);
-                    if (!context.mounted) return;
-                    BlocProvider.of<ConsultantsCubit>(context)
-                        .toggleFavorite(consultant.id);
-                    favoriteConsultantId.value = null;
-                  } catch (e) {
-                    if (!context.mounted) return;
-                    '$e'.showSnackbar(context, color: BrandColors.red);
-                    favoriteConsultantId.value = null;
-                  }
-                },
-                child: value != consultant.id
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            consultant.isFavourite
-                                ? Icons.favorite
-                                : Icons.favorite_outline,
-                            size: 11.0,
-                          ),
-                          3.emptyWidth,
-                          Text(
-                            appLocalizations.favorite,
-                            style: textTheme.labelSmall!.copyWith(
-                              color: BrandColors.darkGreen,
-                            ),
-                          ),
-                        ],
-                      )
-                    : SizedBox(
-                        height: 16.height,
-                        width: 16.width,
-                        child: const CircularProgressIndicator(
-                          color: BrandColors.darkGreen,
-                          strokeWidth: 2.0,
-                        ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      appLocalizations.favorite,
+                      style: textTheme.labelSmall!.copyWith(
+                        color: BrandColors.darkGray,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 9.0,
                       ),
+                    ),
+                    3.emptyWidth,
+                    Icon(
+                      consultant.isFavourite
+                          ? Icons.favorite
+                          : Icons.favorite_outline,
+                      color: BrandColors.darkGray,
+                      size: 11.0,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ]),
       child: Stack(
         children: [
           Ink(
