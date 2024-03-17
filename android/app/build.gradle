@@ -20,7 +20,11 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -54,13 +58,24 @@ android {
         multiDexEnabled true
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+     signingConfigs {
+       release {
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+           storePassword keystoreProperties['storePassword']
+       }
+   }
+   buildTypes {
+       debug {
+            minifyEnabled true
+            shrinkResources false
+           
         }
-    }
+       release {
+           signingConfig signingConfigs.release
+       }
+   }
 }
 
 flutter {
@@ -70,9 +85,9 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.android.support:multidex:1.0.3"
-    implementation(name: "oppwa.mobile-release", ext: 'aar')
-    debugImplementation(name: "ipworks3ds_sdk", ext: 'aar')
-    releaseImplementation(name: "ipworks3ds_sdk_deploy", ext: 'aar')
+    // implementation(name: "oppwa.mobile-release", ext: 'aar')
+    // debugImplementation(name: "ipworks3ds_sdk", ext: 'aar')
+    // releaseImplementation(name: "ipworks3ds_sdk_deploy", ext: 'aar')
     implementation "com.google.android.material:material:1.6.1"
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation 'com.google.android.gms:play-services-wallet:19.1.0'
