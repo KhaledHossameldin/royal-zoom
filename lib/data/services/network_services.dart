@@ -429,7 +429,7 @@ class NetworkServices {
 
   Future<HomeStatistics> homeStatistics(BuildContext context) async {
     final response = await _get(context, Network.homeStatistics);
-    return HomeStatistics.fromJson(response);
+    return HomeStatistics.fromMap(json.decode(response)['data']);
   }
 
   Future<List<Consultation>> lastConsultations(BuildContext context) async {
