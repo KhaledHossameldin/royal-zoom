@@ -859,6 +859,8 @@ class AppLocalizations {
   String get failPayment => _translate('fail_payment');
   String get clickToGoPage => _translate('click_to_go_page');
   String get attachments => _translate('attachments');
+  String get profileUpdatedSuccessfully =>
+      _translate('profile_updated_successfully');
 
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
