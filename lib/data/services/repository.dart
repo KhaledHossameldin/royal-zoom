@@ -85,7 +85,7 @@ class Repository {
   }) async {
     final data = await _network.getProfileData(context, type: type);
     if (_sharedPreferences.doesUserExist()) {
-      _sharedPreferences.setUserType(data.type);
+      _sharedPreferences.setUserType(type);
       _sharedPreferences.setUser(data);
     }
     return data;

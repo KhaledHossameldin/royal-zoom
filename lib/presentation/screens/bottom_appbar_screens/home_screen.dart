@@ -8,6 +8,7 @@ import '../../../../utilities/extensions.dart';
 import '../../../constants/routes.dart';
 import '../../../core/di/di_manager.dart';
 import '../../../cubits/consultations/consultations_cubit.dart';
+import '../../../cubits/switch/switch_cubit.dart';
 import '../../../data/enums/user_type.dart';
 import '../../../data/models/authentication/user_data.dart';
 import '../../../data/sources/local/shared_prefs.dart';
@@ -27,7 +28,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _index = ValueNotifier(0);
   UserData? user = DIManager.findDep<SharedPrefs>().getUser();
-  final UserType type = DIManager.findDep<SharedPrefs>().getUserType();
+  UserType type = DIManager.findDep<SharedPrefs>().getUserType();
 
   @override
   Widget build(BuildContext context) {
@@ -65,49 +66,54 @@ class _HomeScreenState extends State<HomeScreen> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      child: ValueListenableBuilder(
-        valueListenable: _index,
-        builder: (context, value, child) => BottomNavigationBar(
-          currentIndex: value,
-          onTap: (value) {
-            if (value == 2 && type == UserType.normal) {
-              return;
-            }
-            _index.value = value;
-            context.read<ConsultationsCubit>().clearFilters();
-          },
-          items: [
-            'home'.buildBottomAppBarIcon(
-              user != null
-                  ? appLocalizations.main
-                  : appLocalizations.consultants,
-            ),
-            'consultations'.buildBottomAppBarIcon(
-              appLocalizations.consultations,
-            ),
-            if (type == UserType.normal)
-              BottomNavigationBarItem(
-                icon: FloatingActionButton(
-                  onPressed: () {
-                    if (user == null) {
-                      Navigator.pushReplacementNamed(context, Routes.login);
-                      return;
-                    }
-                    showModal(
-                      context: context,
-                      builder: (context) => const _ConsultationDialog(),
-                    );
-                  },
-                  elevation: 0,
-                  backgroundColor: BrandColors.orange,
-                  child: 'send_consultation'.svg,
+      child: BlocBuilder<SwitchCubit, SwitchState>(
+        builder: (context, state) {
+          type = DIManager.findDep<SharedPrefs>().getUserType();
+          return ValueListenableBuilder(
+            valueListenable: _index,
+            builder: (context, value, child) => BottomNavigationBar(
+              currentIndex: value,
+              onTap: (value) {
+                if (value == 2 && type == UserType.normal) {
+                  return;
+                }
+                _index.value = value;
+                context.read<ConsultationsCubit>().clearFilters();
+              },
+              items: [
+                'home'.buildBottomAppBarIcon(
+                  user != null
+                      ? appLocalizations.main
+                      : appLocalizations.consultants,
                 ),
-                label: appLocalizations.consult,
-              ),
-            'chat'.buildBottomAppBarIcon(appLocalizations.chat),
-            'profile'.buildBottomAppBarIcon(appLocalizations.profile),
-          ],
-        ),
+                'consultations'.buildBottomAppBarIcon(
+                  appLocalizations.consultations,
+                ),
+                if (type == UserType.normal)
+                  BottomNavigationBarItem(
+                    icon: FloatingActionButton(
+                      onPressed: () {
+                        if (user == null) {
+                          Navigator.pushReplacementNamed(context, Routes.login);
+                          return;
+                        }
+                        showModal(
+                          context: context,
+                          builder: (context) => const _ConsultationDialog(),
+                        );
+                      },
+                      elevation: 0,
+                      backgroundColor: BrandColors.orange,
+                      child: 'send_consultation'.svg,
+                    ),
+                    label: appLocalizations.consult,
+                  ),
+                'chat'.buildBottomAppBarIcon(appLocalizations.chat),
+                'profile'.buildBottomAppBarIcon(appLocalizations.profile),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
