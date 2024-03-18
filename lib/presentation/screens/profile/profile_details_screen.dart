@@ -883,15 +883,15 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
                       radius: 60.width,
                       backgroundColor: Colors.white,
                       backgroundImage:
-                          context.read<ProfileCubit>().profileUpdate.image !=
-                                  userData.image
-                              ? FileImage(File(context
-                                  .read<ProfileCubit>()
-                                  .profileUpdate
-                                  .image!))
-                              : userData.image.isNotEmpty
-                                  ? NetworkImage(userData.image)
-                                  : 'royake'.png.image,
+                          // context.read<ProfileCubit>().profileUpdate.image !=
+                          // userData.image
+                          // ? FileImage(File(context
+                          // .read<ProfileCubit>()
+                          // .profileUpdate
+                          // .image!)):
+                          userData.image.isNotEmpty
+                              ? NetworkImage(userData.image)
+                              : 'royake'.png.image,
                     ),
                   ),
                 ),

@@ -104,7 +104,6 @@ class ProfileCubit extends Cubit<ProfileState> {
     final userData = context.read<AuthenticationBloc>().user!;
     final data = await repository.updateProfile(context,
         body: profileUpdate.toMap(userData));
-    if (!context.mounted) return;
     DIManager.findDep<SharedPrefs>().setUser(data);
   }
 

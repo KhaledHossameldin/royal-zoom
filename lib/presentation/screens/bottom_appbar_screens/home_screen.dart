@@ -69,6 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocBuilder<SwitchCubit, SwitchState>(
         builder: (context, state) {
           type = DIManager.findDep<SharedPrefs>().getUserType();
+          if (type == UserType.normal) {
+            _index.value = 4;
+          } else {
+            _index.value = 3;
+          }
           return ValueListenableBuilder(
             valueListenable: _index,
             builder: (context, value, child) => BottomNavigationBar(
