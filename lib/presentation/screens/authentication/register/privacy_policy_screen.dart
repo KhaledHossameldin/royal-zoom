@@ -51,13 +51,78 @@ class PrivacyPolicyScreen extends StatelessWidget {
               ),
             ),
             Text(
-              appLocalizations.privacyPolicySubtitle,
-              style: textTheme.labelSmall,
+              appLocalizations.userPolicies,
+              style: const TextStyle(
+                fontSize: 20.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            12.emptyHeight,
+            Column(
+              children: List.generate(
+                24,
+                (index) => RichText(
+                  text: TextSpan(children: [
+                    if (appLocalizations.locale.languageCode == 'ar')
+                      WidgetSpan(child: 12.emptyWidth),
+                    const WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 5.0,
+                      ),
+                    ),
+                    if (appLocalizations.locale.languageCode == 'en')
+                      WidgetSpan(child: 12.emptyWidth),
+                    TextSpan(
+                      text: appLocalizations.getPolicies(index + 1),
+                      style: const TextStyle(
+                        fontSize: 13.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'Droid Arabic Kufi',
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+            ),
             Text(
-              appLocalizations.privacyPolicyContent,
-              style: textTheme.bodySmall,
+              appLocalizations.consultantsPolicies,
+              style: const TextStyle(
+                fontSize: 20.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Column(
+              children: List.generate(
+                24,
+                (index) => RichText(
+                  text: TextSpan(children: [
+                    if (appLocalizations.locale.languageCode == 'ar')
+                      WidgetSpan(child: 12.emptyWidth),
+                    const WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 5.0,
+                      ),
+                    ),
+                    if (appLocalizations.locale.languageCode == 'en')
+                      WidgetSpan(child: 12.emptyWidth),
+                    TextSpan(
+                      text: appLocalizations.getPolicies(index + 1),
+                      style: const TextStyle(
+                        fontSize: 13.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'Droid Arabic Kufi',
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
             ),
           ],
         ),

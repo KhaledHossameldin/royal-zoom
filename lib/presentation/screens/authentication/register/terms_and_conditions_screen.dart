@@ -13,7 +13,9 @@ class TermsAndConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
+    final bottomViewPadding = MediaQuery.of(context).viewPadding.bottom;
 
     return Scaffold(
       appBar: AppBar(
@@ -33,12 +35,98 @@ class TermsAndConditions extends StatelessWidget {
               ]
             : null,
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          vertical: 12.height,
-          horizontal: 16.width,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(
+          16.width,
+          12.height,
+          16.width,
+          bottomViewPadding,
         ),
-        children: [_TermsItem(isGuest: isGuest)],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              appLocalizations.termsOfUseTitle,
+              style: textTheme.headlineSmall!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              appLocalizations.userPolicies,
+              style: const TextStyle(
+                fontSize: 20.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Column(
+              children: List.generate(
+                24,
+                (index) => RichText(
+                  text: TextSpan(children: [
+                    if (appLocalizations.locale.languageCode == 'ar')
+                      WidgetSpan(child: 12.emptyWidth),
+                    const WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 5.0,
+                      ),
+                    ),
+                    if (appLocalizations.locale.languageCode == 'en')
+                      WidgetSpan(child: 12.emptyWidth),
+                    TextSpan(
+                      text: appLocalizations.getPolicies(index + 1),
+                      style: const TextStyle(
+                        fontSize: 13.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'Droid Arabic Kufi',
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+            ),
+            Text(
+              appLocalizations.consultantsPolicies,
+              style: const TextStyle(
+                fontSize: 20.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Column(
+              children: List.generate(
+                24,
+                (index) => RichText(
+                  text: TextSpan(children: [
+                    if (appLocalizations.locale.languageCode == 'ar')
+                      WidgetSpan(child: 12.emptyWidth),
+                    const WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 5.0,
+                      ),
+                    ),
+                    if (appLocalizations.locale.languageCode == 'en')
+                      WidgetSpan(child: 12.emptyWidth),
+                    TextSpan(
+                      text: appLocalizations.getPolicies(index + 1),
+                      style: const TextStyle(
+                        fontSize: 13.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: 'Droid Arabic Kufi',
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
