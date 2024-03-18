@@ -122,19 +122,19 @@ class _CustomizedConsultantAnswerScreenState
                     newType: ConsultantResponseType.video,
                     icon: Icons.videocam_rounded,
                   ),
+                  // 10.emptyHeight,
+                  // _Item(
+                  //   type: type,
+                  //   newType: ConsultantResponseType.onlineMeeting,
+                  //   icon: Icons.question_answer_rounded,
+                  // ),
                   10.emptyHeight,
-                  _Item(
-                    type: type,
-                    newType: ConsultantResponseType.onlineMeeting,
-                    icon: Icons.question_answer_rounded,
-                  ),
-                  10.emptyHeight,
-                  _Item(
-                    type: type,
-                    newType: ConsultantResponseType.frequentConsultation,
-                    icon: Icons.description_rounded,
-                  ),
-                  10.emptyHeight,
+                  // _Item(
+                  //   type: type,
+                  //   newType: ConsultantResponseType.frequentConsultation,
+                  //   icon: Icons.description_rounded,
+                  // ),
+                  // 10.emptyHeight,
                   _Item(
                     type: type,
                     newType: ConsultantResponseType.fieldConsultation,
