@@ -189,11 +189,11 @@ class AppRouter {
         );
 
       case Routes.consultantDetails:
-        final id = settings.arguments as int;
+        final username = settings.arguments as String;
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => ShowConsultantCubit(),
-            child: ConsultantDetailsScreen(id: id),
+            child: ConsultantDetailsScreen(username: username),
           ),
         );
 

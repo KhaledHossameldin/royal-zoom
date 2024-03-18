@@ -223,8 +223,8 @@ class Repository {
       _network.notifications(context, page: page);
 
   Future<ConsultantDetails> showConsultant(BuildContext context,
-          {required int id}) async =>
-      _network.showConsultant(context, id: id);
+          {required String username}) async =>
+      _network.showConsultant(context, username: username);
 
   Future<void> logout(BuildContext context) async {
     await _network.logout(context);

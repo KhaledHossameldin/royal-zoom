@@ -164,6 +164,7 @@ class ConsultantDetails extends Consultant {
     Timezone? timezone,
     Currency? currency,
     num? ratingAverage,
+    String? username,
   }) {
     return ConsultantDetails(
       id: id ?? super.id,

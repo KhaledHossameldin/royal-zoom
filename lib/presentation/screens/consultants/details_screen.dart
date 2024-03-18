@@ -19,9 +19,9 @@ import '../../widgets/brand_back_button.dart';
 import '../../widgets/reload_widget.dart';
 
 class ConsultantDetailsScreen extends StatefulWidget {
-  const ConsultantDetailsScreen({super.key, required this.id});
+  const ConsultantDetailsScreen({super.key, required this.username});
 
-  final int id;
+  final String username;
 
   @override
   State<ConsultantDetailsScreen> createState() =>
@@ -38,7 +38,10 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
   @override
   void initState() {
     _controller = TabController(length: 2, vsync: this);
-    context.read<ShowConsultantCubit>().fetch(context, id: widget.id);
+    context.read<ShowConsultantCubit>().fetch(
+          context,
+          username: widget.username,
+        );
     super.initState();
   }
 
@@ -76,7 +79,7 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
                   ),
                 IconButton(
                   onPressed: () => Share.share(
-                    'https://royake.wide-techno.com/consultants/${value['id']}',
+                    'https://royake.wide-techno.com/consultants/${widget.username}',
                   ),
                   icon: 'share'.svg,
                   tooltip: appLocalizations.share,
@@ -252,7 +255,7 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
                 buttonText: appLocalizations.getReload(''),
                 onPressed: () => context
                     .read<ShowConsultantCubit>()
-                    .fetch(context, id: widget.id),
+                    .fetch(context, username: widget.username),
               );
 
             default:
