@@ -315,6 +315,10 @@ class NetworkServices {
     BuildContext context, {
     required Map<String, Object> body,
   }) async {
+    if (body['image'] != null) {
+      final image = await _upload(context, path: body['image']! as String);
+      body['image'] = image;
+    }
     final response = await _put(context, Network.updateProfile, body: body);
     return UserData.fromMap(json.decode(response)['data']);
   }

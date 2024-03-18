@@ -467,6 +467,6 @@
   "success_payment": "تم الدفع بنجاح",
   "fail_payment": "عملية غير ناجحة الرجاء المحاولة مرة اخرى",
   "click_to_go_page": "اضغط هنا للذهاب الى الصفحة",
-  "attachments": "المرفقات"
-
+  "attachments": "المرفقات",
+  "profile_updated_successfully": "تم تحديث حسابك بنجاح"
 }
