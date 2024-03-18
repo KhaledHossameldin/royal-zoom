@@ -103,15 +103,15 @@ class _FastConsultantAnswerScreenState
               valueListenable: type,
               builder: (context, value, child) => Column(
                 children: [
-                  _buildItem(
-                    appLocalizations,
-                    setState,
-                    icon: Icons.phone_in_talk_rounded,
-                    title: appLocalizations.connectNowTitle,
-                    subtitle: appLocalizations.connectNowSubtitle,
-                    index: 7,
-                  ),
-                  14.emptyHeight,
+                  // _buildItem(
+                  //   appLocalizations,
+                  //   setState,
+                  //   icon: Icons.phone_in_talk_rounded,
+                  //   title: appLocalizations.connectNowTitle,
+                  //   subtitle: appLocalizations.connectNowSubtitle,
+                  //   index: 7,
+                  // ),
+                  // 14.emptyHeight,
                   _buildItem(
                     appLocalizations,
                     setState,

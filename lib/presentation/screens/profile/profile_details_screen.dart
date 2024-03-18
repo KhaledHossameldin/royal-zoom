@@ -129,7 +129,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
                     ? () async {
                         switch (_tabController.index) {
                           case 0:
-                            await updateProile();
+                            await updateProfile();
                             break;
 
                           case 1:
@@ -189,7 +189,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
     }
   }
 
-  Future<void> updateProile() async {
+  Future<void> updateProfile() async {
     final appLocalizations = AppLocalizations.of(context);
     final cubit = context.read<ProfileCubit>();
 
@@ -215,8 +215,11 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
     try {
       await cubit.updateProfile(context);
       _buttonText.value = text;
+      if (mounted) {
+        appLocalizations.profileUpdatedSuccessfully.showSnackbar(context);
+      }
     } catch (e) {
-      if (!context.mounted) return;
+      if (!mounted) return;
       '$e'.showSnackbar(context, color: BrandColors.red);
       _buttonText.value = text;
     }
@@ -883,15 +886,15 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
                       radius: 60.width,
                       backgroundColor: Colors.white,
                       backgroundImage:
-                          context.read<ProfileCubit>().profileUpdate.image !=
-                                  userData.image
-                              ? FileImage(File(context
-                                  .read<ProfileCubit>()
-                                  .profileUpdate
-                                  .image!))
-                              : userData.image.isNotEmpty
-                                  ? NetworkImage(userData.image)
-                                  : 'royake'.png.image,
+                          // context.read<ProfileCubit>().profileUpdate.image !=
+                          // userData.image
+                          // ? FileImage(File(context
+                          // .read<ProfileCubit>()
+                          // .profileUpdate
+                          // .image!)):
+                          userData.image.isNotEmpty
+                              ? NetworkImage(userData.image)
+                              : 'royake'.png.image,
                     ),
                   ),
                 ),
