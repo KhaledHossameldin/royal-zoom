@@ -101,9 +101,11 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> updateProfile(BuildContext context) async {
-    final userData = context.read<AuthenticationBloc>().user!;
-    final data = await repository.updateProfile(context,
-        body: profileUpdate.toMap(userData));
+    final userData = DIManager.findDep<SharedPrefs>().getUser()!;
+    final data = await repository.updateProfile(
+      context,
+      body: profileUpdate.toMap(userData),
+    );
     DIManager.findDep<SharedPrefs>().setUser(data);
   }
 
@@ -154,7 +156,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> fetch(BuildContext context, {int? countryId}) async {
-    final userData = context.read<AuthenticationBloc>().user!;
+    final userData = DIManager.findDep<SharedPrefs>().getUser()!;
     profileUpdate = ProfileUpdate.fromUserData(userData);
     settingsUpdate = SettingsUpdate.fromUserData(userData);
     if (userData.settings == null) {

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -18,9 +19,14 @@ import '../../../../localization/localizor.dart';
 
 import '../../../widgets/border_painter.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
@@ -149,7 +155,10 @@ class ProfileScreen extends StatelessWidget {
                       icon: 'profile',
                       color: BrandColors.orange,
                       title: appLocalizations.profile,
-                      onTap: () => Navigator.pushNamed(context, Routes.profile),
+                      onTap: () async {
+                        await Navigator.pushNamed(context, Routes.profile);
+                        setState(() {});
+                      },
                     ),
                   if (user != null && state.type == UserType.consultant)
                     _Item(
@@ -392,7 +401,7 @@ class _Header extends StatelessWidget {
                         ? 'guest'.png.image
                         : user.image.isEmpty
                             ? 'royake'.png.image
-                            : NetworkImage(user.image),
+                            : CachedNetworkImageProvider(user.image),
                   ),
                 ),
               ),
