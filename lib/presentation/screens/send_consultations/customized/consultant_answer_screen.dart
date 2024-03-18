@@ -99,12 +99,12 @@ class _CustomizedConsultantAnswerScreenState
               valueListenable: type,
               builder: (context, value, child) => Column(
                 children: [
-                  _Item(
-                    type: type,
-                    newType: ConsultantResponseType.appCall,
-                    icon: Icons.phone_in_talk_rounded,
-                  ),
-                  10.emptyHeight,
+                  // _Item(
+                  //   type: type,
+                  //   newType: ConsultantResponseType.appCall,
+                  //   icon: Icons.phone_in_talk_rounded,
+                  // ),
+                  // 10.emptyHeight,
                   _Item(
                     type: type,
                     newType: ConsultantResponseType.text,
