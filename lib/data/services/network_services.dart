@@ -339,9 +339,9 @@ class NetworkServices {
 
   Future<ConsultantDetails> showConsultant(
     BuildContext context, {
-    required int id,
+    required String username,
   }) async {
-    final response = await _get(context, '${Network.consultants}/$id');
+    final response = await _get(context, '${Network.consultants}/$username');
     return ConsultantDetails.fromMap(json.decode(response)['data']);
   }
 

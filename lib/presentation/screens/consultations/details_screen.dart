@@ -200,11 +200,13 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                               borderRadius: BorderRadius.circular(10.0),
                               side: const BorderSide(color: BrandColors.gray),
                             ),
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              Routes.consultantDetails,
-                              arguments: consultant.id,
-                            ),
+                            onTap: consultant.username != null
+                                ? () => Navigator.pushNamed(
+                                      context,
+                                      Routes.consultantDetails,
+                                      arguments: consultant.username!,
+                                    )
+                                : null,
                             leading: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,

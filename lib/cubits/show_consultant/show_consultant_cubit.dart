@@ -11,10 +11,13 @@ class ShowConsultantCubit extends Cubit<ShowConsultantState> {
 
   final repository = Repository.instance;
 
-  Future<void> fetch(BuildContext context, {required int id}) async {
+  Future<void> fetch(BuildContext context, {required String username}) async {
     try {
       emit(const ShowConsultantLoading());
-      final consultant = await repository.showConsultant(context, id: id);
+      final consultant = await repository.showConsultant(
+        context,
+        username: username,
+      );
       emit(ShowConsultantLoaded(consultant));
     } catch (e) {
       emit(ShowConsultantError('$e'));
