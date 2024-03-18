@@ -115,6 +115,15 @@ class _FastConsultantAnswerScreenState
                   _buildItem(
                     appLocalizations,
                     setState,
+                    icon: Icons.border_color_rounded,
+                    title: appLocalizations.textType,
+                    subtitle: appLocalizations.textSubtitle,
+                    index: 1,
+                  ),
+                  14.emptyHeight,
+                  _buildItem(
+                    appLocalizations,
+                    setState,
                     icon: Icons.mic,
                     title: appLocalizations.voiceTitle,
                     subtitle: appLocalizations.voiceSubtitle,

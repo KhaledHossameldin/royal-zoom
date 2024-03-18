@@ -153,7 +153,7 @@ class _FastConsultationContentScreenState
                     ),
                   ),
                   onChanged: (value) {
-                    if (value.isEmpty) {
+                    if (value.isEmpty || value.length < 30) {
                       _canGoNext.value = false;
                       return;
                     }
@@ -333,8 +333,9 @@ class _FastConsultationContentScreenState
                               );
                             }
                           : null,
-                      icon:
-                          const Icon(Icons.keyboard_double_arrow_left_outlined),
+                      icon: const Icon(
+                        Icons.keyboard_double_arrow_left_outlined,
+                      ),
                       label: Text(appLocalizations.next),
                     ),
                   ),
