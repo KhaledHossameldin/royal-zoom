@@ -930,13 +930,13 @@ class AppLocalizations {
 
   String getConsultantResponseType(ConsultantResponseType type) {
     if (type == ConsultantResponseType.text) {
-      return _translate('text');
+      return _translate('text_type');
     }
     if (type == ConsultantResponseType.voice) {
-      return _translate('voice');
+      return _translate('voice_type');
     }
     if (type == ConsultantResponseType.video) {
-      return _translate('video');
+      return _translate('video_title');
     }
     if (type == ConsultantResponseType.onlineMeeting) {
       return _translate('online_meeting');
