@@ -861,6 +861,9 @@ class AppLocalizations {
   String get attachments => _translate('attachments');
   String get profileUpdatedSuccessfully =>
       _translate('profile_updated_successfully');
+  String get userPolicies => _translate('user_policies');
+  String getPolicies(int index) => _translate('policies_$index');
+  String get consultantsPolicies => _translate('consultants_policies');
 
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
