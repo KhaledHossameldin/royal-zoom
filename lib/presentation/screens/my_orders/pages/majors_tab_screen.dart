@@ -31,21 +31,25 @@ class _MajorTabScreenState extends State<MajorTabScreen> {
           }
           if (majorsState is BaseSuccessState) {
             final data = majorsState.data as List<NewMajorEntity>;
-            return ListView.separated(
-              itemBuilder: (context, index) {
-                final item = data[index];
-                return MajorItemWidget(
-                  id: item.id!,
-                  status: item.status!,
-                  parentMajor: item.parentMajor!,
-                  subMajor: item.neededMajor!,
-                  createdAt: item.createdAt!,
-                  isMajorsTab: true,
-                  chatId: item.chat!.id!.toInt(),
-                );
-              },
-              separatorBuilder: (context, index) => 8.emptyHeight,
-              itemCount: data.length,
+            return RefreshIndicator(
+              onRefresh: () async =>
+                  DIManager.findDep<MyOrdersCubit>().showAllNewMajorRequests(),
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  final item = data[index];
+                  return MajorItemWidget(
+                    id: item.id!,
+                    status: item.status!,
+                    parentMajor: item.parentMajor!,
+                    subMajor: item.neededMajor!,
+                    createdAt: item.createdAt!,
+                    isMajorsTab: true,
+                    chatId: item.chat!.id!.toInt(),
+                  );
+                },
+                separatorBuilder: (context, index) => 8.emptyHeight,
+                itemCount: data.length,
+              ),
             );
           }
           return const SizedBox();

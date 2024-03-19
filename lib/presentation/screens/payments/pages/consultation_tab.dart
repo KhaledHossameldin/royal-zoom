@@ -103,15 +103,22 @@ class _ConsultationTabState extends State<ConsultationTab> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 12.height,
-                      horizontal: 16.width,
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      final cubit = context.read<InvoiceCubit>();
+                      cubit.clear();
+                      cubit.fetch(context, type: InvoiceType.consultation);
+                    },
+                    child: ListView.separated(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.height,
+                        horizontal: 16.width,
+                      ),
+                      itemCount: invoices.length,
+                      separatorBuilder: (context, index) => 12.emptyHeight,
+                      itemBuilder: (context, index) =>
+                          _Item(invoice: invoices[index]),
                     ),
-                    itemCount: invoices.length,
-                    separatorBuilder: (context, index) => 12.emptyHeight,
-                    itemBuilder: (context, index) =>
-                        _Item(invoice: invoices[index]),
                   ),
                 ),
               ],
