@@ -191,15 +191,17 @@ class _FastConsultantAnswerScreenState
                         if (sendState is BaseSuccessState) {
                           final data = (sendState.data as FastConsultation);
                           if (data.isPaid ?? false) {
-                            Navigator.pushNamed(
-                              context,
+                            Navigator.of(context).pushNamedAndRemoveUntil(
                               Routes.consultationDetails,
+                              (route) => false,
                               arguments: {'id': data.id!.toInt()},
                             );
                           } else {
-                            Navigator.of(context).pushNamed(
-                                Routes.invoiceScreen,
-                                arguments: data.invoice!.id!);
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              Routes.invoiceScreen,
+                              (route) => false,
+                              arguments: data.invoice!.id!,
+                            );
                           }
                         } else if (sendState is BaseFailState) {
                           showDialog(

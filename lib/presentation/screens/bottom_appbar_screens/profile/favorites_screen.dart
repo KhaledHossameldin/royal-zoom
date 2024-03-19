@@ -108,63 +108,69 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                         (state as FavoriteConsultantsLoaded).consultants,
                         (item) => item.favoriteCategoryId,
                       );
-                      return ListView.separated(
-                        itemCount: consultants.length,
-                        separatorBuilder: (context, index) => 16.emptyHeight,
-                        itemBuilder: (context, index) {
-                          final category = consultants.keys.elementAt(index);
-                          final categoryConsultants = consultants[category]!;
-                          return Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 14.width,
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 14.height,
-                              horizontal: 13.width,
-                            ),
-                            decoration: BoxDecoration(
-                              color: BrandColors.snowWhite,
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.category,
-                                      color: BrandColors.darkGray,
-                                      size: 16.0,
-                                    ),
-                                    8.emptyWidth,
-                                    Text(
-                                      appLocalizations.noCategoryConsultant,
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.normal,
-                                        color: BrandColors.darkGreen,
+                      return RefreshIndicator(
+                        onRefresh: () async => context
+                            .read<FavoriteConsultantsCubit>()
+                            .fetch(context),
+                        child: ListView.separated(
+                          itemCount: consultants.length,
+                          separatorBuilder: (context, index) => 16.emptyHeight,
+                          itemBuilder: (context, index) {
+                            final category = consultants.keys.elementAt(index);
+                            final categoryConsultants = consultants[category]!;
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 14.width,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                vertical: 14.height,
+                                horizontal: 13.width,
+                              ),
+                              decoration: BoxDecoration(
+                                color: BrandColors.snowWhite,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.category,
+                                        color: BrandColors.darkGray,
+                                        size: 16.0,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                12.emptyHeight,
-                                ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: const ClampingScrollPhysics(),
-                                  itemCount: categoryConsultants.length,
-                                  separatorBuilder: (context, index) =>
-                                      13.emptyHeight,
-                                  itemBuilder: (context, index) =>
-                                      _ConsultantItem(
-                                    consultant:
-                                        categoryConsultants[index].consultant,
-                                    favoriteConsultantId: _favoriteConsultantId,
+                                      8.emptyWidth,
+                                      Text(
+                                        appLocalizations.noCategoryConsultant,
+                                        style: const TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.normal,
+                                          color: BrandColors.darkGreen,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
+                                  12.emptyHeight,
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    physics: const ClampingScrollPhysics(),
+                                    itemCount: categoryConsultants.length,
+                                    separatorBuilder: (context, index) =>
+                                        13.emptyHeight,
+                                    itemBuilder: (context, index) =>
+                                        _ConsultantItem(
+                                      consultant:
+                                          categoryConsultants[index].consultant,
+                                      favoriteConsultantId:
+                                          _favoriteConsultantId,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       );
 
                     case FavoriteConsultantsError:
@@ -309,60 +315,65 @@ class ConsultationsTab extends StatelessWidget {
             final consultations = groupBy(
                 (state as FavoriteConsultationsLoaded).consultations,
                 (item) => item.favoriteCategoryId);
-            return ListView.separated(
-              itemCount: consultations.length,
-              separatorBuilder: (context, index) => 16.emptyHeight,
-              itemBuilder: (context, index) {
-                final category = consultations.keys.elementAt(index);
-                final categoryConsultants = consultations[category]!;
-                return Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 14.width,
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 14.height,
-                    horizontal: 13.width,
-                  ),
-                  decoration: BoxDecoration(
-                    color: BrandColors.snowWhite,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.category,
-                            color: BrandColors.darkGray,
-                            size: 16.0,
-                          ),
-                          8.emptyWidth,
-                          Text(
-                            appLocalizations.noCategoryConsultation,
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.normal,
-                              color: BrandColors.darkGreen,
+            return RefreshIndicator(
+              onRefresh: () async =>
+                  context.read<FavoriteConsultationsCubit>().fetch(context),
+              child: ListView.separated(
+                itemCount: consultations.length,
+                separatorBuilder: (context, index) => 16.emptyHeight,
+                itemBuilder: (context, index) {
+                  final category = consultations.keys.elementAt(index);
+                  final categoryConsultants = consultations[category]!;
+                  return Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 14.width,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 14.height,
+                      horizontal: 13.width,
+                    ),
+                    decoration: BoxDecoration(
+                      color: BrandColors.snowWhite,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.category,
+                              color: BrandColors.darkGray,
+                              size: 16.0,
                             ),
-                          ),
-                        ],
-                      ),
-                      12.emptyHeight,
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: categoryConsultants.length,
-                        separatorBuilder: (context, index) => 13.emptyHeight,
-                        itemBuilder: (context, index) => _ConsultationItem(
-                          consultation: categoryConsultants[index].consultation,
-                          favoriteConsultationId: _favoriteConsultantId,
+                            8.emptyWidth,
+                            Text(
+                              appLocalizations.noCategoryConsultation,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.normal,
+                                color: BrandColors.darkGreen,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                        12.emptyHeight,
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          itemCount: categoryConsultants.length,
+                          separatorBuilder: (context, index) => 13.emptyHeight,
+                          itemBuilder: (context, index) => _ConsultationItem(
+                            consultation:
+                                categoryConsultants[index].consultation,
+                            favoriteConsultationId: _favoriteConsultantId,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             );
 
           case FavoriteConsultationsError:

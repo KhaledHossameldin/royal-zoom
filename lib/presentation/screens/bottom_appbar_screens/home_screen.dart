@@ -66,14 +66,17 @@ class _HomeScreenState extends State<HomeScreen> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      child: BlocBuilder<SwitchCubit, SwitchState>(
-        builder: (context, state) {
+      child: BlocConsumer<SwitchCubit, SwitchState>(
+        listenWhen: (o, n) => o != n,
+        listener: (context, state) {
           type = DIManager.findDep<SharedPrefs>().getUserType();
           if (type == UserType.normal) {
             _index.value = 4;
           } else {
             _index.value = 3;
           }
+        },
+        builder: (context, state) {
           return ValueListenableBuilder(
             valueListenable: _index,
             builder: (context, value, child) => BottomNavigationBar(

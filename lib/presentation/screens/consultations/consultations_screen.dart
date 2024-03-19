@@ -95,23 +95,27 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                   }
                   return false;
                 },
-                child: CustomScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  slivers: [
-                    _SliverSearchTextField(controller: _controller),
-                    _ConsultationsListView(
-                      consultations: consultations,
-                      favoriteConsultantId: _favoriteConsultationId,
-                    ),
-                    if (state.canFetchMore)
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(vertical: 16.height),
-                        sliver: const SliverToBoxAdapter(
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
+                child: RefreshIndicator(
+                  onRefresh: () =>
+                      context.read<ConsultationsCubit>().fetch(context),
+                  child: CustomScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    slivers: [
+                      _SliverSearchTextField(controller: _controller),
+                      _ConsultationsListView(
+                        consultations: consultations,
+                        favoriteConsultantId: _favoriteConsultationId,
                       ),
-                  ],
+                      if (state.canFetchMore)
+                        SliverPadding(
+                          padding: EdgeInsets.symmetric(vertical: 16.height),
+                          sliver: const SliverToBoxAdapter(
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               );
 

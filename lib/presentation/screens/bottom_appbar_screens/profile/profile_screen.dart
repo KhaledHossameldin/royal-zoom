@@ -20,7 +20,9 @@ import '../../../../localization/localizor.dart';
 import '../../../widgets/border_painter.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({
+    super.key,
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -32,6 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final appLocalizations = AppLocalizations.of(context);
     final materialLocalizations = MaterialLocalizations.of(context);
     final user = DIManager.findDep<SharedPrefs>().getUser();
+    final type = DIManager.findDep<SharedPrefs>().getUserType();
 
     return Scaffold(
       appBar: AppBar(

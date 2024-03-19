@@ -50,16 +50,19 @@ class _MajorAndExperienceScreenState extends State<MajorAndExperienceScreen> {
           if (majorAndExperience is BaseSuccessState) {
             final majors =
                 majorAndExperience.data! as List<ConsultantMajorEntity>;
-            return ListView.separated(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16.width,
-                vertical: 24.height,
-              ),
-              itemCount: majors.length,
-              separatorBuilder: (context, index) => 12.emptyHeight,
-              itemBuilder: (context, index) => _Item(
-                appLocalizations: appLocalizations,
-                major: majors[index],
+            return RefreshIndicator(
+              onRefresh: () async => cubit.fetchMajors(),
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.width,
+                  vertical: 24.height,
+                ),
+                itemCount: majors.length,
+                separatorBuilder: (context, index) => 12.emptyHeight,
+                itemBuilder: (context, index) => _Item(
+                  appLocalizations: appLocalizations,
+                  major: majors[index],
+                ),
               ),
             );
           }

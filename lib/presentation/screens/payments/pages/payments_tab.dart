@@ -62,15 +62,20 @@ class _PaymentsTabState extends State<PaymentsTab> {
                   ),
               ],
               body: state.invoices.isNotEmpty
-                  ? ListView.separated(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16.height,
-                        horizontal: 16.width,
+                  ? RefreshIndicator(
+                      onRefresh: () async => context
+                          .read<InvoiceCubit>()
+                          .fetch(context, type: InvoiceType.walletCharge),
+                      child: ListView.separated(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 16.height,
+                          horizontal: 16.width,
+                        ),
+                        itemCount: state.invoices.length,
+                        separatorBuilder: (context, index) => 16.emptyHeight,
+                        itemBuilder: (context, index) =>
+                            _Item(invoice: state.invoices[index]),
                       ),
-                      itemCount: state.invoices.length,
-                      separatorBuilder: (context, index) => 16.emptyHeight,
-                      itemBuilder: (context, index) =>
-                          _Item(invoice: state.invoices[index]),
                     )
                   : Center(child: Text(appLocalizations.invoicesEmpty)),
             );

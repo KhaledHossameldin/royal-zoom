@@ -1,6 +1,6 @@
-import '../../../core/utils/localization/app_localizations.dart';
+import '../../localization/localizor.dart';
 import 'base_error.dart';
 
 class UnExpectedError extends BaseError {
-  UnExpectedError() : super(translate('unexpected_err'));
+  UnExpectedError() : super(Localizor.translator.unknownError);
 }

@@ -58,8 +58,8 @@ class _UserTypeChooseScreenState extends State<UserTypeChooseScreen> {
                         CustomSnackbar.showErrorSnackbar(typeState.error!);
                       }
                       if (typeState is BaseSuccessState) {
-                        DIManager.findNavigator()
-                            .pushReplacementNamed(Routes.home);
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            Routes.home, (route) => false);
                       }
                     },
                     builder: (context, state) {
@@ -86,8 +86,8 @@ class _UserTypeChooseScreenState extends State<UserTypeChooseScreen> {
                         CustomSnackbar.showErrorSnackbar(typeState.error!);
                       }
                       if (typeState is BaseSuccessState) {
-                        DIManager.findNavigator()
-                            .pushReplacementNamed(Routes.home);
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            Routes.home, (route) => false);
                       }
                     },
                     builder: (context, state) {

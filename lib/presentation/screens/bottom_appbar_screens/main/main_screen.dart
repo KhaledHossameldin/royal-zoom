@@ -85,30 +85,33 @@ class _MainScreenState extends State<MainScreen> {
             case HomeLoaded:
               final statistics = (state as HomeLoaded).statistics;
               final consultations = state.consultations;
-              return CustomScrollView(
-                shrinkWrap: true,
-                slivers: [
-                  _GridView(appLocalizations, statistics: statistics),
-                  _LatestConsultationsHeader(index: widget.index),
-                  SliverToBoxAdapter(child: 24.emptyHeight),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 250.height,
-                      child: ListView.separated(
-                        clipBehavior: Clip.none,
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.symmetric(horizontal: 27.width),
-                        itemCount: consultations.length,
-                        separatorBuilder: (context, index) => 16.emptyWidth,
-                        itemBuilder: (context, index) => _ConsultationItem(
-                          consultation: consultations[index],
-                          favoriteConsultationId: _favoriteConsultationId,
+              return RefreshIndicator(
+                onRefresh: () async => context.read<HomeCubit>().fetch(context),
+                child: CustomScrollView(
+                  shrinkWrap: true,
+                  slivers: [
+                    _GridView(appLocalizations, statistics: statistics),
+                    _LatestConsultationsHeader(index: widget.index),
+                    SliverToBoxAdapter(child: 24.emptyHeight),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 250.height,
+                        child: ListView.separated(
+                          clipBehavior: Clip.none,
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.symmetric(horizontal: 27.width),
+                          itemCount: consultations.length,
+                          separatorBuilder: (context, index) => 16.emptyWidth,
+                          itemBuilder: (context, index) => _ConsultationItem(
+                            consultation: consultations[index],
+                            favoriteConsultationId: _favoriteConsultationId,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(child: 24.emptyHeight),
-                ],
+                    SliverToBoxAdapter(child: 24.emptyHeight),
+                  ],
+                ),
               );
 
             case HomeError:
