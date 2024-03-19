@@ -1,6 +1,6 @@
 import '../../../core/errors/base_error.dart';
-import '../../../core/utils/localization/app_localizations.dart';
+import '../../localization/localizor.dart';
 
 class TimeOutError extends BaseError {
-  TimeOutError() : super(translate('time_out'));
+  TimeOutError() : super(Localizor.translator.httpError);
 }

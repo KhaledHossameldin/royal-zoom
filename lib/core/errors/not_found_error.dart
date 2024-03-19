@@ -1,6 +1,7 @@
-import '../../../core/utils/localization/app_localizations.dart';
+import '../../localization/localizor.dart';
 import 'base_error.dart';
 
 class NotFoundError extends BaseError {
-  NotFoundError({String? message}) : super(message ?? translate('not_found'));
+  NotFoundError({String? message})
+      : super(message ?? Localizor.translator.httpError);
 }
