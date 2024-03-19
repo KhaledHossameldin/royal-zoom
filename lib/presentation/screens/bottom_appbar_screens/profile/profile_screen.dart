@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 20.height),
                 child: Builder(builder: (context) {
-                  if (type == UserType.consultant) {
+                  if (user.type == UserType.consultant) {
                     return BlocConsumer<SwitchCubit, SwitchState>(
                       listener: (context, state) {
                         if (state is SwitchError) {

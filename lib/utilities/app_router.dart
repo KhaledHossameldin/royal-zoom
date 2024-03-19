@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:logger/logger.dart';
 
 import '../constants/routes.dart';
 import '../cubits/add_new_major/add_new_major_cubit.dart';
@@ -94,11 +95,7 @@ import '../presentation/screens/send_consultations/fast/pages/invoice_screen.dar
 import '../presentation/screens/send_consultations/fast/pages/sent_screen.dart';
 
 class AppRouter {
-  static AppRouter instance = AppRouter._();
-
-  AppRouter._();
-
-  Route? onGenerateRoute(RouteSettings settings) {
+  static Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.notificationsPermission:
         return MaterialPageRoute(
@@ -152,6 +149,7 @@ class AppRouter {
         );
 
       case Routes.home:
+      case null:
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
@@ -596,6 +594,7 @@ class AppRouter {
         );
 
       default:
+        Logger().d(settings.name);
         return null;
     }
   }

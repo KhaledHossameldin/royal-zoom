@@ -36,7 +36,8 @@ class _PaymentResultScreenState extends State<PaymentResultScreen> {
             final checkStatus = state.checkStatus;
             if (checkStatus is BaseSuccessState) {
               Timer(const Duration(seconds: 3), () {
-                DIManager.findNavigator().offAll(Routes.home);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(Routes.home, ((route) => false));
               });
             }
           },

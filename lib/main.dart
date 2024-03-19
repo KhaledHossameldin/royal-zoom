@@ -11,6 +11,7 @@ import 'constants/brand_colors.dart';
 import 'constants/fonts.dart';
 import 'constants/routes.dart';
 import 'core/di/di_manager.dart';
+import 'core/navigator/app_navigator_observer.dart';
 import 'cubits/consultations/consultations_cubit.dart';
 import 'cubits/locale_cubit.dart';
 import 'cubits/switch/switch_cubit.dart';
@@ -117,9 +118,11 @@ class _MyAppState extends State<MyApp> {
         buildWhen: (previous, current) => previous != current,
         builder: (context, locale) => GetMaterialApp(
           title: 'Royake',
+          enableLog: false,
           debugShowCheckedModeBanner: false,
           initialRoute: widget.initialRoute,
-          onGenerateRoute: AppRouter.instance.onGenerateRoute,
+          navigatorObservers: [AppNavigatorObserver()],
+          onGenerateRoute: AppRouter.onGenerateRoute,
           supportedLocales: AppLocalizationsSetup.supportedLocales,
           localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
           locale: locale,

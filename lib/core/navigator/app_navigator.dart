@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class AppNavigator {
   GlobalKey<NavigatorState> get navigationKey => Get.key;
+  AppNavigator() {
+    Logger().d(navigationKey.currentState);
+  }
 
   Future<T?> pushNamed<T>(String routeName, {dynamic arguments}) {
     return navigationKey.currentState!

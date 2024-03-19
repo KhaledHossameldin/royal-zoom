@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -69,7 +68,9 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(appLocalizations.consultationDetails),
-        leading: const BrandBackButton(),
+        leading: const BrandBackButton(
+          toHome: true,
+        ),
       ),
       body: BlocConsumer<ShowConsultationCubit, ShowConsultationState>(
         listener: (context, state) {
