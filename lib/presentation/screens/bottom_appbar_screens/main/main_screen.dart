@@ -494,8 +494,6 @@ class _GridView extends StatelessWidget {
       sliver: SliverGrid.count(
         crossAxisCount: 2,
         childAspectRatio: 180 / 90,
-        mainAxisSpacing: 16.height,
-        crossAxisSpacing: 16.width,
         children: [
           _buildItem(
             image: 'consultation',
@@ -552,15 +550,17 @@ class _GridView extends StatelessWidget {
           ),
           leading: image.svg,
           title: Text.rich(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             TextSpan(children: [
               TextSpan(text: title),
               if (isCurrency)
                 TextSpan(
                   text: ' ${appLocalizations.sar}',
-                  style: const TextStyle(fontSize: 11.0),
+                  style: const TextStyle(fontSize: 9.0),
                 ),
             ]),
-            style: const TextStyle(fontSize: 23.0),
+            style: const TextStyle(fontSize: 16.0),
           ),
           subtitle: Text(
             subtitle,
