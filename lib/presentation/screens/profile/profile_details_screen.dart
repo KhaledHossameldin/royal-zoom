@@ -743,11 +743,14 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
                     } else {
                       context.read<LocaleCubit>().toEnglish();
                     }
-                    setState(
-                      () => context
+                    appLocalizations.load(Get.locale).then((_) async {
+                      _buttonText.value =
+                          '${appLocalizations.save} ${appLocalizations.settings}';
+                      context
                           .read<ProfileCubit>()
-                          .setSettingsUpdate(languageId: value),
-                    );
+                          .setSettingsUpdate(languageId: value);
+                      setState(() {});
+                    });
                   },
                 ),
               ),
