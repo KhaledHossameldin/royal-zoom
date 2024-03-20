@@ -308,6 +308,7 @@ class NetworkServices {
     required Map<String, Object> body,
   }) async {
     final response = await _put(context, Network.updateSettings, body: body);
+    print(response);
     return UserData.fromMap(json.decode(response)['data']);
   }
 

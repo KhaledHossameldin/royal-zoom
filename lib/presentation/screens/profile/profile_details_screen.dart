@@ -184,9 +184,14 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
     try {
       await cubit.updateSettings(context);
       _buttonText.value = text;
+      if (mounted) {
+        final appLocalizations = AppLocalizations.of(context);
+        appLocalizations.successMessage.showSnackbar(context);
+      }
     } catch (e) {
-      if (!context.mounted) return;
-      '$e'.showSnackbar(context, color: BrandColors.red);
+      if (mounted) {
+        '$e'.showSnackbar(context, color: BrandColors.red);
+      }
       _buttonText.value = text;
     }
   }
@@ -855,6 +860,27 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
               onChanged: (value) => setState(() => context
                   .read<ProfileCubit>()
                   .setSettingsUpdate(activateMultiFactorAuthentication: value)),
+            ),
+            16.emptyHeight,
+            CheckboxListTile(
+              dense: true,
+              controlAffinity: ListTileControlAffinity.leading,
+              title: Text(
+                appLocalizations.automaticAcceptanceLowestOffersTitle,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                appLocalizations.automaticAcceptanceLowestOffersSubtitle,
+                style: const TextStyle(color: BrandColors.gray),
+              ),
+              value: context
+                      .read<ProfileCubit>()
+                      .settingsUpdate
+                      .automaticAcceptForLowestOffers ??
+                  false,
+              onChanged: (value) => setState(() => context
+                  .read<ProfileCubit>()
+                  .setSettingsUpdate(automaticAcceptForLowestOffers: value)),
             ),
           ],
         ),

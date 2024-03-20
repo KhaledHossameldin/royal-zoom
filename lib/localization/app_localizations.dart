@@ -864,6 +864,10 @@ class AppLocalizations {
   String get userPolicies => _translate('user_policies');
   String getPolicies(int index) => _translate('policies_$index');
   String get consultantsPolicies => _translate('consultants_policies');
+  String get automaticAcceptanceLowestOffersTitle =>
+      _translate('automatic_acceptance_lowest_offers_title');
+  String get automaticAcceptanceLowestOffersSubtitle =>
+      _translate('automatic_acceptance_lowest_offers_subtitle');
 
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {

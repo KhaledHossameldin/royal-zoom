@@ -6,12 +6,14 @@ class SettingsUpdate {
   int? currencyId;
   int? timezoneId;
   bool? activateMultiFactorAuthentication;
+  bool? automaticAcceptForLowestOffers;
 
   SettingsUpdate({
     this.languageId,
     this.currencyId,
     this.timezoneId,
     this.activateMultiFactorAuthentication,
+    this.automaticAcceptForLowestOffers,
   });
 
   SettingsUpdate.fromUserData(UserData userData) {
@@ -20,6 +22,8 @@ class SettingsUpdate {
     timezoneId = userData.countryTimeZoneId;
     activateMultiFactorAuthentication =
         userData.settings?.activateMultiFactorAuthentication;
+    automaticAcceptForLowestOffers =
+        userData.settings?.automaticAcceptForLowestOffers;
   }
 
   Map<String, Object> toMap() {
@@ -38,12 +42,19 @@ class SettingsUpdate {
       map.putIfAbsent(contract.activateMultiFactorAuthentication,
           () => activateMultiFactorAuthentication!.toInt.toString());
     }
+    if (automaticAcceptForLowestOffers != null) {
+      map.putIfAbsent(
+        contract.automaticAcceptForLowestOffers,
+        () => automaticAcceptForLowestOffers!.toInt.toString(),
+      );
+    }
+    print(map);
     return map;
   }
 
   @override
   String toString() {
-    return 'SettingsUpdate(languageId: $languageId, currencyId: $currencyId, timezoneId: $timezoneId, activateMultiFactorAuthentication: $activateMultiFactorAuthentication)';
+    return 'SettingsUpdate(languageId: $languageId, currencyId: $currencyId, timezoneId: $timezoneId, activateMultiFactorAuthentication: $activateMultiFactorAuthentication, automaticAcceptForLowestOffers: $automaticAcceptForLowestOffers)';
   }
 
   SettingsUpdate copyWith({
@@ -51,6 +62,7 @@ class SettingsUpdate {
     int? currencyId,
     int? timezoneId,
     bool? activateMultiFactorAuthentication,
+    bool? automaticAcceptForLowestOffers,
   }) {
     return SettingsUpdate(
       languageId: languageId ?? this.languageId,
@@ -58,6 +70,8 @@ class SettingsUpdate {
       timezoneId: timezoneId ?? this.timezoneId,
       activateMultiFactorAuthentication: activateMultiFactorAuthentication ??
           this.activateMultiFactorAuthentication,
+      automaticAcceptForLowestOffers:
+          automaticAcceptForLowestOffers ?? this.automaticAcceptForLowestOffers,
     );
   }
 }
@@ -68,4 +82,5 @@ class _SettingsUpdateContract {
   final timezoneId = 'country_time_zone_id';
   final activateMultiFactorAuthentication =
       'activate_multi_factor_authentication';
+  final automaticAcceptForLowestOffers = 'automatic_accept_for_lowest_offers';
 }
