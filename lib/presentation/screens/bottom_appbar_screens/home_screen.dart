@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'consultations'.buildBottomAppBarIcon(
                   appLocalizations.consultations,
                 ),
-                // if (type == UserType.normal)
+                if (type == UserType.normal)
                 BottomNavigationBarItem(
                   icon: FloatingActionButton(
                     onPressed: () {
