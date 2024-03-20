@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
@@ -13,6 +14,8 @@ import '../../../../constants/routes.dart';
 import '../../../../core/di/di_manager.dart';
 import '../../../../cubits/switch/switch_cubit.dart';
 import '../../../../data/enums/user_type.dart';
+import '../../../../data/models/authentication/user.dart';
+import '../../../../data/models/authentication/user_data.dart';
 import '../../../../data/sources/local/shared_prefs.dart';
 
 import '../../../../localization/localizor.dart';
@@ -33,7 +36,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context);
     final materialLocalizations = MaterialLocalizations.of(context);
-    final user = DIManager.findDep<SharedPrefs>().getUser();
+    final user = ValueNotifier<UserData?>(
+      DIManager.findDep<SharedPrefs>().getUser(),
+    );
     final type = DIManager.findDep<SharedPrefs>().getUserType();
 
     return Scaffold(
@@ -54,13 +59,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         child: Column(
           children: [
-            const _Header(),
-            if (user != null)
+            _Header(user: user),
+            if (user.value != null)
               Container(
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 20.height),
                 child: Builder(builder: (context) {
-                  if (user.type == UserType.consultant) {
+                  if (user.value!.type == UserType.consultant) {
                     return BlocConsumer<SwitchCubit, SwitchState>(
                       listener: (context, state) {
                         if (state is SwitchError) {
@@ -146,24 +151,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return const Material();
                 }
                 return Column(children: [
-                  if (user != null)
+                  if (user.value != null)
                     _Item(
                       icon: 'search',
                       color: BrandColors.lightBlue,
                       title: appLocalizations.search,
                       onTap: () => Navigator.pushNamed(context, Routes.search),
                     ),
-                  if (user != null)
+                  if (user.value != null)
                     _Item(
                       icon: 'profile',
                       color: BrandColors.orange,
                       title: appLocalizations.profile,
-                      onTap: () async {
-                        await Navigator.pushNamed(context, Routes.profile);
-                        setState(() {});
-                      },
+                      onTap: () async => await Navigator.pushNamed(
+                        context,
+                        Routes.profile,
+                        arguments: user,
+                      ),
                     ),
-                  if (user != null && state.type == UserType.consultant)
+                  if (user.value != null && state.type == UserType.consultant)
                     _Item(
                       icon: 'major_and_experience',
                       title: appLocalizations.majorAndExperience,
@@ -173,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Routes.majorAndExperience,
                       ),
                     ),
-                  if (user != null)
+                  if (user.value != null)
                     _Item(
                       icon: 'consultants',
                       color: BrandColors.red,
@@ -183,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Routes.consultantsProfile,
                       ),
                     ),
-                  if (user != null)
+                  if (user.value != null)
                     _Item(
                       icon: 'appointments',
                       title: appLocalizations.appointments,
@@ -191,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: () =>
                           Navigator.pushNamed(context, Routes.appointments),
                     ),
-                  if (user != null)
+                  if (user.value != null)
                     _Item(
                       icon: 'heart-profile',
                       title: appLocalizations.favorite,
@@ -199,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: () =>
                           Navigator.pushNamed(context, Routes.favorites),
                     ),
-                  if (user != null)
+                  if (user.value != null)
                     _Item(
                       icon: 'wallet',
                       color: BrandColors.purple,
@@ -207,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: () =>
                           Navigator.pushNamed(context, Routes.payments),
                     ),
-                  if (user != null && state.type == UserType.consultant)
+                  if (user.value != null && state.type == UserType.consultant)
                     _Item(
                       icon: 'orders',
                       color: BrandColors.green,
@@ -228,7 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () => Navigator.pushNamed(
                       context,
                       Routes.termsAndConditions,
-                      arguments: user == null,
+                      arguments: user.value == null,
                     ),
                   ),
                   _Item(
@@ -238,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () => Navigator.pushNamed(
                       context,
                       Routes.privacyPolicy,
-                      arguments: user == null,
+                      arguments: user.value == null,
                     ),
                   ),
                   _Item(
@@ -248,7 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () => Navigator.pushNamed(
                       context,
                       Routes.contactUs,
-                      arguments: user == null,
+                      arguments: user.value == null,
                     ),
                   ),
                   // _Item(
@@ -263,7 +269,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: appLocalizations.reviewApplication,
                     onTap: () => Navigator.pushNamed(context, Routes.reviewApp),
                   ),
-                  if (user != null)
+                  if (user.value != null)
                     BlocConsumer<AuthenticationBloc, AuthenticationState>(
                       listener: (context, state) {
                         if (state is AuthenticationLoaded) {
@@ -371,13 +377,14 @@ class _Item extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header();
+  const _Header({required this.user});
+
+  final ValueNotifier<UserData?> user;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final appLocalizations = AppLocalizations.of(context);
-    final user = DIManager.findDep<SharedPrefs>().getUser();
 
     return Card(
       child: Padding(
@@ -387,24 +394,27 @@ class _Header extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey.shade600),
-              ),
-              child: Container(
-                width: 87.width,
-                height: 87.height,
+            ValueListenableBuilder<UserData?>(
+              valueListenable: user,
+              builder: (context, value, child) => Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 5.0),
-                  image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: user == null
-                        ? 'guest'.png.image
-                        : user.image.isEmpty
-                            ? 'royake'.png.image
-                            : CachedNetworkImageProvider(user.image),
+                  border: Border.all(color: Colors.grey.shade600),
+                ),
+                child: Container(
+                  width: 87.width,
+                  height: 87.height,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 5.0),
+                    image: DecorationImage(
+                      fit: BoxFit.contain,
+                      image: value == null
+                          ? 'guest'.png.image
+                          : value.image.isEmpty
+                              ? 'royake'.png.image
+                              : CachedNetworkImageProvider(value.image),
+                    ),
                   ),
                 ),
               ),
@@ -414,10 +424,10 @@ class _Header extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(user == null
+                  Text(user.value == null
                       ? appLocalizations.guest
-                      : user.previewName ?? appLocalizations.none),
-                  user == null
+                      : user.value!.previewName ?? appLocalizations.none),
+                  user.value == null
                       ? TextButton(
                           onPressed: () => Navigator.pushNamedAndRemoveUntil(
                             context,
@@ -438,7 +448,9 @@ class _Header extends StatelessWidget {
                           ),
                         )
                       : Text(
-                          user.email ?? user.phone ?? appLocalizations.none,
+                          user.value!.email ??
+                              user.value!.phone ??
+                              appLocalizations.none,
                           overflow: TextOverflow.ellipsis,
                         ),
                 ],
@@ -448,10 +460,10 @@ class _Header extends StatelessWidget {
               painter: BorderPainter(
                 stroke: 4.width,
                 padding: 12.width,
-                progress: user != null ? user.progress : 0,
+                progress: user.value != null ? user.value!.progress : 0,
               ),
               child: Text(NumberFormat.percentPattern()
-                  .format(user != null ? user.progress : 0)),
+                  .format(user.value != null ? user.value!.progress : 0)),
             ),
             12.emptyWidth,
           ],

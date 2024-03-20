@@ -79,11 +79,11 @@ class ProfileCubit extends Cubit<ProfileState> {
     final data =
         await repository.updateSettings(context, body: settingsUpdate.toMap());
     if (!context.mounted) return;
-    final user = context.read<AuthenticationBloc>().user!;
+    // final user = context.read<AuthenticationBloc>().user!;
     DIManager.findDep<SharedPrefs>().setUser(data);
-    if (user.language != null) {
-      context.read<LocaleCubit>().switchLanguage(user.language!.symbol);
-    }
+    // if (user.language != null) {
+    //   context.read<LocaleCubit>().switchLanguage(user.language!.symbol);
+    // }
   }
 
   void setSettingsUpdate({
@@ -91,12 +91,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     int? currencyId,
     int? timezoneId,
     bool? activateMultiFactorAuthentication,
+    bool? automaticAcceptForLowestOffers,
   }) {
     settingsUpdate = settingsUpdate.copyWith(
       languageId: languageId,
       currencyId: currencyId,
       timezoneId: timezoneId,
       activateMultiFactorAuthentication: activateMultiFactorAuthentication,
+      automaticAcceptForLowestOffers: automaticAcceptForLowestOffers,
     );
   }
 

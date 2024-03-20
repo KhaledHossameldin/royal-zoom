@@ -31,6 +31,7 @@ import '../cubits/send_comment/send_comment_cubit.dart';
 import '../cubits/show_consultant/show_consultant_cubit.dart';
 import '../cubits/show_consultation/show_consultation_cubit.dart';
 import '../cubits/update_consultation/update_consultation_cubit.dart';
+import '../data/models/authentication/user_data.dart';
 import '../data/models/consultations/details.dart';
 import '../data/models/user_notification/user_notification.dart';
 import '../domain/entities/consultant_major_entity.dart';
@@ -468,7 +469,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => ProfileCubit(),
-            child: const ProfileDetailsScreen(),
+            child: ProfileDetailsScreen(
+              userNotifier: settings.arguments as ValueNotifier<UserData?>,
+            ),
           ),
         );
 
