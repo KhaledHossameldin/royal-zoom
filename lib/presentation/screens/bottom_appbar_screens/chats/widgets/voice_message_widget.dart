@@ -81,8 +81,20 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(total.toMMSS()),
-        Text('/${current.toMMSS()}'),
+        Text(
+          total.toMMSS(),
+          style: TextStyle(
+            color:
+                widget.isSelf ? BrandColors.darkGreen : BrandColors.snowWhite,
+          ),
+        ),
+        Text(
+          '/${current.toMMSS()}',
+          style: TextStyle(
+            color:
+                widget.isSelf ? BrandColors.darkGreen : BrandColors.snowWhite,
+          ),
+        ),
       ],
     );
   }
