@@ -107,11 +107,11 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
             };
             if (state.consultant.video != null) {
               try {
-                _videoController =
-                    VideoPlayerController.network(state.consultant.video!.video)
-                      ..initialize().then((value) => setState(() {}))
-                      ..setVolume(0.0)
-                      ..play();
+                _videoController = VideoPlayerController.networkUrl(
+                    Uri.parse(state.consultant.video!.video))
+                  ..initialize().then((value) => setState(() {}))
+                  ..setVolume(0.0)
+                  ..play();
               } catch (e) {
                 _videoController = null;
               }
@@ -1147,7 +1147,7 @@ class _Header extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: (consultant.ratingAverage * 10).toStringAsFixed(1),
+                  text: consultant.ratingAverage.toStringAsFixed(1),
                 ),
                 WidgetSpan(
                     alignment: PlaceholderAlignment.top,
@@ -1157,8 +1157,8 @@ class _Header extends StatelessWidget {
                         return LinearGradient(
                           stops: [
                             0,
-                            consultant.ratingAverage.toDouble(),
-                            consultant.ratingAverage.toDouble(),
+                            (consultant.ratingAverage / 10).toDouble(),
+                            (consultant.ratingAverage / 10).toDouble(),
                           ],
                           colors: [
                             Colors.amber,
@@ -1177,7 +1177,6 @@ class _Header extends StatelessWidget {
                         ),
                       ),
                     )),
-                // TextSpan(text: '465 ${appLocalizations.review}'),
               ],
             ),
           ),
