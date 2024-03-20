@@ -6,10 +6,12 @@ import 'package:intl/intl.dart';
 import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/routes.dart';
+import '../../../../core/di/di_manager.dart';
 import '../../../../cubits/invoice/invoice_cubit.dart';
 import '../../../../data/enums/invoice_type.dart';
 import '../../../../data/enums/sort.dart';
 import '../../../../data/models/invoices/invoice.dart';
+import '../../../../data/sources/local/shared_prefs.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../widgets/gradient_progress_bar.dart';
@@ -500,7 +502,7 @@ class _HeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthenticationBloc>().user!;
+    final user = DIManager.findDep<SharedPrefs>().getUser()!;
     final appLocalizations = AppLocalizations.of(context);
 
     return SliverToBoxAdapter(
