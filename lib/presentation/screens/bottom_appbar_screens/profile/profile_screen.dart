@@ -251,12 +251,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       arguments: user == null,
                     ),
                   ),
-                  _Item(
-                    icon: 'share-application',
-                    color: BrandColors.orange,
-                    title: appLocalizations.shareWithFriends,
-                    onTap: () => Share.share('royake'),
-                  ),
+                  // _Item(
+                  //   icon: 'share-application',
+                  //   color: BrandColors.orange,
+                  //   title: appLocalizations.shareWithFriends,
+                  //   onTap: () => Share.share('royake'),
+                  // ),
                   _Item(
                     icon: 'rate',
                     color: BrandColors.lightBlue,
