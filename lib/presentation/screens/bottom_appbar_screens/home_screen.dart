@@ -97,25 +97,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 'consultations'.buildBottomAppBarIcon(
                   appLocalizations.consultations,
                 ),
-                if (type == UserType.normal)
-                  BottomNavigationBarItem(
-                    icon: FloatingActionButton(
-                      onPressed: () {
-                        if (user == null) {
-                          Navigator.pushReplacementNamed(context, Routes.login);
-                          return;
-                        }
-                        showModal(
-                          context: context,
-                          builder: (context) => const _ConsultationDialog(),
-                        );
-                      },
-                      elevation: 0,
-                      backgroundColor: BrandColors.orange,
-                      child: 'send_consultation'.svg,
-                    ),
-                    label: appLocalizations.consult,
+                // if (type == UserType.normal)
+                BottomNavigationBarItem(
+                  icon: FloatingActionButton(
+                    onPressed: () {
+                      if (user == null) {
+                        Navigator.pushReplacementNamed(context, Routes.login);
+                        return;
+                      }
+                      showModal(
+                        context: context,
+                        builder: (context) => const _ConsultationDialog(),
+                      );
+                    },
+                    elevation: 0,
+                    backgroundColor: BrandColors.orange,
+                    child: 'send_consultation'.svg,
                   ),
+                  label: appLocalizations.consult,
+                ),
                 'chat'.buildBottomAppBarIcon(appLocalizations.chat),
                 'profile'.buildBottomAppBarIcon(appLocalizations.profile),
               ],
