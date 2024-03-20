@@ -20,7 +20,7 @@ class Consultant extends Account {
   final DefaultMajor? major;
   final List<DefaultMajor>? majors;
   final String? username;
-  final num ratingAverage;
+  final num? ratingAverage;
 
   Consultant({
     required super.id,
@@ -231,7 +231,9 @@ class Consultant extends Account {
               map[contract.majors]?.map((x) => DefaultMajor.fromMap(x)))
           : null,
       username: map[contract.username],
-      ratingAverage: num.tryParse(map[contract.ratingAverage]) ?? 0,
+      ratingAverage: map[contract.ratingAverage] != null
+          ? num.tryParse(map[contract.ratingAverage]) ?? 0
+          : null,
     );
   }
 

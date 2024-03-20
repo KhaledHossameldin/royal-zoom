@@ -435,7 +435,7 @@ class _ConsultantItem extends StatelessWidget {
                       children: [
                         RatingBar(
                           itemSize: 11.0,
-                          initialRating: consultant.ratingAverage.toDouble(),
+                          initialRating: consultant.ratingAverage!.toDouble(),
                           allowHalfRating: true,
                           maxRating: 5,
                           ignoreGestures: true,
