@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/brand_colors.dart';
 import '../../../core/di/di_manager.dart';
+import '../../../cubits/locale_cubit.dart';
 import '../../../cubits/profile/profile_cubit.dart';
 import '../../../data/enums/gender.dart';
 import '../../../data/enums/perview_status.dart';
@@ -719,7 +721,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
               child: ButtonTheme(
                 alignedDropdown: true,
                 child: DropdownButton<int>(
-                  value: context.read<ProfileCubit>().settingsUpdate.languageId,
+                  value: Get.locale!.languageCode == 'ar' ? 1 : 2,
                   isExpanded: true,
                   menuMaxHeight: 300.height,
                   hint: Text(appLocalizations.choose),
@@ -735,11 +737,18 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
                             child: Text(e.name),
                           ))
                       .toList(),
-                  onChanged: (value) => setState(
-                    () => context
-                        .read<ProfileCubit>()
-                        .setSettingsUpdate(languageId: value),
-                  ),
+                  onChanged: (value) {
+                    if (value == 1) {
+                      context.read<LocaleCubit>().toArabic();
+                    } else {
+                      context.read<LocaleCubit>().toEnglish();
+                    }
+                    setState(
+                      () => context
+                          .read<ProfileCubit>()
+                          .setSettingsUpdate(languageId: value),
+                    );
+                  },
                 ),
               ),
             ),
