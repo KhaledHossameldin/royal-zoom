@@ -358,11 +358,13 @@ class _ConsultantItem extends StatelessWidget {
                 top: Radius.circular(20.0),
                 bottom: Radius.circular(10.0),
               ),
-              onTap: () => Navigator.pushNamed(
-                context,
-                Routes.consultantDetails,
-                arguments: consultant.id,
-              ),
+              onTap: consultant.username != null
+                  ? () => Navigator.pushNamed(
+                        context,
+                        Routes.consultantDetails,
+                        arguments: consultant.username!,
+                      )
+                  : null,
             ),
           ),
           Positioned(
