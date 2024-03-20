@@ -32,7 +32,7 @@ Future<List<dynamic>> _getStartValues() async {
     repository.setCurrentLocation(isFromMain: true),
   ]);
   String initialRoute = Routes.notificationsPermission;
-  final savedLocale = values[0] as String;
+  final savedLocale = DIManager.findDep<SharedPrefs>().getLocale();
   final isNotification = (values[1] as bool);
   final isLocation = (values[2] as bool);
   await DIManager.findDep<SharedPrefs>().removeTempUser();
@@ -114,8 +114,8 @@ class _MyAppState extends State<MyApp> {
                 SwitchCubit(data: widget.user, type: widget.type)),
         BlocProvider(create: (context) => ConsultationsCubit())
       ],
-      child: BlocBuilder<LocaleCubit, Locale>(
-        buildWhen: (previous, current) => previous != current,
+      child: BlocConsumer<LocaleCubit, Locale>(
+        listener: (context, state) => print(state),
         builder: (context, locale) => GetMaterialApp(
           title: 'Royake',
           enableLog: false,
@@ -126,6 +126,7 @@ class _MyAppState extends State<MyApp> {
           supportedLocales: AppLocalizationsSetup.supportedLocales,
           localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
           locale: locale,
+          fallbackLocale: const Locale('ar'),
           theme: _setTheme,
           builder: (context, child) {
             Localizor(context);
