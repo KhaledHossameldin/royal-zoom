@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../blocs/authentication/authentication_bloc.dart';
 import '../../../constants/brand_colors.dart';
 import '../../../core/di/di_manager.dart';
 import '../../../cubits/locale_cubit.dart';
@@ -13,6 +12,7 @@ import '../../../cubits/profile/profile_cubit.dart';
 import '../../../data/enums/gender.dart';
 import '../../../data/enums/perview_status.dart';
 import '../../../data/models/authentication/city.dart';
+import '../../../data/models/authentication/user_data.dart';
 import '../../../data/services/location_services.dart';
 import '../../../data/sources/local/shared_prefs.dart';
 import '../../../localization/app_localizations.dart';
@@ -22,7 +22,9 @@ import '../../../utilities/validators.dart';
 import '../../widgets/reload_widget.dart';
 
 class ProfileDetailsScreen extends StatefulWidget {
-  const ProfileDetailsScreen({super.key});
+  const ProfileDetailsScreen({super.key, required this.userNotifier});
+
+  final ValueNotifier<UserData?> userNotifier;
 
   @override
   State<ProfileDetailsScreen> createState() => _ProfileDetailsScreenState();
@@ -225,6 +227,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
       if (mounted) {
         appLocalizations.profileUpdatedSuccessfully.showSnackbar(context);
       }
+      widget.userNotifier.value = DIManager.findDep<SharedPrefs>().getUser();
     } catch (e) {
       if (!mounted) return;
       '$e'.showSnackbar(context, color: BrandColors.red);
@@ -233,7 +236,6 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
   }
 
   Column _buildBody(ProfileState state) {
-    final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
 
     return Column(
@@ -924,15 +926,15 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen>
                       radius: 60.width,
                       backgroundColor: Colors.white,
                       backgroundImage:
-                          // context.read<ProfileCubit>().profileUpdate.image !=
-                          // userData.image
-                          // ? FileImage(File(context
-                          // .read<ProfileCubit>()
-                          // .profileUpdate
-                          // .image!)):
-                          userData.image.isNotEmpty
-                              ? NetworkImage(userData.image)
-                              : 'royake'.png.image,
+                          context.read<ProfileCubit>().profileUpdate.image !=
+                                  userData.image
+                              ? FileImage(File(context
+                                  .read<ProfileCubit>()
+                                  .profileUpdate
+                                  .image!))
+                              : userData.image.isNotEmpty
+                                  ? NetworkImage(userData.image)
+                                  : 'royake'.png.image,
                     ),
                   ),
                 ),
