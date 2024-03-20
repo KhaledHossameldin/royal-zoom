@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../../blocs/authentication/authentication_bloc.dart';
 import '../../../../constants/brand_colors.dart';
 import '../../../../constants/fonts.dart';
 import '../../../../constants/routes.dart';
+import '../../../../core/di/di_manager.dart';
+import '../../../../data/sources/local/shared_prefs.dart';
 import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 
@@ -46,7 +46,7 @@ class _AboutScreenState extends State<AboutScreen>
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final appLocalizations = AppLocalizations.of(context);
-    final user = context.read<AuthenticationBloc>().user;
+    final user = DIManager.findDep<SharedPrefs>().getUser();
 
     return Scaffold(
       appBar: AppBar(

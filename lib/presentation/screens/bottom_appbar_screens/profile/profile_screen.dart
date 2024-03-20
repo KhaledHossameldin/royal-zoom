@@ -247,29 +247,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       arguments: user.value == null,
                     ),
                   ),
-                  _Item(
-                    icon: 'contact-us',
-                    color: BrandColors.purple,
-                    title: appLocalizations.contactUs,
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      Routes.contactUs,
-                      arguments: user.value == null,
-                    ),
-                  ),
+                  // _Item(
+                  //   icon: 'contact-us',
+                  //   color: BrandColors.purple,
+                  //   title: appLocalizations.contactUs,
+                  //   onTap: () => Navigator.pushNamed(
+                  //     context,
+                  //     Routes.contactUs,
+                  //     arguments: user == null,
+                  //   ),
+                  // ),
                   // _Item(
                   //   icon: 'share-application',
                   //   color: BrandColors.orange,
                   //   title: appLocalizations.shareWithFriends,
                   //   onTap: () => Share.share('royake'),
                   // ),
-                  _Item(
-                    icon: 'rate',
-                    color: BrandColors.lightBlue,
-                    title: appLocalizations.reviewApplication,
-                    onTap: () => Navigator.pushNamed(context, Routes.reviewApp),
-                  ),
-                  if (user.value != null)
+                  // _Item(
+                  //   icon: 'rate',
+                  //   color: BrandColors.lightBlue,
+                  //   title: appLocalizations.reviewApplication,
+                  //   onTap: () => Navigator.pushNamed(context, Routes.reviewApp),
+                  // ),
+                  if (user != null)
                     BlocConsumer<AuthenticationBloc, AuthenticationState>(
                       listener: (context, state) {
                         if (state is AuthenticationLoaded) {
