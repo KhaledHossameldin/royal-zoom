@@ -209,3 +209,13 @@ extension ConsultationStatusExtension on ConsultationStatus {
     return Colors.red;
   }
 }
+
+extension ConvertDurationToMMSS on Duration {
+  String toMMSS() {
+    int minsInt = ((inMilliseconds ~/ 1000) ~/ 60);
+    int secsInt = ((inMilliseconds ~/ 1000));
+    String mins = minsInt < 10 ? '0$minsInt' : minsInt.toString();
+    String secs = secsInt < 10 ? '0$secsInt' : secsInt.toString();
+    return '$mins:$secs';
+  }
+}

@@ -75,6 +75,7 @@ dependencies:
   grouped_list: ^5.1.2
   webview_flutter: ^4.5.0
   audio_waveforms: ^1.0.5
+  flutter_file_downloader: ^1.2.1
 
 dev_dependencies:
   flutter_test:
