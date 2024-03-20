@@ -461,14 +461,20 @@ class _ConsultantItem extends StatelessWidget {
                     fontFamily: Fonts.main,
                   ),
                   children: [
-                    TextSpan(text: (0.78 * 10).toStringAsFixed(1)),
+                    TextSpan(
+                      text: consultant.ratingAverage!.toStringAsFixed(1),
+                    ),
                     WidgetSpan(
                         alignment: PlaceholderAlignment.top,
                         child: ShaderMask(
                           blendMode: BlendMode.srcATop,
                           shaderCallback: (bounds) {
                             return LinearGradient(
-                              stops: const [0, 0.78, 0.78],
+                              stops: [
+                                0,
+                                (consultant.ratingAverage! / 5).toDouble(),
+                                (consultant.ratingAverage! / 5).toDouble(),
+                              ],
                               colors: [
                                 Colors.amber,
                                 Colors.amber,
@@ -486,13 +492,16 @@ class _ConsultantItem extends StatelessWidget {
                             ),
                           ),
                         )),
-                    TextSpan(text: '465 ${appLocalizations.review}'),
+                    TextSpan(
+                      text:
+                          '${consultant.ratingCount} ${appLocalizations.review}',
+                    ),
                   ],
                 ),
               ),
               16.emptyWidth,
               Text(
-                '${60.0.round()} ${appLocalizations.sarH}',
+                '${consultant.major?.pricePerHour ?? appLocalizations.none} ${appLocalizations.sarH}',
                 style: const TextStyle(
                   fontSize: 10.0,
                   color: Colors.grey,
@@ -502,11 +511,16 @@ class _ConsultantItem extends StatelessWidget {
           ),
         ],
       ),
-      trailing: CircleAvatar(
-        backgroundColor: selected.value.contains(consultant.id)
-            ? BrandColors.green
-            : Colors.grey.shade400,
-        child: const Icon(Icons.done, color: Colors.white),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            backgroundColor: selected.value.contains(consultant.id)
+                ? BrandColors.green
+                : Colors.grey.shade400,
+            child: const Icon(Icons.done, color: Colors.white),
+          ),
+        ],
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -436,10 +435,32 @@ class _ConsultantItem extends StatelessWidget {
                       children: [
                         RatingBar(
                           itemSize: 11.0,
-                          initialRating: 3,
+                          initialRating: consultant.ratingAverage!.toDouble(),
+                          allowHalfRating: true,
+                          maxRating: 5,
                           ignoreGestures: true,
                           ratingWidget: RatingWidget(
-                            half: const Material(),
+                            half: ShaderMask(
+                              blendMode: BlendMode.srcATop,
+                              shaderCallback: (bounds) {
+                                return LinearGradient(
+                                  stops: const [0, 0.5, 0.5],
+                                  colors: [
+                                    Colors.amber,
+                                    Colors.amber,
+                                    Colors.amber.withOpacity(0.4),
+                                  ],
+                                ).createShader(bounds);
+                              },
+                              child: SizedBox(
+                                width: 20.width,
+                                height: 20.height,
+                                child: Icon(
+                                  Icons.star,
+                                  size: 20.width,
+                                ),
+                              ),
+                            ),
                             full: const Icon(Icons.star, color: Colors.amber),
                             empty: Icon(
                               Icons.star,

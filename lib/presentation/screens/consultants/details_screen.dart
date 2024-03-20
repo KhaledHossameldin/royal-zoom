@@ -107,11 +107,11 @@ class _ConsultantDetailsScreenState extends State<ConsultantDetailsScreen>
             };
             if (state.consultant.video != null) {
               try {
-                _videoController =
-                    VideoPlayerController.network(state.consultant.video!.video)
-                      ..initialize().then((value) => setState(() {}))
-                      ..setVolume(0.0)
-                      ..play();
+                _videoController = VideoPlayerController.networkUrl(
+                    Uri.parse(state.consultant.video!.video))
+                  ..initialize().then((value) => setState(() {}))
+                  ..setVolume(0.0)
+                  ..play();
               } catch (e) {
                 _videoController = null;
               }
@@ -931,37 +931,21 @@ class _Header extends StatelessWidget {
   ) =>
       StatefulBuilder(
         builder: (context, setState) {
-          final majors = RichText(
-            text: TextSpan(
-              style: textTheme.bodySmall!.copyWith(
-                color: Colors.grey.shade800,
-                fontWeight: FontWeight.normal,
+          final majors = Padding(
+            padding: EdgeInsets.symmetric(horizontal: 6.width),
+            child: MaterialButton(
+              onPressed: () => setState(() => _isShowPrices = true),
+              elevation: 0.0,
+              height: 23.height,
+              highlightElevation: 0.0,
+              shape: const StadiumBorder(),
+              textColor: BrandColors.orange,
+              color: BrandColors.orange.withOpacity(0.2),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              child: Text(
+                appLocalizations.showPrices,
+                style: const TextStyle(fontSize: 10.0),
               ),
-              children: [
-                TextSpan(
-                  text:
-                      '${appLocalizations.getMajor(false)} :\nقضايا الاعتداء الجسدي, قضايا الاعتداء المالي , قضايا الاعتداء الجسدي قضايا الاعتداء المالي',
-                ),
-                WidgetSpan(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 6.width),
-                    child: MaterialButton(
-                      onPressed: () => setState(() => _isShowPrices = true),
-                      elevation: 0.0,
-                      height: 23.height,
-                      highlightElevation: 0.0,
-                      shape: const StadiumBorder(),
-                      textColor: BrandColors.orange,
-                      color: BrandColors.orange.withOpacity(0.2),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      child: Text(
-                        appLocalizations.showPrices,
-                        style: const TextStyle(fontSize: 10.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           );
           final prices = Column(
@@ -1147,7 +1131,7 @@ class _Header extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: (consultant.ratingAverage * 10).toStringAsFixed(1),
+                  text: consultant.ratingAverage!.toStringAsFixed(1),
                 ),
                 WidgetSpan(
                     alignment: PlaceholderAlignment.top,
@@ -1157,8 +1141,8 @@ class _Header extends StatelessWidget {
                         return LinearGradient(
                           stops: [
                             0,
-                            consultant.ratingAverage.toDouble(),
-                            consultant.ratingAverage.toDouble(),
+                            (consultant.ratingAverage! / 5).toDouble(),
+                            (consultant.ratingAverage! / 5).toDouble(),
                           ],
                           colors: [
                             Colors.amber,
@@ -1177,7 +1161,6 @@ class _Header extends StatelessWidget {
                         ),
                       ),
                     )),
-                // TextSpan(text: '465 ${appLocalizations.review}'),
               ],
             ),
           ),

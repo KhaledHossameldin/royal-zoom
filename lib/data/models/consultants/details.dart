@@ -35,7 +35,6 @@ import 'volunteering.dart';
 
 class ConsultantDetails extends Consultant {
   final BankAccount? bankAccount;
-  final num ratingAverage;
   final List<Skill> skills;
   final List<Certificate> certificates;
   final List<Activity> activities;
@@ -82,7 +81,8 @@ class ConsultantDetails extends Consultant {
     required super.type,
     required super.createdAt,
     required super.consultantPreviewName,
-    required this.ratingAverage,
+    required super.ratingAverage,
+    required super.ratingCount,
     super.countryId,
     super.nationalityId,
     super.cityId,
@@ -165,6 +165,7 @@ class ConsultantDetails extends Consultant {
     Currency? currency,
     num? ratingAverage,
     String? username,
+    int? ratingCount,
   }) {
     return ConsultantDetails(
       id: id ?? super.id,
@@ -220,6 +221,7 @@ class ConsultantDetails extends Consultant {
       timezone: timezone ?? this.timezone,
       currency: currency ?? this.currency,
       ratingAverage: ratingAverage ?? this.ratingAverage,
+      ratingCount: ratingCount ?? this.ratingCount,
     );
   }
 
@@ -284,6 +286,7 @@ class ConsultantDetails extends Consultant {
 
   factory ConsultantDetails.fromMap(Map<String, dynamic> map) {
     final contract = _ConsultatnDetails();
+    print(map[contract.ratingAverage].runtimeType);
     return ConsultantDetails(
       id: map[contract.id]?.toInt() ?? 0,
       uuid: map[contract.uuid] ?? '',
@@ -309,7 +312,8 @@ class ConsultantDetails extends Consultant {
       previewName: map[contract.previewName],
       consultantPreviewName: map[contract.consultantPreviewName],
       phone: map[contract.phone],
-      ratingAverage: num.tryParse(contract.ratingAverage) ?? 0,
+      ratingAverage: num.tryParse(map[contract.ratingAverage]) ?? 0,
+      ratingCount: int.tryParse(map[contract.ratingCount]) ?? 0,
       lastLoginAt: map[contract.lastLoginAt] != null
           ? DateTime.parse(map[contract.lastLoginAt])
           : null,
@@ -529,5 +533,4 @@ class _ConsultatnDetails extends ConsultantContract {
   final researches = 'researches';
   final qualifications = 'qualifications';
   final consultations = 'public_consultations';
-  final ratingAverage = 'rating_average';
 }
