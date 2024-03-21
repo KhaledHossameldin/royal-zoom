@@ -11,6 +11,7 @@ import '../../../data/services/repository.dart';
 import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/reload_widget.dart';
+import '../../widgets/voice_record_widget.dart';
 
 class ConsultationsScreen extends StatefulWidget {
   const ConsultationsScreen({super.key});
@@ -230,6 +231,7 @@ class _ConsultationsListView extends StatelessWidget {
         horizontal: 27.width,
       ),
       sliver: SliverList.separated(
+        key: const PageStorageKey('consultation_screen'),
         itemCount: consultations.length,
         separatorBuilder: (context, index) => 16.emptyHeight,
         itemBuilder: (context, index) => _ConsultationItem(
@@ -469,50 +471,55 @@ class _ConsultationItem extends StatelessWidget {
                           ConsultationContentType.text) {
                         return Text(consultation.content);
                       }
-                      if (consultation.audioPlayer == null) {
-                        return Text(appLocalizations.cannotPlayAudio);
-                      }
-                      return Row(
-                        children: [
-                          Text(
-                            consultation.audioPlayer!.duration!.audioTime,
-                            style: const TextStyle(
-                              fontSize: 9.0,
-                              color: BrandColors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          8.emptyWidth,
-                          Expanded(
-                            child: StreamBuilder(
-                              stream: consultation.audioPlayer!.positionStream,
-                              builder: (context, snapshot) => Directionality(
-                                textDirection: TextDirection.ltr,
-                                child: LinearProgressIndicator(
-                                  color: BrandColors.darkGreen,
-                                  backgroundColor: Colors.grey,
-                                  value: (snapshot.data ?? Duration.zero)
-                                          .inSeconds /
-                                      consultation
-                                          .audioPlayer!.duration!.inSeconds,
-                                ),
-                              ),
-                            ),
-                          ),
-                          8.emptyWidth,
-                          FloatingActionButton.small(
-                            elevation: 0.0,
-                            backgroundColor: BrandColors.darkGreen,
-                            heroTag: 'id-${consultation.id}',
-                            child: const Icon(Icons.play_arrow_rounded),
-                            onPressed: () async {
-                              await consultation.audioPlayer!
-                                  .seek(Duration.zero);
-                              consultation.audioPlayer!.play();
-                            },
-                          ),
-                        ],
+                      // if (consultation.audioPlayer == null) {
+                      //   return Text(appLocalizations.cannotPlayAudio);
+                      // }
+                      return VoiceRecordWidget(
+                        audioUri: consultation.content,
+                        height: 50.height,
+                        width: 0.screenWidth * 0.4,
                       );
+                      // return Row(
+                      //   children: [
+                      //     Text(
+                      //       consultation.audioPlayer!.duration!.audioTime,
+                      //       style: const TextStyle(
+                      //         fontSize: 9.0,
+                      //         color: BrandColors.black,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                      //     8.emptyWidth,
+                      //     Expanded(
+                      //       child: StreamBuilder(
+                      //         stream: consultation.audioPlayer!.positionStream,
+                      //         builder: (context, snapshot) => Directionality(
+                      //           textDirection: TextDirection.ltr,
+                      //           child: LinearProgressIndicator(
+                      //             color: BrandColors.darkGreen,
+                      //             backgroundColor: Colors.grey,
+                      //             value: (snapshot.data ?? Duration.zero)
+                      //                     .inSeconds /
+                      //                 consultation
+                      //                     .audioPlayer!.duration!.inSeconds,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     8.emptyWidth,
+                      //     FloatingActionButton.small(
+                      //       elevation: 0.0,
+                      //       backgroundColor: BrandColors.darkGreen,
+                      //       heroTag: 'id-${consultation.id}',
+                      //       child: const Icon(Icons.play_arrow_rounded),
+                      //       onPressed: () async {
+                      //         await consultation.audioPlayer!
+                      //             .seek(Duration.zero);
+                      //         consultation.audioPlayer!.play();
+                      //       },
+                      //     ),
+                      //   ],
+                      // );
                     },
                   ),
                 ),

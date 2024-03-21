@@ -236,11 +236,11 @@ class NetworkServices {
             !consultation.consultation.content.toLowerCase().endsWith('.wav')) {
           return consultation;
         }
-        final player = AudioPlayer();
-        await player.setUrl(consultation.consultation.content);
-        await player.pause();
-        consultation.consultation =
-            consultation.consultation.copyWith(audioPlayer: player);
+        // final player = AudioPlayer();
+        // await player.setUrl(consultation.consultation.content);
+        // await player.pause();
+        // consultation.consultation =
+        //     consultation.consultation.copyWith(audioPlayer: player);
         return consultation;
       }
       return consultation;
@@ -453,15 +453,16 @@ class NetworkServices {
             !consultation.content.toLowerCase().endsWith('.wav')) {
           return consultation;
         }
-        AudioPlayer player;
-        try {
-          player = AudioPlayer();
-          await player.setUrl(consultation.content);
-          await player.pause();
-          return consultation.copyWith(audioPlayer: player);
-        } catch (e) {
-          return consultation;
-        }
+        // AudioPlayer player;
+        // try {
+        //   player = AudioPlayer();
+        //   await player.setUrl(consultation.content);
+        //   await player.pause();
+        //   return consultation.copyWith(audioPlayer: player);
+        // } catch (e) {
+        //   return consultation;
+        // }
+        return consultation;
       }
       return consultation;
     }).toList());
@@ -554,15 +555,15 @@ class NetworkServices {
             !consultation.content.toLowerCase().endsWith('.wav')) {
           return consultation;
         }
-        AudioPlayer player;
-        try {
-          player = AudioPlayer();
-          await player.setUrl(consultation.content);
-          await player.pause();
-          return consultation.copyWith(audioPlayer: player);
-        } catch (e) {
-          return consultation;
-        }
+        // AudioPlayer player;
+        // try {
+        //   player = AudioPlayer();
+        //   await player.setUrl(consultation.content);
+        //   await player.pause();
+        //   return consultation.copyWith(audioPlayer: player);
+        // } catch (e) {
+        return consultation;
+        // }
       }
       return consultation;
     }).toList());
@@ -589,15 +590,15 @@ class NetworkServices {
             !consultation.content.toLowerCase().endsWith('.wav')) {
           return consultation;
         }
-        AudioPlayer player;
-        try {
-          player = AudioPlayer();
-          await player.setUrl(consultation.content);
-          await player.pause();
-          return consultation.copyWith(audioPlayer: player);
-        } catch (e) {
-          return consultation;
-        }
+        // AudioPlayer player;
+        // try {
+        //   player = AudioPlayer();
+        //   await player.setUrl(consultation.content);
+        //   await player.pause();
+        //   return consultation.copyWith(audioPlayer: player);
+        // } catch (e) {
+        return consultation;
+        // }
       }
       return consultation;
     }).toList());

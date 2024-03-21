@@ -1,3 +1,5 @@
+import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,5 +52,12 @@ class AudioHandler {
 
   Future cancelRecord() async {
     _recorder.stop();
+  }
+
+  final audioPlayer = PlayerController();
+
+  Future play(String content) async {
+    final path = (await FileDownloader.downloadFile(url: content))!.path;
+    await audioPlayer.preparePlayer(path: path, noOfSamples: 20);
   }
 }
