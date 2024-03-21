@@ -153,6 +153,8 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                                   ),
                                   12.emptyHeight,
                                   ListView.separated(
+                                    key:
+                                        const PageStorageKey('favorite_screen'),
                                     shrinkWrap: true,
                                     physics: const ClampingScrollPhysics(),
                                     itemCount: categoryConsultants.length,
@@ -319,6 +321,7 @@ class ConsultationsTab extends StatelessWidget {
               onRefresh: () async =>
                   context.read<FavoriteConsultationsCubit>().fetch(context),
               child: ListView.separated(
+                key: const PageStorageKey('favorite_screen_1'),
                 itemCount: consultations.length,
                 separatorBuilder: (context, index) => 16.emptyHeight,
                 itemBuilder: (context, index) {
@@ -359,6 +362,7 @@ class ConsultationsTab extends StatelessWidget {
                         ),
                         12.emptyHeight,
                         ListView.separated(
+                          key: const PageStorageKey('favorite_screen_2'),
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
                           itemCount: categoryConsultants.length,

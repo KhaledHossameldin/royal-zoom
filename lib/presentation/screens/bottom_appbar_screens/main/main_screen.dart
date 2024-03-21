@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -17,6 +15,7 @@ import '../../../../localization/app_localizations.dart';
 import '../../../../utilities/extensions.dart';
 import '../../../widgets/notifications_button.dart';
 import '../../../widgets/reload_widget.dart';
+import '../../../widgets/voice_record_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key, required this.index});
@@ -97,6 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                       child: SizedBox(
                         height: 250.height,
                         child: ListView.separated(
+                          key: const PageStorageKey('main_screen'),
                           clipBehavior: Clip.none,
                           scrollDirection: Axis.horizontal,
                           padding: EdgeInsets.symmetric(horizontal: 27.width),
@@ -378,54 +378,57 @@ class _ConsultationItem extends StatelessWidget {
                             maxLines: 2,
                           );
                         }
-                        if (consultation.audioPlayer == null) {
-                          return Text(appLocalizations.cannotPlayAudio);
-                        }
-
-                        return Row(
-                          children: [
-                            Text(
-                              consultation.audioPlayer!.duration!.audioTime,
-                              style: const TextStyle(
-                                fontSize: 9.0,
-                                color: BrandColors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            8.emptyWidth,
-                            Expanded(
-                              child: StreamBuilder(
-                                stream:
-                                    consultation.audioPlayer!.positionStream,
-                                builder: (context, snapshot) => Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: LinearProgressIndicator(
-                                    color: BrandColors.darkGreen,
-                                    backgroundColor: Colors.grey,
-                                    value: (snapshot.data ?? Duration.zero)
-                                            .inSeconds /
-                                        max(
-                                            consultation.audioPlayer!.duration!
-                                                .inSeconds,
-                                            1),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            8.emptyWidth,
-                            FloatingActionButton.small(
-                              elevation: 0.0,
-                              backgroundColor: BrandColors.darkGreen,
-                              heroTag: 'id-${consultation.id}',
-                              child: const Icon(Icons.play_arrow_rounded),
-                              onPressed: () async {
-                                await consultation.audioPlayer!
-                                    .seek(Duration.zero);
-                                consultation.audioPlayer!.play();
-                              },
-                            ),
-                          ],
-                        );
+                        // if (consultation.audioPlayer == null) {
+                        //   return Text(appLocalizations.cannotPlayAudio);
+                        // }
+                        return VoiceRecordWidget(
+                            audioUri: consultation.content,
+                            height: 50.height,
+                            width: 0.screenWidth);
+                        // return Row(
+                        //   children: [
+                        //     Text(
+                        //       consultation.audioPlayer!.duration!.audioTime,
+                        //       style: const TextStyle(
+                        //         fontSize: 9.0,
+                        //         color: BrandColors.black,
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //     ),
+                        //     8.emptyWidth,
+                        //     Expanded(
+                        //       child: StreamBuilder(
+                        //         stream:
+                        //             consultation.audioPlayer!.positionStream,
+                        //         builder: (context, snapshot) => Directionality(
+                        //           textDirection: TextDirection.ltr,
+                        //           child: LinearProgressIndicator(
+                        //             color: BrandColors.darkGreen,
+                        //             backgroundColor: Colors.grey,
+                        //             value: (snapshot.data ?? Duration.zero)
+                        //                     .inSeconds /
+                        //                 max(
+                        //                     consultation.audioPlayer!.duration!
+                        //                         .inSeconds,
+                        //                     1),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     8.emptyWidth,
+                        //     FloatingActionButton.small(
+                        //       elevation: 0.0,
+                        //       backgroundColor: BrandColors.darkGreen,
+                        //       heroTag: 'id-${consultation.id}',
+                        //       child: const Icon(Icons.play_arrow_rounded),
+                        //       onPressed: () async {
+                        //         await consultation.audioPlayer!
+                        //             .seek(Duration.zero);
+                        //         consultation.audioPlayer!.play();
+                        //       },
+                        //     ),
+                        //   ],
+                        // );
                       },
                     ),
                   ),

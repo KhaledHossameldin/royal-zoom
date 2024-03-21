@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -23,6 +21,7 @@ import '../../../localization/app_localizations.dart';
 import '../../../utilities/extensions.dart';
 import '../../widgets/brand_back_button.dart';
 import '../../widgets/reload_widget.dart';
+import '../../widgets/voice_record_widget.dart';
 
 class ConsultationDetailsScreen extends StatefulWidget {
   const ConsultationDetailsScreen({
@@ -693,7 +692,7 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context);
+    // final appLocalizations = AppLocalizations.of(context);
 
     return Container(
       width: double.infinity,
@@ -703,57 +702,63 @@ class _Content extends StatelessWidget {
           if (type == ConsultationContentType.text) {
             return Text(content);
           }
-          if (player == null) {
-            return Text(appLocalizations.cannotPlayAudio);
-          }
-          return Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.width,
-              vertical: 8.height,
-            ),
-            decoration: BoxDecoration(
-              color: BrandColors.snowWhite,
-              borderRadius: BorderRadius.circular(29.0),
-            ),
-            child: Row(
-              children: [
-                Text(
-                  player!.duration!.audioTime,
-                  style: const TextStyle(
-                    fontSize: 9.0,
-                    color: BrandColors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                8.emptyWidth,
-                Expanded(
-                  child: StreamBuilder(
-                    stream: player!.positionStream,
-                    builder: (context, snapshot) => Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: LinearProgressIndicator(
-                        color: BrandColors.darkGreen,
-                        backgroundColor: Colors.grey,
-                        value: (snapshot.data ?? Duration.zero).inSeconds /
-                            max(player!.duration!.inSeconds, 1),
-                      ),
-                    ),
-                  ),
-                ),
-                8.emptyWidth,
-                FloatingActionButton.small(
-                  elevation: 0.0,
-                  backgroundColor: BrandColors.darkGreen,
-                  heroTag: 'consultation-details',
-                  child: const Icon(Icons.play_arrow_rounded),
-                  onPressed: () async {
-                    await player!.seek(Duration.zero);
-                    player!.play();
-                  },
-                ),
-              ],
-            ),
+          // if (player == null) {
+          //   return Text(appLocalizations.cannotPlayAudio);
+          // }
+          return VoiceRecordWidget(
+            audioUri: content,
+            height: 50.height,
+            width: 0.screenWidth,
           );
+
+          // return Container(
+          //   padding: EdgeInsets.symmetric(
+          //     horizontal: 12.width,
+          //     vertical: 8.height,
+          //   ),
+          //   decoration: BoxDecoration(
+          //     color: BrandColors.snowWhite,
+          //     borderRadius: BorderRadius.circular(29.0),
+          //   ),
+          //   child: Row(
+          //     children: [
+          //       Text(
+          //         player!.duration!.audioTime,
+          //         style: const TextStyle(
+          //           fontSize: 9.0,
+          //           color: BrandColors.black,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //       8.emptyWidth,
+          //       Expanded(
+          //         child: StreamBuilder(
+          //           stream: player!.positionStream,
+          //           builder: (context, snapshot) => Directionality(
+          //             textDirection: TextDirection.ltr,
+          //             child: LinearProgressIndicator(
+          //               color: BrandColors.darkGreen,
+          //               backgroundColor: Colors.grey,
+          //               value: (snapshot.data ?? Duration.zero).inSeconds /
+          //                   max(player!.duration!.inSeconds, 1),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       8.emptyWidth,
+          //       FloatingActionButton.small(
+          //         elevation: 0.0,
+          //         backgroundColor: BrandColors.darkGreen,
+          //         heroTag: 'consultation-details',
+          //         child: const Icon(Icons.play_arrow_rounded),
+          //         onPressed: () async {
+          //           await player!.seek(Duration.zero);
+          //           player!.play();
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          // );
         },
       ),
     );
