@@ -28,12 +28,13 @@ class _VoiceRecordWidgetState extends State<VoiceRecordWidget> {
   Duration current = Duration.zero;
   final PlayerController _playerController = PlayerController();
   File? file;
-
+  bool isLoading = true;
   Future init() async {
     file ??= await FileDownloader.downloadFile(url: widget.audioUri);
     await _playerController.preparePlayer(path: file!.path, noOfSamples: 80);
     _playerController.getDuration().then((value) {
       setState(() {
+        isLoading = false;
         total = Duration(milliseconds: value);
       });
     });
@@ -122,21 +123,24 @@ class _VoiceRecordWidgetState extends State<VoiceRecordWidget> {
       decoration: BoxDecoration(
           color: !widget.isSelf ? BrandColors.snowWhite : BrandColors.darkGreen,
           borderRadius: const BorderRadius.all(Radius.circular(50))),
-      child: IconButton(
-        onPressed: () async {
-          if (!_playerController.playerState.isPlaying) {
-            // _playerController.stopAllPlayers();
-            await _playerController.startPlayer(
-                finishMode: FinishMode.pause, forceRefresh: true);
-          } else {
-            await _playerController.pausePlayer();
-          }
-        },
-        icon: !_playerController.playerState.isPlaying
-            ? const Icon(Icons.play_arrow)
-            : const Icon(Icons.pause),
-        color: widget.isSelf ? BrandColors.snowWhite : BrandColors.darkGreen,
-      ),
+      child: isLoading
+          ? const CircularProgressIndicator()
+          : IconButton(
+              onPressed: () async {
+                if (!_playerController.playerState.isPlaying) {
+                  // _playerController.stopAllPlayers();
+                  await _playerController.startPlayer(
+                      finishMode: FinishMode.pause, forceRefresh: true);
+                } else {
+                  await _playerController.pausePlayer();
+                }
+              },
+              icon: !_playerController.playerState.isPlaying
+                  ? const Icon(Icons.play_arrow)
+                  : const Icon(Icons.pause),
+              color:
+                  widget.isSelf ? BrandColors.snowWhite : BrandColors.darkGreen,
+            ),
     );
   }
 
