@@ -122,4 +122,8 @@ class SharedPrefs {
   bool doesUserExist() {
     return _preferences.containsKey(PreferencesKeys.user);
   }
+
+  void setFcmToken(String token) {
+    _preferences.setString(PreferencesKeys.fcmToken, token);
+  }
 }

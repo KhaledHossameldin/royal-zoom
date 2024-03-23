@@ -1,4 +1,6 @@
 import 'package:animations/animations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +14,7 @@ import 'constants/fonts.dart';
 import 'constants/routes.dart';
 import 'core/di/di_manager.dart';
 import 'core/navigator/app_navigator_observer.dart';
+import 'core/notification/firebase_nofification_handler.dart';
 import 'cubits/consultations/consultations_cubit.dart';
 import 'cubits/locale_cubit.dart';
 import 'cubits/switch/switch_cubit.dart';
@@ -53,6 +56,12 @@ Future<List<dynamic>> _getStartValues() async {
   return [initialRoute, savedLocale, user, type];
 }
 
+Future<void> _backgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  dynamic data = message.data['data'];
+  FirebaseNotifications.showNotification(data['title'], data['body']);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -60,7 +69,9 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   // await Repository.instance.initializePusher();
+  await Firebase.initializeApp();
   await DIManager.initDI();
+  FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
   final values = await _getStartValues();
   runApp(MyApp(
     initialRoute: values[0],
@@ -98,6 +109,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    FirebaseNotifications().setUp();
   }
 
   @override
