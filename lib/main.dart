@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_zoom_videosdk/native/zoom_videosdk.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
@@ -114,6 +115,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    var zoom = ZoomVideoSdk();
+    InitConfig initConfig = InitConfig(
+      domain: 'zoom.us',
+      enableLog: true,
+    );
+    zoom.initSdk(initConfig);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
