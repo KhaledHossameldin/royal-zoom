@@ -282,6 +282,13 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                   sliver: SliverToBoxAdapter(
                     child: Builder(
                       builder: (context) {
+                        return ElevatedButton(
+                          onPressed: () => Navigator.pushNamed(
+                            context,
+                            Routes.onlineMeeting,
+                          ),
+                          child: const Text('Start Zoom'),
+                        );
                         if (consultation.status ==
                             ConsultationStatus.requestToChangetime) {
                           return _Item(

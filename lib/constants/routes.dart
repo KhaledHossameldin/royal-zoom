@@ -65,4 +65,5 @@ class Routes {
   static const addBalanceToWalletScreen = 'add-balance';
   static const invoiceScreen = 'invoice-screen';
   static const paymentResult = 'payment-result';
+  static const onlineMeeting = 'online-meeting';
 }

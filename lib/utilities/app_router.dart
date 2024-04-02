@@ -56,6 +56,7 @@ import '../presentation/screens/bottom_appbar_screens/profile/review_app_screen.
 import '../presentation/screens/bottom_appbar_screens/chats/pages/chat_details_screen.dart';
 import '../presentation/screens/complete_payment/pages/payment_getway_screen.dart';
 import '../presentation/screens/complete_payment/pages/payment_result_screen.dart';
+import '../presentation/screens/consultations/online_meeting/online_meeting_screen.dart';
 import '../presentation/screens/payments/pages/add_balance_to_wallet_screen.dart';
 import '../presentation/screens/consultants/details_screen.dart';
 import '../presentation/screens/consultants/filter_screen.dart';
@@ -594,6 +595,11 @@ class AppRouter {
           builder: (context) => PaymentResultScreen(
             invoiceId: invoiceId,
           ),
+        );
+
+      case Routes.onlineMeeting:
+        return MaterialPageRoute(
+          builder: (context) => const OnlineMeetingScreen(),
         );
 
       default:

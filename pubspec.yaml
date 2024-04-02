@@ -80,6 +80,9 @@ dependencies:
   firebase_messaging: ^14.7.20
   flutter_local_notifications: ^17.0.0
   flutter_zoom_videosdk: ^1.10.1
+  dart_jsonwebtoken: ^2.13.0
+  flutter_hooks: ^0.20.5
+  events_emitter: ^0.5.2
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +115,7 @@ flutter:
     - assets/images/permissions/
     - assets/images/bottom_app_bar_icons/
     - assets/html/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

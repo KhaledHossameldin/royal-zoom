@@ -495,5 +495,15 @@
   "policies_24": "Overview: You are not allowed to steal the identity of individuals, groups, or organizations or use a fake identity to deceive others. We want Vision Platform to be a place where people find trustworthy opinions. While you are not required to display your real name or picture in your profile, your account must not use false profile information to represent itself as a person or entity not affiliated with the account owner, as this may mislead others using the platform.",
   "consultants_policies": "Consultants Policies",
   "automatic_acceptance_lowest_offers_title": "Enable Automatic Acceptance of Lowest Offers",
-  "automatic_acceptance_lowest_offers_subtitle": "When making an offer, the lowest offer will be accepted automatically"
+  "automatic_acceptance_lowest_offers_subtitle": "When making an offer, the lowest offer will be accepted automatically",
+  "connecting": "Connecting...",
+  "failed_to_join_session": "Failed to join session",
+  "error": "Error",
+  "session_need_password": "You need to enter a password to join the session",
+  "session_password_incorrect": "Password is incorrect",
+  "session_is_recording": "Session is recording",
+  "accept": "Accept",
+  "cant_access_camera": "Can't access camera",
+  "turn_on_camera_permission": "please turn on the toggle in system settings to grant permission",
+  "cant_access_mic": "Can't access microphone"
 }

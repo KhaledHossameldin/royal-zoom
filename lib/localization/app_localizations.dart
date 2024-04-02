@@ -868,6 +868,17 @@ class AppLocalizations {
       _translate('automatic_acceptance_lowest_offers_title');
   String get automaticAcceptanceLowestOffersSubtitle =>
       _translate('automatic_acceptance_lowest_offers_subtitle');
+  String get connecting => _translate('connecting');
+  String get failedToJoinSession => _translate('failed_to_join_session');
+  String get error => _translate('error');
+  String get sessionNeedPassword => _translate('session_need_password');
+  String get sessionPasswordIncorrect =>
+      _translate('session_password_incorrect');
+  String get sessionIsRecording => _translate('session_is_recording');
+  String get accept => _translate('accept');
+  String get cantAccessCamera => _translate('cant_access_camera');
+  String get turnOnCameraPermission => _translate('turn_on_camera_permission');
+  String get cantAccessMic => _translate('cant_access_mic');
 
   String getPreviewStatus(PreviewStatus status) {
     if (status == PreviewStatus.busy) {
